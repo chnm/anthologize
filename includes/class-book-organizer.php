@@ -184,6 +184,8 @@ class Booyakasha_Book_Organizer {
 			'posts_per_page' => -1,
 		);
 
+		$test = '';
+
 		$items_query = new WP_Query( $args );
 		$items_query->query();
 
