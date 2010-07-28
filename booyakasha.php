@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Booyahkasha better
+Plugin Name: Kitty
 Plugin URI: http://oneweekonetool.org
 Description: Rocks your world
 Version: 0.1-alpha
