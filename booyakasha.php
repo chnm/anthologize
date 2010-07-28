@@ -123,6 +123,9 @@ class Booyakasha_Loader {
 
 			load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
 			return false;
+		} else if ($_GET['output'] == 'tei') {
+			load_template( dirname(__FILE__) . 'templates/tei/base.php' );
+			return false;
 		}
 	}
 
