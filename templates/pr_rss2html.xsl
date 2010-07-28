@@ -38,9 +38,6 @@
                 select="link"/></span>, published on <xsl:value-of
               select="pubDate"/> by <xsl:value-of select="dc:creator"/>. </p>
           <div class="post-content">
-            <!--
-            <xsl:value-of select="substring(content:encoded, 2)"
-              disable-output-escaping="yes"/> -->
             <xsl:value-of select="content:encoded"
               disable-output-escaping="yes"/>
           </div>
