@@ -119,12 +119,12 @@ class Booyakasha_Loader {
 	}
 
 	function grab() { // todo: make this make sense
-		if ( $_GET['output'] ) {
+		if ( $_GET['output'] == 'customfeed' ) {
 
 			load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
 			return false;
 		} else if ($_GET['output'] == 'tei') {
-			load_template( dirname(__FILE__) . 'templates/tei/base.php' );
+			load_template( dirname(__FILE__) . '/templates/tei/base.php' );
 			return false;
 		}
 	}
