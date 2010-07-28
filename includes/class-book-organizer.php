@@ -1,7 +1,5 @@
 <?php
 
-
-
 if ( !class_exists( 'Booyakasha_Book_Organizer' ) ) :
 
 class Booyakasha_Book_Organizer {
@@ -19,14 +17,6 @@ class Booyakasha_Book_Organizer {
 
 		$this->book_name = $book->post_title;
 
-		add_action( 'admin_init', array ( $this, 'init' ) );
-
-		//add_action( 'admin_menu', array( $this, 'dashboard_hooks' ) );
-
-	}
-
-	function init() {
-		do_action( 'booyakasha_admin_init' );
 	}
 
 	function display() {
@@ -37,11 +27,8 @@ class Booyakasha_Book_Organizer {
 		if ( isset( $_POST['new_part'] ) )
 			$this->add_new_part( $_POST['new_part_name'] );
 
-		// todo: make sure you're only pulling up the chapters from a specific book
-
 		?>
 		<div class="wrap">
-			<h2>You're lucky this page is not in Klingon</h2>
 
 			<h2><?php echo $this->book_name ?></h2>
 
@@ -184,35 +171,32 @@ class Booyakasha_Book_Organizer {
 			'posts_per_page' => -1,
 		);
 
-		$test = '';
-
 		$items_query = new WP_Query( $args );
 		$items_query->query();
 
 		if ( $items_query->have_posts() ) {
 
-			$return = "<ol>";
+			echo "<ol>";
 
 			while ( $items_query->have_posts() ) : $items_query->the_post();
 
-			//foreach( $items as $item ) {
-				$return .= "<li>";
-				$return .= '<a href="' . get_permalink() . '">' . get_the_title() . '</a>';
-				$return .= "</li>";
-			//}
+				$this->display_item();
 
 			endwhile;
 
-			$return .= "</ol>";
+			echo "</ol>";
 
 		}
 
-		echo $return;
-
-
 	}
 
-
+	function display_item() {
+	?>
+		<li>
+			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit">Edit</a>
+		</li>
+	<?php
+	}
 
 }
 
@@ -222,13 +206,6 @@ $book_id = $_GET['book_id'];
 
 $booyakasha_book_organizer = new Booyakasha_Book_Organizer( $book_id );
 $booyakasha_book_organizer->display();
-
-//$booyakasha_book_organizer = new Booyakasha_Book_Organizer( 1 );
-
-
-
-
-
 
 
 ?>
