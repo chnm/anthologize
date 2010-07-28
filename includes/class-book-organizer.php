@@ -1,7 +1,5 @@
 <?php
 
-
-
 if ( !class_exists( 'Booyakasha_Book_Organizer' ) ) :
 
 class Booyakasha_Book_Organizer {
@@ -19,14 +17,6 @@ class Booyakasha_Book_Organizer {
 
 		$this->book_name = $book->post_title;
 
-		add_action( 'admin_init', array ( $this, 'init' ) );
-
-		//add_action( 'admin_menu', array( $this, 'dashboard_hooks' ) );
-
-	}
-
-	function init() {
-		do_action( 'booyakasha_admin_init' );
 	}
 
 	function display() {
@@ -37,11 +27,8 @@ class Booyakasha_Book_Organizer {
 		if ( isset( $_POST['new_part'] ) )
 			$this->add_new_part( $_POST['new_part_name'] );
 
-		// todo: make sure you're only pulling up the chapters from a specific book
-
 		?>
 		<div class="wrap">
-			<h2>You're lucky this page is not in Klingon</h2>
 
 			<h2><?php echo $this->book_name ?></h2>
 
@@ -85,12 +72,12 @@ class Booyakasha_Book_Organizer {
 
 		$imported_item_id = wp_insert_post( $args );
 
-		if ( !$items = get_post_meta( $part_id, 'items', true ) )
+		/*if ( !$items = get_post_meta( $part_id, 'items', true ) )
 			$items = array();
 
 		$items[$item_id] = $imported_item_id;
 
-		update_post_meta( $part_id, 'items', $items );
+		update_post_meta( $part_id, 'items', $items );*/
 	}
 
 	function add_new_part( $part_name ) {
@@ -120,12 +107,12 @@ class Booyakasha_Book_Organizer {
 					<div class="part" id="part-<?php echo $part_id ?>">
 						<h3><?php the_title() ?></h3>
 
-						<?php booyakasha_part_items( $part_id ) ?>
+						<?php $this->get_part_items( $part_id ) ?>
 
 
 						<form action="" method="post">
 							<select name="item_id">
-								<?php booyakasha_post_list( $part_id ) ?>
+								<?php $this->get_posts_as_option_list( $part_id ) ?>
 							</select>
 							<input type="submit" name="new_item" value="Add Item" />
 							<input type="hidden" name="part_id" value="<?php echo $part_id ?>" />
@@ -143,6 +130,73 @@ class Booyakasha_Book_Organizer {
 		wp_reset_query();
 	}
 
+	function get_posts_as_option_list( $part_id ) {
+		global $wpdb;
+
+		$items = get_post_meta( $part_id, 'items', true );
+
+		$item_query = new WP_Query( 'post_type=items&post_parent=' . $part_id );
+
+		print_r($item_query->query());
+
+		$sql = "SELECT id, post_title FROM wp_posts WHERE post_type = 'page' OR post_type = 'post' OR post_type = 'imported_items'";
+		$ids = $wpdb->get_results($sql);
+
+		$counter = 0;
+		foreach( $ids as $id ) {
+			if ( in_array( $id->id, $items ) || array_key_exists( $id->id, $items ) ) // Todo: adjust so that it references parent stuff
+				continue;
+
+			echo '<option value="' . $id->id . '">' . $id->post_title . '</option>';
+			$counter++;
+		}
+
+		if ( !$counter )
+			echo '<option disabled="disabled">Sorry, no content to add</option>';
+
+	}
+
+
+	function get_part_items( $part_id ) {
+		$items = get_post_meta( $part_id, 'items', true );
+
+		//echo "<pre>";
+		//print_r($items); die();
+		//if ( empty( $items ) )
+		//	return;
+
+		$args = array(
+			'post_parent' => $part_id,
+			'post_type' => 'library_items',
+			'posts_per_page' => -1,
+		);
+
+		$items_query = new WP_Query( $args );
+		$items_query->query();
+
+		if ( $items_query->have_posts() ) {
+
+			echo "<ol>";
+
+			while ( $items_query->have_posts() ) : $items_query->the_post();
+
+				$this->display_item();
+
+			endwhile;
+
+			echo "</ol>";
+
+		}
+
+	}
+
+	function display_item() {
+	?>
+		<li>
+			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit">Edit</a>
+		</li>
+	<?php
+	}
 
 }
 
@@ -152,70 +206,6 @@ $book_id = $_GET['book_id'];
 
 $booyakasha_book_organizer = new Booyakasha_Book_Organizer( $book_id );
 $booyakasha_book_organizer->display();
-
-//$booyakasha_book_organizer = new Booyakasha_Book_Organizer( 1 );
-
-
-
-function booyakasha_admin() {
-	//print_r($_POST); die();
-
-
-}
-
-
-
-function booyakasha_post_list( $part_id ) {
-	global $wpdb;
-
-	$items = get_post_meta( $part_id, 'items', true );
-
-	$item_query = new WP_Query( 'post_type=items&post_parent=' . $part_id );
-
-	print_r($item_query->query());
-
-	$sql = "SELECT id, post_title FROM wp_posts WHERE post_type = 'page' OR post_type = 'post' OR post_type = 'imported_items'"; // todo: filter this right. Maybe "imported item" is not a salient class - make a place for "imported" as well as "copied"
-
-	$ids = $wpdb->get_results($sql);
-
-	$counter = 0;
-	foreach( $ids as $id ) {
-		if ( in_array( $id->id, $items ) || array_key_exists( $id->id, $items ) )
-			continue;
-
-		echo '<option value="' . $id->id . '">' . $id->post_title . '</option>';
-		$counter++;
-	}
-
-	if ( !$counter )
-		echo '<option disabled="disabled">Sorry, no content to add</option>';
-
-}
-
-
-function booyakasha_part_items( $part_id ) {
-	$items = get_post_meta( $part_id, 'items', true );
-
-	//echo "<pre>";
-	//print_r($items); die();
-	if ( empty( $items ) )
-		return;
-
-	$return = "<ol>";
-
-	foreach( $items as $item ) {
-		$return .= "<li>";
-		$post = get_post( $item );
-		$return .= '<a href="' . get_permalink( $item ) . '">' . $post->post_title . '</a>';
-		$return .= "</li>";
-	}
-
-	$return .= "</ol>";
-	echo $return;
-}
-
-
-
 
 
 ?>

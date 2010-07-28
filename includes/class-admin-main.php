@@ -98,12 +98,12 @@ class Booyakasha_Admin_Main {
 						</th>
 
 						<th scope="row"  class="post-title">
-							<a href="<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="edit"><?php the_title(); ?></a>
+							<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
 
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="edit">' . __('Edit') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
 
 
 									?>
@@ -170,7 +170,11 @@ endif;
 $booyakasha_admin_main = new Booyakasha_Admin_Main( 1 );
 
 
-
+function okokok( $it ) {
+	echo $it;
+	return $it;
+}
+//add_filter( 'posts_request', 'okokok' );
 
 
 
