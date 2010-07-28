@@ -36,6 +36,8 @@ class Booyakasha_Loader {
 		add_action( 'booyakasha_init', array ( $this, 'textdomain' ) );
 
 
+		add_action( 'booyakasha_init', array ( $this, 'grab' ) );
+
 		// activation sequence
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 
@@ -114,6 +116,14 @@ class Booyakasha_Loader {
 	// Let plugins know that we're done loading
 	function loaded() {
 		do_action( 'booyakasha_loaded' );
+	}
+
+	function grab() { // todo: make this make sense
+		if ( $_GET['output'] ) {
+
+			load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
+			return false;
+		}
 	}
 
 

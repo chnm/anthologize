@@ -97,13 +97,13 @@ class Booyakasha_Admin_Main {
             			<th scope="row" class="check-column">
 						</th>
 
-						<th scope="row"  class="bp-gm-group-id">
-							<?php the_title(); ?>
+						<th scope="row"  class="post-title">
+							<a href="<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="edit"><?php the_title(); ?></a>
 
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=booyakashacopy/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="edit">' . __('Edit') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="edit">' . __('Edit') . '</a>';
 
 
 									?>
