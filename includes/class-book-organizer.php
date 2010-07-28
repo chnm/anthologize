@@ -27,6 +27,12 @@ class Booyakasha_Book_Organizer {
 		if ( isset( $_POST['new_part'] ) )
 			$this->add_new_part( $_POST['new_part_name'] );
 
+		if ( isset( $_POST['move_up'] ) )
+			$this->move_up( $_POST['move_up'] );
+
+		if ( isset( $_POST['move_down'] ) )
+			$this->move_down( $_POST['move_up'] );
+
 		?>
 		<div class="wrap">
 
@@ -51,9 +57,16 @@ class Booyakasha_Book_Organizer {
 	}
 
 	function add_item_to_part( $item_id, $part_id ) {
+		global $wpdb;
+
+		if ( !(int)$last_item = get_post_meta( $part_id, 'last_item', true ) )
+			$last_item = 0;
+
+		$last_item++;
 		$post = get_post( $item_id );
 
 		$args = array(
+		  'menu_order' => $last_item,
 		  'comment_status' => $post->comment_status,
 		  'ping_status' => $post->ping_status,
 		  'pinged' => $post->pinged,
@@ -71,6 +84,8 @@ class Booyakasha_Book_Organizer {
 		);
 
 		$imported_item_id = wp_insert_post( $args );
+
+		update_post_meta( $part_id, 'last_item', $last_item );
 
 		/*if ( !$items = get_post_meta( $part_id, 'items', true ) )
 			$items = array();
@@ -169,6 +184,8 @@ class Booyakasha_Book_Organizer {
 			'post_parent' => $part_id,
 			'post_type' => 'library_items',
 			'posts_per_page' => -1,
+			'orderby' => 'menu_order',
+			'order' => ASC
 		);
 
 		$items_query = new WP_Query( $args );
@@ -190,9 +207,19 @@ class Booyakasha_Book_Organizer {
 
 	}
 
+	function move_up( $id ) {
+		// Todo! With menu order
+
+	}
+
+	function move_down( $id ) {
+
+	}
+
 	function display_item() {
 	?>
 		<li>
+			<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=1&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=1&move_down=<?php the_ID() ?>">&darr;</a>
 			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit">Edit</a>
 		</li>
 	<?php
