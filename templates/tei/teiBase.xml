@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:html="http://www.w3.org/1999/xhtml"
-    xmlns:ns="http://oursite/ns">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" >
     <teiHeader>
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
@@ -18,7 +17,8 @@
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
 
 
-        <ns:layoutDesc> </ns:layoutDesc>
+        <layoutDesc xmlns="http://www.anthologize.org/ns"> 
+        </layoutDesc>
         <revisionDesc>
             <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
         </revisionDesc>
@@ -72,33 +72,27 @@
                 <!-- @type="post" says this is coming from the post. Down the road, we might have ways to TEI-ize the post itself, in which case @subtype="tei" -->
                 <div type="post" subtype="html">
 
-                    <html:body>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
 
-                        <html:p>My name is Boone Gorges and Teleogistic is my personal
-                            blog.</html:p>
+                        <p>My name is Boone Gorges and Teleogistic is my personal blog.</p>
 
-                        <html:p>I am a PhD student in <html:a
-                                href="http://web.gc.cuny.edu/Philosophy/">philosophy</html:a> at the
-                                <html:a href="http://www.gc.cuny.edu">CUNY Graduate
-                            Center</html:a>.</html:p>
+                        <p>I am a PhD student in <a href="http://web.gc.cuny.edu/Philosophy/"
+                                >philosophy</a> at the <a href="http://www.gc.cuny.edu">CUNY
+                                Graduate Center</a>.</p>
 
-                        <html:p>I am a WordPress developer specializing in BuddyPress. I am
-                            currently the lead developer for the <html:a
-                                href="http://commons.gc.cuny.edu">CUNY Academic
-                            Commons</html:a></html:p>
+                        <p>I am a WordPress developer specializing in BuddyPress. I am currently the
+                            lead developer for the <a href="http://commons.gc.cuny.edu">CUNY
+                                Academic Commons</a></p>
 
-                        <html:p>In a previous incarnation, I was an instructional designer at
-                                <html:a href="http://www.qc.cuny.edu">CUNY Queens
-                            College</html:a>.</html:p>
+                        <p>In a previous incarnation, I was an instructional designer at <a
+                                href="http://www.qc.cuny.edu">CUNY Queens College</a>.</p>
 
-                        <html:p>On this blog I talk about philosophy, technology, education,
-                            etc.</html:p>
+                        <p>On this blog I talk about philosophy, technology, education, etc.</p>
 
-                        <html:p>You can email me if you want to shoot the breeze. Combine my Twitter
-                            handle (located in the left sidebar of this page) with
-                            @gmail.com.</html:p>
+                        <p>You can email me if you want to shoot the breeze. Combine my Twitter
+                            handle (located in the left sidebar of this page) with @gmail.com.</p>
 
-                    </html:body>
+                    </body>
                 </div>
 
 
