@@ -43,8 +43,7 @@ class TeiDom {
   	$book = new WP_Query(array('id'=>$projectID, 'post_type'=>'projects'));
     $titleNode = $this->xpath->query('/TEI/teiHeader/fileDesc/titleStmt/title')->item(0);
     $titleNode->textContent = $book->post_title;
-    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'parts'));
-    
+    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'parts'));    
     
     $partObjectsArray = $partsData->posts;
     
@@ -78,6 +77,7 @@ class TeiDom {
 		$newPostContent = $this->dom->createElement('div');
 		$newPostContent->setAttribute('type', 'libraryItem');
 		$newPostContent->setAttribute('subtype', 'html');
+    $newPostContent->appendChild($this->newHead($libraryItemObject));
 		$tmpHTML = new DOMDocument();
 		//using loadHTML because it is more forgiving than loadXML
 		$tmpHTML->loadHTML($libraryItemObject->post_content);
@@ -95,18 +95,21 @@ class TeiDom {
 		$newHead = $this->dom->createElement('head');
 		$title = $this->dom->createElement('title', $postObject->post_title);
 		$newHead->appendChild($title);
-		$authorObject = get_userdata($postObject->ID);
-		
+    
+    //TODO: check if content is native, based on the GUID. if content native, dig up author info
+    //from userID. Otherwise/and, go with info from boones 
+    // $author_name = get_post_meta( $item_id, 'author_name', true );
+    
+		$authorObject = get_userdata($postObject->post_author);
+		print_r($authorObject);
     $this->addPerson($authorObject);
         
 		if($authorObject) {
-			$bibl = $this->dom->createElement('bibl');	
-			foreach($postObject['authorRefs'] as $authorRef) {
-				$author = $this->dom->createElement('author');
-				$author->setAttribute('ref', $authorObject->user_login);
-				$bibl->appendChild($author);
-			}
-			$newHead->appendChild($bibl);
+			$bibl = $this->dom->createElement('bibl');
+      $author = $this->dom->createElement('author');
+      $author->setAttribute('ref', $authorObject->user_login);
+      $bibl->appendChild($author);
+      $newHead->appendChild($bibl);            	
 		}					
 		return $newHead;
 	}
