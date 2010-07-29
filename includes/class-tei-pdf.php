@@ -13,8 +13,8 @@ class TeiPdf {
 	function __construct($wpContent = null) {
 
 		# Reading from text file for now
-		$tei = new DOMDocument(); 
-	  $tei->load("../templates/tei/teiBase.xml");
+		$this->tei = new DOMDocument(); 
+	  $this->tei->load("../templates/tei/teiBase.xml");
 
 
 	}	
@@ -72,6 +72,7 @@ class TeiPdf {
 		$pdf->AddPage();
 
 		// Set some content to print
+		
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
 
@@ -80,21 +81,22 @@ class TeiPdf {
 			$pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $title->nodeValue, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
 		}
 
-// Print text using writeHTMLCell()
+		// Print text using writeHTMLCell()
 
-// ---------------------------------------------------------
+		// ---------------------------------------------------------
 
-// Close and output PDF document
-// This method has several options, check the source code documentation for more information.
-$pdf->Output('example_001.pdf', 'I');
+		// Close and output PDF document
+		// This method has several options, check the source code
+		// documentation for more information.
 
-	}
+		$pdf->Output('example_001.pdf', 'I');
 
-	}
+	} // writePDF 
+
+} // TeiPdf
 
 $pdf_output = new TeiPdf();
 
 $pdf_output->writePDF();
-
 
 ?>
