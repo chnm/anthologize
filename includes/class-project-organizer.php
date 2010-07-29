@@ -88,6 +88,14 @@ class Anthologize_Project_Organizer {
 
 		$imported_item_id = wp_insert_post( $args );
 
+		// Author data
+		$user = get_userdata( $post->post_author );
+		$author_name = $user->display_name;
+		$author_name_array = array( $author_name );
+
+		update_post_meta( $imported_item_id, 'author_name', $author_name );
+		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array );
+
 		// Store the menu order of the last item to enable easy moving later on
 		update_post_meta( $part_id, 'last_item', $last_item );
 	}
@@ -273,9 +281,14 @@ class Anthologize_Project_Organizer {
 
 	function display_item() {
 		global $post;
+
 	?>
-		<li>
+
+		<li> <?php echo $author_name ?>
+			<input type="checkbox" />
+
 			<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+
 			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
 		</li>
 	<?php
