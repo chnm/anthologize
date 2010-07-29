@@ -1,6 +1,10 @@
 <?php
 
+require_once('tcpdf/config/lang/eng.php');
+require_once('tcpdf/tcpdf.php');
+
 define('TEI', 'http://www.tei-c.org/ns/1.0');
+
 
 class TeiPdf {
 
@@ -10,70 +14,87 @@ class TeiPdf {
 
 		# Reading from text file for now
 		$tei = new DOMDocument(); 
-	  $tei ->load("../templates/tei/teiBase.xml");
+	  $tei->load("../templates/tei/teiBase.xml");
 
 
 	}	
 
 	public function writePDF() {
 
-		try {
+		// create new PDF document
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-			$pdf = new PDFlib();
+		// set document information
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetAuthor('Stephen Ramsay');
+		$pdf->SetTitle('The Book of Boone');
+		$pdf->SetSubject('Barbecue');
+		$pdf->SetKeywords('Boone, barbecue, oneweek');
 
-			if ($pdf->begin_document("", "") == 0) {
-				die("Error: " . $p->get_errmsg());
-			}
+		// set default header data
+		//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING);
 
-			$pdf->set_info("Creator", "class-tei-pdf.php");
-			$pdf->set_info("Author", "Boone Gorges");
-			$pdf->set_info("Title", "The Book of Boone");
+		// set header and footer fonts
+		//$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		//$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
-			$pdf->begin_page_ext(595, 842, "");
-			$font = $pdf->load_font("Helvetica-Bold", "winansi", "");
+		// set default monospaced font
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-			$pdf->setfont($font, 24.0);
-			$pdf->set_text_pos(50, 700);
+		//set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
-			$xpath = new DOMXpath($this->tei);
-			$xpath->registerNamespace('tei', TEI);
+		//set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-			$titles = $xpath->query("//tei:title");
+		//set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-			foreach ($titles as $title) {
-				$pdf->continue_text($title->nodeValue);
-			}
+		//set some language-dependent strings
+		$pdf->setLanguageArray($l);
 
-			#$pdf->continue_text("(says PHP)");
-			$pdf->end_page_ext("");
+		// ---------------------------------------------------------
 
-			$pdf->end_document("");
+		// set default font subsetting mode
+		$pdf->setFontSubsetting(true);
 
-			$buf = $pdf->get_buffer();
-			$len = strlen($buf);
+		// Set font
+		// dejavusans is a UTF-8 Unicode font, if you only need to
+		// print standard ASCII chars, you can use core fonts like
+		// helvetica or times to reduce file size.
+		$pdf->SetFont('times', '', 12, '', true);
 
-		header("Content-type: application/pdf");
-		header("Content-Length: $len");
-		header("Content-Disposition: inline; filename=hello.pdf");
+		// Add a page
+		// This method has several options, check the source code documentation
+		// for more information.
+		$pdf->AddPage();
 
-		print $buf;
+		// Set some content to print
+		$xpath = new DOMXpath($this->tei);
+		$xpath->registerNamespace('tei', TEI);
 
+		$titles = $xpath->query("//tei:title");
+		foreach ($titles as $title) {
+			$pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $title->nodeValue, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
 		}
-		catch (PDFlibException $e) {
-			die("PDFlib exception occurred in hello sample:\n" .  "[" . $e->get_errnum() . "] " . $e->get_apiname() . ": " .  $e->get_errmsg() . "\n");
-		}
-		catch (Exception $e) {
-			die($e);
-		}
 
-		$pdf = 0;
-		
-		}
-}
+// Print text using writeHTMLCell()
 
-$pdf = new TeiPdf();
+// ---------------------------------------------------------
 
-$pdf->writePDF();
+// Close and output PDF document
+// This method has several options, check the source code documentation for more information.
+$pdf->Output('example_001.pdf', 'I');
+
+	}
+
+	}
+
+$pdf_output = new TeiPdf();
+
+$pdf_output->writePDF();
 
 
 ?>
