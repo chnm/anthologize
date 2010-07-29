@@ -11,18 +11,18 @@
                 <p></p>
             </publicationStmt>
             <sourceDesc>
-                <p></p>
+<bibl>
+    <ident></ident>
+</bibl>
             </sourceDesc>
         </fileDesc>
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
         <layoutDesc xmlns="http://www.anthologize.org/ns"> 
         </layoutDesc>
-        <revisionDesc>
-            <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
-        </revisionDesc>
+
         <encodingDesc>
             <refsDecl>
-                <ab type="metadata" subtype="contributors">
+                <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
                     <listPerson>
                     </listPerson>
@@ -35,7 +35,9 @@
                 </application>
             </appInfo>
         </encodingDesc>
-
+        <revisionDesc>
+            <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
+        </revisionDesc>
     </teiHeader>
     <text>
         <body>
