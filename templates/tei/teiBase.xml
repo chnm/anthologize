@@ -1,79 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<TEI xmlns="http://www.tei-c.org/ns/1.0" >
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
     <teiHeader>
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
             <titleStmt>
-                <title>Title</title>
+                <title></title>
             </titleStmt>
             <publicationStmt>
-                <p>Publication Information</p>
+                <p></p>
+
             </publicationStmt>
             <sourceDesc>
-                <p>Information about the source(s)</p>
+                <p></p>
             </sourceDesc>
         </fileDesc>
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
-
-
-        <layoutDesc xmlns="http://www.anthologize.org/ns"> 
-        </layoutDesc>
+        <layoutDesc xmlns="http://www.anthologize.org/ns"> </layoutDesc>
         <revisionDesc>
             <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
         </revisionDesc>
         <encodingDesc>
-
             <refsDecl>
                 <ab type="metadata" subtype="contributors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
-                    <listPerson>
-                        <person xml:id="boonebgorges" role="admin">
-                            <persName>
-                                <forename>Boone</forename>
-                                <surname>Borges</surname>
-                                <name>Boone B Gorges</name>
-                                <addName type="username">boonebgorges</addName>
-                                <addName type="uri">http://example.com/users/boonebgorges</addName>
-                            </persName>
-                            <sex>yes please</sex>
-
-                        </person>
-                        <person xml:id="patrickmj" role="contributor">
-                            <persName>
-                                <forename>Patrick</forename>
-                            </persName>
-                        </person>
-                    </listPerson>
+                    <listPerson> </listPerson>
                 </ab>
 
             </refsDecl>
             <appInfo>
-                <application ident="namehere" version="1.0">
-                    <label>Oneweek Thingy</label>
+                <application ident="anthologize" version="1.0">
+                    <label>Anthologize</label>
+
                 </application>
             </appInfo>
-
-
         </encodingDesc>
 
     </teiHeader>
-    <text>
 
+    <text>
         <body>
             <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->
             <div type="part">
-                <head>
-                    <title>Division title</title>
-                    <bibl>
-                        <author ref="boone"></author>
-                    </bibl>
-                </head>
-                <!-- @type="post" says this is coming from the post. Down the road, we might have ways to TEI-ize the post itself, in which case @subtype="tei" -->
-                <div type="post" subtype="html">
-
+                <head><title>Partay</title><bibl><author ref="admin"></author></bibl></head>
+                <div type="libraryItem" subtype="html">
+                    <head><title>About Boone</title><bibl><author ref="Boone Gorges"
+                            ></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml">
-
                         <p>My name is Boone Gorges and Teleogistic is my personal blog.</p>
 
                         <p>I am a PhD student in <a href="http://web.gc.cuny.edu/Philosophy/"
@@ -91,255 +63,199 @@
 
                         <p>You can email me if you want to shoot the breeze. Combine my Twitter
                             handle (located in the left sidebar of this page) with @gmail.com.</p>
-
                     </body>
                 </div>
-
-
-                <div type="post" subtype="html">
-                    <body xmlns="http://www.w3.org/1999/xhtml">
-                        <p>I had an interesting conversation last night regarding using Facebook to
-                            communicate with students. There are lots of interesting aspects of this
-                            question, many of them of a practical type (how can I keep my students
-                            from seeing pictures of me getting drunk?) with practical answers (learn
-                            to use privacy settings). My sense is that if you could survey
-                            professors who are uneasy with the idea of Facebooking with their
-                            students, this would be the most prevalent cause for concern.</p>
-
-                        <p>Much more interesting to me, though, is a different kind of worry, this
-                            one tied to the educational goals of the academy. The communication that
-                            happens in Facebook, the argument goes, is brief (think status updates),
-                            unnuanced, unsensitive to audience, overly informal. The communicative
-                            style that we want to teach our students, on the other hand, is nuanced
-                            and professional, both because this kind of communication is
-                            intrinsically better (whatever that might mean) and because it's the
-                            kind of communication that they will have to be fluent in in order to
-                            flourish in the real world.</p>
-
-                        <p>The motivation here seems right: we want to teach our students to be
-                            communicators who are sensitive to voice and audience and thus more
-                            likely to be successful. That said, there's nothing inherent to Facebook
-                            that precludes this kind of conduct. I might even argue that the fact
-                            that students typically use the medium in non-academic ways makes it
-                            even <em>more</em> valuable as a teaching tool. In the "real world", the
-                            division between professional and non-professional communication does
-                            not fall neatly along the lines that delineate media; telephone calls,
-                            emails, and face-to-face interactions are all used both for talking shop
-                            and for informal purposes. What students need to learn is not that
-                            certain media are appropriate for certain kinds of exchanges, but rather
-                            how to adapt to different kinds of exchanges regardless of the medium.
-                            Using Facebook to communicate with students is a potentially fertile
-                            ground for these lessons.</p>
-
-                        <p>The distinction between "professional" and "non-professional" exchanges
-                            is bunk anyway. Even the idea that there is a continuum from totally
-                            formal communication to totally informal communication oversimplifies
-                            the matter. Relationships differ along all sorts of various dimensions,
-                            and to paint a caricature of this to students is both dishonest and
-                            self-defeating.</p>
-
-                        <p>This isn't to say that spaces like Facebook don't provide any new
-                            rhetorical challenges. It's hard to find a non-web-2.0 analog for status
-                            updates: brief, frequent messages that are sent to an entire network of
-                            individuals with whom you have different kinds of relationships. But
-                            this too is a teaching opportunity. Students should understand the
-                            quasi-public nature of these messages, and the technological means of
-                            making them less public if they wish.</p>
-
-                        <p>It's an open question whether it's a good idea for any given professor to
-                            use this medium to communicate with students. But to rule it out across
-                            the board doesn't seem right either, at least not for the reasons I talk
-                            about here.</p>
-
-                    </body>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Code</title><bibl><author ref="Boone Gorges"
+                        ></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml"><p>Looking for WordPress, BuddyPress,
+                            bbPress, or MediaWiki code that I've written? Have questions or comments
+                            about a piece of software I've released? Use the following links to find
+                            what you're looking for.</p>
+                        <p>I'm in the process of moving things over here. In the meantime, check
+                            out: <a href="http://teleogistic.net/tag/wordpress/">posts tagged
+                                'Wordpress'</a>; <a
+                                href="http://profiles.wordpress.org/boonebgorges/">Boone's corner of
+                                the WP repo</a></p> [child-pages]</body>
                 </div>
-
-                <div type="post" subtype="html">
+                <div type="libraryItem" subtype="html">
+                    <head><title>Donate</title><bibl><author ref="Boone Gorges"
+                        ></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml">
-                        <p>Thanks for not posting about Kripke, Kalynne! Not that I don't
-                                <em>love</em> to think about him. (Speaking of Kripke, I just read a
-                            brief article in this book <a
-                                href="http://www.amazon.com/exec/obidos/ASIN/0195323262/experimentalp-20"
-                                rel="nofollow"><em>Experimental Philosophy</em></a> about how the
-                            intuition of East Asians to Kripke's Gödel example is not nearly as
-                            overwhelmingly anti-descriptivist as the corresponding intuition of
-                            Westerners. Pretty interesting.)</p>
+                        <p>Whenever possible, I release my code under the GPL and my writing under a
+                            Creative Commons license. As such, you are under no moral or legal
+                            obligation to give me anything. (I won't even be mad at you if you
+                            don't!) I get paid for some of the development I do, but I give a lot of
+                            my free time to updating my plugins, providing support to users, etc. If
+                            you use and enjoy my plugins and my Extremely Friendly Support, and
+                            you'd like to thank me with a cup of coffee (or a new computer!), you
+                            can do so by clicking the "Donate" button below.</p>
 
-                        <p>I like your blog entry but I'm afraid that it wouldn't apply to my own
-                            life very much! Maybe I should work on my own What I Do: An Explanation
-                            for the Folk.</p>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_donations"></input>
+                            <input type="hidden" name="business" value="boonebgorges@gmail.com"></input>
+                            <table>
+                                <tr>
+                                    <th scope="row">I'm donating to say thanks for: </th>
+                                    <td> </td>
 
-                        <p>As for Blatz: It's all my grandfather buys. I can't get it in Brooklyn so
-                            I enjoy it as much as I can when I'm here in northern WI. Rather,
-                            "enjoy".</p>
-
+                                    <td>
+                                        <select name="item_name"><option
+                                                value="Plugin donation for teleogistic.net"
+                                            ></option>Boone's General Awesomeness <option
+                                                value="BP Group Management"></option>BP Group
+                                            Management <option value="BP Import Blog Activity"
+                                            ></option>BP Import Blog Activity <option
+                                                value="BP Include Non-Member Comments"></option>BP
+                                            Include Non-Member Comments <option
+                                                value="BP MPO Activity Filter"></option>BP MPO
+                                            Activity Filter <option value="BP TinyMCE"></option>BP
+                                            TinyMCE <option
+                                                value="Custom Profile Filters for BuddyPress"
+                                            ></option>Custom Profile Filters for BuddyPress <option
+                                                value="Enhanced BuddyPress Widgets"
+                                            ></option>Enhanced BuddyPress Widgets <option
+                                                value="Forum Attachments for BuddyPress"
+                                            ></option>Forum Attachments for BuddyPress <option
+                                                value="Group Forum Subscription for BuddyPress"
+                                            ></option>Group Forum Subscription for BuddyPress
+                                                <option value="Import from Ning"></option>Import
+                                            from Ning <option value="Invite Anyone"></option>Invite
+                                            Anyone <option value="Shared Blogroll"></option>Shared
+                                            Blogroll </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"> Amount (format: 10.00): </th>
+                                    <td>$</td>
+                                    <td>
+                                        <input type="textbox" name="amount" size="8" value="10.00"
+                                            style="float: left;"></input>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="currency_code" value="USD"></input>
+                                        <input type="image"
+                                            src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif"
+                                            border="0" name="submit"
+                                            alt="PayPal - The safer, easier way to pay online!"></input>
+                                        <img alt="" border="0"
+                                            src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+                                            width="1" height="1"></img>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
                     </body>
                 </div>
             </div>
-
-
             <div type="part">
-
-
-                <div type="post" subtype="html">
+                <head><title>KLINGONS!</title><bibl><author ref="admin"></author></bibl></head>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Enhanced BuddyPress Widgets</title><bibl><author ref="Boone Gorges"
+                            ></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>This plugin adds two widgets to your WordPress MU/BuddyPress
+                            installation: Groups and Members. Use them instead of the Groups and
+                            Members widgets that ship with BuddyPress. They provide the ability to
+                            select which of the three tabs - Newest, Active, or Popular - will be
+                            the widget's default view.</p>
 
-                        <p>I just read <a
-                                href="http://www.internetnews.com/commentary/print.php/3793561">this
-                                piece by Mike Elgan</a>. Elgan's argument is that hard work is dead
-                            in an age where we have Twitter, Facebook, email, etc. to constantly and
-                            effortlessly distract us.</p>
+                        <p><a
+                                href="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/"
+                                >Download the plugin here</a>.</p>
 
-                        <p>There seems to be a mistake in this reasoning. If all that's changed from
-                            now and the golden age of hard work (whenever that might have been) is
-                            that we have more media for distraction at hand, what follows
-                            immediately is that people were <em>less distracted</em> in the good old
-                            days. But to say that someone is less distracted doesn't suggest
-                            anything about their "work ethic" without some meaty assumptions.</p>
+                        <p>Enhanced BuddyPress Widgets has been downloaded <strong>[downloadstat
+                                url="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/stats/"
+                                get="total" autop="false"]</strong> times. Are you using this
+                            plugin? Consider a <strong><a href="/donate">donation</a></strong>.</p>
 
-                        <p>The lack of distractions (or, to put it in more neutral terms, the lack
-                            of alternative avenues for your attention!): this sounds like the very
-                            definition of boredom. But boredom - a state you find yourself in -
-                            isn't directly related to how hard you work - a choice you make. It's
-                            true that boredom might drive you to devote your energies to something
-                            in the way that exemplifies a good work ethic, but on the other hand it
-                            might not, and you might end up staring at the wall as I so often do. On
-                            the flip side, someone who is never bored (i.e. is constantly
-                            distracted) might well be working very hard all the time. Anyone who
-                            tries to keep up with their feed reader knows how hard you have to work
-                            to maintain a respectably high level of distraction.</p>
+                        <p>Since version 0.2 of the plugin, it works only with BuddyPress 1.2RC and
+                            newer. For support on older versions of BuddyPress, download version 0.1
+                            from the <a
+                                href="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/download/"
+                                >Older Versions</a> page.</p>
 
-                        <p>More importantly, though, the assumption that there is something holy
-                            about the work ethic of our grandparents is off. Work ethics are not
-                            inherently valuable; they only derive value from their products. Thus,
-                            for example, a writer's work ethic is valuable because of the things
-                            that she writes, or even the kind of person she becomes as a result of
-                            this work ethic. But things like good writing and being a good person
-                            are, as philosophers are wont to say, multiply realizable, and while
-                            it's true that the supposed tunnel vision of our forebears sometimes
-                            resulted in the kind of work that is independently valuable, it doesn't
-                            mean that equally good or better work can't come out of more
-                            distributed, "distracted" processes.</p>
+                        <p>Other posts about this plugin can be found <a
+                                href="http://teleogistic.net/2009/09/new-buddypress-plugin-enhanced-buddypress-widgets/"
+                                >here</a> and <a
+                                href="http://dev.commons.gc.cuny.edu/2009/09/07/new-buddypress-plugin-enhanced-buddypress-widgets/"
+                                >here</a>.</p>
 
-                        <p>Isn't it at least conceivable that, for instance, an obsessed Twitter
-                            user might write a poem that is not only as good as a more "focused"
-                            poet, but one that would be impossible without something like
-                            Twitter?</p>
+                        <h2>Version history</h2>
 
-                        <p>This is not to say that I don't think total focus is not valuable. I do
-                            think, however, that distraction can have value too, or at least that
-                            the question is an empirical one.</p>
+                        <dl>
+                            <dt>
+                                <strong>0.1</strong>
+                            </dt>
+                            <dd>Initial release</dd>
+                            <br></br>
+                            <dt>
+                                <strong>0.2 - February 27, 2010</strong>
+                            </dt>
+                            <dd>Updated for version 1.2 of BuddyPress.</dd>
 
+                            <dt>
+                                <strong>0.2 - March 27, 2010</strong>
+                            </dt>
+                            <dd>Loader file added to prevent crashing on BP upgrade</dd>
+
+                        </dl>
                     </body>
                 </div>
-
-                <div type="post" subtype="html">
-                    <body xmlns="http://www.w3.org/1999/xhtml"> I've been reading the comments on <a
-                            href="http://leiterreports.typepad.com/blog/2009/01/do-young-philos.html"
-                            >this post</a> at Brian Leiter's blog (via <a
-                            href="http://sympoze.com/node/534">Sympoze</a>). It's been exhausting on
-                        several levels. If you read a few of the comments for yourself, I think
-                        you'll understand why. <a
-                            href="http://flickr.com/photos/meghannfinn/2829017064/"><img
-                                class="size-medium wp-image-36"
-                                title="Video and tanning - together at last"
-                                src="http://teleogistic.net/wp-content/uploads/2009/01/2829017064_3dc07a4c76-300x225.jpg"
-                                alt="Together at last - via &lt;a href=" width=" mce_href="
-                                height="225" style="float:right;"></img></a>Of particular interest
-                        to me is the explicit invocation (<a
-                            href="http://leiterreports.typepad.com/blog/2009/01/do-young-philos.html#comment-144511172"
-                            >here</a> and <a
-                            href="http://leiterreports.typepad.com/blog/2009/01/do-young-philos.html#comment-144541410"
-                            >here</a>, among other places) of the distinction between research and
-                        teaching, and between departments where one or the other of these practices
-                        is emphasized. What's the connection between the two? Practically speaking,
-                        someone who wants to do philosophical research and is not independently
-                        wealthy must, in the vast majority of cases, teach as well. Likewise,
-                        someone who wants to teach philosophy to undergraduates must, in the vast
-                        majority of cases, go through a very research-centric graduate education
-                        and, if he wants eventual job security, engage in research for the purpose
-                        of publication. Are these connections de jure or merely de facto? Are there
-                        principled reasons why there should be such intricate links between
-                        teaching- and research-based careers, or are the connections the result of
-                        historical and economic accident? I thought I'd try to articulate some of
-                        the ties between teaching philosophy and doing philosophical research. Feel
-                        free to jump in if you can think of any more. <strong>Why researchers must
-                            teach</strong>
-                        <ul>
-                            <li>The most obvious explanation is that philosophy (alas!) doesn't pay:
-                                original philosophical research typically doesn't make the NYT
-                                best-seller list, and the market for philosophers to the royal court
-                                is depressingly lackluster. Universities need people to teach
-                                philosophy, and practicing philosophers are a captive work pool. If
-                                this were the only explanation for why philosophers teach then we
-                                would certainly say that the combined vocation is an economic
-                                accident.</li>
-                            <li>I've had a few classes in graduate school that were built around a
-                                draft of a book being written by the professor. The class works like
-                                a testing ground for the draft. The philosopher thus gets to use his
-                                teaching in order to advance and improve his work. So this is a
-                                reason why teaching might be useful to a practicing
-                                philosopher.</li>
-                            <li>More generally speaking, it might be argued that teaching -
-                                including the process of explaining something you know well to a
-                                bunch of people who don't know it all that well - enhances one's own
-                                understanding of, and ability to articulate, what one knows or
-                                believes. This explanatory skill is important for the writer of
-                                philosophy.</li>
-                            <li>Philosophical researchers presumably care about the health of the
-                                discipline of philosophy, and in particular the <em>future</em>
-                                health of the discipline. The future of philosophy is dependent on
-                                future philosophers, and future philosophers come from the general
-                                student pool. Thus philosophers have a vested interest in making
-                                sure that at least these students get a decent philosophical
-                                training. (The big premise here is that philosophers care about the
-                                discipline as a whole. I wonder how true this actually is.)</li>
-                        </ul> I might note in passing that these last three reasons explain why
-                        philosophers <em>ought to want</em> to teach, while the first reason
-                        explains why philosophers <em>are required</em> to teach. If the benefits
-                        gleaned from the "ought to want" category could be guaranteed in a different
-                        way, then it's hard to see how there is any necessary connection between
-                        research and teaching in this direction. <strong>Why teachers must
-                            research</strong>
-                        <ul>
-                            <li>In order to teach effectively, you must have a certain mastery of
-                                your subject (or, at least, there has to be a certain differential
-                                between your mastery and your students'). Mastery in philosophy
-                                comes down to the ability to read texts, understand problems,
-                                construct arguments, and so on. These skills are best developed
-                                through the kinds of research that philosophers do. So research is
-                                good job training.</li>
-                            <li>One of the reasons why philosophy is taught widely is to locate and
-                                train the next generation of philosophical researchers. Instructors
-                                with no knowledge of how philosophical research is done won't be
-                                able to spot potential philosophers and hone them for the
-                                field.</li>
-                            <li>More broadly, doing philosophy in a classroom is not really that
-                                different from doing philosophy in the armchair. You're still
-                                reading those texts and still constructing those arguments. The
-                                practice of teaching philosophy might be a somewhat watered-down
-                                version of "real" research, but it's not fundamentally different. If
-                                you want to be able to <em>teach</em> philosophy, you need to be
-                                able to <em>do</em> philosophy, since teaching and doing philosophy
-                                are essentially the same thing and, you know, the indiscernability
-                                of identicals. (The immediate problem I see with this is that
-                                teaching old arguments is crucially different from developing new
-                                arguments, at least from the point of view of the teacher's
-                                epistemic states. Contributing something new to the debate, as
-                                researchers do, is generally something altogether over and above the
-                                argumentation that is done in classrooms.)</li>
-                        </ul> It's hard to draw a definitive conclusion from these considerations.
-                        All things being equal, the more de jure connections you can point to
-                        between philosophical research and philosophical teaching, the more
-                        justified the de facto connection between the two vocations becomes. On the
-                        other hand, it remains an open question whether there might be other models
-                        for philosophers: a way for individuals to do research outside of the
-                        university, a way for individuals to teach philosophy without the rigors of
-                        a research-based education. Since people come to philosophy for different
-                        reasons, wouldn't it make sense to have different career paths? </body>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Facebook and content</title><bibl><author ref="Boone Gorges"
+                            ></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml"><p><a
+                                href="http://www.consumerist.com">The Consumerist</a> published <a
+                                href="http://consumerist.com/5150175/facebooks-new-terms-of-service-we-can-do-anything-we-want-with-your-content-forever"
+                                >a story</a> yesterday about <a
+                                href="http://www.facebook.com/terms.php?ref=pf">Facebook's new Terms
+                                of Service</a>. The gist of the changes appears to be something like
+                            this. Facebook has always claimed rights to the content that you post
+                            there. But there used to be a clause stating that </p><blockquote>You
+                            may remove your User Content from the Site at any time. If you choose to
+                            remove your User Content, the license granted above will automatically
+                            expire, however you acknowledge that the Company may retain archived
+                            copies of your User Content.</blockquote> Now this clause is gone. Thus
+                        Facebook has legal ("irrevocable, perpetual, non-exclusive, transferable,
+                        fully paid, worldwide") rights to your content. <p>On a personal note, these
+                            terms apply even to the content created by those individuals who place a
+                            Share This link on their personal sites, whether or not they are the
+                            ones who post the content on Facebook. I have a hard time believing that
+                            this would qualify as a <a
+                                href="http://en.wikipedia.org/wiki/Unconscionability">conscionable
+                                contract</a>, but I'm not a lawyer so what do I know. In any case,
+                            this means that I'll be removing the Share on Facebook link from this
+                            blog.</p>
+                        <p>The educational ramifications are important, I think. <a
+                                href="http://twitter.com/academicdave/status/1215456839"
+                                >@academicdave</a> tweeted the following this morning:
+                            </p><blockquote>Just realized that facebook now owns the rights to one
+                            of my students recent projects (story told using facebook) even if they
+                            delete it.</blockquote> This is a troubling thought. Instructors have a
+                        responsibility to their students and the work that those students do, and
+                        requiring that the students give essentially unlimited rights to their work
+                        to a corporate entity does not seem to me to be coincident with this
+                        responsibility. Of course, it was already the case that Facebook retained
+                        rights to these items before this TOS update, but the fact that these rights
+                        are now irrevocable, in my view, makes the question qualitatively different.
+                        Different enough that, while I used to be eager to talk to faculty members
+                        about how they might incorporate Facebook into their classes, I'm not
+                        certain that I can continue to do so with a clear conscience. There are lots
+                        of alternative spaces in which to share content where the restrictions
+                        aren't so harsh. <p>Again, I'm not a lawyer, but I would be interested in
+                            knowing how the act of publishing something on Facebook, and the
+                            transfer of rights that it implies, interacts with any <em>explicit</em>
+                            licenses (e.g. Creative Commons) that you have given the content,
+                            especially where the Facebook license and the CC license are in
+                            disagreement with each other. Does anyone know anything about this?</p>
+                        <p>I also wonder whether there will be sufficient backlash among the users
+                            of Facebook to make the company reconsider this updated TOS. I am
+                            pessimistic. My sense is that most people who use Facebook heavily
+                            aren't thinking about this sort of issue.</p></body>
                 </div>
-
-
             </div>
         </body>
     </text>
