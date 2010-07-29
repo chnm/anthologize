@@ -26,7 +26,7 @@ class TeiPdf {
 
 		// set document information
 		$pdf->SetCreator(PDF_CREATOR);
-		$pdf->SetAuthor('Stephen Ramsay');
+		$pdf->SetAuthor('Boone Gorges');
 		$pdf->SetTitle('The Book of Boone');
 		$pdf->SetSubject('Barbecue');
 		$pdf->SetKeywords('Boone, barbecue, oneweek');
@@ -78,7 +78,9 @@ class TeiPdf {
 
 		$titles = $xpath->query("//tei:title");
 		foreach ($titles as $title) {
-			$pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $title->nodeValue, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
+			$html = "<h1>" . $title->nodeValue . "</h1>";
+			//$pdf->WriteHTML($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
+			$pdf->WriteHTML($html, true, false, true, false);
 		}
 
 		// Print text using writeHTMLCell()
