@@ -50,30 +50,70 @@ class Anthologize_Project_Organizer {
 		?>
 		<div class="wrap">
 
-			<h2><?php echo $this->project_name ?></h2>
+		<div id="project-organizer-frame">
+			<div id="project-organizer-column" class="metabox-holder">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
-			<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
-				<div id="message" class="updated below-h2">
-					<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
-				</div>
-			<?php endif; ?>
-
-			<?php $this->list_existing_parts() ?>
-
-			<h3>New Parts</h3>
-			<p>Wanna create a new part? You know you do.</p>
-			<form action="" method="post">
-				<input type="text" name="new_part_name" />
-				<input type="submit" name="new_part" value="New Part" />
-			</form>
+				<div id="add-custom-links" class="postbox ">
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span>Custom Links</span></h3>
+				<div class="inside">
+					<div class="customlinkdiv" id="customlinkdiv">
 
 
-			<br /><br />
-			<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a></p>
+							<p id="menu-item-name-wrap">
+								<?php $this->sortby_dropdown() ?>
+							</p>
 
-		</div>
+
+
+					</div><!-- /.customlinkdiv -->
+					</div>
+				</div> <!-- /.postbox -->
+
+
+
+
+				</div> <!-- .meta-box-sortables -->
+			</div> <!-- .metabox-holder -->
+		</div> <!-- #project-organizer-frame -->
+
+
+		<h3><?php echo $this->project_name ?></h3>
+
+				<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+					<div id="message" class="updated below-h2">
+						<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
+					</div>
+				<?php endif; ?>
+
+				<?php $this->list_existing_parts() ?>
+
+				<h3>New Parts</h3>
+				<p>Wanna create a new part? You know you do.</p>
+				<form action="" method="post">
+					<input type="text" name="new_part_name" />
+					<input type="submit" name="new_part" value="New Part" />
+				</form>
+
+
+				<br /><br />
+				<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a></p>
+
+		</div> <!-- .wrap -->
 		<?php
 
+	}
+
+	function sortby_dropdown() {
+		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
+
+		?>
+			<select name="filter">
+			<?php foreach( $filters as $filter => $name ) : ?>
+				<option value="<?php echo $filter ?>"><?php echo $name ?></option>
+			<?php endforeach; ?>
+			</select>
+		<?php
 	}
 
 	function add_item_to_part( $item_id, $part_id ) {
@@ -253,7 +293,6 @@ class Anthologize_Project_Organizer {
 			echo "</ol>";
 
 		}
-
 	}
 
 	function move_up( $id ) {

@@ -26,6 +26,9 @@ class Anthologize_Loader {
 		// Load the post types
 		add_action( 'anthologize_init',  array ( $this, 'register_post_types' ) );
 
+		// Load constants
+		add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
+
 		// Load the custom feed
 		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
 
@@ -100,6 +103,10 @@ class Anthologize_Loader {
 			'supports' => array('title', 'editor', 'revisions'),
 			'rewrite' => array("slug" => "imported_item"), // Permalinks format
 		));
+	}
+
+	function load_constants() {
+
 	}
 
 	function register_custom_feed() {

@@ -22,14 +22,14 @@ class Anthologize_Admin_Main {
 	}
 
 	function init() {
-	    
-	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type ) 
+
+	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
     	{
             add_meta_box('anthologize', 'Anthologize', array($this,'item_meta_box'), $type, 'side', 'high');
     	}
-    	
+
     	add_action('save_post',array( $this, 'item_meta_save' ));
-		
+
 		do_action( 'anthologize_admin_init' );
 	}
 
@@ -46,13 +46,20 @@ class Anthologize_Admin_Main {
 
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
-			//add_action( "admin_print_styles-$plugin_page", 'anthologize_admin_styles' );
+			add_action( "admin_print_styles-$plugin_page", array( $this, 'load_styles' )  );
 		}
 	}
 
 	function load_scripts() {
-    	wp_enqueue_script("scriptaculous-dragdrop");
+    	wp_enqueue_script('jquery-ui');
+    	wp_enqueue_script('jquery-ui-draggable');
+    	wp_enqueue_script('jquery-ui-sortable');
     	wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
+
+	}
+
+	function load_styles() {
+    	wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
 
 	}
 
@@ -205,22 +212,22 @@ class Anthologize_Admin_Main {
      * item_meta_save
      *
      * Processes post save from the item_meta_box function. Saves
-     * custom post metadata. Also responsible for correctly 
+     * custom post metadata. Also responsible for correctly
      * redirecting to Anthologize pages after saving.
      **/
     function item_meta_save($post_id)
     {
         // make sure data came from our meta box
         if ( !wp_verify_nonce($_POST['anthologize_noncename'],__FILE__) ) return $post_id;
-        
+
         // check user permissions
         if ( !current_user_can('edit_post', $post_id) ) return $post_id;
 
         $current_data = get_post_meta($post_id, 'anthologize_meta', TRUE);
-        
-        $new_data = $_POST['anthologize_meta'];	
-        
-        if ( $current_data ) 
+
+        $new_data = $_POST['anthologize_meta'];
+
+        if ( $current_data )
     	{
     		if ( is_null($new_data) ) delete_post_meta($post_id,'anthologize_meta');
     		else update_post_meta($post_id,'anthologize_meta',$new_data);
@@ -241,18 +248,18 @@ class Anthologize_Admin_Main {
     }
     /**
      * item_meta_box
-     * 
+     *
      * Displays form for editing item metadata associated with
      * Anthologize. Includes hidden fields for post_parent and
      * menu_order because WP sets those values to 0 if those
      * fields are not present on the form.
      **/
     function item_meta_box() {
-        
+
         global $post;
-        
+
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
-        
+
         ?>
         <div class="my_meta_control">
 

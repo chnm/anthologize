@@ -1,0 +1,11 @@
+#project-organizer-column {
+	width: 277px;
+	float: left;
+	height: 500px;
+	clear: both;
+}
+
+#project-organizer-column p {
+	height: 500px;
+	display: block;
+}
