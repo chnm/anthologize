@@ -122,25 +122,4 @@ class TeiDom {
   }
 }
 
-/*
-$tei = new TeiDom(867);
-
-$np = $tei->newPart('dummy');
-$nh = $tei->newPartHead(array('title'=>'Test Title' , 'authorRefs'=>array('boonebgorges')) );
-$np->appendChild($nh);
-
-$postString = "<p>I'll be some post data someday!</p><p>And I need to check the namespacing!</p>";
-$postContent = $tei->newPostContent($postString);
-
-
-$np->appendChild($postContent);
-
-$tei->bodyNode->appendChild($np);
-
-
-$test = $tei->dom->getElementsByTagnameNS(HTML, 'p');
-echo $test->length;
-*/
-
-
 
