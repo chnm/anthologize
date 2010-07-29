@@ -97,9 +97,7 @@ class TeiDom {
 				$bibl->appendChild($author);
 			}
 			$newHead->appendChild($bibl);
-		}
-			
-		
+		}					
 		return $newHead;
 	}
 }
