@@ -82,7 +82,7 @@ class Anthologize_Admin_Main {
 		<?php
 
 
-		if ( $_GET['action'] == 'edit' && !isset( $_GET['project_id'] ) || !$project ) {
+		if ( $_GET['action'] == 'edit' && !isset( $_GET['project_id'] ) || isset( $_GET['project_id'] ) && !$project ) {
 			$this->display_no_project_id_message();
 		}
 
