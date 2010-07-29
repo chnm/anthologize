@@ -229,10 +229,4 @@ class Anthologize_Project_Organizer {
 
 endif;
 
-$project_id = $_GET['project_id'];
-
-$anthologize_project_organizer = new Anthologize_Project_Organizer( $project_id );
-$anthologize_project_organizer->display();
-
-
 ?>

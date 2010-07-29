@@ -28,11 +28,13 @@ class Anthologize_Admin_Main {
 	function dashboard_hooks() {
 		$plugin_pages = array();
 
-		$plugin_pages[] = add_menu_page( 'Anthologize', 'Anthologize', 'manage_options', 'anthologize', array ( $this, 'display' ) );
+		$plugin_pages[] = add_menu_page( __( 'Anthologize', 'anthologize' ), __( 'Anthologize', 'anthologize' ), 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
-		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
-		$plugin_pages[] = add_submenu_page( 'anthologize', __('Add importers','bp-invite-anyone'), __('Add importers','bp-invite-anyone'), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
-		$plugin_pages[] = add_submenu_page( 'anthologize', __('Settings','bp-invite-anyone'), __('Settings','bp-invite-anyone'), 'manage_options', __FILE__, 'anthologize_admin_panel' );
+//		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
+
+//		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
+
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), 'manage_options', __FILE__, 'anthologize_admin_panel' );
 
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_scripts-$plugin_page", 'anthologize_admin_scripts' );
@@ -42,13 +44,19 @@ class Anthologize_Admin_Main {
 
 	function load_project_organizer( $project_id ) {
 		require_once( dirname( __FILE__ ) . '/class-project-organizer.php' );
-		$project_organizer = new Anthologize_Project_Organizer( 1 );
+		$project_organizer = new Anthologize_Project_Organizer( $project_id );
 		$project_organizer->display();
 
 	}
 
 	function display() {
 //		print_r($_GET); die();
+
+		if ( $_GET['action'] == 'edit' && isset( $_GET['project_id'] ) ) {
+			$this->load_project_organizer( $_GET['project_id'] );
+		}
+
+
 		if ( !isset( $_GET['action'] ) || $_GET['action'] == 'list-projects' ) { // todo: this is broken
 		?>
 
@@ -98,12 +106,12 @@ class Anthologize_Admin_Main {
 						</th>
 
 						<th scope="row"  class="post-title">
-							<a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
+							<a href="admin.php?page=anthologize&action=edit&project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
 
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
 
 
 									?>
@@ -167,7 +175,7 @@ class Anthologize_Admin_Main {
 
 endif;
 
-$anthologize_admin_main = new Anthologize_Admin_Main( 1 );
+$anthologize_admin_main = new Anthologize_Admin_Main();
 
 
 function okokok( $it ) {

@@ -58,7 +58,7 @@ class Anthologize_Loader {
 	// Custom post types - Oh, Oh, Oh, It's Magic
 	function register_post_types() {
 		register_post_type( 'projects', array(
-			'label' => __('Projects'),
+			'label' => __( 'Projects', 'anthologize' ),
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
@@ -69,7 +69,7 @@ class Anthologize_Loader {
 		));
 
 		register_post_type( 'parts', array(
-			'label' => __('Parts'),
+			'label' => __( 'Parts', 'anthologize' ),
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
@@ -80,7 +80,7 @@ class Anthologize_Loader {
 		));
 
 		register_post_type( 'library_items', array(
-			'label' => __('Library Items'),
+			'label' => __('Library Items', 'anthologize' ),
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
@@ -91,7 +91,7 @@ class Anthologize_Loader {
 		));
 
 		register_post_type( 'imported_items', array(
-			'label' => __('Imported Items'),
+			'label' => __('Imported Items', 'anthologize' ),
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
