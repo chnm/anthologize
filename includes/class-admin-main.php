@@ -49,15 +49,30 @@ class Anthologize_Admin_Main {
 
 	}
 
+	function display_no_project_id_message() {
+		?>
+			<div id="notice" class="error below-h2">
+				<p><?php _e( 'Project not found', 'anthologize' ) ?></p>
+			</div>
+		<?php
+	}
+
 	function display() {
 //		print_r($_GET); die();
 
-		if ( $_GET['action'] == 'edit' && isset( $_GET['project_id'] ) ) {
+		$project = get_post( $_GET['project_id'] );
+
+		if ( $_GET['action'] == 'edit' && $project ) {
 			$this->load_project_organizer( $_GET['project_id'] );
 		}
 
+		if (
+			!isset( $_GET['action'] ) ||
+			$_GET['action'] == 'list-projects' ||
+			( $_GET['action'] == 'edit' && !$project )
 
-		if ( !isset( $_GET['action'] ) || $_GET['action'] == 'list-projects' ) { // todo: this is broken
+		) {
+
 		?>
 
 		<div class="wrap">
@@ -65,6 +80,11 @@ class Anthologize_Admin_Main {
 		<h2>My Projects</h2>
 
 		<?php
+
+
+		if ( $_GET['action'] == 'edit' && !isset( $_GET['project_id'] ) || isset( $_GET['project_id'] ) && !$project ) {
+			$this->display_no_project_id_message();
+		}
 
 		query_posts( 'post_type=projects' );
 
