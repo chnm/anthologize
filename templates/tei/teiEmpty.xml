@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TEI xmlns="http://www.tei-c.org/ns/1.0" >
+    <teiHeader>
+        <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
+        <fileDesc>
+            <titleStmt>
+                <title></title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
+        <layoutDesc xmlns="http://www.anthologize.org/ns"> 
+        </layoutDesc>
+        <revisionDesc>
+            <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
+        </revisionDesc>
+        <encodingDesc>
+            <refsDecl>
+                <ab type="metadata" subtype="contributors">
+                    <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
+                    <listPerson>
+                    </listPerson>
+                </ab>
+            </refsDecl>
+            <appInfo>
+                <application ident="anthologize" version="1.0">
+                    <label>Anthologize</label>
+										
+                </application>
+            </appInfo>
+        </encodingDesc>
+
+    </teiHeader>
+    <text>
+        <body>
+            <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->          
+        </body>
+    </text>
+</TEI>
