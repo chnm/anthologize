@@ -51,18 +51,18 @@ class TeiPdf {
 		$this->pdf->AddPage();
 
 		// Set some content to print
-		
 
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
 		$xpath->registerNamespace('html', HTML);
 		$parts = $xpath->query("//tei:div[@type='part']");
+
 		foreach ($parts as $part) {
-			$title = $xpath->query("tei:head/tei:title", $part);
+			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
 			$paras = $xpath->query("//html:p", $part);
-			$html = $html . $this->node_to_string($title->item(0));
+			$html = $html . "<h1>" . $title->textContent . "</h1>";
 			foreach ($paras as $para) {
-				$html = $html . $this->node_to_string($para);
+				$html = $html . $this->strip_whitespace($this->node_to_string($para));
 			}
 			$this->pdf->WriteHTML($html, false, true, true, false, "L");
 		}
@@ -121,10 +121,9 @@ class TeiPdf {
 		return $this->tei->saveXML($node);
 	}
 
-	//private function strip_whitespace($string) {
-	//	return preg_replace('/\w+/', ' ');
-
-	//}
+	private function strip_whitespace($string) {
+		return preg_replace('/\s+/', ' ', $string);
+	}
 
 
 } // TeiPdf
