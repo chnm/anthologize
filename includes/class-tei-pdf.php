@@ -60,9 +60,9 @@ class TeiPdf {
 		foreach ($parts as $part) {
 			$title = $xpath->query("tei:head/tei:title", $part);
 			$paras = $xpath->query("//html:p", $part);
-			$html = $html . "<h1>" . $title->item(0)->textContent . "</h1>";
+			$html = $html . $this->node_to_string($title->item(0));
 			foreach ($paras as $para) {
-				$html = $html . "<p>" . $para->nodeValue . "</p>";
+				$html = $html . $this->node_to_string($para);
 			}
 			$this->pdf->WriteHTML($html, false, true, true, false, "L");
 		}
@@ -116,6 +116,15 @@ class TeiPdf {
 		$this->pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 	}
+
+	private function node_to_string($node) {
+		return $this->tei->saveXML($node);
+	}
+
+	//private function strip_whitespace($string) {
+	//	return preg_replace('/\w+/', ' ');
+
+	//}
 
 
 } // TeiPdf
