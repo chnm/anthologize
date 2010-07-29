@@ -15,11 +15,6 @@ class Anthologize_Project_Organizer {
 
 		$project = get_post( $project_id );
 
-		if ( !$project ) {
-			wp_redirect( 'http://google.com' );
-			die();
-		}
-
 		$this->project_name = $project->post_title;
 
 	}
@@ -32,11 +27,14 @@ class Anthologize_Project_Organizer {
 		if ( isset( $_POST['new_part'] ) )
 			$this->add_new_part( $_POST['new_part_name'] );
 
-		if ( isset( $_POST['move_up'] ) )
-			$this->move_up( $_POST['move_up'] );
+		if ( isset( $_GET['move_up'] ) )
+			$this->move_up( $_GET['move_up'] );
 
-		if ( isset( $_POST['move_down'] ) )
-			$this->move_down( $_POST['move_up'] );
+		if ( isset( $_GET['move_down'] ) )
+			$this->move_down( $_GET['move_down'] );
+
+		if ( isset( $_GET['remove'] ) )
+			$this->remove_item( $_GET['remove'] );
 
 		?>
 		<div class="wrap">
@@ -90,17 +88,16 @@ class Anthologize_Project_Organizer {
 
 		$imported_item_id = wp_insert_post( $args );
 
+		// Store the menu order of the last item to enable easy moving later on
 		update_post_meta( $part_id, 'last_item', $last_item );
-
-		/*if ( !$items = get_post_meta( $part_id, 'items', true ) )
-			$items = array();
-
-		$items[$item_id] = $imported_item_id;
-
-		update_post_meta( $part_id, 'items', $items );*/
 	}
 
 	function add_new_part( $part_name ) {
+		if ( !(int)$last_item = get_post_meta( $this->project_id, 'last_item', true ) )
+			$last_item = 0;
+
+		$last_item++;
+
 		$args = array(
 		  'post_title' => $part_name,
 		  'post_type' => 'parts',
@@ -109,13 +106,16 @@ class Anthologize_Project_Organizer {
 		);
 
 		$part_id = wp_insert_post( $args );
+
+		// Store the menu order of the last item to enable easy moving later on
+		update_post_meta( $this->project, 'last_item', $last_item );
 	}
 
 	function list_existing_parts() {
 
 		//echo 'post_type=parts&order=ASC&post_parent=' . $this->project_id; die();
 
-		query_posts( 'post_type=parts&order=ASC&post_parent=' . $this->project_id );
+		query_posts( 'post_type=parts&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {
@@ -125,10 +125,9 @@ class Anthologize_Project_Organizer {
 
 				?>
 					<div class="part" id="part-<?php echo $part_id ?>">
-						<h3><?php the_title() ?></h3>
+						<h3><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> <?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
 
 						<?php $this->get_part_items( $part_id ) ?>
-
 
 						<form action="" method="post">
 							<select name="item_id">
@@ -157,7 +156,7 @@ class Anthologize_Project_Organizer {
 
 		$item_query = new WP_Query( 'post_type=items&post_parent=' . $part_id );
 
-		print_r($item_query->query());
+//		print_r($item_query->query());
 
 		$sql = "SELECT id, post_title FROM wp_posts WHERE post_type = 'page' OR post_type = 'post' OR post_type = 'imported_items'";
 		$ids = $wpdb->get_results($sql);
@@ -213,19 +212,75 @@ class Anthologize_Project_Organizer {
 	}
 
 	function move_up( $id ) {
-		// Todo! With menu order
+		global $wpdb;
 
+		$post = get_post( $id );
+		$my_menu_order = $post->menu_order;
+
+		$little_brother = 0;
+		$minus = 0;
+
+		while ( !$big_brother ) {
+			$minus++;
+
+			// Find the big brother
+			$big_brother_q = $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_parent = %d AND menu_order = %d LIMIT 1", $post->post_parent, $my_menu_order-$minus );
+
+			$bb = $wpdb->get_results( $big_brother_q, ARRAY_N );
+			$big_brother = $bb[0][0];
+		}
+
+		// Downgrade the big brother
+		$big_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order, $big_brother ) );
+
+		// Upgrade self
+		$little_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order-$minus, $id ) );
 	}
 
 	function move_down( $id ) {
+		global $wpdb;
 
+		$post = get_post( $id );
+		$my_menu_order = $post->menu_order;
+
+		$little_brother = 0;
+		$plus = 0;
+
+		while ( !$little_brother ) {
+			$plus++;
+
+			// Find the little brother
+			$little_brother_q = $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_parent = %d AND menu_order = %d LIMIT 1", $post->post_parent, $my_menu_order+$plus );
+
+			$lb = $wpdb->get_results( $little_brother_q, ARRAY_N );
+			$little_brother = $lb[0][0];
+		}
+
+		// Upgrade the little brother
+		$little_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order, $little_brother ) );
+
+		// Downgrade self
+		$big_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order+$plus, $id ) );
+	}
+
+	function remove_item( $id ) {
+		$post = get_post( $id );
+
+
+		// Git ridda the post
+		wp_delete_post( $id );
 	}
 
 	function display_item() {
+		global $post;
 	?>
+
 		<li>
-			<a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=1&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=1&move_down=<?php the_ID() ?>">&darr;</a>
-			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit">Edit</a>
+			<input type="checkbox" />
+
+			<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+
+			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
 		</li>
 	<?php
 	}
