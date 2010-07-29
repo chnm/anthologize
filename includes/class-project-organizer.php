@@ -19,6 +19,10 @@ class Anthologize_Project_Organizer {
 
 	}
 
+	function load_scripts() {
+	}
+
+
 	function display() {
 
 		if ( isset( $_POST['new_item'] ) )
