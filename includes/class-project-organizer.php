@@ -35,11 +35,24 @@ class Anthologize_Project_Organizer {
 
 		if ( isset( $_GET['remove'] ) )
 			$this->remove_item( $_GET['remove'] );
+//print_r($_POST); die();
 
+
+// You need to make sure that the append_children are actually in the form
+
+		if ( isset( $_POST['append_children'] ) ) {
+			$this->append_children( $_POST['append_parent'], $_POST['append_children'] );
+		}
 		?>
 		<div class="wrap">
 
 			<h2><?php echo $this->project_name ?></h2>
+
+			<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+				<div id="message" class="updated below-h2">
+					<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
+				</div>
+			<?php endif; ?>
 
 			<?php $this->list_existing_parts() ?>
 
@@ -121,9 +134,9 @@ class Anthologize_Project_Organizer {
 
 	function list_existing_parts() {
 
-		//echo 'post_type=parts&order=ASC&post_parent=' . $this->project_id; die();
-
 		query_posts( 'post_type=parts&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
+
+
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {
@@ -132,27 +145,44 @@ class Anthologize_Project_Organizer {
 				$part_id = get_the_ID();
 
 				?>
+
+				<form action="" method="post">
+
+				<?php
+
+				?>
 					<div class="part" id="part-<?php echo $part_id ?>">
 						<h3><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> <?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
 
 						<?php $this->get_part_items( $part_id ) ?>
 
-						<form action="" method="post">
-							<select name="item_id">
-								<?php $this->get_posts_as_option_list( $part_id ) ?>
-							</select>
-							<input type="submit" name="new_item" value="Add Item" />
-							<input type="hidden" name="part_id" value="<?php echo $part_id ?>" />
-						</form>
+						<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+
+								<input type="submit" name="append_submit" value="Go" />
+								<input type="hidden" name="append_parent" value="<?php echo $_GET['append_parent']  ?>" />
+
+
+						<?php else : ?>
+
+								<select name="item_id">
+									<?php $this->get_posts_as_option_list( $part_id ) ?>
+								</select>
+								<input type="submit" name="new_item" value="Add Item" />
+								<input type="hidden" name="part_id" value="<?php echo $part_id ?>" />
+
+						<?php endif; ?>
+
 					</div>
 
 
-
+				</form>
 				<?php
 			}
 		} else {
-			echo "no";
+
 		}
+
+
 
 		wp_reset_query();
 	}
@@ -185,6 +215,10 @@ class Anthologize_Project_Organizer {
 
 
 	function get_part_items( $part_id ) {
+
+		if ( isset( $_GET['append_parent'] ) )
+			$append_parent = $_GET['append_parent'];
+
 		$items = get_post_meta( $part_id, 'items', true );
 
 		//echo "<pre>";
@@ -209,7 +243,7 @@ class Anthologize_Project_Organizer {
 
 			while ( $items_query->have_posts() ) : $items_query->the_post();
 
-				$this->display_item();
+				$this->display_item( $append_parent );
 
 			endwhile;
 
@@ -272,24 +306,70 @@ class Anthologize_Project_Organizer {
 	}
 
 	function remove_item( $id ) {
-		$post = get_post( $id );
-
-
 		// Git ridda the post
 		wp_delete_post( $id );
 	}
 
-	function display_item() {
+	function append_children( $append_parent, $append_children ) {
+
+
+		$parent_post = get_post( $append_parent );
+		$pp_content = $parent_post->post_content;
+
+		if ( !$author_name = get_post_meta( $append_parent, 'author_name', true ) )
+			$author_name = '';
+
+		if ( !$author_name_array = get_post_meta( $append_parent, 'author_name_array', true ) )
+			$author_name_array = array();
+
+		foreach( $append_children as $append_child ) {
+			$child_post = get_post( $append_child );
+
+			$cp_title = '<h2 class="anthologize-item-header">' . $child_post->post_title . '</h2>
+			';
+
+			$cp_content = $child_post->post_content;
+
+			$pp_content .= $cp_title . $cp_content . '
+			';
+
+			if ( $author_name != '' )
+				$author_name .= ', ';
+
+			$cp_author_name = get_post_meta( $append_child, 'author_name', true );
+			$author_name .= $cp_author_name;
+			$author_name_array[] = $cp_author_name;
+
+			wp_delete_post( $append_child );
+		}
+
+		$args = array(
+			'ID' => $append_parent,
+			'post_content' => $pp_content,
+		);
+
+		wp_update_post( $args );
+
+		update_post_meta( $append_parent, 'author_name', $author_name );
+		update_post_meta( $append_parent, 'author_name_array', $author_name_array );
+	}
+
+	function display_item( $append_parent ) {
 		global $post;
 
 	?>
-
-		<li> <?php echo $author_name ?>
-			<input type="checkbox" />
+		<li>
+			<?php if ( $append_parent ) : ?>
+				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo $post->ID . " " . $append_parent ?>
+			<?php endif; ?>
 
 			<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
 
-			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
+			<?php the_title() ?> -
+				<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a>
+				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&append_parent=<?php the_ID() ?>"><?php _e( 'Append', 'anthologize' ) ?></a>
+				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
+
 		</li>
 	<?php
 	}
