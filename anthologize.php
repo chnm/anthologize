@@ -64,7 +64,7 @@ class Anthologize_Loader {
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => false,
-			'supports' => array('title', 'editor', 'revisions', 'page-attributes'),
+			'supports' => array('title', 'editor', 'revisions'),
 			'rewrite' => array("slug" => "project"), // Permalinks format
 		));
 
@@ -75,7 +75,7 @@ class Anthologize_Loader {
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions', 'page-attributes'),
+			'supports' => array('title', 'editor', 'revisions'),
 			'rewrite' => array("slug" => "part"), // Permalinks format
 		));
 
@@ -86,7 +86,7 @@ class Anthologize_Loader {
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions', 'page-attributes'),
+			'supports' => array('title', 'editor', 'revisions'),
 			'rewrite' => array("slug" => "library_item"), // Permalinks format
 		));
 
@@ -97,7 +97,7 @@ class Anthologize_Loader {
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions', 'page-attributes'),
+			'supports' => array('title', 'editor', 'revisions'),
 			'rewrite' => array("slug" => "imported_item"), // Permalinks format
 		));
 	}
@@ -126,7 +126,10 @@ class Anthologize_Loader {
 		} else if ($_GET['output'] == 'tei') {
 			load_template( dirname(__FILE__) . '/templates/tei/base.php' );
 			return false;
-		}
+		} else if ($_GET['output'] == 'epub') {
+			load_template( dirname(__FILE__) . '/templates/epub/index.php' );
+			return false;
+		} // a trivial change
 	}
 
 
