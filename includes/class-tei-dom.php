@@ -2,7 +2,7 @@
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
-
+define('XML', 'http://www.w3.org/2001/XMLSchema#');
 
 class TeiDom {
 	
@@ -11,7 +11,7 @@ class TeiDom {
 	public $knownPersonArray = array();
 	public $personMetaDataNode;
 	public $bodyNode;
-  public $userNiceNames;
+  public $userNiceNames = array();
 	
 	
 	function __construct($projectID) {
@@ -23,7 +23,8 @@ class TeiDom {
 		$this->xpath = new DOMXPath($this->dom);
 		$this->xpath->registerNamespace('tei', TEI);
 		$this->xpath->registerNamespace('html', HTML);
-		$this->personMetaDataNode = $this->xpath->query("//tei:ab[@type = 'personMetadata']")->item(0);
+		$authorAB =  $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);    
+    $this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);    
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
 		$this->buildProjectData($projectID);
 	}
@@ -37,11 +38,23 @@ class TeiDom {
 	}
 	
 	public function addPerson($userObject) {
-	/*
+
     if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
-      
+       $newPerson = $this->dom->createElement('person');       
+       $newPerson->setAttribute('xml:id', $userObject->user_nicename );
+       $newPersName = $this->dom->createElement('persName');
+       $newPersName->appendChild($this->dom->createElement('forename', $userObject->user_first_name));
+       $newPersName->appendChild($this->dom->createElement('surname', $userObject->user_last_name) );
+       //$newPersName->appendChild($this->dom->createElement('forename', $userObject->user_url) );
+       //boones fancy thing
+       //$newPersName->appendChild($this->dom->createElement('forename', $userObject->user_first_name) );
+       
+       $newPerson->appendChild($newPersName);
+       $this->personMetaDataNode->appendChild($newPerson);
+       $this->userNiceNames[] = $userObject->user_nicename;
+       
 		}
-        */
+
 	}
 	
   public function buildProjectData($projectID) {

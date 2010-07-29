@@ -235,7 +235,6 @@ class Anthologize_Project_Organizer {
 		);
 
 		$items_query = new WP_Query( $args );
-		$items_query->query();
 
 		if ( $items_query->have_posts() ) {
 
@@ -352,6 +351,8 @@ class Anthologize_Project_Organizer {
 
 		update_post_meta( $append_parent, 'author_name', $author_name );
 		update_post_meta( $append_parent, 'author_name_array', $author_name_array );
+
+		// todo Jeremy: make sure that the form action goes to the right place after an append
 	}
 
 	function display_item( $append_parent ) {
