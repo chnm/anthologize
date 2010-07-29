@@ -235,7 +235,6 @@ class Anthologize_Project_Organizer {
 		);
 
 		$items_query = new WP_Query( $args );
-		$items_query->query();
 
 		if ( $items_query->have_posts() ) {
 
