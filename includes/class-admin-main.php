@@ -98,12 +98,12 @@ class Anthologize_Admin_Main {
 						</th>
 
 						<th scope="row"  class="post-title">
-							<a href="admin.php?page=kitty/includes/class-project-organizer.php&project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
+							<a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
 
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=kitty/includes/class-project-organizer.php&project_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
 
 
 									?>

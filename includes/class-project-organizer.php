@@ -219,7 +219,7 @@ class Anthologize_Project_Organizer {
 	function display_item() {
 	?>
 		<li>
-			<a href="admin.php?page=kitty/includes/class-project-organizer.php&project_id=1&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=kitty/includes/class-project-organizer.php&project_id=1&move_down=<?php the_ID() ?>">&darr;</a>
+			<a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=1&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize/includes/class-project-organizer.php&project_id=1&move_down=<?php the_ID() ?>">&darr;</a>
 			<?php the_title() ?> - <a href="post.php?post=<?php the_ID() ?>&action=edit">Edit</a>
 		</li>
 	<?php
