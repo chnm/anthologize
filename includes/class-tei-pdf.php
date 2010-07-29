@@ -59,9 +59,8 @@ class TeiPdf {
 		$parts = $xpath->query("//tei:div[@type='part']");
 		foreach ($parts as $part) {
 			$title = $xpath->query("tei:head/tei:title", $part);
-			echo $title->length;
 			$paras = $xpath->query("//html:p", $part);
-			$html = "<h1>" . $title->item(1)->nodeValue . "</h1>";
+			$html = $html . "<h1>" . $title->item(0)->textContent . "</h1>";
 			foreach ($paras as $para) {
 				$html = $html . "<p>" . $para->nodeValue . "</p>";
 			}
@@ -72,8 +71,8 @@ class TeiPdf {
 		// This method has several options, check the source code
 		// documentation for more information.
 
-		echo $html;
-		//$this->pdf->Output('example_001.pdf', 'I');
+		// echo $html; // DEBUG
+		$this->pdf->Output('example_001.pdf', 'I');
 
 	} // writePDF 
 
