@@ -86,7 +86,7 @@ class Anthologize_Loader {
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions', 'page-attributes'),
+			'supports' => array('title', 'editor', 'revisions' ),
 			'rewrite' => array("slug" => "library_item"), // Permalinks format
 		));
 
