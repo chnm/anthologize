@@ -15,6 +15,11 @@ class Anthologize_Project_Organizer {
 
 		$project = get_post( $project_id );
 
+		if ( !$project ) {
+			wp_redirect( 'http://google.com' );
+			die();
+		}
+
 		$this->project_name = $project->post_title;
 
 	}
