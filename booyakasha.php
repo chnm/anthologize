@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Kitty
+Plugin Name: Anthologize
 Plugin URI: http://oneweekonetool.org
 Description: Rocks your world
 Version: 0.1-alpha
@@ -9,14 +9,14 @@ Author URI: http://oneweekonetool.org
 */
 
 
-if ( !class_exists( 'Booyakasha_Loader' ) ) :
+if ( !class_exists( 'Anthologize_Loader' ) ) :
 
-class Booyakasha_Loader {
+class Anthologize_Loader {
 
 	/**
-	 * The main Booyakasha loader. Hooks our stuff into WP
+	 * The main Anthologize loader. Hooks our stuff into WP
 	 */
-	function booyakasha_loader () {
+	function anthologize_loader () {
 
 		// Give me something to believe in
 		add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
@@ -24,19 +24,19 @@ class Booyakasha_Loader {
 		add_action( 'init', array ( $this, 'init' ) );
 
 		// Load the post types
-		add_action( 'booyakasha_init',  array ( $this, 'register_post_types' ) );
+		add_action( 'anthologize_init',  array ( $this, 'register_post_types' ) );
 
 		// Load the custom feed
 		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
 
 		// Include the necessary files
-		add_action( 'booyakasha_loaded', array ( $this, 'includes' ) );
+		add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
 
 		// Attach textdomain for localization
-		add_action( 'booyakasha_init', array ( $this, 'textdomain' ) );
+		add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
 
 
-		add_action( 'booyakasha_init', array ( $this, 'grab' ) );
+		add_action( 'anthologize_init', array ( $this, 'grab' ) );
 
 		// activation sequence
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
@@ -47,7 +47,7 @@ class Booyakasha_Loader {
 
 	// Let plugins know that we're initializing
 	function init() {
-		do_action( 'booyakasha_init' );
+		do_action( 'anthologize_init' );
 	}
 
 	// Allow this plugin to be translated by specifying text domain
@@ -57,15 +57,15 @@ class Booyakasha_Loader {
 
 	// Custom post types - Oh, Oh, Oh, It's Magic
 	function register_post_types() {
-		register_post_type( 'books', array(
-			'label' => __('Books'),
+		register_post_type( 'projects', array(
+			'label' => __('Projects'),
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => false,
 			'supports' => array('title', 'editor', 'revisions', 'page-attributes'),
-			'rewrite' => array("slug" => "book"), // Permalinks format
+			'rewrite' => array("slug" => "project"), // Permalinks format
 		));
 
 		register_post_type( 'parts', array(
@@ -115,7 +115,7 @@ class Booyakasha_Loader {
 
 	// Let plugins know that we're done loading
 	function loaded() {
-		do_action( 'booyakasha_loaded' );
+		do_action( 'anthologize_loaded' );
 	}
 
 	function grab() { // todo: make this make sense
@@ -137,7 +137,7 @@ class Booyakasha_Loader {
 
 endif; // class exists
 
-$booyakasha_loader = new Booyakasha_Loader();
+$anthologize_loader = new Anthologize_Loader();
 
 
 

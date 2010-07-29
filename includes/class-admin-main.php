@@ -1,19 +1,19 @@
 <?php
 
-if ( !class_exists( 'Booyakasha_Admin_Main' ) ) :
+if ( !class_exists( 'Anthologize_Admin_Main' ) ) :
 
-class Booyakasha_Admin_Main {
+class Anthologize_Admin_Main {
 
 	/**
-	 * List all my books. Pretty please
+	 * List all my projects. Pretty please
 	 */
-	function booyakasha_admin_main () {
+	function anthologize_admin_main () {
 
-		$this->book_id = $book_id;
+		$this->project_id = $project_id;
 
-		$book = get_post( $book_id );
+		$project = get_post( $project_id );
 
-		$this->book_name = $book->post_title;
+		$this->project_name = $project->post_title;
 
 		add_action( 'admin_init', array ( $this, 'init' ) );
 
@@ -22,34 +22,34 @@ class Booyakasha_Admin_Main {
 	}
 
 	function init() {
-		do_action( 'booyakasha_admin_init' );
+		do_action( 'anthologize_admin_init' );
 	}
 
 	function dashboard_hooks() {
 		$plugin_pages = array();
 
-		$plugin_pages[] = add_menu_page( 'Booyakasha', 'Booyakasha', 'manage_options', 'booyakasha', array ( $this, 'display' ) );
+		$plugin_pages[] = add_menu_page( 'Anthologize', 'Anthologize', 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
-		$plugin_pages[] = add_submenu_page( 'booyakasha', __('My Books','bp-invite-anyone'), __('My Books','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
-		$plugin_pages[] = add_submenu_page( 'booyakasha', __('Add importers','bp-invite-anyone'), __('Add importers','bp-invite-anyone'), 'manage_options', dirname( __FILE__ ) . '/class-book-organizer.php' );
-		$plugin_pages[] = add_submenu_page( 'booyakasha', __('Settings','bp-invite-anyone'), __('Settings','bp-invite-anyone'), 'manage_options', __FILE__, 'booyakasha_admin_panel' );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __('Add importers','bp-invite-anyone'), __('Add importers','bp-invite-anyone'), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __('Settings','bp-invite-anyone'), __('Settings','bp-invite-anyone'), 'manage_options', __FILE__, 'anthologize_admin_panel' );
 
 		foreach ( $plugin_pages as $plugin_page ) {
-			add_action( "admin_print_scripts-$plugin_page", 'booyakasha_admin_scripts' );
-			add_action( "admin_print_styles-$plugin_page", 'booyakasha_admin_styles' );
+			add_action( "admin_print_scripts-$plugin_page", 'anthologize_admin_scripts' );
+			add_action( "admin_print_styles-$plugin_page", 'anthologize_admin_styles' );
 		}
 	}
 
-	function load_book_organizer( $book_id ) {
-		require_once( dirname( __FILE__ ) . '/class-book-organizer.php' );
-		$book_organizer = new Booyakasha_Book_Organizer( 1 );
-		$book_organizer->display();
+	function load_project_organizer( $project_id ) {
+		require_once( dirname( __FILE__ ) . '/class-project-organizer.php' );
+		$project_organizer = new Anthologize_Project_Organizer( 1 );
+		$project_organizer->display();
 
 	}
 
 	function display() {
 //		print_r($_GET); die();
-		if ( !isset( $_GET['action'] ) || $_GET['action'] == 'list-books' ) { // todo: this is broken
+		if ( !isset( $_GET['action'] ) || $_GET['action'] == 'list-projects' ) { // todo: this is broken
 		?>
 
 		<div class="wrap">
@@ -58,7 +58,7 @@ class Booyakasha_Admin_Main {
 
 		<?php
 
-		query_posts( 'post_type=books' );
+		query_posts( 'post_type=projects' );
 
 		if ( have_posts() ) {
 		?>
@@ -78,7 +78,7 @@ class Booyakasha_Admin_Main {
 			<thead>
 				<tr>
 					<th scope="col" class="check-column"></th>
-            		<th scope="col" class="bp-gm-group-id-header"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=group_id"><?php _e( 'Book Title', 'bp-group-management' ) ?></a></th>
+            		<th scope="col" class="bp-gm-group-id-header"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=group_id"><?php _e( 'Project Title', 'bp-group-management' ) ?></a></th>
 
             		<th scope="col"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=name"><?php _e( 'Number of Chapters', 'bp-group-management' ) ?></a></th>
             		<th scope="col"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=group_id"><?php _e( 'Number of Items', 'bp-group-management' ) ?></a></th>
@@ -98,12 +98,12 @@ class Booyakasha_Admin_Main {
 						</th>
 
 						<th scope="row"  class="post-title">
-							<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
+							<a href="admin.php?page=kitty/includes/class-project-organizer.php&project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
 
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=kitty/includes/class-book-organizer.php&book_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=kitty/includes/class-project-organizer.php&project_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
 
 
 									?>
@@ -167,7 +167,7 @@ class Booyakasha_Admin_Main {
 
 endif;
 
-$booyakasha_admin_main = new Booyakasha_Admin_Main( 1 );
+$anthologize_admin_main = new Anthologize_Admin_Main( 1 );
 
 
 function okokok( $it ) {
