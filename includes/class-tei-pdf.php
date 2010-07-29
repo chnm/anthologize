@@ -12,10 +12,12 @@ class TeiPdf {
 
 	function __construct($wpContent = null) {
 
-		# Reading from text file for now
-		$this->tei = new DOMDocument(); 
-	  $this->tei->load("../templates/tei/teiBase.xml");
-
+		// Creates an object of type DOMXpath (n.b., *not* DOMDocument)
+		// and exposes it as the attribute $tei
+		$dom = new DOMDocument(); 
+	  $dom->load("../templates/tei/teiBase.xml");
+		$this->tei = new DOMXpath($dom);
+		$this->tei->registerNamespace('tei', TEI);
 
 	}	
 
@@ -73,10 +75,9 @@ class TeiPdf {
 
 		// Set some content to print
 		
-		$xpath = new DOMXpath($this->tei);
-		$xpath->registerNamespace('tei', TEI);
 
-		$titles = $xpath->query("//tei:title");
+		//echo get_class($tei);
+		$titles = $this->tei->query("//tei:title");
 		foreach ($titles as $title) {
 			$html = "<h1>" . $title->nodeValue . "</h1>";
 			//$pdf->WriteHTML($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
