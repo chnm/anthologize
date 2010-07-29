@@ -3,6 +3,7 @@
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
 
+
 class TeiDom {
 	
 	public $dom;
@@ -12,16 +13,18 @@ class TeiDom {
 	public $bodyNode;
 	
 	
-	function __construct($bookID) {
+	function __construct($projectID) {
 		
 		$this->dom = new DOMDocument();
-		$this->dom->load('teiBase.xml');
+    $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . 
+      DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'tei' . DIRECTORY_SEPARATOR .'teiEmpty.xml';
+		$this->dom->load($templatePath);
 		$this->xpath = new DOMXPath($this->dom);
 		$this->xpath->registerNamespace('tei', TEI);
 		$this->xpath->registerNamespace('html', HTML);
 		$this->personMetaDataNode = $this->xpath->query("//tei:ab[@type = 'personMetadata']")->item(0);
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
-		//$this->buildBookData($wpContent);
+		$this->buildProjectData($projectID);
 	}
 	
 	public function getTeiString() {
@@ -36,22 +39,29 @@ class TeiDom {
 		
 	}
 	
-  public function buildBookData($bookID) {
-  	$book = new WP_Query(array('id'=>$bookID, 'post_type'=>'books'));
+  public function buildProjectData($projectID) {
+  	$book = new WP_Query(array('id'=>$projectID, 'post_type'=>'projects'));
     $titleNode = $this->xpath->query('/TEI/teiHeader/fileDesc/titleStmt/title')->item(0);
     $titleNode->textContent = $book->post_title;
-           
-    $partObjectsArray = new WP_Query(array('post_parent'=>$bookID, 'post_type'=>'parts'));
-    //sort objects, by menu_order, then post_date
+    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'parts'));
+    
+    
+    $partObjectsArray = $partsData->posts;
+    
+    usort($partObjectsArray, array('TeiDom', 'postSort'));
+    
+    
     foreach($partObjectsArray as $partObject) {
     	$newPart = $this->newPart($partObject);
-      $libraryItemObjectsArray = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'library_items'));
-      //sort objects, by menu_order, then post_date
+      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'library_items'));
+      $libraryItemObjectsArray = $libraryItemsData->posts;
+      //sort objects, by menu_order, then ID
+      usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
       foreach($libraryItemObjectsArray as $libraryItemObject) {
       	$newItemContent = $this->newItemContent($libraryItemObject);
         $newPart->appendChild($newItemContent);
       }
-      $this->body->appendChild($newPart);
+      $this->bodyNode->appendChild($newPart);
     }
     
   }  
@@ -64,13 +74,13 @@ class TeiDom {
 	}
 	
 	public function newItemContent($libraryItemObject) {
+
 		$newPostContent = $this->dom->createElement('div');
 		$newPostContent->setAttribute('type', 'libraryItem');
 		$newPostContent->setAttribute('subtype', 'html');
 		$tmpHTML = new DOMDocument();
 		//using loadHTML because it is more forgiving than loadXML
-		$tmpHTML->loadHTML($libraryItemObject);
-		
+		$tmpHTML->loadHTML($libraryItemObject->post_content);
 		$body = $tmpHTML->getElementsByTagName('body')->item(0);
 		$body->setAttribute('xmlns', HTML);
 		
@@ -100,11 +110,21 @@ class TeiDom {
 		}					
 		return $newHead;
 	}
+    
+  private function postSort($a, $b) {
+      if($a->menu_order > $b->menu_order) {
+        return 1;
+      } else if ($a->menu_order < $b->menu_order) {
+        return -1;
+      } else if ($a->menu_order == $b->menu_order) {    
+          return $a->ID - $b->ID;      
+      }  	    
+  }
 }
 
-
-$tei = new TeiDom(867);
 /*
+$tei = new TeiDom(867);
+
 $np = $tei->newPart('dummy');
 $nh = $tei->newPartHead(array('title'=>'Test Title' , 'authorRefs'=>array('boonebgorges')) );
 $np->appendChild($nh);
