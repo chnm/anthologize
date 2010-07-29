@@ -4,26 +4,34 @@
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
             <titleStmt>
-                <title></title>
+                <title>Bookin'</title>
             </titleStmt>
             <publicationStmt>
-                <p></p>
 
+                <p></p>
             </publicationStmt>
             <sourceDesc>
-                <p></p>
+                <bibl>
+                    <ident><![CDATA[http://localhost/workspace/wordpress/?post_type=books&p=867]]></ident>
+                </bibl>
             </sourceDesc>
         </fileDesc>
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
         <layoutDesc xmlns="http://www.anthologize.org/ns"> </layoutDesc>
-        <revisionDesc>
-            <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
-        </revisionDesc>
+
         <encodingDesc>
             <refsDecl>
-                <ab type="metadata" subtype="contributors">
+                <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
-                    <listPerson> </listPerson>
+                    <listPerson>
+                        <person xml:id="admin" role="administrator ">
+                            <persName><forename>First Name</forename><surname>Last
+                                Name</surname></persName>
+                        </person>
+                        <person xml:id="boone-gorges" role="subscriber ">
+                            <persName><forename></forename><surname></surname></persName>
+                        </person>
+                    </listPerson>
                 </ab>
 
             </refsDecl>
@@ -34,17 +42,21 @@
                 </application>
             </appInfo>
         </encodingDesc>
-
+        <revisionDesc>
+            <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
+        </revisionDesc>
     </teiHeader>
-
     <text>
         <body>
             <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->
             <div type="part">
-                <head><title>Partay</title><bibl><author ref="admin"></author></bibl></head>
+                <head><title>Partay</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=partay]]></ident><bibl><author
+                            ref="admin"></author></bibl></head>
                 <div type="libraryItem" subtype="html">
-                    <head><title>About Boone</title><bibl><author ref="Boone Gorges"
-                            ></author></bibl></head>
+                    <head><title>About Boone</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=about-boone]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml">
                         <p>My name is Boone Gorges and Teleogistic is my personal blog.</p>
 
@@ -66,8 +78,9 @@
                     </body>
                 </div>
                 <div type="libraryItem" subtype="html">
-                    <head><title>Code</title><bibl><author ref="Boone Gorges"
-                        ></author></bibl></head>
+                    <head><title>Code</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=code]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml"><p>Looking for WordPress, BuddyPress,
                             bbPress, or MediaWiki code that I've written? Have questions or comments
                             about a piece of software I've released? Use the following links to find
@@ -79,8 +92,9 @@
                                 the WP repo</a></p> [child-pages]</body>
                 </div>
                 <div type="libraryItem" subtype="html">
-                    <head><title>Donate</title><bibl><author ref="Boone Gorges"
-                        ></author></bibl></head>
+                    <head><title>Donate</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=donate]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml">
                         <p>Whenever possible, I release my code under the GPL and my writing under a
                             Creative Commons license. As such, you are under no moral or legal
@@ -98,7 +112,6 @@
                                 <tr>
                                     <th scope="row">I'm donating to say thanks for: </th>
                                     <td> </td>
-
                                     <td>
                                         <select name="item_name"><option
                                                 value="Plugin donation for teleogistic.net"
@@ -151,10 +164,13 @@
                 </div>
             </div>
             <div type="part">
-                <head><title>KLINGONS!</title><bibl><author ref="admin"></author></bibl></head>
+                <head><title>KLINGONS!</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=klingons]]></ident><bibl><author
+                            ref="admin"></author></bibl></head>
                 <div type="libraryItem" subtype="html">
-                    <head><title>Enhanced BuddyPress Widgets</title><bibl><author ref="Boone Gorges"
-                            ></author></bibl></head>
+                    <head><title>Enhanced BuddyPress Widgets</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=enhanced-buddypress-widgets]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml">
                         <p>This plugin adds two widgets to your WordPress MU/BuddyPress
                             installation: Groups and Members. Use them instead of the Groups and
@@ -184,7 +200,6 @@
                                 >here</a>.</p>
 
                         <h2>Version history</h2>
-
                         <dl>
                             <dt>
                                 <strong>0.1</strong>
@@ -205,8 +220,9 @@
                     </body>
                 </div>
                 <div type="libraryItem" subtype="html">
-                    <head><title>Facebook and content</title><bibl><author ref="Boone Gorges"
-                            ></author></bibl></head>
+                    <head><title>Facebook and content</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=facebook-and-content]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
                     <body xmlns="http://www.w3.org/1999/xhtml"><p><a
                                 href="http://www.consumerist.com">The Consumerist</a> published <a
                                 href="http://consumerist.com/5150175/facebooks-new-terms-of-service-we-can-do-anything-we-want-with-your-content-forever"
@@ -259,4 +275,5 @@
             </div>
         </body>
     </text>
+
 </TEI>
