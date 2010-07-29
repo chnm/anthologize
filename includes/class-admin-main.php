@@ -37,9 +37,15 @@ class Anthologize_Admin_Main {
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), 'manage_options', __FILE__, 'anthologize_admin_panel' );
 
 		foreach ( $plugin_pages as $plugin_page ) {
-			add_action( "admin_print_scripts-$plugin_page", 'anthologize_admin_scripts' );
-			add_action( "admin_print_styles-$plugin_page", 'anthologize_admin_styles' );
+			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
+			//add_action( "admin_print_styles-$plugin_page", 'anthologize_admin_styles' );
 		}
+	}
+
+	function load_scripts() {
+    	wp_enqueue_script("scriptaculous-dragdrop");
+    	wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
+
 	}
 
 	function load_project_organizer( $project_id ) {
@@ -196,6 +202,19 @@ class Anthologize_Admin_Main {
 endif;
 
 $anthologize_admin_main = new Anthologize_Admin_Main();
+
+function add_em_scripts() {
+?>
+  <script type="text/javascript">
+  Position.includeScrollOffsets = true;
+  Sortable.create('sortcontainer',{
+   tag: 'li',
+   scroll: window
+  });
+</script>
+<?php
+}
+add_action( 'admin_head', 'add_em_scripts' );
 
 
 function okokok( $it ) {
