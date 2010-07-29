@@ -11,6 +11,7 @@ class TeiDom {
 	public $knownPersonArray = array();
 	public $personMetaDataNode;
 	public $bodyNode;
+  public $userNiceNames;
 	
 	
 	function __construct($projectID) {
@@ -36,7 +37,11 @@ class TeiDom {
 	}
 	
 	public function addPerson($userObject) {
-		
+	/*
+    if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
+      
+		}
+        */
 	}
 	
   public function buildProjectData($projectID) {
@@ -61,8 +66,7 @@ class TeiDom {
         $newPart->appendChild($newItemContent);
       }
       $this->bodyNode->appendChild($newPart);
-    }
-    
+    }    
   }  
     
 	public function newPart($partObject) {
@@ -101,13 +105,13 @@ class TeiDom {
     // $author_name = get_post_meta( $item_id, 'author_name', true );
     
 		$authorObject = get_userdata($postObject->post_author);
-		print_r($authorObject);
+		//print_r($authorObject);
     $this->addPerson($authorObject);
         
 		if($authorObject) {
 			$bibl = $this->dom->createElement('bibl');
       $author = $this->dom->createElement('author');
-      $author->setAttribute('ref', $authorObject->user_login);
+      $author->setAttribute('ref', $authorObject->user_nicename);
       $bibl->appendChild($author);
       $newHead->appendChild($bibl);            	
 		}					
