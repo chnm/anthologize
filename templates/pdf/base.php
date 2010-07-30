@@ -1,16 +1,13 @@
 <?php
 
-error_reporting(0);
+//error_reporting(0);
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-pdf.php');
 
 
-<<<<<<< HEAD
-$projectID = 865;
-=======
 $projectID = 877;
->>>>>>> b30e025455179e6b9f60116a9ac235910829f35c
+
 $tei_dom = new TeiDom($projectID);
 
 

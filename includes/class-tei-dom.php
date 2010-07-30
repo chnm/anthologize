@@ -27,6 +27,8 @@ class TeiDom {
     $this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
 
+
+
 		$this->buildProjectData($projectID);
 	}
 
@@ -48,7 +50,7 @@ class TeiDom {
        }
        $newPerson->setAttribute('role', $roleStr);
        $newPersName = $this->dom->createElement('persName');
-       $newPersName->appendChild($this->dom->createElement('forename', $userObject->first_name));
+       $newPersName->appendChild($this->dom->createElementNS(TEI, 'tei:forename', $userObject->first_name));
        $newPersName->appendChild($this->dom->createElement('surname', $userObject->last_name) );
        $ident = $this->dom->createElement('ident');
        $ident->appendChild($this->dom->createCDataSection($userObject->user_url));
@@ -99,7 +101,7 @@ class TeiDom {
   }
 
 	public function newPart($partObject) {
-    $newPart = $this->dom->createElement('div');
+    $newPart = $this->dom->createElementNS(TEI, 'div');
     $newPart->setAttribute('type', 'part');
     $newPart->appendChild($this->newHead($partObject));
     return $newPart;
@@ -107,7 +109,7 @@ class TeiDom {
 
 	public function newItemContent($libraryItemObject) {
 
-    $newPostContent = $this->dom->createElement('div');
+    $newPostContent = $this->dom->createElementNS(TEI, 'div');
     $newPostContent->setAttribute('type', 'libraryItem');
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
@@ -125,9 +127,9 @@ class TeiDom {
 	}
 
 	public function newHead($postObject) {
-		$newHead = $this->dom->createElement('head');
-		$title = $this->dom->createElement('title', $postObject->post_title);
-    $guid = $this->dom->createElement('ident');
+		$newHead = $this->dom->createElementNS(TEI, 'head');
+		$title = $this->dom->createElementNS(TEI, 'title', $postObject->post_title);
+    $guid = $this->dom->createElementNS(TEI, 'ident');
     $guid->appendChild($this->dom->createCDataSection($postObject->guid));
     $guid->setAttribute('type', 'guid');
 		$newHead->appendChild($title);
@@ -142,8 +144,8 @@ class TeiDom {
     $this->addPerson($authorObject);
 
 		if($authorObject) {
-        $bibl = $this->dom->createElement('bibl');
-        $author = $this->dom->createElement('author');
+        $bibl = $this->dom->createElementNS(TEI, 'bibl');
+        $author = $this->dom->createElementNS(TEI, 'author');
         $author->setAttribute('ref', $authorObject->user_nicename);
         $bibl->appendChild($author);
         $newHead->appendChild($bibl);

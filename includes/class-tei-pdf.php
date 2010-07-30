@@ -53,19 +53,19 @@ class TeiPdf {
 
 		// Set some content to print
 
-//PMJ: infinite bizarreness, now it doesn't seem to respect the prefixes! This seems to be borking only on a problem
-//getting an image URL. I'm not sure what's causing that
-
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
 		$xpath->registerNamespace('html', HTML);
-		$parts = $xpath->query("//div[@type='part']");
+		$parts = $xpath->query("//tei:div[@type='part']");
 		$html = null;
 
+echo $parts->length;
+die();
 		foreach ($parts as $part) {
-			$title = $xpath->query("head/title", $part)->item(0);
-			$body  = $xpath->query("div/body", $part)->item(0);
-			$paras = $xpath->query("p", $body);
+
+			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
+			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
+			$paras = $xpath->query("html:p", $body);
 
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
 			foreach ($paras as $para) {
