@@ -43,7 +43,7 @@ class TeiDom {
 	public function addPerson($userObject) {
 
     if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
-       $newPerson = $this->dom->createElement('person');
+       $newPerson = $this->dom->createElementNS(TEI, 'person');
        $newPerson->setAttribute('xml:id', $userObject->user_nicename );
        foreach($userObject->wp_capabilities as $role=>$wtf) {
         $roleStr .= $role . " ";
@@ -51,8 +51,8 @@ class TeiDom {
        $newPerson->setAttribute('role', $roleStr);
        $newPersName = $this->dom->createElement('persName');
        $newPersName->appendChild($this->dom->createElementNS(TEI, 'tei:forename', $userObject->first_name));
-       $newPersName->appendChild($this->dom->createElement('surname', $userObject->last_name) );
-       $ident = $this->dom->createElement('ident');
+       $newPersName->appendChild($this->dom->createElementNS(TEI, 'surname', $userObject->last_name) );
+       $ident = $this->dom->createElementNS(TEI, 'ident');
        $ident->appendChild($this->dom->createCDataSection($userObject->user_url));
        $ident->setAttribute('type', 'url');
        $newPersName->appendChild($ident);
