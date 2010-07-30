@@ -1,12 +1,12 @@
 <?php
 
-define('TEI', 'http://www.tei-c.org/ns/1.0');
-define('HTML', 'http://www.w3.org/1999/xhtml');
-define('ANTH', 'http://www.anthologize.org/ns');
-
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+
+define('TEI', 'http://www.tei-c.org/ns/1.0');
+define('HTML', 'http://www.w3.org/1999/xhtml');
+define('ANTH', 'http://www.anthologize.org/ns');
 
 class TeiPdf {
 
@@ -18,16 +18,14 @@ class TeiPdf {
 
 		// Creates an object of type DOMDocument
 		// and exposes it as the attribute $tei
+		$this->tei = new DOMDocument();
 
-		$this->tei = $tei_dom->getTeiDom();
+    $this->tei->loadXML($tei_dom->getTeiString());
 
 		$this->xpath = new DOMXpath($this->tei);
     $this->xpath->registerNamespace('tei', TEI);
 		$this->xpath->registerNamespace('html', HTML);
 		$this->xpath->registerNamespace('anth', ANTH);
-
-
-    $this->tei->loadXML($tei_dom->getTeiString());
 
 		$paper_size = $this->get_paper_size();
 
