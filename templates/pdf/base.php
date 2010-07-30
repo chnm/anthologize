@@ -9,9 +9,10 @@ include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 $projectID = 877;
 $tei_dom = new TeiDom($projectID);
 
+
 $pdf = new TeiPdf($tei_dom);
 
-header('Content-type: application/pdf');
+//header('Content-type: application/pdf');
 $pdf->write_pdf();
 
 //header("Content-type: text/xml");
@@ -21,5 +22,5 @@ $pdf->write_pdf();
 
 // or $teiDom = $tei->getTeiDom();
 
-//die();
+die();
 ?>

@@ -1,7 +1,5 @@
 <?php
 
-define('TEI', 'http://www.tei-c.org/ns/1.0');
-define('HTML', 'http://www.w3.org/1999/xhtml');
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
@@ -55,22 +53,26 @@ class TeiPdf {
 
 		// Set some content to print
 
+//PMJ: infinite bizarreness, now it doesn't seem to respect the prefixes! This seems to be borking only on a problem
+//getting an image URL. I'm not sure what's causing that
+
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
 		$xpath->registerNamespace('html', HTML);
-		$parts = $xpath->query("//tei:div[@type='part']");
+		$parts = $xpath->query("//div[@type='part']");
 		$html = null;
 
 		foreach ($parts as $part) {
-			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
-			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
-			$paras = $xpath->query("html:p", $body);
+			$title = $xpath->query("head/title", $part)->item(0);
+			$body  = $xpath->query("div/body", $part)->item(0);
+			$paras = $xpath->query("p", $body);
 
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
 			foreach ($paras as $para) {
 				$html = $html . $this->strip_whitespace($this->node_to_string($para));
 			}
 		}
+
 		$this->pdf->WriteHTML($html, false, true, true, false, "L");
 
 		// Close and output PDF document
@@ -85,15 +87,15 @@ class TeiPdf {
 	public function set_header() {
 
 		// set default header data
-		//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING);
+		$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING);
 
 	}
 
 	public function set_footer() {
 
 		// set header and footer fonts
-		//$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		//$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 	}
 

@@ -4,7 +4,7 @@
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
             <titleStmt>
-                <title>Bookin'</title>
+                <title>hmm, a project?</title>
             </titleStmt>
             <publicationStmt>
 
@@ -12,7 +12,7 @@
             </publicationStmt>
             <sourceDesc>
                 <bibl>
-                    <ident><![CDATA[http://localhost/workspace/wordpress/?post_type=books&p=867]]></ident>
+                    <ident><![CDATA[http://localhost/workspace/wordpress/?post_type=projects&p=877]]></ident>
                 </bibl>
             </sourceDesc>
         </fileDesc>
@@ -52,230 +52,75 @@
         <body>
             <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->
             <div type="part">
-                <head><title>Partay</title><ident type="guid"
-                        ><![CDATA[http://localhost/workspace/wordpress/?parts=partay]]></ident><bibl><author
+                <head><title>You call that a part?</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=you-call-that-a-part]]></ident><bibl><author
                             ref="admin"></author></bibl></head>
                 <div type="libraryItem" subtype="html">
-                    <head><title>About Boone</title><ident type="guid"
-                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=about-boone]]></ident><bibl><author
+                    <head><title>Custom Profile Filters for Buddypress</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=custom-profile-filters-for-buddypress]]></ident><bibl><author
                                 ref="boone-gorges"></author></bibl></head>
-                    <body xmlns="http://www.w3.org/1999/xhtml">
-                        <p>My name is Boone Gorges and Teleogistic is my personal blog.</p>
-
-                        <p>I am a PhD student in <a href="http://web.gc.cuny.edu/Philosophy/"
-                                >philosophy</a> at the <a href="http://www.gc.cuny.edu">CUNY
-                                Graduate Center</a>.</p>
-
-                        <p>I am a WordPress developer specializing in BuddyPress. I am currently the
-                            lead developer for the <a href="http://commons.gc.cuny.edu">CUNY
-                                Academic Commons</a></p>
-
-                        <p>In a previous incarnation, I was an instructional designer at <a
-                                href="http://www.qc.cuny.edu">CUNY Queens College</a>.</p>
-
-                        <p>On this blog I talk about philosophy, technology, education, etc.</p>
-
-                        <p>You can email me if you want to shoot the breeze. Combine my Twitter
-                            handle (located in the left sidebar of this page) with @gmail.com.</p>
-                    </body>
-                </div>
-                <div type="libraryItem" subtype="html">
-                    <head><title>Code</title><ident type="guid"
-                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=code]]></ident><bibl><author
-                                ref="boone-gorges"></author></bibl></head>
-                    <body xmlns="http://www.w3.org/1999/xhtml"><p>Looking for WordPress, BuddyPress,
-                            bbPress, or MediaWiki code that I've written? Have questions or comments
-                            about a piece of software I've released? Use the following links to find
-                            what you're looking for.</p>
-                        <p>I'm in the process of moving things over here. In the meantime, check
-                            out: <a href="http://teleogistic.net/tag/wordpress/">posts tagged
-                                'Wordpress'</a>; <a
-                                href="http://profiles.wordpress.org/boonebgorges/">Boone's corner of
-                                the WP repo</a></p> [child-pages]</body>
-                </div>
-                <div type="libraryItem" subtype="html">
-                    <head><title>Donate</title><ident type="guid"
-                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=donate]]></ident><bibl><author
-                                ref="boone-gorges"></author></bibl></head>
-                    <body xmlns="http://www.w3.org/1999/xhtml">
-                        <p>Whenever possible, I release my code under the GPL and my writing under a
-                            Creative Commons license. As such, you are under no moral or legal
-                            obligation to give me anything. (I won't even be mad at you if you
-                            don't!) I get paid for some of the development I do, but I give a lot of
-                            my free time to updating my plugins, providing support to users, etc. If
-                            you use and enjoy my plugins and my Extremely Friendly Support, and
-                            you'd like to thank me with a cup of coffee (or a new computer!), you
-                            can do so by clicking the "Donate" button below.</p>
-
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                            <input type="hidden" name="cmd" value="_donations"></input>
-                            <input type="hidden" name="business" value="boonebgorges@gmail.com"></input>
-                            <table>
-                                <tr>
-                                    <th scope="row">I'm donating to say thanks for: </th>
-                                    <td> </td>
-                                    <td>
-                                        <select name="item_name"><option
-                                                value="Plugin donation for teleogistic.net"
-                                            ></option>Boone's General Awesomeness <option
-                                                value="BP Group Management"></option>BP Group
-                                            Management <option value="BP Import Blog Activity"
-                                            ></option>BP Import Blog Activity <option
-                                                value="BP Include Non-Member Comments"></option>BP
-                                            Include Non-Member Comments <option
-                                                value="BP MPO Activity Filter"></option>BP MPO
-                                            Activity Filter <option value="BP TinyMCE"></option>BP
-                                            TinyMCE <option
-                                                value="Custom Profile Filters for BuddyPress"
-                                            ></option>Custom Profile Filters for BuddyPress <option
-                                                value="Enhanced BuddyPress Widgets"
-                                            ></option>Enhanced BuddyPress Widgets <option
-                                                value="Forum Attachments for BuddyPress"
-                                            ></option>Forum Attachments for BuddyPress <option
-                                                value="Group Forum Subscription for BuddyPress"
-                                            ></option>Group Forum Subscription for BuddyPress
-                                                <option value="Import from Ning"></option>Import
-                                            from Ning <option value="Invite Anyone"></option>Invite
-                                            Anyone <option value="Shared Blogroll"></option>Shared
-                                            Blogroll </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"> Amount (format: 10.00): </th>
-                                    <td>$</td>
-                                    <td>
-                                        <input type="textbox" name="amount" size="8" value="10.00"
-                                            style="float: left;"></input>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="hidden" name="currency_code" value="USD"></input>
-                                        <input type="image"
-                                            src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif"
-                                            border="0" name="submit"
-                                            alt="PayPal - The safer, easier way to pay online!"></input>
-                                        <img alt="" border="0"
-                                            src="https://www.paypal.com/en_US/i/scr/pixel.gif"
-                                            width="1" height="1"></img>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                    </body>
-                </div>
-            </div>
-            <div type="part">
-                <head><title>KLINGONS!</title><ident type="guid"
-                        ><![CDATA[http://localhost/workspace/wordpress/?parts=klingons]]></ident><bibl><author
-                            ref="admin"></author></bibl></head>
-                <div type="libraryItem" subtype="html">
-                    <head><title>Enhanced BuddyPress Widgets</title><ident type="guid"
-                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=enhanced-buddypress-widgets]]></ident><bibl><author
-                                ref="boone-gorges"></author></bibl></head>
-                    <body xmlns="http://www.w3.org/1999/xhtml">
-                        <p>This plugin adds two widgets to your WordPress MU/BuddyPress
-                            installation: Groups and Members. Use them instead of the Groups and
-                            Members widgets that ship with BuddyPress. They provide the ability to
-                            select which of the three tabs - Newest, Active, or Popular - will be
-                            the widget's default view.</p>
-
-                        <p><a
-                                href="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/"
-                                >Download the plugin here</a>.</p>
-
-                        <p>Enhanced BuddyPress Widgets has been downloaded <strong>[downloadstat
-                                url="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/stats/"
+                    <body xmlns="http://www.w3.org/1999/xhtml"><p>Out of the box, BuddyPress
+                            automatically turns some words and phrases in the fields of a user's
+                            profile into links that, when clicked, search the user's community for
+                            other profiles containing those phrases. When activated, this plugin
+                            allows users and administrators to have more control over these links,
+                            in the following ways: <a
+                                href="http://localhost/workspace/wordpress/wp-content/uploads/2010/02/custom-filter-300x117.jpg"
+                                    ><img class="alignright size-full wp-image-526"
+                                    title="Custom profile filters"
+                                    src="http://localhost/workspace/wordpress/wp-content/uploads/2010/02/custom-filter-300x117.jpg"
+                                    alt="" width="300" height="117"></img></a> 1) By using square
+                            brackets in a profile field, users can specify which words or phrases in
+                            their profile turn into links. For example: under Interests, I might
+                            list "Cartoons about dogs". By default, Buddypress will turn the entire
+                            phrase into a link that searches the community for others who like
+                            cartoons about dogs. If I instead type "[Cartoons] about [dogs]", then
+                            the two words in brackets will turn into independent links. 2)
+                            Administrators can specify certain profile fields that will not turn
+                            into links at all. The standard setting for the plugin is that fields
+                            labeled 'Phone', 'IM', and 'Skype ID' will not become linkable (it
+                            doesn't make much sense to search a community for what should be a
+                            unique handle, after all). See custom-profile-filters-for-buddypress.php
+                            to configure this setting. 3) Administrators can specify certain profile
+                            fields that link to social networking profiles. If I enter my Twitter
+                            handle 'boonebgorges' into a field labeled 'Twitter', for example, this
+                            plugin will bypass the default link to a BuddyPress search on
+                            'boonebgorges' and instead link toÂ <a rel="nofollow"
+                                href="http://twitter.com/boonebgorges"
+                                >http://twitter.com/boonebgorges</a>. See
+                            custom-profile-filters-for-buddypress.php to configure this setting.
+                                    </p><p><strong><a
+                                    href="http://wordpress.org/extend/plugins/custom-profile-filters-for-buddypress/"
+                                    >Download the plugin here.</a></strong></p>
+                        <p>Custom Profile Filters for BuddyPress has been downloaded
+                                <strong>[downloadstat
+                                url="http://wordpress.org/extend/plugins/custom-profile-filters-for-buddypress/stats/"
                                 get="total" autop="false"]</strong> times. Are you using this
                             plugin? Consider a <strong><a href="/donate">donation</a></strong>.</p>
-
-                        <p>Since version 0.2 of the plugin, it works only with BuddyPress 1.2RC and
-                            newer. For support on older versions of BuddyPress, download version 0.1
-                            from the <a
-                                href="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/download/"
-                                >Older Versions</a> page.</p>
-
-                        <p>Other posts about this plugin can be found <a
-                                href="http://teleogistic.net/2009/09/new-buddypress-plugin-enhanced-buddypress-widgets/"
-                                >here</a> and <a
-                                href="http://dev.commons.gc.cuny.edu/2009/09/07/new-buddypress-plugin-enhanced-buddypress-widgets/"
-                                >here</a>.</p>
-
-                        <h2>Version history</h2>
-                        <dl>
-                            <dt>
-                                <strong>0.1</strong>
-                            </dt>
+                        Some previous blog posts about this plugin: <ol><li><a
+                                    href="http://teleogistic.net/2009/06/new-version-of-custom-profile-filters-for-buddypress/"
+                                    >http://teleogistic.net/2009/06/new-version-of-custom-profile-filters-for-buddypress/</a></li>
+                                    <li><a
+                                    href="http://dev.commons.gc.cuny.edu/2009/05/16/new-plugin-custom-profile-filters-for-buddypress/"
+                                    >http://dev.commons.gc.cuny.edu/2009/05/16/new-plugin-custom-profile-filters-for-buddypress/</a></li>
+                            <li><a
+                                    href="http://teleogistic.net/2009/05/custom-profile-filters-for-buddypress/"
+                                    >http://teleogistic.net/2009/05/custom-profile-filters-for-buddypress/</a></li>
+                        </ol><h2>Version history</h2>
+                        <dl><dt><strong>0.1</strong></dt>
                             <dd>Initial release</dd>
-                            <br></br>
-                            <dt>
-                                <strong>0.2 - February 27, 2010</strong>
-                            </dt>
-                            <dd>Updated for version 1.2 of BuddyPress.</dd>
-
-                            <dt>
-                                <strong>0.2 - March 27, 2010</strong>
-                            </dt>
-                            <dd>Loader file added to prevent crashing on BP upgrade</dd>
-
-                        </dl>
-                    </body>
-                </div>
-                <div type="libraryItem" subtype="html">
-                    <head><title>Facebook and content</title><ident type="guid"
-                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=facebook-and-content]]></ident><bibl><author
-                                ref="boone-gorges"></author></bibl></head>
-                    <body xmlns="http://www.w3.org/1999/xhtml"><p><a
-                                href="http://www.consumerist.com">The Consumerist</a> published <a
-                                href="http://consumerist.com/5150175/facebooks-new-terms-of-service-we-can-do-anything-we-want-with-your-content-forever"
-                                >a story</a> yesterday about <a
-                                href="http://www.facebook.com/terms.php?ref=pf">Facebook's new Terms
-                                of Service</a>. The gist of the changes appears to be something like
-                            this. Facebook has always claimed rights to the content that you post
-                            there. But there used to be a clause stating that </p><blockquote>You
-                            may remove your User Content from the Site at any time. If you choose to
-                            remove your User Content, the license granted above will automatically
-                            expire, however you acknowledge that the Company may retain archived
-                            copies of your User Content.</blockquote> Now this clause is gone. Thus
-                        Facebook has legal ("irrevocable, perpetual, non-exclusive, transferable,
-                        fully paid, worldwide") rights to your content. <p>On a personal note, these
-                            terms apply even to the content created by those individuals who place a
-                            Share This link on their personal sites, whether or not they are the
-                            ones who post the content on Facebook. I have a hard time believing that
-                            this would qualify as a <a
-                                href="http://en.wikipedia.org/wiki/Unconscionability">conscionable
-                                contract</a>, but I'm not a lawyer so what do I know. In any case,
-                            this means that I'll be removing the Share on Facebook link from this
-                            blog.</p>
-                        <p>The educational ramifications are important, I think. <a
-                                href="http://twitter.com/academicdave/status/1215456839"
-                                >@academicdave</a> tweeted the following this morning:
-                            </p><blockquote>Just realized that facebook now owns the rights to one
-                            of my students recent projects (story told using facebook) even if they
-                            delete it.</blockquote> This is a troubling thought. Instructors have a
-                        responsibility to their students and the work that those students do, and
-                        requiring that the students give essentially unlimited rights to their work
-                        to a corporate entity does not seem to me to be coincident with this
-                        responsibility. Of course, it was already the case that Facebook retained
-                        rights to these items before this TOS update, but the fact that these rights
-                        are now irrevocable, in my view, makes the question qualitatively different.
-                        Different enough that, while I used to be eager to talk to faculty members
-                        about how they might incorporate Facebook into their classes, I'm not
-                        certain that I can continue to do so with a clear conscience. There are lots
-                        of alternative spaces in which to share content where the restrictions
-                        aren't so harsh. <p>Again, I'm not a lawyer, but I would be interested in
-                            knowing how the act of publishing something on Facebook, and the
-                            transfer of rights that it implies, interacts with any <em>explicit</em>
-                            licenses (e.g. Creative Commons) that you have given the content,
-                            especially where the Facebook license and the CC license are in
-                            disagreement with each other. Does anyone know anything about this?</p>
-                        <p>I also wonder whether there will be sufficient backlash among the users
-                            of Facebook to make the company reconsider this updated TOS. I am
-                            pessimistic. My sense is that most people who use Facebook heavily
-                            aren't thinking about this sort of issue.</p></body>
+                            <dt><strong>0.2</strong></dt>
+                            <dd>Added automatic linking for various social networking sites</dd>
+                            <dt><strong>0.3 - February 27, 2010</strong></dt> <dd>Conforms to BP 1.2
+                                standards for loading order</dd>
+                            <dd>Most functionality moved to proper filters in order to inherit BP
+                                native code</dd> <dt><strong>0.3.1 - March 2, 2010</strong></dt>
+                            <dd>Moved globals back to main plugin file</dd>
+                            <dd>Fixed error regarding missing function arguments (thanks for
+                                reporting them, Mike!)</dd>
+                        </dl></body>
                 </div>
             </div>
         </body>
     </text>
-
 </TEI>

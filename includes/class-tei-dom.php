@@ -26,6 +26,7 @@ class TeiDom {
 		$authorAB =  $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
     $this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
+
 		$this->buildProjectData($projectID);
 	}
 
