@@ -6,14 +6,7 @@ include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-pdf.php');
 
 
-$projectID = $_POST['project_id'];
-
-
-$postArray = array('project_id'=>$projectID);
-$tei_dom = new TeiDom($postArray);
-
-
-
+$tei_dom = new TeiDom($_POST);
 
 $pdf = new TeiPdf($tei_dom);
 
