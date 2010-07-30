@@ -119,7 +119,9 @@ class TeiDom {
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
     $tmpHTML = new DOMDocument();
-    $content = do_shortcode($libraryItemObject->post_content);
+    //TODO: do_shortcode produces HTML that doesn't work, so shortcodes are coming through as is
+    //$content = do_shortcode($libraryItemObject->post_content);
+    $content = $libraryItemObject->post_content;
     //using loadHTML because it is more forgiving than loadXML
 
     $tmpHTML->loadHTML($content);
