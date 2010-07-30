@@ -120,7 +120,7 @@ jQuery(document).ready(function(){
 		  var panel = item.find("div.append_items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));
 		  for (var itemId in appendable){
-			  panel.append('<input type="checkbox" name="append[]" id="append-"' + itemId + '/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
+			  panel.append('<input type="checkbox" name="append[]" id="append-' + itemId + '"/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
 		  }
 		
 		  jQuery(".project-parts").sortable("disable");
@@ -133,8 +133,8 @@ jQuery(document).ready(function(){
   jQuery("body").delegate("a.cancelAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 	  var appendPanel = item.children("div.append-panel").first();
+	  jQuery(this).parents("li.item").find("a.append").removeClass("active-append");
 	  jQuery("div.append-panel").remove();
-	  jQuery(this).removeClass("active-append");
 	  jQuery(".project-parts").sortable("enable");
 	  jQuery(".part-items ul").sortable("enable");
 	  jQuery("a.append").removeClass("disabled");
