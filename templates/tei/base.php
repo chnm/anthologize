@@ -5,7 +5,7 @@ error_reporting(0);
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 
-$projectID = 877;
+$projectID = 865;
 $tei = new TeiDom($projectID);
 
 /*
