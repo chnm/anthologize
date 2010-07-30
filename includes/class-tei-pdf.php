@@ -21,9 +21,7 @@ class TeiPdf {
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-	}
-
-	public function write_pdf() {
+		// -------------------------------------------------------- //
 
 		//set auto page breaks
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -38,23 +36,11 @@ class TeiPdf {
 		$this->set_font();
 		$this->set_margins();
 
-		// ---------------------------------------------------------
+	}
 
-		// set default font subsetting mode
-		$this->pdf->setFontSubsetting(true);
+	public function write_pdf() {
 
-		// Set font
-		// dejavusans is a UTF-8 Unicode font, if you only need to
-		// print standard ASCII chars, you can use core fonts like
-		// helvetica or times to reduce file size.
-		$this->pdf->SetFont('times', '', 12, '', true);
-
-		// Add a page
-		// This method has several options, check the source code documentation
-		// for more information.
 		$this->pdf->AddPage();
-
-		// Set some content to print
 
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
@@ -83,6 +69,7 @@ class TeiPdf {
 
 				foreach ($paras as $para) {
 					$html = $html . $this->strip_whitespace($this->node_to_string($para));
+					$html = $html . $this->strip_shortcodes($this->node_to_string($para));
 				} // foreach para
 
 			} // foreach item
@@ -96,7 +83,7 @@ class TeiPdf {
 		// documentation for more information.
 
 		// echo $html; // DEBUG
-		$this->pdf->Output('example_001.pdf', 'I');
+		$this->pdf->Output('example.pdf', 'I');
 
 	} // writePDF 
 
@@ -118,10 +105,10 @@ class TeiPdf {
 	public function set_docinfo() {
 
 		$this->pdf->SetCreator(PDF_CREATOR);
-		$this->pdf->SetAuthor('Boone Gorges');
-		$this->pdf->SetTitle('The Book of Boone');
+		$this->pdf->SetAuthor('One Week | One Tool');
+		$this->pdf->SetTitle('An Amazing Example of PDF Generation');
 		$this->pdf->SetSubject('Barbecue');
-		$this->pdf->SetKeywords('Boone, barbecue, oneweek');
+		$this->pdf->SetKeywords('Boone, barbecue, oneweek, pants');
 
 	}
 
@@ -129,12 +116,15 @@ class TeiPdf {
 
 		// set default monospaced font
 		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+		// set default font subsetting mode
+		$this->pdf->setFontSubsetting(true);
+		//
+		$this->pdf->SetFont('times', '', 12, '', true);
 
 	}
 
 	public function set_margins() {
 
-		//set margins
 		$this->pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		$this->pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$this->pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
@@ -149,6 +139,13 @@ class TeiPdf {
 		return preg_replace('/\s+/', ' ', $string);
 	}
 
+	private function strip_shortcodes($string) {
+		return preg_replace('/[caption.*?]/', '', $string);
+	}
+
 
 } // TeiPdf
+
+// -------------------------------------------------------- //
+
 ?>

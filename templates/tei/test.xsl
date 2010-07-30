@@ -20,7 +20,7 @@
 <xsl:template match="tei:author/@ref">
     <xsl:variable name="userId"  select="." ></xsl:variable>    
     <xsl:value-of select="//tei:person[@xml:id = $userId]/tei:persName/tei:forename"/>
-</xsl:template>    
+</xsl:template>
     
 <!--    
 
