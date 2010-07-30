@@ -243,7 +243,7 @@ class Anthologize_Project_Organizer {
 		update_post_meta( $imported_item_id, 'author_name', $author_name );
 		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array );
 
-		return true;
+		return $imported_item_id;
 	}
 
 	function add_new_part( $part_name ) {
@@ -485,22 +485,40 @@ class Anthologize_Project_Organizer {
 		*/
 
 		if ( $new_post ) {
-			if ( !$this->add_item_to_part( $post_id, $dest_id ) )
+            $add_item_result = $this->add_item_to_part( $post_id, $dest_id ) 
+			if (false === $add_item_result)
 				return false;
-		}
+            $post_id = $add_item_result;
+        } else {
+            // use wp_update_post
+            // ID, post_parent
+            $post_params = Array('ID' => $post_id,
+                                 'post_parent' => $dest_id);
+            $update_item_result = wp_update_post($post_params);
+			if (false === $update_item_result)
+				return false;
+            $post_id = $update_item_result;
+        }
 
+        // JMC: not really any point in checking for errors at this point
+        // Since the insert succeeded
+        // We should use more detailed Exceptions eventually
+        //
 		// All items require the destination siblings to be reordered
-		if ( !$this->rearrange_items( $dest_seq ) )
-			return false;
+/*		if ( !$this->rearrange_items( $dest_seq ) )
+    return false;*/
+        $this->rearrange_items( $dest_seq ) 
 
 
 		// You only need to rearrange the source when moving between parts
-		if ( !$new_post ) {
+        /*if ( !$new_post ) {
 			if ( !$this->rearrange_items( $src_seq ) )
 				return false;
-		}
+        }*/
 
-		return true;
+        $this->rearrange_items( $src_seq ) 
+
+		return $post_id;
 
 	}
 
