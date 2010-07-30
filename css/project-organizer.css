@@ -111,6 +111,10 @@
 }
 
 /* sortable/draggable styles  */
+.part-items ul {
+	min-height: 50px;
+}
+
 .anthologize-drop-item {
       border: 1px dashed #000;
       height: 2em;

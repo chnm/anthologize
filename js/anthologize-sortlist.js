@@ -2,7 +2,9 @@ var anthologize = {
   "src_id": null,
   "new_item_org_seq_num": null,
   "org_seq_num": null,
+  "src_seq" : {},
   "fromNew": false,
+  "newItem": null,
   "appending": false,
   "callBack" : function(event, ui){
     var dest_part_id;
@@ -24,7 +26,7 @@ var anthologize = {
     ui.item.nextAll().each(function(){
       offset++;
       dest_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = offset;
-    })
+    });
 
     if (ui.item.hasClass("item")){
       dest_id = ui.item.closest("li.part").attr("id");
@@ -39,17 +41,20 @@ var anthologize = {
 	    "new_item": new_item,
 	    "item_id": item_id,
 	    "org_seq_num": org_seq_num,
-	    "dest_seq":  dest_seq
+	    "dest_seq":  dest_seq,
+	    "src_seq": anthologize.src_seq
     };
     //console.log(ajax_options);
     anth_admin_ajax.place_item(ajax_options);
   },
   "cleanPostIds" : function(dom_id){
 	  var clean_id = dom_id;
-	  clean_id = clean_id.replace("project-", "");
-	  clean_id = clean_id.replace("part-", "");
-	  clean_id = clean_id.replace("item-", "");
-	  clean_id = clean_id.replace("new-", "");
+	  if (clean_id != null){
+	    clean_id = clean_id.replace("project-", "");
+	    clean_id = clean_id.replace("part-", "");
+	    clean_id = clean_id.replace("item-", "");
+	    clean_id = clean_id.replace("new-", "");
+    }
 	  return clean_id;
   },
   "getAppendableItems" : function(item_id){
@@ -63,8 +68,8 @@ var anthologize = {
 	  });
 	  return itemInfo;
   },
-  "updateAddedItem" : function (newItem, new_item_id){
-	  //var newItem = jQuery("#new_new_new");
+  "updateAddedItem" : function (new_item_id){
+	  newItem = anthologize.newItem;
 	  newItem.attr("id", "item-" + new_item_id);
 	  newItem.children("h3").wrapInner('<span class="part-title" />');
 	
@@ -84,12 +89,22 @@ jQuery.fn.anthologizeSortList = function (options){
     start: function(event, ui){
       anthologize.src_id = null;
       anthologize.org_seq_num = ui.item.index() + 1;
+	    offset = anthologize.org_seq_num;
+	    anthologize.src_seq = {};
+	    anthologize.src_seq[anthologize.cleanPostIds(ui.item.attr("id"))] = offset;
+	    ui.item.nextAll().each(function(){
+		     if (! jQuery(this).hasClass("anthologize-drop-item")){
+	         offset++;
+	         anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = offset;
+         }
+	    });
       anthologize.fromNew = false;
+      anthologize.newItem = null;
       ui.item.addClass("anthologize-drag-selected");
     },
     stop: function (event, ui){
-      //anthologize.callBack(event, ui);
-      anthologize.updateAddedItem(ui.item, 9999999);
+	    anthologize.newItem = ui.item;
+      anthologize.callBack(event, ui);
       ui.item.removeClass("anthologize-drag-selected");
     },
     receive: function(event, ui){

@@ -19,6 +19,7 @@ place_item: function(config_obj) {
     jQuery.ajax({
         url: ajaxurl,
         type: 'POST',
+        dataType: 'json',
         data: {action:'place_item',
                project_id:config_obj.project_id,
                post_id:config_obj.item_id,
@@ -26,8 +27,7 @@ place_item: function(config_obj) {
                dest_id:config_obj.dest_id,
                src_id:config_obj.src_id,
                dest_seq:seq_stringify(config_obj.dest_seq),
-               // TODO: create this data
-               //src_seq:seq_stringify(config_obj.src_seq)
+               src_seq:seq_stringify(config_obj.src_seq)
                },
         async:false,
         timeout:20000,
@@ -36,19 +36,20 @@ place_item: function(config_obj) {
         },
         success: function(data){
             // We're done
-            if (new_item == 'true') {
-                jQuery('li#' + item_id).attr('id', data.post_id);
+            if (config_obj.new_item == 'true') {
+                //jQuery('li#' + item_id).attr('id', data.post_id);
+                anthologize.updateAddedItem(data.post_id);
             }
             return true;
         },
         error: function(){
             // Move the Item back
-            if (new_item == 'true') {
+            if (config_obj.new_item == 'true') {
                 jQuery('li#new_new_new').fadeOut('normal', function() {
                     jQuery(this).remove();
                 });
             } else {
-                jQuery('li#' + item_id).insertBefore($('li#' + src_id + 'ul li').eq(org_seq_num - 1));
+                jQuery('li#' + config_obj.item_id).insertBefore($('li#' + config_obj.src_id + 'ul li').eq(config_obj.org_seq_num - 1));
             }
         }
     });
