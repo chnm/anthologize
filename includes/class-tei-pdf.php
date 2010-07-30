@@ -69,10 +69,7 @@ class TeiPdf {
 
 				foreach ($paras as $para) {
 
-					$strip1 = $this->strip_whitespace($this->node_to_string($para));
-					//$strip2 = $this->strip_shortcodes($strip1);
-
-					$html = $html . $strip1;
+					$html = $html . $this->strip_whitespace($this->node_to_string($para));
 
 				} // foreach para
 
@@ -142,11 +139,6 @@ class TeiPdf {
 	private function strip_whitespace($string) {
 		return preg_replace('/\s+/', ' ', $string);
 	}
-
-	private function strip_shortcodes($string) {
-		return preg_replace('/\[caption.*?\]/', '', $string);
-	}
-
 
 } // TeiPdf
 
