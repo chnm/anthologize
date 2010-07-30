@@ -98,4 +98,30 @@
 	color: #13395F;
 }
 
+#new-part {
+	width: auto;
+	margin-top: -4px;
+	margin-right: -13px;
+	padding: 2px;
+	border-top-right-radius: 1px;
+	border-top-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	border-bottom-left-radius: 1px;
+
+}
+
+#export-project-button {
+	width: auto;
+	border-top-right-radius: 1px;
+	border-top-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	border-bottom-left-radius: 1px;
+}
+
+#export-project {
+	padding: 4px 8px;
+	text-decoration: none;
+
+}
+
 

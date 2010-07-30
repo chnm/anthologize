@@ -98,26 +98,32 @@ class Anthologize_Project_Organizer {
 
 				<div class="postbox" id="anthologize-parts-box">
 
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span></h3>
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts">New Part</a></div></h3>
+				<?php /* Todo: Add argument to new part button for redirect */ ?>
 
 				<div id="partlist">
 
 				<?php $this->list_existing_parts() ?>
 
+				<noscript>
 					<h3>New Parts</h3>
 					<p>Wanna create a new part? You know you do.</p>
 					<form action="" method="post">
 						<input type="text" name="new_part_name" />
 						<input type="submit" name="new_part" value="New Part" />
 					</form>
+				</noscript>
 
-
+				<!--
 					<br /><br />
-					<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a></p>
+					<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a>. You lucky duck.</p>
+				-->
 
 				</div>
 
 				</div> <!-- #anthologize-part-box -->
+
+			<div class="button" id="export-project-button"><a href="#" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
 
 			</div> <!-- #project-organizer-right-column -->
 
