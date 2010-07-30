@@ -72,7 +72,7 @@ class TeiPdf {
 				$html = $html . "<h3>" . $sub_title->textContent . "</h3>";
 
 				// Grab all paragraphs
-				$paras = $this->xpath->query("html:body/html:p", $item);
+				$paras = $this->xpath->query("html:body/*", $item);
 
 				foreach ($paras as $para) {
 
@@ -135,7 +135,7 @@ class TeiPdf {
 		$font_family = $font_size->textContent;
 		$font_size= $font_size->textContent;
 
-		$this->pdf->SetFont($font_family, '', $font_size, '', true);
+		$this->pdf->SetFont('times', '', 12, '', true);
 
 	}
 
