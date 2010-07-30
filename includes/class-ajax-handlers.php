@@ -2,7 +2,11 @@
 
 if ( !class_exists( 'Anthologize_Ajax_Handlers' ) ) :
 
+require_once('class-project-organizer.php');
+
 class Anthologize_Ajax_Handlers {
+
+    var $project_organizer;
 
 	function anthologize_ajax_handlers() {
 		add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
@@ -16,8 +20,10 @@ class Anthologize_Ajax_Handlers {
 		add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
 	}
 
-    function resequence_items($item_seq_array) {
-        // Update item sequence from associate array
+    function __construct() {
+        if (!isset($this->project_organizer)){
+            $this->project_organizer = new Anthologize_Project_Organizer;
+        }
     }
 
 	function get_tags() {
@@ -75,31 +81,31 @@ class Anthologize_Ajax_Handlers {
     function place_item() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
-        $dest_id = $_POST['dest_id'];
+        $dest_part_id = $_POST['dest_id'];
         $dest_seq = $_POST['dest_seq'];
-
-        if ('true' != $_POST['new_item']) {
-            $src_part_id = $_POST['src_id'];
-            $src_seq = $_POST['src_seq'];
-        } else {
-            $src_seq_array = false;
-            // TODO: We need to import an item
-            // Set $post_id to new post ID
-        }
-
-        // TODO: Update the post_id part to dest_id
-
-
         $dest_seq_array = json_decode($dest_seq);
         // TODO: error check
-        $this->resequence_items($dest_seq_array); 
 
+        if ('true' != $_POST['new_item']) {
+            $new_item = true;
+            $src_part_id = $_POST['src_id'];
+            $src_seq = $_POST['src_seq'];
+            $src_seq_array = json_decode($src_seq);
+            // TODO: error check
+        } else {
+            $new_item = false;
+            $src_part_id = false;
+            $src_seq_array = false;
+        }
 
-        $src_seq_array = json_decode($src_seq);
-        // TODO: error check
-        $this->resequence_items($src_seq_array); 
+        $insert_result = $this->project_organizer->insert_item($project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array);
 
-        print "{post_id:$post_id}";
+        if (false === $insert_result) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        } else {
+            print "{post_id:$insert_result}";
+        }
 
         die();
     }
@@ -119,15 +125,23 @@ class Anthologize_Ajax_Handlers {
         $new_seq_array = json_decode($new_seq);
         // TODO: error check
         
-        // TODO: merge the posts
-        //
+        $append_result = $this->project_organizer->append_children($post_id, $child_post_ids);
 
-        $this->resequence_items($new_seq_array); 
+        if (false === $append_result) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
+
+        $reseq_result = $this->project_organizer->rearrange_items($new_seq_array); 
+
+        if (false === $reseq_result) {
+            // TODO: What to do? If the merge succeeded but the resort failed, ugh...
+        }
 
         die();
     }
 
-    function update_post_metadata() {
+    /*function update_post_metadata() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
 
@@ -136,22 +150,27 @@ class Anthologize_Ajax_Handlers {
         // TODO: update metadata
 
         die();
-    }
+    }*/
 
     function remove_item_part() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $new_seq = $_POST['new_seq'];
 
-        // TODO: Remove the post
+        $remove_result = $this->project_organizer->remove_item($post_id);
+
+        if (false === $remove_result) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
 
         $new_seq_array = json_decode($new_seq);
         // TODO: error check
-        $this->resequence_items($new_seq_array); 
+        $this->project_organizer->rearrange_items($new_seq_array); 
 
         die();
     }
-
+/*
     function insert_new_item() {
         $project_id = $_POST['project_id'];
         $part_id = $_POST['part_id'];
@@ -187,6 +206,7 @@ class Anthologize_Ajax_Handlers {
 
         die();
     }
+ */
 }
 
 endif;
