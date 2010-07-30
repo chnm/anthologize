@@ -26,10 +26,12 @@
                     <listPerson>
                         <person xml:id="admin" role="administrator ">
                             <persName><forename>First Name</forename><surname>Last
-                                Name</surname></persName>
+                                    Name</surname><ident type="url"
+                                    ><![CDATA[http://myurl.not.example.com]]></ident></persName>
                         </person>
                         <person xml:id="boone-gorges" role="subscriber ">
-                            <persName><forename></forename><surname></surname></persName>
+                            <persName><forename></forename><surname></surname><ident type="url"
+                                    ><![CDATA[]]></ident></persName>
                         </person>
                     </listPerson>
                 </ab>

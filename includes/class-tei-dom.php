@@ -60,7 +60,6 @@ class TeiDom {
        $newPerson->appendChild($newPersName);
        $this->personMetaDataNode->appendChild($newPerson);
        $this->userNiceNames[] = $userObject->user_nicename;
-
 		}
 
 	}
@@ -99,28 +98,28 @@ class TeiDom {
   }
 
 	public function newPart($partObject) {
-		$newPart = $this->dom->createElement('div');
-		$newPart->setAttribute('type', 'part');
+    $newPart = $this->dom->createElement('div');
+    $newPart->setAttribute('type', 'part');
     $newPart->appendChild($this->newHead($partObject));
-		return $newPart;
+    return $newPart;
 	}
 
 	public function newItemContent($libraryItemObject) {
 
-		$newPostContent = $this->dom->createElement('div');
-		$newPostContent->setAttribute('type', 'libraryItem');
-		$newPostContent->setAttribute('subtype', 'html');
+    $newPostContent = $this->dom->createElement('div');
+    $newPostContent->setAttribute('type', 'libraryItem');
+    $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
-		$tmpHTML = new DOMDocument();
-		//using loadHTML because it is more forgiving than loadXML
-		$tmpHTML->loadHTML($libraryItemObject->post_content);
-		$body = $tmpHTML->getElementsByTagName('body')->item(0);
-		$body->setAttribute('xmlns', HTML);
+    $tmpHTML = new DOMDocument();
+    //using loadHTML because it is more forgiving than loadXML
+    $tmpHTML->loadHTML($libraryItemObject->post_content);
+    $body = $tmpHTML->getElementsByTagName('body')->item(0);
+    $body->setAttribute('xmlns', HTML);
 
-		$imported = $this->dom->importNode($body, true);
-		$newPostContent->appendChild($imported);
+    $imported = $this->dom->importNode($body, true);
+    $newPostContent->appendChild($imported);
 
-		return $newPostContent;
+    return $newPostContent;
 
 	}
 
@@ -142,11 +141,11 @@ class TeiDom {
     $this->addPerson($authorObject);
 
 		if($authorObject) {
-			$bibl = $this->dom->createElement('bibl');
-      $author = $this->dom->createElement('author');
-      $author->setAttribute('ref', $authorObject->user_nicename);
-      $bibl->appendChild($author);
-      $newHead->appendChild($bibl);
+        $bibl = $this->dom->createElement('bibl');
+        $author = $this->dom->createElement('author');
+        $author->setAttribute('ref', $authorObject->user_nicename);
+        $bibl->appendChild($author);
+        $newHead->appendChild($bibl);
 		}
 		return $newHead;
 	}

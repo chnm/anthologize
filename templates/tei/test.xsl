@@ -13,11 +13,17 @@
         </xd:desc>
     </xd:doc>
 
-    
-    
     <xsl:template match="/">
-        <xsl:apply-templates></xsl:apply-templates>
+        <xsl:apply-templates select="//tei:author"></xsl:apply-templates>
     </xsl:template>
+    
+<xsl:template match="tei:author">
+    <xsl:variable name="userId" select="@ref"></xsl:variable>
+    <!--<xsl:value-of select="$userId"/>-->
+    <xsl:value-of select="//person[@id = '$userId' ]/persName/forename"/>
+</xsl:template>    
+    
+<!--    
 
 
     <xsl:template match="tei:TEI">
@@ -26,10 +32,10 @@
 
     <xsl:template  match="//html:body">
         <xsl:value-of select="."></xsl:value-of>
-    </xsl:template>
+    </xsl:template>-->
     
     <xsl:template match="*">
-        <xsl:apply-templates></xsl:apply-templates>
+      <!--  <xsl:apply-templates></xsl:apply-templates>-->
     </xsl:template>
 
 </xsl:stylesheet>
