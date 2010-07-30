@@ -17,9 +17,7 @@ class Anthologize_Export_Panel {
 	}
 
 	function load_styles() {
-		?>
 
-		<?php
 	}
 
 
@@ -31,7 +29,7 @@ class Anthologize_Export_Panel {
 
 			<div id="export-form">
 
-			<?php if ( !isset( $_POST['submit'] ) ) : ?>
+			<?php if ( !isset( $_POST['export-step'] ) ) : ?>
 
 			<form action="" method="post">
 
@@ -89,38 +87,51 @@ class Anthologize_Export_Panel {
 				</tr>
 			</table>
 
+			<input type="hidden" name="export-step" value="1" />
 			<div id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Next', 'anthologize' ) ?>" /></div>
 
 			</form>
 
-			<?php else : ?>
+			<?php elseif ( $_POST['export-step'] == 1 ) : ?>
 
 			<?php $project_id = $_POST['project_id']; ?>
 			<?php $project = get_post( $project_id ); ?>
 
 			<form action="" method="post">
 
-				<input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" />
+				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 
-				<textarea id="dedication" name="dedication"></textarea>
-				<textarea id="acknowledgements" name="acknowledgements"></textarea>
+				<div style="clear: both;"> </div><br />
+
+				<div style="width: 400px; float: left;">
+					<p><strong><?php _e( 'Dedication', 'anthologize' ) ?></strong></p>
+					<textarea id="dedication" name="dedication" cols=35 rows=15></textarea>
+				</div>
+
+				<div style="width: 400px; float: left;">
+					<p><strong><?php _e( 'Acknowledgements', 'anthologize' ) ?></strong></p>
+					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15></textarea>
+				</div>
+
+
+				<div style="clear: both;"> </div>
 
 				<h3><?php _e( 'Publishing Options', 'anthologize' ) ?></h3>
 				<div id="publishing-options">
-					<div>
+					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Type', 'anthologize' ) ?></div>
 						<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="pdf" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI', 'anthologize' ) ?>
 					</div>
 
-					<div>
+					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Page Size', 'anthologize' ) ?></div>
 						<input type="radio" name="page-size" value="epub" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
 						<input type="radio" name="page-size" value="pdf" /> <?php _e( 'A4', 'anthologize' ) ?>
 					</div>
 
-					<div>
+					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Font Size', 'anthologize' ) ?></div>
 						<select name="font-size">
 							<option value="9">9</option>
@@ -132,7 +143,7 @@ class Anthologize_Export_Panel {
 						</select>
 					</div>
 
-					<div>
+					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Font Face', 'anthologize' ) ?></div>
 						<select name="font-face">
 							<option value="serif" class="serif">Serif</option>
@@ -147,12 +158,25 @@ class Anthologize_Export_Panel {
 				<input type="hidden" name="cname" value="<?php echo $_POST['cname'] ?>" />
 				<input type="hidden" name="ctype" value="<?php echo $_POST['ctype'] ?>" />
 				<?php if ( $_POST['ctype'] == 'cc' ) : ?>
-					<input type="hidden" name="cctype" value="<?php echo $_GET['cctype'] ?>" />
+					<input type="hidden" name="cctype" value="<?php echo $_POST['cctype'] ?>" />
 				<?php endif; ?>
-				<input type="hidden" name="edition" value="<?php echo $_GET['edition'] ?>" />
-				<input type="hidden" name="authors" value="<?php echo $_GET['authors'] ?>" />
+				<input type="hidden" name="edition" value="<?php echo $_POST['edition'] ?>" />
+				<input type="hidden" name="authors" value="<?php echo $_POST['authors'] ?>" />
+
+				<input type="hidden" name="export-step" value="2" />
+
+				<div style="clear: both;"> </div>
+
+				<div id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Next', 'anthologize' ) ?>" /></div>
 
 			</form>
+
+
+			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
+
+				<!-- Where the magic happens -->
+
+
 
 			<?php endif; ?>
 
