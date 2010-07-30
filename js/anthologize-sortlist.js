@@ -3,20 +3,18 @@ var anthologize = {
   "new_item_org_seq_num": null,
   "org_seq_num": null,
   "fromNew": false,
+  "appending": false,
   "callBack" : function(event, ui){
     var dest_part_id;
-    //var dest_seq = "";
     var dest_seq = {};
     var offset = 1;
     var new_item = "false";
     var src_id = anthologize.src_id;
 
     offset = ui.item.index() + 1
-    //dest_seq = ui.item.attr("id") + ":" + offset;
     dest_seq[ui.item.attr("id")] = offset;
     ui.item.nextAll().each(function(){
       offset++;
-      //dest_seq += "," + jQuery(this).attr("id") + ":" + offset;
       dest_seq[jQuery(this).attr("id")] = offset;
     })
 
@@ -27,27 +25,12 @@ var anthologize = {
     }
 
     var org_seq_num = anthologize.org_seq_num;
-    // if (src_id == "sidebar-posts"){
-    //   new_item = "true;"
-    //   org_seq_num = anthologize.new_item_org_seq_num;
-    //   ui.item.attr("id", "new-new-new");
-    // }
+
     if (anthologize.fromNew){
       new_item = "true";
       org_seq_num = anthologize.new_item_org_seq_num;
       ui.item.attr("id", "new-new-new");
     }
-    // console.log("----Do it----");
-    // console.log("project_id: " + jQuery(".wrap").attr("id"))
-    // console.log("src_id: " + anthologize.src_id);
-    // console.log("dest_id: " + dest_id);
-    // console.log("new_item: " + new_item);
-    // console.log("item_id: " + ui.item.attr('id'));
-    // console.log("org_seq_num: " + org_seq_num);
-    // //console.log("dest_seq: " + dest_seq);
-    // console.log("dest_seq:");
-    // console.log(dest_seq);
-    
 
     var ajax_options = {
 	    "project_id": this.cleanPostIds(jQuery(".wrap").attr("id")),
@@ -58,7 +41,8 @@ var anthologize = {
 	    "org_seq_num": org_seq_num,
 	    "dest_seq":  dest_seq
     };
-    console.log(ajax_options);
+    //console.log(ajax_options);
+    anth_admin_ajax.place_item(ajax_options);
   },
   "cleanPostIds" : function(dom_id){
 	  var clean_id = dom_id;
@@ -71,7 +55,6 @@ var anthologize = {
 	  var itemInfo = {};
 	  var part = jQuery("#" + item_id).closest("li.part");
 	  var items = jQuery("#" + item_id).siblings();
-	  console.log(items);
 	  var i = 0;
 	  items.each(function(){
 		  itemInfo[jQuery(this).attr("id")] = jQuery(this).find("span.part-title").text();
@@ -118,7 +101,6 @@ jQuery(document).ready(function(){
     revert: "invalid",
     start: function(event, ui){
       anthologize.new_item_org_seq_num = jQuery(this).index() + 1;
-      //anthologize.fromNew = true;
     },
     drag: function(event, ui){
 	    if (anthologize.fromNew == false){
@@ -129,24 +111,34 @@ jQuery(document).ready(function(){
 
   jQuery("body").delegate("a.append", "click", function(){
 	  var item = jQuery(this).closest("li.item");
-	  if (item.children("div.append-panel").length == 0){
-		  var appendPanel = '<div class="append-panel">Feed me!<br /><a href="#" class="cancelAppend">Cancel</a></div>';
+    if (anthologize.appending == false){
+	    jQuery(this).addClass("active-append");
+		  var appendPanel = '<div class="append-panel"><form><div class="append_items"></div>' +
+		                    '<input type="button" name="doAppend" value="Append" /> ' + 
+		                    '<a href="#" class="cancelAppend">Cancel</a></form></div>';
 		  item.append(appendPanel);
-		  var panel = jQuery(this).children("div.append-panel").first();
-		  panel.slideToggle("slow");
+		  var panel = item.find("div.append_items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));
 		  for (var itemId in appendable){
-			  console.log(itemId + " - " + appendable[itemId]);
-			  panel.append('<input type="checkbox" name="append[]" id="append-"' + itemId + '/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label>');
+			  panel.append('<input type="checkbox" name="append[]" id="append-"' + itemId + '/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
 		  }
+		
+		  jQuery(".project-parts").sortable("disable");
+		  jQuery(".part-items ul").sortable("disable");
+		  jQuery("a.append").addClass("disabled");
+		  anthologize.appending = true;
 	  }
   });
  
   jQuery("body").delegate("a.cancelAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 	  var appendPanel = item.children("div.append-panel").first();
-	  appendPanel.slideToggle("slow");
 	  jQuery("div.append-panel").remove();
+	  jQuery(this).removeClass("active-append");
+	  jQuery(".project-parts").sortable("enable");
+	  jQuery(".part-items ul").sortable("enable");
+	  jQuery("a.append").removeClass("disabled");
+	  anthologize.appending = false;
   });
 
 });
