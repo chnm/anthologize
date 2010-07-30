@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<TEI xmlns="http://www.tei-c.org/ns/1.0" >
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
     <teiHeader>
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
@@ -8,30 +8,33 @@
                 <title></title>
             </titleStmt>
             <publicationStmt>
-                <p></p>
+                <p>This edition produced with the Anthologize blog-to-bookshelf WordPress plugin (http://anthologize.org) </p>
             </publicationStmt>
             <sourceDesc>
-<bibl>
-    <ident></ident>
-</bibl>
+                <bibl>
+                    <ident></ident>
+                </bibl>
             </sourceDesc>
         </fileDesc>
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
-        <layoutDesc xmlns="http://www.anthologize.org/ns"> 
-        </layoutDesc>
+        <outputParams xmlns="http://www.anthologize.org/ns">
+            <param name="paper-type">Letter</param>
+            <param name="page-width">8.5in</param>
+            <param name="page-height">11in</param>
+            <param name="font-size">12pt</param>
+            <param name="font-family">Times New Roman, Serif</param>
+        </outputParams>
 
         <encodingDesc>
             <refsDecl>
                 <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
-                    <listPerson>
-                    </listPerson>
+                    <listPerson> </listPerson>
                 </ab>
             </refsDecl>
             <appInfo>
-                <application ident="anthologize" version="1.0">
+                <application ident="anthologize" version="0.3">
                     <label>Anthologize</label>
-										
                 </application>
             </appInfo>
         </encodingDesc>
@@ -41,7 +44,7 @@
     </teiHeader>
     <text>
         <body>
-            <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->          
+            <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->
         </body>
     </text>
 </TEI>
