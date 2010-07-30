@@ -10,12 +10,13 @@ var anthologize = {
     var offset = 1;
     var new_item = "false";
     var src_id = anthologize.src_id;
+    var item_id = anthologize.cleanPostIds(ui.item.attr("id"));
 
     var org_seq_num = anthologize.org_seq_num;
     if (anthologize.fromNew){
       new_item = "true";
       org_seq_num = anthologize.new_item_org_seq_num;
-      ui.item.attr("id", "new-new-new");
+      ui.item.attr("id", "new_new_new");
     }
 
     offset = ui.item.index() + 1
@@ -36,7 +37,7 @@ var anthologize = {
 	    "src_id": this.cleanPostIds(anthologize.src_id),
 	    "dest_id": this.cleanPostIds(dest_id),
 	    "new_item": new_item,
-	    "item_id": this.cleanPostIds(ui.item.attr('id')),
+	    "item_id": item_id,
 	    "org_seq_num": org_seq_num,
 	    "dest_seq":  dest_seq
     };
