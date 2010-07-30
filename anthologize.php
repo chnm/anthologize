@@ -9,6 +9,9 @@ Author URI: http://oneweekonetool.org
 */
 
 
+
+
+
 if ( !class_exists( 'Anthologize_Loader' ) ) :
 
 class Anthologize_Loader {

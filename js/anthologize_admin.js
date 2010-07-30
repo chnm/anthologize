@@ -1,14 +1,14 @@
-//
-// Boolean return:
+// return post_id
 //
 // Move an Item or Part
 // (in case of moving parts, just duplicate and src and dest content)
 // (in case of new=true, src vars = null)
 
-// Also, return post_id
 $.ajax({
-        url: 'placeItem.php',
-        data: {project_id:project_id,
+        url: ajaxurl,
+        type: 'POST',
+        data: {action:'place_item',
+               project_id:project_id,
                post_id:item_id,
                new_post:new_item,
                dest_id:dest_id,
@@ -44,14 +44,14 @@ $.ajax({
 
 // Append/merge items into a single other item
 $.ajax({
-        url: 'mergeItems.php',
-        data: {project_id:project_id,
+        url: ajaxurl,
+        type: 'POST',
+        data: {action:'merge_items',
+               project_id:project_id,
                post_id:item_id,
                child_post_ids:{},
                // TODO: create this data
-               new_seq:merge_seq,
-               author_str:xxx,
-               title_str:xxx},
+               new_seq:merge_seq},
         async:false,
         timeout:20000,
         beforeSend:function() {
@@ -73,9 +73,12 @@ $.ajax({
 
 
 // Change Part/Item metadata
+// TODO: what does this metadata package look like?
 $.ajax({
-        url: 'updatePostMetadata.php',
-        data: {project_id:project_id,
+        url: ajaxurl,
+        type: 'POST',
+        data: {action:'update_post_metadata',
+               project_id:project_id,
                post_id:item_id},
         async:false,
         timeout:20000,
@@ -94,8 +97,10 @@ $.ajax({
 // Remove an Item/Part
 // TODO: What about removing a Part that still contains Items? Handled on the server side?
 $.ajax({
-        url: 'removePost.php',
-        data: {project_id:project_id,
+        url: ajaxurl,
+        type: 'POST',
+        data: {action:'remove_item_part',
+               project_id:project_id,
                post_id:item_id,
                // TODO: create this data
                new_seq:new_seq},
@@ -118,8 +123,9 @@ $.ajax({
 // json return:
 //
 // Filter list of posts by Tag
-$.ajax({
-        url: 'filterPostsByTag.php',
+/*$.ajax({
+        url: ajaxurl,
+        type: 'POST',
         data: {tag_id:!!!tag_id!!!},
         dataType:json,
         async:false,
@@ -139,10 +145,11 @@ $.ajax({
         }
 });
 
-
+*/
 // Filter list of posts by Category
-$.ajax({
-        url: 'filterPostsByCategory.php',
+/*$.ajax({
+        url: ajaxurl,
+        type: 'POST',
         data: {category_id:!!!category_id!!!},
         dataType:json,
         async:false,
@@ -161,7 +168,7 @@ $.ajax({
             alert('Error filtering posts');
         }
 });
-
+*/
 
 //
 // returns post_id, seq_num
@@ -170,9 +177,12 @@ $.ajax({
 // Insert a new Item
 // Where do we get the title?
 $.ajax({
-        url: 'insertBlankItem.php',
-        data: {project_id:project_id,
-               part_id:!!!part_id!!!},
+        url: ajaxurl,
+        type: 'POST',
+        data: {action:'insert_new_item',
+               project_id:project_id,
+               part_id:!!!part_id!!!,
+               new_seq:!!!new_seq!!!},
         async:false,
         timeout:20000,
         beforeSend:function() {
@@ -190,8 +200,11 @@ $.ajax({
 // Insert a new Part
 // Where do we get the title?
 $.ajax({
-        url: 'insertNewPart.php',
-        data: {project_id:project_id},
+        url: ajaxurl,
+        type: 'POST',
+        data: {action:'insert_new_part',
+               project_id:project_id,
+               new_seq:!!!new_seq!!!},
         async:false,
         timeout:20000,
         beforeSend:function() {
