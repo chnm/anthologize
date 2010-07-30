@@ -1,12 +1,12 @@
 <?php
 
-//error_reporting(0);
+error_reporting(0);
 
-include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
-include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-pdf.php');
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-pdf.php');
 
 
-$projectID = 867;
+$projectID = 877;
 $tei_dom = new TeiDom($projectID);
 
 $pdf = new TeiPdf($tei_dom);
@@ -21,5 +21,5 @@ $pdf->write_pdf();
 
 // or $teiDom = $tei->getTeiDom();
 
-die();
-
+//die();
+?>
