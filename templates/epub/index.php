@@ -12,29 +12,34 @@
     6. Delete all temp stuff
    
   */
-  
-  $debug = true;
     
-  include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+  $plugin_dir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize';
+  $epub_dir   = $plugin_dir . DIRECTORY_SEPARATOR . 'templates';
   
-  echo "Stay tuned!"; die;
+  // echo $plugin_dir . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php'; die();
+  
+  include_once($plugin_dir . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
   
   // Constants
 
-  $temp_dir_name          = 'temp'; // Does this need to be mapped??
-  $temp_epub_dir_name     = $temp_dir_name       . '/epub';
-  $temp_epub_meta_inf_dir = $temp_epub_dir_name  . '/META-INF';
-  $temp_epub_oebps_dir    = $temp_epub_dir_name  . '/OEBPS';
-  $temp_epub_images_dir   = $temp_epub_oebps_dir . '/images';
-  $temp_zip_filename      = $temp_dir_name       . '/book.zip';
+  $temp_dir_name          = $plugin_root . DIRECTORY_SEPARATOR . 'temp'; // Does this need to be mapped??
+  $temp_epub_dir_name     = $temp_dir_name       . DIRECTORY_SEPARATOR . 'epub';
+  $temp_epub_meta_inf_dir = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'META-INF';
+  $temp_epub_oebps_dir    = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'OEBPS';
+  $temp_epub_images_dir   = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR . 'images';
+  $temp_zip_filename      = $temp_dir_name       . DIRECTORY_SEPARATOR . 'book.zip';
+
+  // echo realpath(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize . "$temp_dir_name) . "<br />" . $temp_epub_dir_name . "<br />";
+  // include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
   
-  /*  
+  die();
+
+/*
   // Create directories in temp directory
   
   mkdir($temp_epub_meta_inf_dir, 0777, true);
   mkdir($temp_epub_oebps_dir,    0777, true);
   mkdir($temp_epub_images_dir,   0777, true);
-
   
   // Create & populate mimetype file
   
