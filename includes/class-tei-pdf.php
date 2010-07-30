@@ -2,6 +2,8 @@
 
 require_once('tcpdf/config/lang/eng.php');
 require_once('tcpdf/tcpdf.php');
+include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
@@ -12,18 +14,17 @@ class TeiPdf {
 	public $tei;
 	public $pdf;
 
-	function __construct($wpContent = null) {
+	function __construct($tei_dom) {
 
 		// Creates an object of type DOMDocument
 		// and exposes it as the attribute $tei
-		$this->tei = new DOMDocument(); 
-	  $this->tei->load("../templates/tei/teiBase.xml");
+		$tei = $tei_dom->getTeiDom();
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 	}	
 
-	public function writePDF() {
+	public function write_pdf() {
 
 		//set auto page breaks
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -33,6 +34,10 @@ class TeiPdf {
 
 		//set some language-dependent strings
 		$this->pdf->setLanguageArray($l);
+
+		$this->set_docinfo();
+		$this->set_font();
+		$this->set_margins();
 
 		// ---------------------------------------------------------
 
@@ -75,9 +80,9 @@ class TeiPdf {
 		// documentation for more information.
 
 		//echo $html; // DEBUG
-		$this->pdf->Output('example_001.pdf', 'I');
+		$this->pdf->Output('example_001.pdf');
 
-	} // writePDF 
+	} // write_pdf
 
 	public function set_header() {
 
@@ -130,15 +135,5 @@ class TeiPdf {
 
 
 } // TeiPdf
-
-$pdf_output = new TeiPdf();
-
-$pdf_output->set_header();
-$pdf_output->set_footer();
-$pdf_output->set_docinfo();
-$pdf_output->set_font();
-$pdf_output->set_margins();
-
-$pdf_output->writePDF();
 
 ?>
