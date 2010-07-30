@@ -48,7 +48,7 @@ class Anthologize_Project_Organizer {
 			$this->append_children( $_POST['append_parent'], $_POST['append_children'] );
 		}
 		?>
-		<div class="wrap">
+		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
 
 		<div id="project-organizer-frame">
 			<div id="project-organizer-column" class="metabox-holder">
@@ -64,7 +64,9 @@ class Anthologize_Project_Organizer {
 								<?php $this->sortby_dropdown() ?>
 							</p>
 
-
+							<p id="menu-item-name-wrap">
+								<?php $this->filter_dropdown_tags() ?>
+							</p>
 
 					</div><!-- /.customlinkdiv -->
 					</div>
@@ -108,10 +110,35 @@ class Anthologize_Project_Organizer {
 		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
 
 		?>
-			<select name="filter">
-			<?php foreach( $filters as $filter => $name ) : ?>
-				<option value="<?php echo $filter ?>"><?php echo $name ?></option>
-			<?php endforeach; ?>
+			<select name="sortby" id="sortby-dropdown">
+				<?php foreach( $filters as $filter => $name ) : ?>
+					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
+				<?php endforeach; ?>
+			</select>
+		<?php
+	}
+
+	function filter_dropdown_tags() {
+		$tags = get_tags();
+
+		?>
+			<select name="filter" id="filter">
+				<?php foreach( $tags as $tag ) : ?>
+					<option value="<?php echo $tag->term_id ?>"><?php echo $tag->name ?></option>
+				<?php endforeach; ?>
+			</select>
+		<?php
+	}
+
+
+	function filter_dropdown_cats() {
+		$cats = get_categories();
+
+		?>
+			<select name="filter" id="filter">
+				<?php foreach( $cats as $cat ) : ?>
+					<option value="<?php echo $cat->term_id ?>"><?php echo $cat->name ?></option>
+				<?php endforeach; ?>
 			</select>
 		<?php
 	}

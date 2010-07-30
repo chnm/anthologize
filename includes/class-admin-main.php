@@ -51,9 +51,6 @@ class Anthologize_Admin_Main {
 	}
 
 	function load_scripts() {
-    	wp_enqueue_script('jquery-ui');
-    	wp_enqueue_script('jquery-ui-draggable');
-    	wp_enqueue_script('jquery-ui-sortable');
     	wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
 
 	}

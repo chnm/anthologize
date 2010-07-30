@@ -115,9 +115,12 @@ class Anthologize_Loader {
 
 	function includes() {
 
-		if ( is_admin() )
-			require( dirname( __FILE__ ) . '/includes/class-admin-main.php' );
+		require( dirname( __FILE__ ) . '/includes/class-ajax-handlers.php' );
+		$ajax_handlers = new Anthologize_Ajax_Handlers();
 
+		if ( is_admin() ) {
+			require( dirname( __FILE__ ) . '/includes/class-admin-main.php' );
+		}
 	}
 
 	// Let plugins know that we're done loading

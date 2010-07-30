@@ -3,9 +3,8 @@
 	float: left;
 	height: 500px;
 	clear: both;
+	display: block;
 }
 
 #project-organizer-column p {
-	height: 500px;
-	display: block;
 }
