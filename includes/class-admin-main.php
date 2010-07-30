@@ -22,14 +22,14 @@ class Anthologize_Admin_Main {
 	}
 
 	function init() {
-	    
-	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type ) 
+
+	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
     	{
             add_meta_box('anthologize', 'Anthologize', array($this,'item_meta_box'), $type, 'side', 'high');
     	}
-    	
+
     	add_action('save_post',array( $this, 'item_meta_save' ));
-		
+
 		do_action( 'anthologize_admin_init' );
 	}
 
@@ -38,7 +38,7 @@ class Anthologize_Admin_Main {
 
 		$plugin_pages[] = add_menu_page( __( 'Anthologize', 'anthologize' ), __( 'Anthologize', 'anthologize' ), 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
-//		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export', 'anthologize' ), __( 'Export','anthologize' ), 'manage_options', __FILE__, array( $this, 'display' ) );
 
 //		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
 
@@ -63,6 +63,16 @@ class Anthologize_Admin_Main {
 
 	}
 
+	function load_export_panel( $project_id ) {
+		if ( !$project_id )
+			$project_id = 0;
+
+		require_once( dirname( __FILE__ ) . '/class-export-panel.php' );
+		$export_panel = new Anthologize_Export_Panel( $project_id );
+		$export_panel->display();
+
+	}
+
 	function display_no_project_id_message() {
 		?>
 			<div id="notice" class="error below-h2">
@@ -78,6 +88,12 @@ class Anthologize_Admin_Main {
 
 		if ( $_GET['action'] == 'edit' && $project ) {
 			$this->load_project_organizer( $_GET['project_id'] );
+		}
+
+		if ( $_GET['action'] == 'export' && $_GET['project_id'] ) {
+			$this->load_export_panel( $_GET['project_id'] );
+		} else if ( $_GET['action'] == 'export' ) {
+			$this->load_export_panel();
 		}
 
 		if (
@@ -205,22 +221,22 @@ class Anthologize_Admin_Main {
      * item_meta_save
      *
      * Processes post save from the item_meta_box function. Saves
-     * custom post metadata. Also responsible for correctly 
+     * custom post metadata. Also responsible for correctly
      * redirecting to Anthologize pages after saving.
      **/
     function item_meta_save($post_id)
     {
         // make sure data came from our meta box
         if ( !wp_verify_nonce($_POST['anthologize_noncename'],__FILE__) ) return $post_id;
-        
+
         // check user permissions
         if ( !current_user_can('edit_post', $post_id) ) return $post_id;
 
         $current_data = get_post_meta($post_id, 'anthologize_meta', TRUE);
-        
-        $new_data = $_POST['anthologize_meta'];	
-        
-        if ( $current_data ) 
+
+        $new_data = $_POST['anthologize_meta'];
+
+        if ( $current_data )
     	{
     		if ( is_null($new_data) ) delete_post_meta($post_id,'anthologize_meta');
     		else update_post_meta($post_id,'anthologize_meta',$new_data);
@@ -241,18 +257,18 @@ class Anthologize_Admin_Main {
     }
     /**
      * item_meta_box
-     * 
+     *
      * Displays form for editing item metadata associated with
      * Anthologize. Includes hidden fields for post_parent and
      * menu_order because WP sets those values to 0 if those
      * fields are not present on the form.
      **/
     function item_meta_box() {
-        
+
         global $post;
-        
+
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
-        
+
         ?>
         <div class="my_meta_control">
 
