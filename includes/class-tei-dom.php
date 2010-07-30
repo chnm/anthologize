@@ -14,23 +14,32 @@ class TeiDom {
   public $userNiceNames = array();
 
 
-	function __construct($projectID) {
+	function __construct($projectID, $checkImgSrcs = true) {
 
 		$this->dom = new DOMDocument();
     $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" .
       DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'tei' . DIRECTORY_SEPARATOR .'teiEmpty.xml';
 		$this->dom->load($templatePath);
-		$this->xpath = new DOMXPath($this->dom);
-		$this->xpath->registerNamespace('tei', TEI);
-		$this->xpath->registerNamespace('html', HTML);
-		$authorAB =  $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
-    $this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
-		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
+    $this->setXPath();
 
 
 
 		$this->buildProjectData($projectID);
+    if($checkImgSrcs) {
+    	$this->checkImgSrcs();
+    }
+
+
 	}
+
+  public function setXPath() {
+    $this->xpath = new DOMXPath($this->dom);
+    $this->xpath->registerNamespace('tei', TEI);
+    $this->xpath->registerNamespace('html', HTML);
+    $authorAB =  $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
+    $this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
+    $this->bodyNode = $this->xpath->query("//tei:body")->item(0);
+  }
 
 	public function getTeiString() {
 		return $this->dom->saveXML();
@@ -114,8 +123,14 @@ class TeiDom {
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
     $tmpHTML = new DOMDocument();
+    $content = do_shortcode($libraryItemObject->post_content);
     //using loadHTML because it is more forgiving than loadXML
-    $tmpHTML->loadHTML($libraryItemObject->post_content);
+
+    $tmpHTML->loadHTML($content);
+    if($this->checkImgSrcs) {
+      $this->checkImgSrcs($tmpHTML);
+
+    }
     $body = $tmpHTML->getElementsByTagName('body')->item(0);
     $body->setAttribute('xmlns', HTML);
 
@@ -161,6 +176,25 @@ class TeiDom {
       } else if ($a->menu_order == $b->menu_order) {
           return $a->ID - $b->ID;
       }
+  }
+
+  private function checkImgSrcs() {
+    $imgs = $this->dom->getElementsByTagName('img');
+    for($i = $imgs->length; $i>0; $i--) {
+        $imgNode = $imgs->item(0);
+        $src =  $imgNode->getAttribute('src');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $src);
+        //curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if($code == 404) {
+          $noImgSpan = $this->dom->createElementNS(HTML, 'span', 'Image not found');
+          $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
+        }
+    }
   }
 }
 
