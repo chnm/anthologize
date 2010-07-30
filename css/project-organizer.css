@@ -110,6 +110,12 @@
 
 }
 
+/* sortable/draggable styles  */
+.anthologize-drop-item {
+      border: 1px dashed #000;
+      height: 2em;
+}
+
 #export-project-button {
 	width: auto;
 	border-top-right-radius: 1px;

@@ -103,7 +103,9 @@ class Anthologize_Project_Organizer {
 
 				<div id="partlist">
 
-				<?php $this->list_existing_parts() ?>
+				<ul class="project-parts">
+                                    <?php $this->list_existing_parts() ?>
+                                </ul>
 
 				<noscript>
 					<h3>New Parts</h3>
@@ -259,12 +261,13 @@ class Anthologize_Project_Organizer {
 				<?php
 
 				?>
-					<div class="part" id="part-<?php echo $part_id ?>">
+					<li class="part" id="part-<?php echo $part_id ?>">
 						<h3 class="part-header"><noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript><?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
 
 						<div class="part-items">
-
+                                                    <ul>
 							<?php $this->get_part_items( $part_id ) ?>
+                                                    </ul>
 
 						</div>
 
@@ -286,7 +289,7 @@ class Anthologize_Project_Organizer {
 
 						<?php */ ?>
 
-					</div>
+					</li>
 
 
 				</form>
@@ -373,15 +376,11 @@ class Anthologize_Project_Organizer {
 
 		if ( $items_query->have_posts() ) {
 
-			echo "<ul>";
-
 			while ( $items_query->have_posts() ) : $items_query->the_post();
 
 				$this->display_item( $append_parent );
 
 			endwhile;
-
-			echo "</ul>";
 
 		}
 	}
@@ -493,7 +492,7 @@ class Anthologize_Project_Organizer {
 		global $post;
 
 	?>
-		<li>
+		<li id="item-<?php the_ID() ?>" class="item">
 			<?php if ( $append_parent ) : ?>
 				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo $post->ID . " " . $append_parent ?>
 			<?php endif; ?>
