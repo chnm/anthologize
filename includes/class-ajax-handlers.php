@@ -112,7 +112,7 @@ class Anthologize_Ajax_Handlers {
             header('HTTP/1.1 500 Internal Server Error');
             die();
         } else {
-            print "{post_id:$insert_result}";
+            print "{\"post_id\":\"$insert_result\"}";
         }
 
         die();
