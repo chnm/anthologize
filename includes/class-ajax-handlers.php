@@ -2,104 +2,112 @@
 
 if ( !class_exists( 'Anthologize_Ajax_Handlers' ) ) :
 
+    require_once('class-project-organizer.php');
+
 class Anthologize_Ajax_Handlers {
 
-	function anthologize_ajax_handlers() {
-		add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
-		add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
-		add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
-		add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
-		add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
-		add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
-		add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
-		add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
-		add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
-	}
+    var $project_organizer;
 
-    function resequence_items($item_seq_array) {
-        // Update item sequence from associate array
+    function anthologize_ajax_handlers() {
+        add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
+        add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
+        add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
+        add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
+        add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
+        add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
+        add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
+        add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
+        add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
     }
 
-	function get_tags() {
-		$tags = get_tags();
+    function __construct() {
+        $project_id = $_POST['project_id'];
+        // TODO: error check
+        if (!isset($this->project_organizer)){
+            $this->project_organizer = new Anthologize_Project_Organizer($project_id);
+        }
+    }
 
-		$the_tags = '';
-		foreach( $tags as $tag ) {
-			$the_tags .= $tag->term_id . ':' . $tag->name . ',';
-		}
+    function get_tags() {
+        $tags = get_tags();
 
-		print_r($the_tags);
-		die();
-	}
+        $the_tags = '';
+        foreach( $tags as $tag ) {
+            $the_tags .= $tag->term_id . ':' . $tag->name . ',';
+        }
 
-	function get_cats() {
-		$cats = get_categories();
+        print_r($the_tags);
+        die();
+    }
 
-		$the_cats = '';
-		foreach( $cats as $cat ) {
-			$the_cats .= $cat->term_id . ':' . $cat->name . ',';
-		}
+    function get_cats() {
+        $cats = get_categories();
 
-		print_r($the_cats);
-		die();
-	}
+        $the_cats = '';
+        foreach( $cats as $cat ) {
+            $the_cats .= $cat->term_id . ':' . $cat->name . ',';
+        }
 
-	function get_posts_by() {
-		$term = $_POST['term'];
-		$tagorcat = $_POST['tagorcat'];
+        print_r($the_cats);
+        die();
+    }
 
-		// Blech
-		$t_or_c = ( $tagorcat == 'tag' ) ? 'tag_id' : 'cat';
+    function get_posts_by() {
+        $term = $_POST['term'];
+        $tagorcat = $_POST['tagorcat'];
 
-		$args = array(
-			'post_type' => array('post', 'page', 'imported_items' ),
-			$t_or_c => $term,
-			'posts_per_page' => -1
-		);
+        // Blech
+        $t_or_c = ( $tagorcat == 'tag' ) ? 'tag_id' : 'cat';
+
+        $args = array(
+            'post_type' => array('post', 'page', 'imported_items' ),
+            $t_or_c => $term,
+            'posts_per_page' => -1
+        );
 
 
-		query_posts( $args );
+        query_posts( $args );
 
-		$response = '';
+        $response = '';
 
-		while ( have_posts() ) {
-			the_post();
-			$response .= get_the_ID() . ':' . get_the_title() . ',';
-		}
+        while ( have_posts() ) {
+            the_post();
+            $response .= get_the_ID() . ':' . get_the_title() . ',';
+        }
 
-		print_r($response);
+        print_r($response);
 
-		die();
-	}
+        die();
+    }
 
     function place_item() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
-        $dest_id = $_POST['dest_id'];
+        $dest_part_id = $_POST['dest_id'];
         $dest_seq = $_POST['dest_seq'];
-
-        if ('true' != $_POST['new_item']) {
-            $src_part_id = $_POST['src_id'];
-            $src_seq = $_POST['src_seq'];
-        } else {
-            $src_seq_array = false;
-            // TODO: We need to import an item
-            // Set $post_id to new post ID
-        }
-
-        // TODO: Update the post_id part to dest_id
-
-
         $dest_seq_array = json_decode($dest_seq);
         // TODO: error check
-        $this->resequence_items($dest_seq_array); 
 
+        if ('true' != $_POST['new_item']) {
+            $new_item = true;
+            $src_part_id = $_POST['src_id'];
+            $src_seq = $_POST['src_seq'];
+            $src_seq_array = json_decode($src_seq);
+            // TODO: error check
+        } else {
+            $new_item = false;
+            $src_part_id = false;
+            $src_seq_array = false;
+        }
 
-        $src_seq_array = json_decode($src_seq);
-        // TODO: error check
-        $this->resequence_items($src_seq_array); 
+        $insert_result = $this->project_organizer->insert_item($project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array);
 
-        print "{post_id:$post_id}";
+        if (false === $insert_result) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        } else {
+            print "{post_id:$insert_result}";
+        }
 
         die();
     }
@@ -118,16 +126,24 @@ class Anthologize_Ajax_Handlers {
 
         $new_seq_array = json_decode($new_seq);
         // TODO: error check
-        
-        // TODO: merge the posts
-        //
 
-        $this->resequence_items($new_seq_array); 
+        $append_result = $this->project_organizer->append_children($post_id, $child_post_ids);
+
+        if (false === $append_result) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
+
+        $reseq_result = $this->project_organizer->rearrange_items($new_seq_array); 
+
+        if (false === $reseq_result) {
+            // TODO: What to do? If the merge succeeded but the resort failed, ugh...
+        }
 
         die();
     }
 
-    function update_post_metadata() {
+    /*function update_post_metadata() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
 
@@ -136,22 +152,27 @@ class Anthologize_Ajax_Handlers {
         // TODO: update metadata
 
         die();
-    }
+    }*/
 
     function remove_item_part() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $new_seq = $_POST['new_seq'];
 
-        // TODO: Remove the post
+        $remove_result = $this->project_organizer->remove_item($post_id);
+
+        if (false === $remove_result) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
 
         $new_seq_array = json_decode($new_seq);
         // TODO: error check
-        $this->resequence_items($new_seq_array); 
+        $this->project_organizer->rearrange_items($new_seq_array); 
 
         die();
     }
-
+/*
     function insert_new_item() {
         $project_id = $_POST['project_id'];
         $part_id = $_POST['part_id'];
@@ -168,14 +189,14 @@ class Anthologize_Ajax_Handlers {
 
         die();
     }
-    
+
     function insert_new_part() {
         $project_id = $_POST['project_id'];
         $new_seq = $_POST['new_seq'];
 
         // TODO: what metadata do we expect?
-        
-        
+
+
         // TODO: Create a new bare part
 
         $new_seq_array = json_decode($new_seq);
@@ -187,6 +208,7 @@ class Anthologize_Ajax_Handlers {
 
         die();
     }
+ */
 }
 
 endif;

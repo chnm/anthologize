@@ -3,8 +3,10 @@
 // Move an Item or Part
 // (in case of moving parts, just duplicate and src and dest content)
 // (in case of new=true, src vars = null)
-
-$.ajax({
+anth_admin_ajax = {
+place_item: function(config_obj) {
+                
+    $.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'place_item',
@@ -39,11 +41,12 @@ $.ajax({
                 $('li#' + item_id).insertBefore($('li#' + src_id + 'ul li').eq(org_seq_num - 1));
             }
         }
-});
+    });
 
-
+},
+merge_items: function(config_obj) {
 // Append/merge items into a single other item
-$.ajax({
+    $.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'merge_items',
@@ -69,12 +72,13 @@ $.ajax({
             // Post error alert?
             alert('Error merging items');
         }
-});
-
+    });
+},
+update_post_metadata: function(config_obj){
 
 // Change Part/Item metadata
 // TODO: what does this metadata package look like?
-$.ajax({
+    $.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'update_post_metadata',
@@ -92,11 +96,12 @@ $.ajax({
         error: function(){
             alert('Error updating post metadata');
         }
-});
-
+    });
+},
+remove_item_part: function(config_obj){
 // Remove an Item/Part
 // TODO: What about removing a Part that still contains Items? Handled on the server side?
-$.ajax({
+    $.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'remove_item_part',
@@ -118,7 +123,8 @@ $.ajax({
         error: function(){
             alert('Error removing post');
         }
-});
+    });
+}};
 
 // json return:
 //
@@ -176,7 +182,7 @@ $.ajax({
 
 // Insert a new Item
 // Where do we get the title?
-$.ajax({
+/*$.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'insert_new_item',
@@ -195,11 +201,11 @@ $.ajax({
         error: function(){
             alert('Error adding new item');
         }
-});
+});*/
 
 // Insert a new Part
 // Where do we get the title?
-$.ajax({
+/*$.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'insert_new_part',
@@ -217,4 +223,4 @@ $.ajax({
         error: function(){
             alert('Error adding new part');
         }
-});
+});*/
