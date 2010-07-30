@@ -49,7 +49,7 @@ place_item: function(config_obj) {
                     jQuery(this).remove();
                 });
             } else {
-                jQuery('li#' + config_obj.item_id).insertBefore($('li#' + config_obj.src_id + 'ul li').eq(config_obj.org_seq_num - 1));
+                jQuery('li#' + config_obj.item_id).insertBefore(jQuery('li#' + config_obj.src_id + 'ul li').eq(config_obj.org_seq_num - 1));
             }
         }
     });

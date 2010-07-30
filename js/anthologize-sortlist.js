@@ -13,8 +13,9 @@ var anthologize = {
     var new_item = "false";
     var src_id = anthologize.src_id;
     var item_id = anthologize.cleanPostIds(ui.item.attr("id"));
-
+    var project_id = this.cleanPostIds(jQuery(".wrap").attr("id"));
     var org_seq_num = anthologize.org_seq_num;
+
     if (anthologize.fromNew){
       new_item = "true";
       org_seq_num = anthologize.new_item_org_seq_num;
@@ -31,11 +32,13 @@ var anthologize = {
     if (ui.item.hasClass("item")){
       dest_id = ui.item.closest("li.part").attr("id");
     }else{
-      dest_id = ui.item.closest("ul").attr("id");
+	    //dest and src for for parts is the project id
+      dest_id = project_id;
+      anthologize.src_id = project_id;
     }
 
     var ajax_options = {
-	    "project_id": this.cleanPostIds(jQuery(".wrap").attr("id")),
+	    "project_id": project_id,
 	    "src_id": this.cleanPostIds(anthologize.src_id),
 	    "dest_id": this.cleanPostIds(dest_id),
 	    "new_item": new_item,

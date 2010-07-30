@@ -259,7 +259,7 @@ class Anthologize_Project_Organizer {
 
 				?>
 
-				<form action="" method="post">
+				<!--// <form action="" method="post"> //-->
 
 				<?php
 
@@ -295,7 +295,7 @@ class Anthologize_Project_Organizer {
 					</li>
 
 
-				</form>
+				<!--// </form> //-->
 				<?php
 			}
 		} else {
