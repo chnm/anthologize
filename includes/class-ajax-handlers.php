@@ -6,7 +6,7 @@ if ( !class_exists( 'Anthologize_Ajax_Handlers' ) ) :
 
 class Anthologize_Ajax_Handlers {
 
-    var $project_organizer;
+    var $project_organizer = null;
 
     function anthologize_ajax_handlers() {
         add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
@@ -21,9 +21,10 @@ class Anthologize_Ajax_Handlers {
     }
 
     function __construct() {
+        $this->anthologize_ajax_handlers();
         $project_id = $_POST['project_id'];
         // TODO: error check
-        if (!isset($this->project_organizer)){
+        if ($this->project_organizer != null){
             $this->project_organizer = new Anthologize_Project_Organizer($project_id);
         }
     }
