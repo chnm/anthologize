@@ -66,7 +66,7 @@ class TeiDom {
 
   public function buildProjectData($projectID) {
 
-  	$projectData = new WP_Query(array('ID'=>$projectID, 'post_type'=>'books'));
+  	$projectData = new WP_Query(array('ID'=>$projectID, 'post_type'=>'projects'));
     $project = $projectData->posts[0];
 
     $titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
