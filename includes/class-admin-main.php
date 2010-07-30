@@ -95,6 +95,8 @@ class Anthologize_Admin_Main {
 
 		<div class="wrap">
 
+		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+
 		<h2>My Projects</h2>
 
 		<?php
