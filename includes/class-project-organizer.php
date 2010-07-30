@@ -17,7 +17,28 @@ class Anthologize_Project_Organizer {
 
 		$this->project_name = $project->post_title;
 
+		$this->boonetester();
 	}
+
+		function boonetester() {
+		$project_id = 1027;
+		$post_id = 859;
+		$new_post = 1;
+		$dest_id = 1059;
+		$source_id = 0;
+		$dest_seq = array(
+			1064 => 2,
+			1091 => 1
+		);
+		;
+/*		$src_seq = array(
+			1064 => 2,
+			1091 => 1
+		);
+*/
+		$this->insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $src_seq );
+	}
+
 
 	function load_scripts() {
 	}
@@ -209,7 +230,8 @@ class Anthologize_Project_Organizer {
 		  'to_ping' => $post->to_ping, // todo: tags and categories
 		);
 
-		$imported_item_id = wp_insert_post( $args );
+		if ( !$imported_item_id = wp_insert_post( $args ) )
+			return false;
 
 		// Author data
 		$user = get_userdata( $post->post_author );
@@ -219,8 +241,7 @@ class Anthologize_Project_Organizer {
 		update_post_meta( $imported_item_id, 'author_name', $author_name );
 		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array );
 
-		// Store the menu order of the last item to enable easy moving later on
-		update_post_meta( $part_id, 'last_item', $last_item );
+		return true;
 	}
 
 	function add_new_part( $part_name ) {
@@ -236,10 +257,13 @@ class Anthologize_Project_Organizer {
 		  'post_parent' => $this->project_id
 		);
 
-		$part_id = wp_insert_post( $args );
+		if ( !$part_id = wp_insert_post( $args ) )
+			return false;
 
 		// Store the menu order of the last item to enable easy moving later on
 		update_post_meta( $this->project, 'last_item', $last_item );
+
+		return true;
 	}
 
 	function list_existing_parts() {
@@ -410,6 +434,8 @@ class Anthologize_Project_Organizer {
 
 		// Upgrade self
 		$little_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order-$minus, $id ) );
+
+		return true;
 	}
 
 	function move_down( $id ) {
@@ -436,15 +462,67 @@ class Anthologize_Project_Organizer {
 
 		// Downgrade self
 		$big_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order+$plus, $id ) );
+
+		return true;
+	}
+
+
+
+	function insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $src_seq ) {
+		global $wpdb;
+
+		if ( !isset( $project_id ) || !isset( $post_id ) || !isset( $dest_id ) || !isset( $dest_seq ) )
+			return false;
+
+		if ( !$new_post ) {
+			if ( !isset( $source_id ) || !isset( $source_seq ) )
+				return false;
+		}
+
+		/* $dest_seq, $src_seq:
+			array(
+				$item_id => $seq_no
+			);
+		*/
+
+		if ( $new_post ) {
+			if ( !$this->add_item_to_part( $post_id, $dest_id ) )
+				return false;
+		}
+
+		// All items require the destination siblings to be reordered
+		if ( !$this->rearrange_items( $dest_seq ) )
+			return false;
+
+
+		// You only need to rearrange the source when moving between parts
+		if ( !$new_post ) {
+			if ( !$this->rearrange_items( $src_seq ) )
+				return false;
+		}
+
+		return true;
+
+	}
+
+	function rearrange_items( $seq ) {
+		foreach ( $seq as $item_id => $pos ) {
+			$q = "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d";
+			$post_up_query = $wpdb->query( $wpdb->prepare( $q, $pos, $item_id ) );
+		}
+
+		return true;
 	}
 
 	function remove_item( $id ) {
 		// Git ridda the post
-		wp_delete_post( $id );
+		if ( !wp_delete_post( $id ) )
+			return false;
+
+		return true;
 	}
 
 	function append_children( $append_parent, $append_children ) {
-
 
 		$parent_post = get_post( $append_parent );
 		$pp_content = $parent_post->post_content;
@@ -481,11 +559,13 @@ class Anthologize_Project_Organizer {
 			'post_content' => $pp_content,
 		);
 
-		wp_update_post( $args );
+		if ( !wp_update_post( $args ) )
+			return false;
 
 		update_post_meta( $append_parent, 'author_name', $author_name );
 		update_post_meta( $append_parent, 'author_name_array', $author_name_array );
 
+		return true;
 		// todo Jeremy: make sure that the form action goes to the right place after an append
 	}
 
@@ -493,7 +573,7 @@ class Anthologize_Project_Organizer {
 		global $post;
 
 	?>
-		<li>
+		<li class="part-child" id="item-<?php the_ID() ?>">
 			<?php if ( $append_parent ) : ?>
 				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo $post->ID . " " . $append_parent ?>
 			<?php endif; ?>
