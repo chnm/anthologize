@@ -12,7 +12,7 @@ $tei_dom = new TeiDom($projectID);
 $pdf = new TeiPdf($tei_dom);
 
 header('Content-type: application/pdf');
-$pdf->writePDF();
+$pdf->write_pdf();
 
 //header("Content-type: text/xml");
 //echo $tei->getTeiString();
