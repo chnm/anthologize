@@ -20,7 +20,7 @@ class TeiPdf {
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-	}	
+	}
 
 	public function write_pdf() {
 
@@ -64,7 +64,7 @@ class TeiPdf {
 		foreach ($parts as $part) {
 			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
 			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
-			$paras = $xpath->query("html:p", $body); 
+			$paras = $xpath->query("html:p", $body);
 
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
 			foreach ($paras as $para) {
@@ -133,5 +133,4 @@ class TeiPdf {
 
 
 } // TeiPdf
-
 ?>
