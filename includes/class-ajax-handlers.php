@@ -2,81 +2,83 @@
 
 if ( !class_exists( 'Anthologize_Ajax_Handlers' ) ) :
 
-require_once('class-project-organizer.php');
+    require_once('class-project-organizer.php');
 
 class Anthologize_Ajax_Handlers {
 
     var $project_organizer;
 
-	function anthologize_ajax_handlers() {
-		add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
-		add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
-		add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
-		add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
-		add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
-		add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
-		add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
-		add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
-		add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
-	}
+    function anthologize_ajax_handlers() {
+        add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
+        add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
+        add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
+        add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
+        add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
+        add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
+        add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
+        add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
+        add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
+    }
 
     function __construct() {
+        $project_id = $_POST['project_id'];
+        // TODO: error check
         if (!isset($this->project_organizer)){
-            $this->project_organizer = new Anthologize_Project_Organizer;
+            $this->project_organizer = new Anthologize_Project_Organizer($project_id);
         }
     }
 
-	function get_tags() {
-		$tags = get_tags();
+    function get_tags() {
+        $tags = get_tags();
 
-		$the_tags = '';
-		foreach( $tags as $tag ) {
-			$the_tags .= $tag->term_id . ':' . $tag->name . ',';
-		}
+        $the_tags = '';
+        foreach( $tags as $tag ) {
+            $the_tags .= $tag->term_id . ':' . $tag->name . ',';
+        }
 
-		print_r($the_tags);
-		die();
-	}
+        print_r($the_tags);
+        die();
+    }
 
-	function get_cats() {
-		$cats = get_categories();
+    function get_cats() {
+        $cats = get_categories();
 
-		$the_cats = '';
-		foreach( $cats as $cat ) {
-			$the_cats .= $cat->term_id . ':' . $cat->name . ',';
-		}
+        $the_cats = '';
+        foreach( $cats as $cat ) {
+            $the_cats .= $cat->term_id . ':' . $cat->name . ',';
+        }
 
-		print_r($the_cats);
-		die();
-	}
+        print_r($the_cats);
+        die();
+    }
 
-	function get_posts_by() {
-		$term = $_POST['term'];
-		$tagorcat = $_POST['tagorcat'];
+    function get_posts_by() {
+        $term = $_POST['term'];
+        $tagorcat = $_POST['tagorcat'];
 
-		// Blech
-		$t_or_c = ( $tagorcat == 'tag' ) ? 'tag_id' : 'cat';
+        // Blech
+        $t_or_c = ( $tagorcat == 'tag' ) ? 'tag_id' : 'cat';
 
-		$args = array(
-			'post_type' => array('post', 'page', 'imported_items' ),
-			$t_or_c => $term,
-			'posts_per_page' => -1
-		);
+        $args = array(
+            'post_type' => array('post', 'page', 'imported_items' ),
+            $t_or_c => $term,
+            'posts_per_page' => -1
+        );
 
 
-		query_posts( $args );
+        query_posts( $args );
 
-		$response = '';
+        $response = '';
 
-		while ( have_posts() ) {
-			the_post();
-			$response .= get_the_ID() . ':' . get_the_title() . ',';
-		}
+        while ( have_posts() ) {
+            the_post();
+            $response .= get_the_ID() . ':' . get_the_title() . ',';
+        }
 
-		print_r($response);
+        print_r($response);
 
-		die();
-	}
+        die();
+    }
 
     function place_item() {
         $project_id = $_POST['project_id'];
@@ -124,7 +126,7 @@ class Anthologize_Ajax_Handlers {
 
         $new_seq_array = json_decode($new_seq);
         // TODO: error check
-        
+
         $append_result = $this->project_organizer->append_children($post_id, $child_post_ids);
 
         if (false === $append_result) {
@@ -187,14 +189,14 @@ class Anthologize_Ajax_Handlers {
 
         die();
     }
-    
+
     function insert_new_part() {
         $project_id = $_POST['project_id'];
         $new_seq = $_POST['new_seq'];
 
         // TODO: what metadata do we expect?
-        
-        
+
+
         // TODO: Create a new bare part
 
         $new_seq_array = json_decode($new_seq);

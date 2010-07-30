@@ -485,7 +485,7 @@ class Anthologize_Project_Organizer {
 		*/
 
 		if ( $new_post ) {
-            $add_item_result = $this->add_item_to_part( $post_id, $dest_id ) 
+            $add_item_result = $this->add_item_to_part( $post_id, $dest_id ); 
 			if (false === $add_item_result)
 				return false;
             $post_id = $add_item_result;
@@ -507,7 +507,7 @@ class Anthologize_Project_Organizer {
 		// All items require the destination siblings to be reordered
 /*		if ( !$this->rearrange_items( $dest_seq ) )
     return false;*/
-        $this->rearrange_items( $dest_seq ) 
+        $this->rearrange_items( $dest_seq );
 
 
 		// You only need to rearrange the source when moving between parts
@@ -516,7 +516,7 @@ class Anthologize_Project_Organizer {
 				return false;
         }*/
 
-        $this->rearrange_items( $src_seq ) 
+        $this->rearrange_items( $src_seq ); 
 
 		return $post_id;
 
