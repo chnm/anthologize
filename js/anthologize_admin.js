@@ -5,19 +5,19 @@
 // (in case of new=true, src vars = null)
 anth_admin_ajax = {
 place_item: function(config_obj) {
-                
-    $.ajax({
+    
+    jQuery.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'place_item',
-               project_id:project_id,
-               post_id:item_id,
-               new_post:new_item,
-               dest_id:dest_id,
-               src_id:src_id,
-               dest_seq:dest_seq,
+               project_id:config_obj.project_id,
+               post_id:config_obj.item_id,
+               new_post:config_obj.new_item,
+               dest_id:config_obj.dest_id,
+               src_id:config_obj.src_id,
+               dest_seq:config_obj.dest_seq,
                // TODO: create this data
-               src_seq:src_seq
+               //src_seq:src_seq
                },
         async:false,
         timeout:20000,
@@ -27,18 +27,18 @@ place_item: function(config_obj) {
         success: function(data){
             // We're done
             if (new_item == 'true') {
-                $('li#' + item_id).attr('id', data.post_id);
+                jQuery('li#' + item_id).attr('id', data.post_id);
             }
             return true;
         },
         error: function(){
             // Move the Item back
             if (new_item == 'true') {
-                $('li#' + item_id).fadeOut('normal', function() {
-                    $(this).remove();
+                jQuery('li#' + item_id).fadeOut('normal', function() {
+                    jQuery(this).remove();
                 });
             } else {
-                $('li#' + item_id).insertBefore($('li#' + src_id + 'ul li').eq(org_seq_num - 1));
+                jQuery('li#' + item_id).insertBefore($('li#' + src_id + 'ul li').eq(org_seq_num - 1));
             }
         }
     });
@@ -46,7 +46,7 @@ place_item: function(config_obj) {
 },
 merge_items: function(config_obj) {
 // Append/merge items into a single other item
-    $.ajax({
+    jQuery.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'merge_items',
@@ -62,9 +62,9 @@ merge_items: function(config_obj) {
         },
         success: function(data){
             // Remove the other IDs
-            $.each(child_post_ids, function(post_id) {
-                $('li#' + post_id).fadeOut('normal', function() {
-                    $(this).remove();
+            jQuery.each(child_post_ids, function(post_id) {
+                jQuery('li#' + post_id).fadeOut('normal', function() {
+                    jQuery(this).remove();
                 });
             });
         },
@@ -78,7 +78,7 @@ update_post_metadata: function(config_obj){
 
 // Change Part/Item metadata
 // TODO: what does this metadata package look like?
-    $.ajax({
+    jQuery.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'update_post_metadata',
@@ -101,7 +101,7 @@ update_post_metadata: function(config_obj){
 remove_item_part: function(config_obj){
 // Remove an Item/Part
 // TODO: What about removing a Part that still contains Items? Handled on the server side?
-    $.ajax({
+    jQuery.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'remove_item_part',
@@ -116,8 +116,8 @@ remove_item_part: function(config_obj){
         },
         success: function(data){
             // Remove the post from the display
-            $('li#' + item_id).fadeOut('normal', function(){
-                $(this).remove();
+            jQuery('li#' + item_id).fadeOut('normal', function(){
+                jQuery(this).remove();
             });
         },
         error: function(){
