@@ -91,7 +91,7 @@ class Anthologize_Export_Panel {
 			<?php $project_id = $_POST['project_id']; ?>
 			<?php $project = get_post( $project_id ); ?>
 
-			<form action="/kitty/" method="post">
+			<form action="" method="post">
 
 				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 

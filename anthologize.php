@@ -119,7 +119,8 @@ do_action( 'anthologize_loaded' );
 }
 
 
-function load_template() {
+	function load_template() {
+//		print_r($_POST); die();
 		switch( $_POST['filetype'] ) {
 			case 'tei' :
 				load_template( WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
