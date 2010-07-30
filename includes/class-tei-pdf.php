@@ -16,6 +16,7 @@ class TeiPdf {
 		// and exposes it as the attribute $tei
 		//$this->tei = $tei_dom->getTeiDom();
     $this->tei = new DOMDocument();
+
     $this->tei->loadXML($tei_dom->getTeiString());
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -58,33 +59,46 @@ class TeiPdf {
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
 		$xpath->registerNamespace('html', HTML);
+		
+		// Create a nodeList containing all parts.
 		$parts = $xpath->query("//tei:div[@type='part']");
-		$html = null;
-
-//PMJ: There will be an additional loop here, over (tei:div[@type='libraryItem'], $part) to dig up all the
-//libraryItems in the part. In each of those, there's another tei:head and html:body
 
 		foreach ($parts as $part) {
+			// Grab the main title for each part and render it as
+			// a "chapter" title.
 			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
-			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
-			$paras = $xpath->query("html:p", $body);
-
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
-			foreach ($paras as $para) {
-				$html = $html . $this->strip_whitespace($this->node_to_string($para));
-			}
-		}
 
-		$this->pdf->WriteHTML($html, false, true, true, false, "L");
+			// Create a nodeList containing all libraryItems
+			$library_items = $xpath->query("//tei:div[@type='libraryItem']", $part);
+
+			foreach ($library_items as $item) {
+				// Grab the main title for each libraryItem and render it
+				// as a "sub section" title.
+				$sub_title = $xpath->query("tei:head/tei:title", $item)->item(0);
+				$html = $html . "<h3>" . $sub_title->textContent . "</h3>";
+
+				// Grab all paragraphs
+				$paras = $xpath->query("//html:p", $item);
+
+				foreach ($paras as $para) {
+					$html = $html . $this->strip_whitespace($this->node_to_string($para));
+				} // foreach para
+
+			} // foreach item
+
+			$this->pdf->WriteHTML($html, false, true, true, false, "L");
+
+		} // foreach part
 
 		// Close and output PDF document
 		// This method has several options, check the source code
 		// documentation for more information.
 
-		echo $html; // DEBUG
-		//$this->pdf->Output('example_001.pdf');
+		// echo $html; // DEBUG
+		$this->pdf->Output('example_001.pdf', 'I');
 
-	} // write_pdf
+	} // writePDF 
 
 	public function set_header() {
 
