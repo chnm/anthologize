@@ -46,7 +46,7 @@ class Anthologize_Admin_Main {
 
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export Project', 'anthologize' ), __( 'Export Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
 
-		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), 'manage_options', __FILE__, 'anthologize_admin_panel' );
+		//$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), 'manage_options', __FILE__, 'anthologize_admin_panel' );
 
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
@@ -215,7 +215,7 @@ class Anthologize_Admin_Main {
 									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Edit Project') . '</a>';
 									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts') . '</a>';
 									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'">'.__('Delete Project') . '</a>';
-									
+
 
 
 									?>
@@ -279,14 +279,14 @@ class Anthologize_Admin_Main {
 
     /**
      * item_delete
-     * 
+     *
      * Deletes an item. Fun!
      **/
      function item_delete($post_id)
      {
-         
+
      }
-     
+
     /**
      * item_meta_save
      *
