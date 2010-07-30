@@ -66,6 +66,18 @@ var anthologize = {
 	  clean_id = clean_id.replace("part-", "");
 	  clean_id = clean_id.replace("item-", "");
 	  return clean_id;
+  },
+  "getAppendableItems" : function(item_id){
+	  var itemInfo = {};
+	  var part = jQuery("#" + item_id).closest("li.part");
+	  var items = jQuery("#" + item_id).siblings();
+	  console.log(items);
+	  var i = 0;
+	  items.each(function(){
+		  itemInfo[jQuery(this).attr("id")] = jQuery(this).find("span.part-title").text();
+		  i++;
+	  });
+	  return itemInfo;
   }
 };
 
@@ -114,4 +126,27 @@ jQuery(document).ready(function(){
 	    }
     }
   });
+
+  jQuery("body").delegate("a.append", "click", function(){
+	  var item = jQuery(this).closest("li.item");
+	  if (item.children("div.append-panel").length == 0){
+		  var appendPanel = '<div class="append-panel">Feed me!<br /><a href="#" class="cancelAppend">Cancel</a></div>';
+		  item.append(appendPanel);
+		  var panel = jQuery(this).children("div.append-panel").first();
+		  panel.slideToggle("slow");
+		  var appendable = anthologize.getAppendableItems(item.attr("id"));
+		  for (var itemId in appendable){
+			  console.log(itemId + " - " + appendable[itemId]);
+			  panel.append('<input type="checkbox" name="append[]" id="append-"' + itemId + '/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label>');
+		  }
+	  }
+  });
+ 
+  jQuery("body").delegate("a.cancelAppend", "click", function(){
+	  var item = jQuery(this).closest("li.item");
+	  var appendPanel = item.children("div.append-panel").first();
+	  appendPanel.slideToggle("slow");
+	  jQuery("div.append-panel").remove();
+  });
+
 });

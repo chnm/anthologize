@@ -584,9 +584,10 @@ class Anthologize_Project_Organizer {
 			</noscript>
 
 			<h3 class="part-item">
-				<?php the_title() ?>
+				<span class="part-title"><?php the_title() ?></span>
 				<div class="part-item-buttons">
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+					<a href="#" class="append">Ajax Append</a> |
 					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&append_parent=<?php the_ID() ?>"><?php _e( 'Append', 'anthologize' ) ?></a> |
 					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
 				</div>
