@@ -272,7 +272,12 @@ class Anthologize_Admin_Main {
         	<p>
         		<textarea name="anthologize_meta[author_name]" rows="3" cols="27"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea>
         	</p>
-            <input type="hidden" name="parent_id" value="<?php echo $post->post_parent; ?>">
+
+        	<?php if ( isset( $_GET['project_id'] ) ) : ?>
+        		<input type="hidden" name="parent_id" value="<?php echo $_GET['project_id'] ?>">
+            <?php else : ?>
+                 <input type="hidden" name="parent_id" value="<?php echo $post->post_parent; ?>">
+            <?php endif; ?>
             <input type="hidden" name="menu_order" value="<?php echo $post->menu_order; ?>">
             <input type="hidden" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
         </div>

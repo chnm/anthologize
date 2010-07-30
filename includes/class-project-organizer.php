@@ -118,7 +118,7 @@ class Anthologize_Project_Organizer {
 
 				<div class="postbox" id="anthologize-parts-box">
 
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts">New Part</a></div></h3>
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts&project_id=1027"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
 				<?php /* Todo: Add argument to new part button for redirect */ ?>
 
 				<div id="partlist">
@@ -484,7 +484,7 @@ class Anthologize_Project_Organizer {
 		*/
 
 		if ( $new_post ) {
-            $add_item_result = $this->add_item_to_part( $post_id, $dest_id ); 
+            $add_item_result = $this->add_item_to_part( $post_id, $dest_id );
 			if (false === $add_item_result)
 				return false;
             $post_id = $add_item_result;
@@ -517,7 +517,7 @@ class Anthologize_Project_Organizer {
 				return false;
         }*/
 
-        $this->rearrange_items( $src_seq ); 
+        $this->rearrange_items( $src_seq );
 
 		return $post_id;
 
@@ -609,7 +609,7 @@ class Anthologize_Project_Organizer {
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 					<a href="#" class="append">Append</a> |
 					<?
-					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID() 
+					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
 					?>
 					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
 				</div>
