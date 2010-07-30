@@ -6,7 +6,7 @@
 seq_stringify = function(seq_obj) {
     seq_string = '{';
     jQuery.each(seq_obj, function(post_id, seq_num){
-        seq_string += post_id + ':' + seq_num + ',';
+        seq_string += '"' + post_id + '"' + ':' + '"' + seq_num + '",';
     });
     seq_string = seq_string.substr(0,seq_string.length-1);
     seq_string += '}';

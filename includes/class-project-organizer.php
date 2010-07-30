@@ -10,7 +10,6 @@ class Anthologize_Project_Organizer {
 	 * The project organizer. Git 'er done
 	 */
 	function anthologize_project_organizer ( $project_id ) {
-        
 		$this->project_id = $project_id;
 
 		$project = get_post( $project_id );
@@ -525,6 +524,7 @@ class Anthologize_Project_Organizer {
 	}
 
 	function rearrange_items( $seq ) {
+        global $wpdb;
 		foreach ( $seq as $item_id => $pos ) {
 			$q = "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d";
 			$post_up_query = $wpdb->query( $wpdb->prepare( $q, $pos, $item_id ) );

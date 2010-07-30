@@ -23,7 +23,7 @@ class Anthologize_Ajax_Handlers {
     function __construct() {
         $this->anthologize_ajax_handlers();
         $project_id = $_POST['project_id'];
-        if ($this->project_organizer != null){
+        if ($this->project_organizer == null){
             $this->project_organizer = new Anthologize_Project_Organizer($project_id);
         }
     }
@@ -84,8 +84,8 @@ class Anthologize_Ajax_Handlers {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $dest_part_id = $_POST['dest_id'];
-        $dest_seq = $_POST['dest_seq'];
-        $dest_seq_array = json_decode($dest_seq);
+        $dest_seq = stripslashes($_POST['dest_seq']);
+        $dest_seq_array = json_decode($dest_seq, $assoc=true);
         if ( NULL === $dest_seq_array ) {
             header('HTTP/1.1 500 Internal Server Error');
             die();
@@ -98,8 +98,8 @@ class Anthologize_Ajax_Handlers {
         } else {
             $new_item = false;
             $src_part_id = $_POST['src_id'];
-            $src_seq = $_POST['src_seq'];
-            $src_seq_array = json_decode($src_seq);
+            $src_seq = stripslashes($_POST['src_seq']);
+            $src_seq_array = json_decode($src_seq, $assoc=true);
             if ( NULL === $src_seq_array ) {
                 header('HTTP/1.1 500 Internal Server Error');
                 die();
@@ -128,9 +128,9 @@ class Anthologize_Ajax_Handlers {
             $child_post_ids = Array($_POST['child_post_ids']);
         }
 
-        $new_seq = $_POST['new_seq'];
+        $new_seq = stripslashes($_POST['new_seq']);
 
-        $new_seq_array = json_decode($new_seq);
+        $new_seq_array = json_decode($new_seq, $assoc=true);
         if ( NULL === $new_seq_array ) {
             header('HTTP/1.1 500 Internal Server Error');
             die();
@@ -166,7 +166,7 @@ class Anthologize_Ajax_Handlers {
     function remove_item_part() {
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
-        $new_seq = $_POST['new_seq'];
+        $new_seq = stripslashes($_POST['new_seq']);
 
         $remove_result = $this->project_organizer->remove_item($post_id);
 
@@ -175,7 +175,7 @@ class Anthologize_Ajax_Handlers {
             die();
         }
 
-        $new_seq_array = json_decode($new_seq);
+        $new_seq_array = json_decode($new_seq, $assoc=true);
         if ( NULL === $new_seq_array ) {
             header('HTTP/1.1 500 Internal Server Error');
             die();
