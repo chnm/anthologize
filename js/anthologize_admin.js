@@ -3,6 +3,15 @@
 // Move an Item or Part
 // (in case of moving parts, just duplicate and src and dest content)
 // (in case of new=true, src vars = null)
+seq_stringify = function(seq_obj) {
+    seq_string = '{';
+    jQuery.each(seq_obj, function(post_id, seq_num){
+        seq_string += post_id + ':' + seq_num + ',';
+    });
+    seq_string[seq_string.length-1] = '}';
+    return seq_string;
+}
+
 anth_admin_ajax = {
 place_item: function(config_obj) {
     
@@ -15,9 +24,9 @@ place_item: function(config_obj) {
                new_post:config_obj.new_item,
                dest_id:config_obj.dest_id,
                src_id:config_obj.src_id,
-               dest_seq:config_obj.dest_seq,
+               dest_seq:seq_stringify(config_obj.dest_seq),
                // TODO: create this data
-               //src_seq:src_seq
+               //src_seq:seq_stringify(config_obj.src_seq)
                },
         async:false,
         timeout:20000,
@@ -54,7 +63,7 @@ merge_items: function(config_obj) {
                post_id:item_id,
                child_post_ids:{},
                // TODO: create this data
-               new_seq:merge_seq},
+               new_seq:seq_stringify(config_obj.merge_seq)},
         async:false,
         timeout:20000,
         beforeSend:function() {
@@ -108,7 +117,7 @@ remove_item_part: function(config_obj){
                project_id:project_id,
                post_id:item_id,
                // TODO: create this data
-               new_seq:new_seq},
+               new_seq:seq_stringify(config_obj.new_seq)},
         async:false,
         timeout:20000,
         beforeSend:function() {
