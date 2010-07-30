@@ -5,7 +5,8 @@
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:regexp="http://exslt.org/regular-expressions"
-  extension-element-prefixes="regexp" version="1.0">
+  xmlns:az="http://www.anthologize.org/ns" extension-element-prefixes="regexp"
+  version="1.0">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> Jul 29, 2010</xd:p>
@@ -26,10 +27,16 @@
           />
         </title>
         <!--<link href="stylesheet.css" type="text/css" rel="stylesheet" />-->
-        <!--<style type="text/css">-->
-<!--
-          this to be filled in-->
-        <!--</style>-->
+        <style type="text/css">
+          <xsl:text>&#xa;body {&#xa;</xsl:text>
+          <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()">          
+            <xsl:value-of select="concat('&#xa;font-size:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()), ';')"/>
+          </xsl:if>
+          <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()">
+            <xsl:value-of select="concat('&#xa;font-family:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()), ';')"/>
+          </xsl:if>
+          <xsl:text>&#xa;}&#xa;</xsl:text>
+        </style>
         <link rel="stylesheet" type="application/vnd.adobe-page-template+xml"
           href="page-template.xpgt"/>
       </head>

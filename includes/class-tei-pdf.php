@@ -21,12 +21,10 @@ class TeiPdf {
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-	}
-
-	public function write_pdf() {
+// -------------------------------------------------------- //
 
 		//set auto page breaks
-		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		//$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 		//set image scale factor
 		$this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -38,23 +36,11 @@ class TeiPdf {
 		$this->set_font();
 		$this->set_margins();
 
-		// ---------------------------------------------------------
+	}
 
-		// set default font subsetting mode
-		$this->pdf->setFontSubsetting(true);
+	public function write_pdf() {
 
-		// Set font
-		// dejavusans is a UTF-8 Unicode font, if you only need to
-		// print standard ASCII chars, you can use core fonts like
-		// helvetica or times to reduce file size.
-		$this->pdf->SetFont('times', '', 12, '', true);
-
-		// Add a page
-		// This method has several options, check the source code documentation
-		// for more information.
 		$this->pdf->AddPage();
-
-		// Set some content to print
 
 		$xpath = new DOMXpath($this->tei);
 		$xpath->registerNamespace('tei', TEI);
@@ -70,7 +56,7 @@ class TeiPdf {
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
 
 			// Create a nodeList containing all libraryItems
-			$library_items = $xpath->query("//tei:div[@type='libraryItem']", $part);
+			$library_items = $xpath->query("tei:div[@type='libraryItem']", $part);
 
 			foreach ($library_items as $item) {
 				// Grab the main title for each libraryItem and render it
@@ -79,49 +65,54 @@ class TeiPdf {
 				$html = $html . "<h3>" . $sub_title->textContent . "</h3>";
 
 				// Grab all paragraphs
-				$paras = $xpath->query("//html:p", $item);
+				$paras = $xpath->query("html:body/html:p", $item);
 
 				foreach ($paras as $para) {
-					$html = $html . $this->strip_whitespace($this->node_to_string($para));
+
+					$strip1 = $this->strip_whitespace($this->node_to_string($para));
+					//$strip2 = $this->strip_shortcodes($strip1);
+
+					$html = $html . $strip1;
+
 				} // foreach para
 
 			} // foreach item
 
-			$this->pdf->WriteHTML($html, false, true, true, false, "L");
-
 		} // foreach part
+
+		$this->pdf->WriteHTML($html, true, 0, true, 0);
 
 		// Close and output PDF document
 		// This method has several options, check the source code
 		// documentation for more information.
 
-		// echo $html; // DEBUG
-		$this->pdf->Output('example_001.pdf', 'I');
+		//echo $html; // DEBUG
+		$this->pdf->Output('example.pdf', 'I');
 
 	} // writePDF 
 
 	public function set_header() {
 
 		// set default header data
-		$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING);
+		$this->pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING);
 
 	}
 
 	public function set_footer() {
 
 		// set header and footer fonts
-		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		$this->pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$this->pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 	}
 
 	public function set_docinfo() {
 
 		$this->pdf->SetCreator(PDF_CREATOR);
-		$this->pdf->SetAuthor('Boone Gorges');
-		$this->pdf->SetTitle('The Book of Boone');
+		$this->pdf->SetAuthor('One Week | One Tool');
+		$this->pdf->SetTitle('An Amazing Example of PDF Generation');
 		$this->pdf->SetSubject('Barbecue');
-		$this->pdf->SetKeywords('Boone, barbecue, oneweek');
+		$this->pdf->SetKeywords('Boone, barbecue, oneweek, pants');
 
 	}
 
@@ -129,12 +120,15 @@ class TeiPdf {
 
 		// set default monospaced font
 		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+		// set default font subsetting mode
+		$this->pdf->setFontSubsetting(true);
+		//
+		$this->pdf->SetFont('times', '', 12, '', true);
 
 	}
 
 	public function set_margins() {
 
-		//set margins
 		$this->pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		$this->pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$this->pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
@@ -149,6 +143,13 @@ class TeiPdf {
 		return preg_replace('/\s+/', ' ', $string);
 	}
 
+	private function strip_shortcodes($string) {
+		return preg_replace('/\[caption.*?\]/', '', $string);
+	}
+
 
 } // TeiPdf
+
+// -------------------------------------------------------- //
+
 ?>
