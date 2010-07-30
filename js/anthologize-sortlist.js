@@ -62,6 +62,18 @@ var anthologize = {
 		  i++;
 	  });
 	  return itemInfo;
+  },
+  "updateAddedItem" : function (newItem, new_item_id){
+	  //var newItem = jQuery("#new_new_new");
+	  newItem.attr("id", "item-" + new_item_id);
+	  newItem.children("h3").wrapInner('<span class="part-title" />');
+	
+	  var buttons = '<div class="part-item-buttons">' +
+							'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
+							'<a class="append" href="#">Append</a> | ' +
+							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;project_id=4&amp;remove=' + new_item_id + '">Remove</a>' +
+						  '</div>';
+		newItem.children("h3").append(buttons);
   }
 };
 
@@ -76,7 +88,8 @@ jQuery.fn.anthologizeSortList = function (options){
       ui.item.addClass("anthologize-drag-selected");
     },
     stop: function (event, ui){
-      anthologize.callBack(event, ui);
+      //anthologize.callBack(event, ui);
+      anthologize.updateAddedItem(ui.item, 9999999);
       ui.item.removeClass("anthologize-drag-selected");
     },
     receive: function(event, ui){

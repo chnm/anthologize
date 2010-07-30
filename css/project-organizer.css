@@ -116,6 +116,13 @@
       height: 2em;
 }
 
+a.disabled {
+	color: #ccc;
+}
+a.active-append {
+	color: inherit;
+}
+
 #export-project-button {
 	width: auto;
 	border-top-right-radius: 1px;
