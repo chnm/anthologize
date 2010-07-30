@@ -119,6 +119,7 @@ class Anthologize_Loader {
 	}
 
 	function grab() { // todo: make this make sense
+
 		if ( $_GET['output'] == 'customfeed' ) {
 
 			load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
@@ -129,7 +130,10 @@ class Anthologize_Loader {
 		} else if ($_GET['output'] == 'epub') {
 			load_template( dirname(__FILE__) . '/templates/epub/index.php' );
 			return false;
-		} // a trivial change
+		} else if ($_GET['output'] == 'pdf') {
+      load_template( dirname(__FILE__) . '/templates/pdf/base.php' );
+      return false;
+		}
 	}
 
 
