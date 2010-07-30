@@ -38,6 +38,8 @@ class Anthologize_Admin_Main {
 
 		$plugin_pages[] = add_menu_page( __( 'Anthologize', 'anthologize' ), __( 'Anthologize', 'anthologize' ), 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
+        $plugin_pages[] = add_submenu_page( 'anthologize', __('New Project','anthologize'), __('New Project','anthologize'), 'manage_options', dirname( __FILE__ ) . '/class-new-project.php');
+
 //		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
 
 //		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
@@ -112,26 +114,26 @@ class Anthologize_Admin_Main {
         $parts = $this->get_project_parts($project_id);
 
         $items = array();
+        if ($parts) {
+            foreach ($parts as $part) {
+                $args = array(
+        			'post_parent' => $part->ID,
+        			'post_type' => 'library_items',
+        			'posts_per_page' => -1,
+        			'orderby' => 'menu_order',
+        			'order' => ASC
+        		);
 
-        foreach ($parts as $part) {
-            $args = array(
-    			'post_parent' => $part->ID,
-    			'post_type' => 'library_items',
-    			'posts_per_page' => -1,
-    			'orderby' => 'menu_order',
-    			'order' => ASC
-    		);
+        		$items_query = new WP_Query( $args );
 
-    		$items_query = new WP_Query( $args );
-
-            // May need optimization
-    		if ( $posts = $items_query->get_posts() ) {
-                foreach($posts as $post) {
-                    $items[] = $post;
-                }
-    		}
+                // May need optimization
+        		if ( $posts = $items_query->get_posts() ) {
+                    foreach($posts as $post) {
+                        $items[] = $post;
+                    }
+        		}
+            }
         }
-
         return $items;
 
 	}
@@ -140,6 +142,10 @@ class Anthologize_Admin_Main {
 //		print_r($_GET); die();
 
 		$project = get_post( $_GET['project_id'] );
+
+        if ( $_GET['action'] == 'delete' && $project ) {
+			wp_delete_post($project->ID);
+		}
 
 		if ( $_GET['action'] == 'edit' && $project ) {
 			$this->load_project_organizer( $_GET['project_id'] );
@@ -156,7 +162,7 @@ class Anthologize_Admin_Main {
 
 		<div class="wrap">
 
-		<h2>My Projects</h2>
+		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize/includes/class-new-project.php" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
 
 		<?php
 
@@ -179,7 +185,6 @@ class Anthologize_Admin_Main {
 
 				</div>
 			</div>
-
 
 			<table cellpadding="0" cellspacing="0" class="widefat">
 			<thead>
@@ -207,7 +212,10 @@ class Anthologize_Admin_Main {
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'" class="">' . __('Edit') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Edit Project') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'">'.__('Delete Project') . '</a>';
+									
 
 
 									?>
@@ -269,6 +277,16 @@ class Anthologize_Admin_Main {
 
 	}
 
+    /**
+     * item_delete
+     * 
+     * Deletes an item. Fun!
+     **/
+     function item_delete($post_id)
+     {
+         
+     }
+     
     /**
      * item_meta_save
      *

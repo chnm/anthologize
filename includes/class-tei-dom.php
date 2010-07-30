@@ -14,7 +14,9 @@ class TeiDom {
   public $userNiceNames = array();
 
 
-	function __construct($projectID, $checkImgSrcs = true) {
+	function __construct($postArray, $checkImgSrcs = true) {
+
+
 
 		$this->dom = new DOMDocument();
     $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" .
@@ -22,11 +24,21 @@ class TeiDom {
 		$this->dom->load($templatePath);
     $this->dom->preserveWhiteSpace = false;
     $this->setXPath();
-		$this->buildProjectData($projectID);
+		$this->buildProjectData($postArray['project_id']);
     if($checkImgSrcs) {
     	$this->checkImgSrcs();
     }
+
+
+    $this->processPostArray($postArray);
+
 	}
+
+  public function processPostArray($postArray) {
+
+
+
+  }
 
   public function setXPath() {
     $this->xpath = new DOMXPath($this->dom);
@@ -119,7 +131,9 @@ class TeiDom {
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
     $tmpHTML = new DOMDocument();
-    $content = do_shortcode($libraryItemObject->post_content);
+    //TODO: do_shortcode produces HTML that doesn't work, so shortcodes are coming through as is
+    //$content = do_shortcode($libraryItemObject->post_content);
+    $content = $libraryItemObject->post_content;
     //using loadHTML because it is more forgiving than loadXML
 
     $tmpHTML->loadHTML($content);

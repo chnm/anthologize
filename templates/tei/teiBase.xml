@@ -23,7 +23,7 @@
             <param name="page-width">8.5in</param>
             <param name="page-height">11in</param>
             <param name="font-size">12pt</param>
-            <param name="font-family">Times New Roman, Serif</param>
+            <param name="font-family">times</param>
         </outputParams>
         
         <encodingDesc>

@@ -134,8 +134,11 @@ function load_template() {
 	}
 
 function grab() { // todo: make this make sense
-	print_r($_POST);
-	print_r($_GET); die();
+
+if ( isset( $_POST['save_project']) || ($_GET['action'] == 'delete'))
+        wp_redirect( 'admin.php?page=anthologize');
+
+
 if ( $_GET['output'] == 'customfeed' ) {
 
 load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
