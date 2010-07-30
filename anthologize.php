@@ -36,7 +36,7 @@ add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
 add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
 
 
-add_action( 'anthologize_init', array ( $this, 'grab' ) );
+add_action( 'anthologize_init', array ( $this, 'load_template' ) );
 
 // activation sequence
 register_activation_hook( __FILE__, array( $this, 'activation' ) );
@@ -118,7 +118,24 @@ function loaded() {
 do_action( 'anthologize_loaded' );
 }
 
+
+function load_template() {
+		switch( $_POST['filetype'] ) {
+			case 'tei' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
+				return false;
+			case 'epub' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
+				return false;
+			case 'pdf' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
+				return false;
+		}
+	}
+
 function grab() { // todo: make this make sense
+	print_r($_POST);
+	print_r($_GET); die();
 if ( $_GET['output'] == 'customfeed' ) {
 
 load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );

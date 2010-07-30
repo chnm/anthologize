@@ -11,15 +11,9 @@ class Anthologize_Export_Panel {
 	 * The export panel. We are the champions, my friends
 	 */
 	function anthologize_export_panel ( $project_id ) {
-
 		$this->project_id = $project_id;
 
 	}
-
-	function load_styles() {
-
-	}
-
 
 	function display() {
 	?>
@@ -97,7 +91,7 @@ class Anthologize_Export_Panel {
 			<?php $project_id = $_POST['project_id']; ?>
 			<?php $project = get_post( $project_id ); ?>
 
-			<form action="" method="post">
+			<form action="/kitty/" method="post">
 
 				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 
@@ -122,13 +116,13 @@ class Anthologize_Export_Panel {
 						<div class="pub-options-title"><?php _e( 'Type', 'anthologize' ) ?></div>
 						<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="pdf" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
-						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI', 'anthologize' ) ?>
+						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?>
 					</div>
 
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Page Size', 'anthologize' ) ?></div>
-						<input type="radio" name="page-size" value="epub" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
-						<input type="radio" name="page-size" value="pdf" /> <?php _e( 'A4', 'anthologize' ) ?>
+						<input type="radio" name="page-size" value="letter" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
+						<input type="radio" name="page-size" value="a4" /> <?php _e( 'A4', 'anthologize' ) ?>
 					</div>
 
 					<div style="width: 150px; float: left; padding: 8px;">
@@ -146,9 +140,9 @@ class Anthologize_Export_Panel {
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Font Face', 'anthologize' ) ?></div>
 						<select name="font-face">
-							<option value="serif" class="serif">Serif</option>
-							<option value="sans-serif" class="sans-serif">Sans-serif</option>
-							<option value="fixed-width" class="fixed-width">Fixed-width</option>
+							<option value="times" class="serif">Serif</option>
+							<option value="helvetica" class="sans-serif">Sans-serif</option>
+							<option value="courier" class="fixed-width">Fixed-width</option>
 						</select>
 					</div>
 
@@ -162,6 +156,7 @@ class Anthologize_Export_Panel {
 				<?php endif; ?>
 				<input type="hidden" name="edition" value="<?php echo $_POST['edition'] ?>" />
 				<input type="hidden" name="authors" value="<?php echo $_POST['authors'] ?>" />
+				<input type="hidden" name="project_id" value="<?php echo $_POST['project_id'] ?>" />
 
 				<input type="hidden" name="export-step" value="2" />
 
@@ -173,17 +168,28 @@ class Anthologize_Export_Panel {
 
 
 			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
-
 				<!-- Where the magic happens -->
-
-
-
+				<?php $this->load_template() ?>
 			<?php endif; ?>
 
 			</div>
 		</div>
 		<?php
 
+	}
+
+	function load_template() {
+		switch( $_POST['filetype'] ) {
+			case 'tei' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
+				return false;
+			case 'epub' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
+				return false;
+			case 'pdf' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
+				return false;
+		}
 	}
 
 	function get_projects() {
