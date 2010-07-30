@@ -55,12 +55,18 @@ class Anthologize_Project_Organizer {
 
 		<h2><?php echo $this->project_name ?></h2>
 
+		<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+			<div id="message" class="updated below-h2">
+				<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
+			</div>
+		<?php endif; ?>
+
 		<div id="project-organizer-frame">
-			<div id="project-organizer-column" class="metabox-holder">
+			<div id="project-organizer-left-column" class="metabox-holder">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
 				<div id="add-custom-links" class="postbox ">
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Content', 'Anthologize' ) ?></span></h3>
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Items', 'Anthologize' ) ?></span></h3>
 				<div class="inside">
 					<div class="customlinkdiv" id="customlinkdiv">
 
@@ -73,6 +79,8 @@ class Anthologize_Project_Organizer {
 								<?php $this->filter_dropdown_tags() ?>
 							</p>
 
+							<h3><?php _e( 'Posts', 'anthologize' ) ?></h3>
+
 							<p id="new-items">
 								<?php $this->get_sidebar_posts() ?>
 							</p>
@@ -81,33 +89,43 @@ class Anthologize_Project_Organizer {
 					</div>
 				</div> <!-- /.postbox -->
 
-
-
-
 				</div> <!-- .meta-box-sortables -->
-			</div> <!-- .metabox-holder -->
+			</div> <!-- .project-organizer-left-column -->
+
+			<div class="metabox-holder" id="project-organizer-right-column">
+
+				<div class="postbox" id="anthologize-parts-box">
+
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span></h3>
+
+				<div id="partlist">
+
+				<?php $this->list_existing_parts() ?>
+
+					<h3>New Parts</h3>
+					<p>Wanna create a new part? You know you do.</p>
+					<form action="" method="post">
+						<input type="text" name="new_part_name" />
+						<input type="submit" name="new_part" value="New Part" />
+					</form>
+
+
+					<br /><br />
+					<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a></p>
+
+				</div>
+
+				</div> <!-- #anthologize-part-box -->
+
+			</div> <!-- #project-organizer-right-column -->
+
+
 		</div> <!-- #project-organizer-frame -->
 
 
 
-				<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
-					<div id="message" class="updated below-h2">
-						<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
-					</div>
-				<?php endif; ?>
-
-				<?php $this->list_existing_parts() ?>
-
-				<h3>New Parts</h3>
-				<p>Wanna create a new part? You know you do.</p>
-				<form action="" method="post">
-					<input type="text" name="new_part_name" />
-					<input type="submit" name="new_part" value="New Part" />
-				</form>
 
 
-				<br /><br />
-				<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a></p>
 
 		</div> <!-- .wrap -->
 		<?php
@@ -119,6 +137,7 @@ class Anthologize_Project_Organizer {
 
 		?>
 			<select name="sortby" id="sortby-dropdown">
+				<option value=""><?php _e( 'Sort by', 'anthologize' ) ?></option>
 				<?php foreach( $filters as $filter => $name ) : ?>
 					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
 				<?php endforeach; ?>
@@ -219,8 +238,6 @@ class Anthologize_Project_Organizer {
 
 		query_posts( 'post_type=parts&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
 
-
-
 		if ( have_posts() ) {
 			while ( have_posts() ) {
 				the_post();
@@ -235,17 +252,21 @@ class Anthologize_Project_Organizer {
 
 				?>
 					<div class="part" id="part-<?php echo $part_id ?>">
-						<h3><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> <?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
+						<h3 class="part-header"><noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript><?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
 
-						<?php $this->get_part_items( $part_id ) ?>
+						<div class="part-items">
 
-						<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+							<?php $this->get_part_items( $part_id ) ?>
+
+						</div>
+
+						<?php /* Noscript solution. Removed at the moment to avoid db queries. Todo: refactor ?>
+							<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
 
 								<input type="submit" name="append_submit" value="Go" />
 								<input type="hidden" name="append_parent" value="<?php echo $_GET['append_parent']  ?>" />
 
-
-						<?php else : ?>
+							<?php else : ?>
 
 								<select name="item_id">
 									<?php $this->get_posts_as_option_list( $part_id ) ?>
@@ -253,7 +274,9 @@ class Anthologize_Project_Organizer {
 								<input type="submit" name="new_item" value="Add Item" />
 								<input type="hidden" name="part_id" value="<?php echo $part_id ?>" />
 
-						<?php endif; ?>
+							<?php endif; ?>
+
+						<?php */ ?>
 
 					</div>
 
@@ -342,7 +365,7 @@ class Anthologize_Project_Organizer {
 
 		if ( $items_query->have_posts() ) {
 
-			echo "<ol>";
+			echo "<ul>";
 
 			while ( $items_query->have_posts() ) : $items_query->the_post();
 
@@ -350,7 +373,7 @@ class Anthologize_Project_Organizer {
 
 			endwhile;
 
-			echo "</ol>";
+			echo "</ul>";
 
 		}
 	}
@@ -467,13 +490,18 @@ class Anthologize_Project_Organizer {
 				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo $post->ID . " " . $append_parent ?>
 			<?php endif; ?>
 
-			<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+			<noscript>
+				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+			</noscript>
 
-			<?php the_title() ?> -
-				<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a>
-				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&append_parent=<?php the_ID() ?>"><?php _e( 'Append', 'anthologize' ) ?></a>
-				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
-
+			<h3 class="part-item">
+				<?php the_title() ?>
+				<div class="part-item-buttons">
+					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&append_parent=<?php the_ID() ?>"><?php _e( 'Append', 'anthologize' ) ?></a> |
+					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
+				</div>
+			</h3>
 		</li>
 	<?php
 	}

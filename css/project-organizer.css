@@ -9,23 +9,78 @@
 	margin-right: 15px;
 }
 
+
+
 #adminmenu #toplevel_page_anthologize .wp-menu-image a img {
 	display: none !important;
 }
 
-#project-organizer-column {
-	width: 277px;
-	float: left;
-	height: 500px;
-	clear: both;
+#project-organizer-frame {
+	margin-left: 300px;
 	display: block;
 }
 
-#project-organizer-column p {
+/* Left column ( Items ) */
+#project-organizer-left-column {
+	clear: both;
+	float: left;
+	display: inline;
+	padding-top: 24px;
+	width: 281px;
+	margin-left: -300px;
+
+}
+
+#project-organizer-left-column p {
 	padding: 5px 10px;
 }
 
-#project-organizer-column select {
-	width: 80%;
+#project-organizer-left-column select {
+	width: 250px;
 }
+
+
+/* Right column (Parts) */
+#partlist {
+	padding: 8px;
+}
+
+.part-header {
+	background: #B38080 !important;
+	color: #3F0D11 !important;
+	text-shadow: none !important;
+	border-top-right-radius: 3px !important;
+	border-top-left-radius: 3px !important;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border: 2px solid #3F0D11;
+}
+
+.part-items {
+	padding: 8px 0px 8px 40px;
+}
+
+/* Individual parts */
+.part-item {
+	background: #84A9CA !important;
+	color: #13395F !important;
+	text-shadow: none !important;
+	border-top-right-radius: 3px !important;
+	border-top-left-radius: 3px !important;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border: 2px solid #13395F;
+}
+
+.part-item-buttons {
+	width: 200px;
+	float: right;
+	text-align: right;
+}
+
+.part-item-buttons a {
+	text-decoration: none;
+	color: #13395F;
+}
+
 
