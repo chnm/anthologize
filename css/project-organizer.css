@@ -5,6 +5,10 @@
 	background: transparent;
 }
 
+#icon-anthologize {
+	margin-right: 15px;
+}
+
 #adminmenu #toplevel_page_anthologize .wp-menu-image a img {
 	display: none !important;
 }

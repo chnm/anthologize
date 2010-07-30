@@ -50,12 +50,17 @@ class Anthologize_Project_Organizer {
 		?>
 		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
 
+
+		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+
+		<h2><?php echo $this->project_name ?></h2>
+
 		<div id="project-organizer-frame">
 			<div id="project-organizer-column" class="metabox-holder">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
 				<div id="add-custom-links" class="postbox ">
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span>Custom Links</span></h3>
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Content', 'Anthologize' ) ?></span></h3>
 				<div class="inside">
 					<div class="customlinkdiv" id="customlinkdiv">
 
@@ -84,7 +89,6 @@ class Anthologize_Project_Organizer {
 		</div> <!-- #project-organizer-frame -->
 
 
-		<h3><?php echo $this->project_name ?></h3>
 
 				<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
 					<div id="message" class="updated below-h2">
