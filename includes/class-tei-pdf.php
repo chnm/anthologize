@@ -61,6 +61,9 @@ class TeiPdf {
 		$parts = $xpath->query("//tei:div[@type='part']");
 		$html = null;
 
+//PMJ: There will be an additional loop here, over (tei:div[@type='libraryItem'], $part) to dig up all the
+//libraryItems in the part. In each of those, there's another tei:head and html:body
+
 		foreach ($parts as $part) {
 			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
 			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
@@ -78,8 +81,8 @@ class TeiPdf {
 		// This method has several options, check the source code
 		// documentation for more information.
 
-		//echo $html; // DEBUG
-		$this->pdf->Output('example_001.pdf');
+		echo $html; // DEBUG
+		//$this->pdf->Output('example_001.pdf');
 
 	} // write_pdf
 

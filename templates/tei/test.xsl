@@ -14,13 +14,12 @@
     </xd:doc>
 
     <xsl:template match="/">
-        <xsl:apply-templates select="//tei:author"></xsl:apply-templates>
+        <xsl:apply-templates select="//tei:author/@ref"></xsl:apply-templates>
     </xsl:template>
     
-<xsl:template match="tei:author">
-    <xsl:variable name="userId" select="@ref"></xsl:variable>
-    <!--<xsl:value-of select="$userId"/>-->
-    <xsl:value-of select="//person[@id = '$userId' ]/persName/forename"/>
+<xsl:template match="tei:author/@ref">
+    <xsl:variable name="userId"  select="." ></xsl:variable>    
+    <xsl:value-of select="//tei:person[@xml:id = $userId]/tei:persName/tei:forename"/>
 </xsl:template>    
     
 <!--    
