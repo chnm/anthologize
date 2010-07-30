@@ -20,7 +20,7 @@ jQuery(document).ready( function() {
 			j('#filter').append('<option value="" disabled="disabled"> - </option>');
 			j.each( s, function(index, value) {
 				var v = value.split(':');
-				var h = '<option value="' + index + '">' + v[1] + '</option>';
+				var h = '<option value="' + v[0] + '">' + v[1] + '</option>';
 				//alert(h); return false;
 				j('#filter').append(h);
 			});
@@ -34,19 +34,20 @@ jQuery(document).ready( function() {
 		var tagorcat = j('#sortby-dropdown').val();
 
 		j.post( ajaxurl, {
-			action: theaction,
+			action: 'get_posts_by',
+			'term': term,
+			'tagorcat': tagorcat
 		},
 		function(response)
 		{
 			var s = response.split(',');
-			/* j('#filter').empty();
-			j('#filter').append('<option value="" disabled="disabled"> - </option>');
+			j('#sidebar-posts').empty();
 			j.each( s, function(index, value) {
 				var v = value.split(':');
-				var h = '<option value="' + index + '">' + v[1] + '</option>';
+				var h = '<li class="item" id="new-' + v[0] + '">' + v[1] + '</li>';
 				//alert(h); return false;
-				j('#filter').append(h);
-			}); */
+				j('#sidebar-posts').append(h);
+			});
 
 		});
 

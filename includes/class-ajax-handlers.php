@@ -7,6 +7,7 @@ class Anthologize_Ajax_Handlers {
 	function anthologize_ajax_handlers() {
 		add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
 		add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
+		add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
 	}
 
 	function get_tags() {
@@ -19,7 +20,6 @@ class Anthologize_Ajax_Handlers {
 
 		print_r($the_tags);
 		die();
-		// Get the post and do some shit
 	}
 
 	function get_cats() {
@@ -32,7 +32,34 @@ class Anthologize_Ajax_Handlers {
 
 		print_r($the_cats);
 		die();
-		// Get the post and do some shit
+	}
+
+	function get_posts_by() {
+		$term = $_POST['term'];
+		$tagorcat = $_POST['tagorcat'];
+
+		// Blech
+		$t_or_c = ( $tagorcat == 'tag' ) ? 'tag_id' : 'cat';
+
+		$args = array(
+			'post_type' => array('post', 'page', 'imported_items' ),
+			$t_or_c => $term,
+			'posts_per_page' => -1
+		);
+
+
+		query_posts( $args );
+
+		$response = '';
+
+		while ( have_posts() ) {
+			the_post();
+			$response .= get_the_ID() . ':' . get_the_title() . ',';
+		}
+
+		print_r($response);
+
+		die();
 	}
 }
 

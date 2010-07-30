@@ -276,14 +276,15 @@ class Anthologize_Project_Organizer {
 
 		$big_posts = new WP_Query( $args );
 
-		if ( $big_posts->have_posts() ) : while ( $big_posts->have_posts() ) : $big_posts->the_post();
+		if ( $big_posts->have_posts() ) {
 		?>
-			<li class="item" id="new-<?php the_ID() ?>"><?php the_title() ?></li>
+			<ul id="sidebar-posts">
+				<?php while ( $big_posts->have_posts() ) : $big_posts->the_post(); ?>
+					<li class="item" id="new-<?php the_ID() ?>"><?php the_title() ?></li>
+				<?php endwhile; ?>
+			</ul>
 		<?php
-		endwhile; endif;
-
-		print_r($big_posts); die();
-
+		}
 	}
 
 	function get_posts_as_option_list( $part_id ) {
