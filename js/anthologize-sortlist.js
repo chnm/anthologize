@@ -11,25 +11,24 @@ var anthologize = {
     var new_item = "false";
     var src_id = anthologize.src_id;
 
+    var org_seq_num = anthologize.org_seq_num;
+    if (anthologize.fromNew){
+      new_item = "true";
+      org_seq_num = anthologize.new_item_org_seq_num;
+      ui.item.attr("id", "new-new-new");
+    }
+
     offset = ui.item.index() + 1
-    dest_seq[ui.item.attr("id")] = offset;
+    dest_seq[this.cleanPostIds(ui.item.attr("id"))] = offset;
     ui.item.nextAll().each(function(){
       offset++;
-      dest_seq[jQuery(this).attr("id")] = offset;
+      dest_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = offset;
     })
 
     if (ui.item.hasClass("item")){
       dest_id = ui.item.closest("li.part").attr("id");
     }else{
       dest_id = ui.item.closest("ul").attr("id");
-    }
-
-    var org_seq_num = anthologize.org_seq_num;
-
-    if (anthologize.fromNew){
-      new_item = "true";
-      org_seq_num = anthologize.new_item_org_seq_num;
-      ui.item.attr("id", "new-new-new");
     }
 
     var ajax_options = {
@@ -49,6 +48,7 @@ var anthologize = {
 	  clean_id = clean_id.replace("project-", "");
 	  clean_id = clean_id.replace("part-", "");
 	  clean_id = clean_id.replace("item-", "");
+	  clean_id = clean_id.replace("new-", "");
 	  return clean_id;
   },
   "getAppendableItems" : function(item_id){
@@ -120,7 +120,7 @@ jQuery(document).ready(function(){
 		  var panel = item.find("div.append_items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));
 		  for (var itemId in appendable){
-			  panel.append('<input type="checkbox" name="append[]" id="append-' + itemId + '"/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
+			  panel.append('<input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
 		  }
 		
 		  jQuery(".project-parts").sortable("disable");
