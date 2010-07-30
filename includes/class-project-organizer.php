@@ -10,7 +10,7 @@ class Anthologize_Project_Organizer {
 	 * The project organizer. Git 'er done
 	 */
 	function anthologize_project_organizer ( $project_id ) {
-
+        
 		$this->project_id = $project_id;
 
 		$project = get_post( $project_id );
@@ -489,6 +489,8 @@ class Anthologize_Project_Organizer {
 			if (false === $add_item_result)
 				return false;
             $post_id = $add_item_result;
+            $dest_seq[$post_id] = $dest_seq['new_new_new'];
+            unset($dest_seq['new_new_new']);
         } else {
             // use wp_update_post
             // ID, post_parent
