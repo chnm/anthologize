@@ -8,6 +8,12 @@ class Anthologize_Ajax_Handlers {
 		add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
 		add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
 		add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
+		add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
+		add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
+		add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
+		add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
+		add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
+		add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
 	}
 
 	function get_tags() {
@@ -61,6 +67,36 @@ class Anthologize_Ajax_Handlers {
 
 		die();
 	}
+
+    function place_item() {
+
+        die();
+    }
+
+    function merge_items() {
+
+        die();
+    }
+
+    function update_post_metadata() {
+
+        die();
+    }
+
+    function remove_item_part() {
+
+        die();
+    }
+
+    function insert_new_item() {
+
+        die();
+    }
+    
+    function insert_new_part() {
+
+        die();
+    }
 }
 
 endif;
