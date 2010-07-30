@@ -135,6 +135,7 @@ class TeiPdf {
 		$font_family = $font_size->textContent;
 		$font_size= $font_size->textContent;
 
+		// Hardcoded for now; will change once TEI changes.
 		$this->pdf->SetFont('times', '', 12, '', true);
 
 	}
