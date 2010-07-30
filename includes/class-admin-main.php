@@ -22,14 +22,14 @@ class Anthologize_Admin_Main {
 	}
 
 	function init() {
-
-	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
+	    
+	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type ) 
     	{
             add_meta_box('anthologize', 'Anthologize', array($this,'item_meta_box'), $type, 'side', 'high');
     	}
-
+    	
     	add_action('save_post',array( $this, 'item_meta_save' ));
-
+		
 		do_action( 'anthologize_admin_init' );
 	}
 
@@ -38,7 +38,7 @@ class Anthologize_Admin_Main {
 
 		$plugin_pages[] = add_menu_page( __( 'Anthologize', 'anthologize' ), __( 'Anthologize', 'anthologize' ), 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
-		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export', 'anthologize' ), __( 'Export', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
+//		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
 
 //		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
 
@@ -63,22 +63,71 @@ class Anthologize_Admin_Main {
 
 	}
 
-	function load_export_panel( $project_id ) {
-		if ( !$project_id )
-			$project_id = 0;
-
-		require_once( dirname( __FILE__ ) . '/class-export-panel.php' );
-		$export_panel = new Anthologize_Export_Panel( $project_id );
-		$export_panel->display();
-
-	}
-
 	function display_no_project_id_message() {
 		?>
 			<div id="notice" class="error below-h2">
 				<p><?php _e( 'Project not found', 'anthologize' ) ?></p>
 			</div>
 		<?php
+	}
+
+    function get_project_parts($project_id = null) {
+        
+        global $post;
+        
+        if (!$project_id) {
+            $project_id = $post->ID;
+        }
+        
+		$args = array(
+			'post_parent' => $project_id,
+			'post_type' => 'parts',
+			'posts_per_page' => -1,
+			'orderby' => 'menu_order',
+			'order' => ASC
+		);
+
+		$items_query = new WP_Query( $args );
+
+		if ( $posts = $items_query->get_posts() ) {
+            return $posts;
+		}
+
+	}
+	
+	function get_project_items($project_id = null) {
+        
+        global $post;
+        
+        if (!$project_id) {
+            $project_id = $post->ID;
+        }
+        
+        $parts = $this->get_project_parts($project_id);
+        
+        $items = array();
+        
+        foreach ($parts as $part) {
+            $args = array(
+    			'post_parent' => $part->ID,
+    			'post_type' => 'library_items',
+    			'posts_per_page' => -1,
+    			'orderby' => 'menu_order',
+    			'order' => ASC
+    		);
+    		
+    		$items_query = new WP_Query( $args );
+            
+            // May need optimization
+    		if ( $posts = $items_query->get_posts() ) {
+                foreach($posts as $post) {
+                    $items[] = $post;
+                }
+    		}
+        }
+        
+        return $items;
+
 	}
 
 	function display() {
@@ -89,7 +138,6 @@ class Anthologize_Admin_Main {
 		if ( $_GET['action'] == 'edit' && $project ) {
 			$this->load_project_organizer( $_GET['project_id'] );
 		}
-
 
 		if (
 			!isset( $_GET['action'] ) ||
@@ -127,31 +175,28 @@ class Anthologize_Admin_Main {
 			</div>
 
 
-			  <table cellpadding="0" cellspacing="0" class="widefat">
+			<table cellpadding="0" cellspacing="0" class="widefat">
 			<thead>
 				<tr>
 					<th scope="col" class="check-column"></th>
-            		<th scope="col" class="bp-gm-group-id-header"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=group_id"><?php _e( 'Project Title', 'bp-group-management' ) ?></a></th>
-
-            		<th scope="col"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=name"><?php _e( 'Number of Chapters', 'bp-group-management' ) ?></a></th>
-            		<th scope="col"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=group_id"><?php _e( 'Number of Items', 'bp-group-management' ) ?></a></th>
-            		<th scope="col"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=popular"><?php _e( 'Date Created', 'bp-group-management' ) ?></a></th>
-            		<th scope="col"><a href="admin.php?page=bp-group-management/bp-group-management-bp-functions.php&amp;order=popular"><?php _e( 'Date Modified', 'bp-group-management' ) ?></a></th>
-
-            		<?php do_action( 'bp_gm_group_column_header' ); ?>
+            		<th scope="col"><?php _e( 'Project Title') ?></th>
+            		<th scope="col"><?php _e( 'Created By') ?></th>
+            		<th scope="col"><?php _e( 'Number of Parts') ?></th>
+            		<th scope="col"><?php _e( 'Number of Items') ?></th>
+            		<th scope="col"><?php _e( 'Date Created') ?></th>
+            		<th scope="col"><?php _e( 'Date Modified') ?></th>
             	</tr>
             </thead>
-
 			<tbody>
 				<?php while ( have_posts() ) : the_post(); ?>
-					<tr>
 
+					<tr>
 						<tr>
             			<th scope="row" class="check-column">
 						</th>
 
 						<th scope="row"  class="post-title">
-							<a href="admin.php?page=anthologize&action=edit&project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
+							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title">#<?php the_ID(); ?> : <?php the_title(); ?></a>
 
 							<br/>
 									<?php
@@ -170,23 +215,29 @@ class Anthologize_Admin_Main {
 
 						</th>
 
-
-						<td scope="row" class="bp-gm-avatar">
-
+                        
+						<td scope="row anthologize-created-by">
+                            <?php the_author(); ?>
  						</td>
 
-						<td scope="row">
-
-
+						<td scope="row anthologize-number-parts">
+                            <?php $parts = $this->get_project_parts();  echo count($parts); ?>
+						</td>
+                        
+                        <td scope="row anthologize-number-items">
+                            <?php $items = $this->get_project_items();  echo count($items); ?>
+                            
 						</td>
 
-						<td scope="row">
+						<td scope="row anthologize-date-created">
+						    <?php the_date(); ?>
 						</td>
 
-						<td scope="row">
+						<td scope="row anthologize-date-modified">
+						    <?php the_modified_date(); ?>
 						</td>
 
-						<?php do_action( 'bp_gm_group_column_data' ); ?>
+						<?php do_action( 'anthologize_project_column_data' ); ?>
 
 
             		</tr>
@@ -216,22 +267,22 @@ class Anthologize_Admin_Main {
      * item_meta_save
      *
      * Processes post save from the item_meta_box function. Saves
-     * custom post metadata. Also responsible for correctly
+     * custom post metadata. Also responsible for correctly 
      * redirecting to Anthologize pages after saving.
      **/
     function item_meta_save($post_id)
     {
         // make sure data came from our meta box
         if ( !wp_verify_nonce($_POST['anthologize_noncename'],__FILE__) ) return $post_id;
-
+        
         // check user permissions
         if ( !current_user_can('edit_post', $post_id) ) return $post_id;
 
         $current_data = get_post_meta($post_id, 'anthologize_meta', TRUE);
-
-        $new_data = $_POST['anthologize_meta'];
-
-        if ( $current_data )
+        
+        $new_data = $_POST['anthologize_meta'];	
+        
+        if ( $current_data ) 
     	{
     		if ( is_null($new_data) ) delete_post_meta($post_id,'anthologize_meta');
     		else update_post_meta($post_id,'anthologize_meta',$new_data);
@@ -252,18 +303,18 @@ class Anthologize_Admin_Main {
     }
     /**
      * item_meta_box
-     *
+     * 
      * Displays form for editing item metadata associated with
      * Anthologize. Includes hidden fields for post_parent and
      * menu_order because WP sets those values to 0 if those
      * fields are not present on the form.
      **/
     function item_meta_box() {
-
+        
         global $post;
-
+        
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
-
+        
         ?>
         <div class="my_meta_control">
 
@@ -309,6 +360,10 @@ function anthologize_admin_styles() {}
 
 function anthologize_admin_scripts() {}
 
-
+function anthologize_get_parts($parent_id) {
+    $parts = ( 'post_type=parts&post_parent=' . the_ID() );
+    
+    return $parts;
+}
 
 ?>
