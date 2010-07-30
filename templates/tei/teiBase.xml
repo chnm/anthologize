@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0">
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
     <teiHeader>
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
@@ -8,7 +8,8 @@
             </titleStmt>
             <publicationStmt>
 
-                <p></p>
+                <p>This edition produced with the Anthologize blog-to-bookshelf WordPress plugin
+                    (http://anthologize.org) </p>
             </publicationStmt>
             <sourceDesc>
                 <bibl>
@@ -16,8 +17,16 @@
                 </bibl>
             </sourceDesc>
         </fileDesc>
+
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
-        <layoutDesc xmlns="http://www.anthologize.org/ns"> </layoutDesc>
+        <outputParams xmlns="http://www.anthologize.org/ns">
+            <param name="paper-type">Letter</param>
+            <param name="page-width">8.5in</param>
+            <param name="page-height">11in</param>
+            <param name="font-size">12pt</param>
+            <param name="font-family">Times New Roman, Serif</param>
+
+        </outputParams>
 
         <encodingDesc>
             <refsDecl>
@@ -41,9 +50,8 @@
 
             </refsDecl>
             <appInfo>
-                <application ident="anthologize" version="1.0">
+                <application ident="anthologize" version="0.3">
                     <label>Anthologize</label>
-
                 </application>
             </appInfo>
         </encodingDesc>
@@ -152,7 +160,73 @@
                             handle (located in the left sidebar of this page) with @gmail.com.</p>
                     </body>
                 </div>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Custom Profile Filters for Buddypress</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=custom-profile-filters-for-buddypress-2]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml"><p>Out of the box, BuddyPress
+                            automatically turns some words and phrases in the fields of a user's
+                            profile into links that, when clicked, search the user's community for
+                            other profiles containing those phrases. When activated, this plugin
+                            allows users and administrators to have more control over these links,
+                            in the following ways: <a
+                                href="http://localhost/workspace/wordpress/wp-content/uploads/2010/02/custom-filter-300x117.jpg"
+                                    ><img class="alignright size-full wp-image-526"
+                                    title="Custom profile filters"
+                                    src="http://localhost/workspace/wordpress/wp-content/uploads/2010/02/custom-filter-300x117.jpg"
+                                    alt="" width="300" height="117"></img></a> 1) By using square
+                            brackets in a profile field, users can specify which words or phrases in
+                            their profile turn into links. For example: under Interests, I might
+                            list "Cartoons about dogs". By default, Buddypress will turn the entire
+                            phrase into a link that searches the community for others who like
+                            cartoons about dogs. If I instead type "[Cartoons] about [dogs]", then
+                            the two words in brackets will turn into independent links. 2)
+                            Administrators can specify certain profile fields that will not turn
+                            into links at all. The standard setting for the plugin is that fields
+                            labeled 'Phone', 'IM', and 'Skype ID' will not become linkable (it
+                            doesn't make much sense to search a community for what should be a
+                            unique handle, after all). See custom-profile-filters-for-buddypress.php
+                            to configure this setting. 3) Administrators can specify certain profile
+                            fields that link to social networking profiles. If I enter my Twitter
+                            handle 'boonebgorges' into a field labeled 'Twitter', for example, this
+                            plugin will bypass the default link to a BuddyPress search on
+                            'boonebgorges' and instead link toÂ <a rel="nofollow"
+                                href="http://twitter.com/boonebgorges"
+                                >http://twitter.com/boonebgorges</a>. See
+                            custom-profile-filters-for-buddypress.php to configure this setting.
+                                    </p><p><strong><a
+                                    href="http://wordpress.org/extend/plugins/custom-profile-filters-for-buddypress/"
+                                    >Download the plugin here.</a></strong></p>
+                        <p>Custom Profile Filters for BuddyPress has been downloaded
+                                <strong>[downloadstat
+                                url="http://wordpress.org/extend/plugins/custom-profile-filters-for-buddypress/stats/"
+                                get="total" autop="false"]</strong> times. Are you using this
+                            plugin? Consider a <strong><a href="/donate">donation</a></strong>.</p>
+                        Some previous blog posts about this plugin: <ol><li><a
+                                    href="http://teleogistic.net/2009/06/new-version-of-custom-profile-filters-for-buddypress/"
+                                    >http://teleogistic.net/2009/06/new-version-of-custom-profile-filters-for-buddypress/</a></li>
+                            <li><a
+                                    href="http://dev.commons.gc.cuny.edu/2009/05/16/new-plugin-custom-profile-filters-for-buddypress/"
+                                    >http://dev.commons.gc.cuny.edu/2009/05/16/new-plugin-custom-profile-filters-for-buddypress/</a></li>
+                            <li><a
+                                    href="http://teleogistic.net/2009/05/custom-profile-filters-for-buddypress/"
+                                    >http://teleogistic.net/2009/05/custom-profile-filters-for-buddypress/</a></li>
+                        </ol><h2>Version history</h2>
+                        <dl><dt><strong>0.1</strong></dt>
+                            <dd>Initial release</dd>
+                            <dt><strong>0.2</strong></dt>
+                            <dd>Added automatic linking for various social networking sites</dd>
+                                    <dt><strong>0.3 - February 27, 2010</strong></dt>
+                            <dd>Conforms to BP 1.2 standards for loading order</dd>
+                            <dd>Most functionality moved to proper filters in order to inherit BP
+                                native code</dd> <dt><strong>0.3.1 - March 2, 2010</strong></dt>
+                            <dd>Moved globals back to main plugin file</dd>
+                            <dd>Fixed error regarding missing function arguments (thanks for
+                                reporting them, Mike!)</dd>
+                        </dl></body>
+                </div>
             </div>
         </body>
     </text>
+
 </TEI>
