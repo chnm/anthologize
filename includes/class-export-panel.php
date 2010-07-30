@@ -14,8 +14,13 @@ class Anthologize_Export_Panel {
 
 		$this->project_id = $project_id;
 
+		$this->load_styles();
+
 	}
 
+	function load_styles() {
+
+	}
 
 
 	function display() {
@@ -109,13 +114,33 @@ class Anthologize_Export_Panel {
 						<input type="radio" name="filetype" value="pdf" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI', 'anthologize' ) ?>
 					</div>
+
 					<div>
-						<div class="pub-options-title"><?php _e( 'Size', 'anthologize' ) ?></div>
-						<input type="radio" name="size" value="epub" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
-						<input type="radio" name="size" value="pdf" /> <?php _e( 'A4', 'anthologize' ) ?>
+						<div class="pub-options-title"><?php _e( 'Page Size', 'anthologize' ) ?></div>
+						<input type="radio" name="page-size" value="epub" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
+						<input type="radio" name="page-size" value="pdf" /> <?php _e( 'A4', 'anthologize' ) ?>
 					</div>
 
+					<div>
+						<div class="pub-options-title"><?php _e( 'Font Size', 'anthologize' ) ?></div>
+						<select name="font-size">
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+						</select>
+					</div>
 
+					<div>
+						<div class="pub-options-title"><?php _e( 'Font Face', 'anthologize' ) ?></div>
+						<select name="font-face">
+							<option value="serif" class="serif">Serif</option>
+							<option value="sans-serif" class="sans-serif">Sans-serif</option>
+							<option value="fixed-width" class="fixed-width">Fixed-width</option>
+						</select>
+					</div>
 
 				</div>
 
