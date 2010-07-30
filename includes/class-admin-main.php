@@ -143,6 +143,10 @@ class Anthologize_Admin_Main {
 
 		$project = get_post( $_GET['project_id'] );
 
+        if ( $_GET['action'] == 'delete' && $project ) {
+			wp_delete_post($project->ID);
+		}
+
 		if ( $_GET['action'] == 'edit' && $project ) {
 			$this->load_project_organizer( $_GET['project_id'] );
 		}
@@ -210,6 +214,8 @@ class Anthologize_Admin_Main {
 									$controlActions	= array();
 									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Edit Project') . '</a>';
 									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'">'.__('Delete Project') . '</a>';
+									
 
 
 									?>
@@ -271,6 +277,16 @@ class Anthologize_Admin_Main {
 
 	}
 
+    /**
+     * item_delete
+     * 
+     * Deletes an item. Fun!
+     **/
+     function item_delete($post_id)
+     {
+         
+     }
+     
     /**
      * item_meta_save
      *

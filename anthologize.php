@@ -119,7 +119,7 @@ do_action( 'anthologize_loaded' );
 }
 
 function grab() { // todo: make this make sense
-if ( isset( $_POST['save_project']) )
+if ( isset( $_POST['save_project']) || ($_GET['action'] == 'delete'))
         wp_redirect( 'admin.php?page=anthologize');
     
 if ( $_GET['output'] == 'customfeed' ) {
