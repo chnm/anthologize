@@ -93,6 +93,10 @@ class Anthologize_Ajax_Handlers {
 
         if ('true' != $_POST['new_item']) {
             $new_item = true;
+            $src_part_id = false;
+            $src_seq_array = false;
+        } else {
+            $new_item = false;
             $src_part_id = $_POST['src_id'];
             $src_seq = $_POST['src_seq'];
             $src_seq_array = json_decode($src_seq);
@@ -100,10 +104,6 @@ class Anthologize_Ajax_Handlers {
                 header('HTTP/1.1 500 Internal Server Error');
                 die();
             }
-        } else {
-            $new_item = false;
-            $src_part_id = false;
-            $src_seq_array = false;
         }
 
         $insert_result = $this->project_organizer->insert_item($project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array);
