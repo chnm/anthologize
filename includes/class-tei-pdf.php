@@ -131,8 +131,9 @@ class TeiPdf {
 
 		$font_family = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-family']")->item(0);
 		$font_size = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-size']")->item(0);
-		$font_size = preg_replace('/pt/', '', $font_size);
 
+		$font_family = $font_size->textContent;
+		$font_size= $font_size->textContent;
 
 		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 
