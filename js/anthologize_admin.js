@@ -44,7 +44,7 @@ place_item: function(config_obj) {
         error: function(){
             // Move the Item back
             if (new_item == 'true') {
-                jQuery('li#' + item_id).fadeOut('normal', function() {
+                jQuery('li#new_new_new').fadeOut('normal', function() {
                     jQuery(this).remove();
                 });
             } else {
