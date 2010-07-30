@@ -12,9 +12,9 @@ class Anthologize_Ajax_Handlers {
 	function get_tags() {
 		$tags = get_tags();
 
-		$the_tags = array();
+		$the_tags = '';
 		foreach( $tags as $tag ) {
-			$the_tags[$tag->term_id] = $tag->name;
+			$the_tags .= $tag->term_id . ':' . $tag->name . ',';
 		}
 
 		print_r($the_tags);
@@ -22,6 +22,18 @@ class Anthologize_Ajax_Handlers {
 		// Get the post and do some shit
 	}
 
+	function get_cats() {
+		$cats = get_categories();
+
+		$the_cats = '';
+		foreach( $cats as $cat ) {
+			$the_cats .= $cat->term_id . ':' . $cat->name . ',';
+		}
+
+		print_r($the_cats);
+		die();
+		// Get the post and do some shit
+	}
 }
 
 endif;

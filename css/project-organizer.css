@@ -7,4 +7,9 @@
 }
 
 #project-organizer-column p {
+	padding: 5px 10px;
+}
+
+#project-organizer-column select {
+	width: 80%;
 }

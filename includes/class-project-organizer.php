@@ -68,6 +68,10 @@ class Anthologize_Project_Organizer {
 								<?php $this->filter_dropdown_tags() ?>
 							</p>
 
+							<p id="new-items">
+								<?php $this->get_sidebar_posts() ?>
+							</p>
+
 					</div><!-- /.customlinkdiv -->
 					</div>
 				</div> <!-- /.postbox -->
@@ -123,6 +127,7 @@ class Anthologize_Project_Organizer {
 
 		?>
 			<select name="filter" id="filter">
+				<option value="" disabled="disabled"> - </option>
 				<?php foreach( $tags as $tag ) : ?>
 					<option value="<?php echo $tag->term_id ?>"><?php echo $tag->name ?></option>
 				<?php endforeach; ?>
@@ -136,12 +141,15 @@ class Anthologize_Project_Organizer {
 
 		?>
 			<select name="filter" id="filter">
+				<option value="" disabled="disabled"> - </option>
 				<?php foreach( $cats as $cat ) : ?>
 					<option value="<?php echo $cat->term_id ?>"><?php echo $cat->name ?></option>
 				<?php endforeach; ?>
 			</select>
 		<?php
 	}
+
+
 
 	function add_item_to_part( $item_id, $part_id ) {
 		global $wpdb;
@@ -256,6 +264,26 @@ class Anthologize_Project_Organizer {
 
 
 		wp_reset_query();
+	}
+
+	function get_sidebar_posts() {
+		global $wpdb;
+
+		$args = array(
+			'post_type' => array('post', 'page', 'imported_items' ),
+			'posts_per_page' => -1
+		);
+
+		$big_posts = new WP_Query( $args );
+
+		if ( $big_posts->have_posts() ) : while ( $big_posts->have_posts() ) : $big_posts->the_post();
+		?>
+			<li class="item" id="new-<?php the_ID() ?>"><?php the_title() ?></li>
+		<?php
+		endwhile; endif;
+
+		print_r($big_posts); die();
+
 	}
 
 	function get_posts_as_option_list( $part_id ) {
