@@ -20,16 +20,12 @@ class TeiDom {
     $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" .
       DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'tei' . DIRECTORY_SEPARATOR .'teiEmpty.xml';
 		$this->dom->load($templatePath);
+    $this->dom->preserveWhiteSpace = false;
     $this->setXPath();
-
-
-
 		$this->buildProjectData($projectID);
     if($checkImgSrcs) {
     	$this->checkImgSrcs();
     }
-
-
 	}
 
   public function setXPath() {
@@ -178,11 +174,15 @@ class TeiDom {
       }
   }
 
+
+
   private function checkImgSrcs() {
     $imgs = $this->dom->getElementsByTagName('img');
     for($i = $imgs->length; $i>0; $i--) {
         $imgNode = $imgs->item(0);
         $src =  $imgNode->getAttribute('src');
+        //TODO: check to see if the src is http:// or a relative path
+        // if relative path, convert it into an http://
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $src);
         //curl_setopt($ch, CURLOPT_HEADER, true);
@@ -192,6 +192,7 @@ class TeiDom {
         curl_close($ch);
         if($code == 404) {
           $noImgSpan = $this->dom->createElementNS(HTML, 'span', 'Image not found');
+          $noImgSpan->setAttribute('class', 'anthologize-error');
           $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
         }
     }
