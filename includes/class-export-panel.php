@@ -14,12 +14,12 @@ class Anthologize_Export_Panel {
 
 		$this->project_id = $project_id;
 
-		$this->load_styles();
-
 	}
 
 	function load_styles() {
+		?>
 
+		<?php
 	}
 
 
@@ -99,7 +99,6 @@ class Anthologize_Export_Panel {
 			<?php $project = get_post( $project_id ); ?>
 
 			<form action="" method="post">
-				<?php print_r($_POST); ?>
 
 				<input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" />
 
