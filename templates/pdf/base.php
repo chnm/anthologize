@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(0);
+//error_reporting(0);
 
 include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-pdf.php');
@@ -20,6 +20,6 @@ $pdf->writePDF();
 
 
 // or $teiDom = $tei->getTeiDom();
- 
+
 die();
 

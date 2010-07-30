@@ -129,6 +129,8 @@ return false;
 } else if ($_GET['output'] == 'epub') {
 load_template( dirname(__FILE__) . '/templates/epub/index.php' );
 return false;
+} else if ($_GET['output'] == 'pdf') {
+	load_template( dirname(__FILE__) . '/templates/pdf/base.php' );
 }
 }
 
