@@ -1,3 +1,14 @@
+#adminmenu #toplevel_page_anthologize .wp-menu-image a {
+	background-image: url(../images/little-logo.png) !important;
+	background-repeat: no-repeat;
+	background-position: -3px 0px !important;
+	background: transparent;
+}
+
+#adminmenu #toplevel_page_anthologize .wp-menu-image a img {
+	display: none !important;
+}
+
 #project-organizer-column {
 	width: 277px;
 	float: left;
@@ -13,3 +24,4 @@
 #project-organizer-column select {
 	width: 80%;
 }
+
