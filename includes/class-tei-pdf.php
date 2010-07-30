@@ -14,7 +14,9 @@ class TeiPdf {
 
 		// Creates an object of type DOMDocument
 		// and exposes it as the attribute $tei
-		$this->tei = $tei_dom->getTeiDom();
+		//$this->tei = $tei_dom->getTeiDom();
+    $this->tei = new DOMDocument();
+    $this->tei->loadXML($tei_dom->getTeiString());
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -59,10 +61,7 @@ class TeiPdf {
 		$parts = $xpath->query("//tei:div[@type='part']");
 		$html = null;
 
-echo $parts->length;
-die();
 		foreach ($parts as $part) {
-
 			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
 			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
 			$paras = $xpath->query("html:p", $body);

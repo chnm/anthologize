@@ -8,6 +8,8 @@ include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 $projectID = 877;
 $tei = new TeiDom($projectID);
 
+header("Content-type: text/xml");
 echo $tei->getTeiString();
+
 die();
 
