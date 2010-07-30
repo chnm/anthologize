@@ -9,6 +9,7 @@ class TeiPdf {
 
 	public $tei;
 	public $pdf;
+	public $xpath;
 
 	function __construct($tei_dom) {
 
@@ -19,7 +20,9 @@ class TeiPdf {
 
     $this->tei->loadXML($tei_dom->getTeiString());
 
-		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$paper_size = $this->get_paper_size();
+
+		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $paper_size, true, 'UTF-8', false);
 
 // -------------------------------------------------------- //
 
@@ -42,34 +45,34 @@ class TeiPdf {
 
 		$this->pdf->AddPage();
 
-		$xpath = new DOMXpath($this->tei);
-		$xpath->registerNamespace('tei', TEI);
-		$xpath->registerNamespace('html', HTML);
 		
 		// Create a nodeList containing all parts.
-		$parts = $xpath->query("//tei:div[@type='part']");
+		$parts = $this->xpath->query("//tei:div[@type='part']");
 
 		foreach ($parts as $part) {
 			// Grab the main title for each part and render it as
 			// a "chapter" title.
-			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
+			$title = $this->xpath->query("tei:head/tei:title", $part)->item(0);
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
 
 			// Create a nodeList containing all libraryItems
-			$library_items = $xpath->query("tei:div[@type='libraryItem']", $part);
+			$library_items = $this->xpath->query("tei:div[@type='libraryItem']", $part);
 
 			foreach ($library_items as $item) {
 				// Grab the main title for each libraryItem and render it
 				// as a "sub section" title.
-				$sub_title = $xpath->query("tei:head/tei:title", $item)->item(0);
+				$sub_title = $this->xpath->query("tei:head/tei:title", $item)->item(0);
 				$html = $html . "<h3>" . $sub_title->textContent . "</h3>";
 
 				// Grab all paragraphs
-				$paras = $xpath->query("html:body/html:p", $item);
+				$paras = $this->xpath->query("html:body/html:p", $item);
 
 				foreach ($paras as $para) {
 
-					$html = $html . $this->strip_whitespace($this->node_to_string($para));
+					$strip1 = $this->strip_whitespace($this->node_to_string($para));
+					//$strip2 = $this->strip_shortcodes($strip1);
+
+					$html = $html . $strip1;
 
 				} // foreach para
 
@@ -138,6 +141,18 @@ class TeiPdf {
 
 	private function strip_whitespace($string) {
 		return preg_replace('/\s+/', ' ', $string);
+	}
+
+	private function strip_shortcodes($string) {
+		return preg_replace('/\[caption.*?\]/', '', $string);
+	}
+
+	private function get_paper_size() {
+		
+		$paper_size = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='paper-type']")->item(0);
+
+		return $paper_size->textContent;
+
 	}
 
 } // TeiPdf
