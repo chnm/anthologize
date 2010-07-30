@@ -77,7 +77,6 @@ class TeiPdf {
 				foreach ($paras as $para) {
 
 					$strip1 = $this->strip_whitespace($this->node_to_string($para));
-					//$strip2 = $this->strip_shortcodes($strip1);
 
 					$html = $html . $strip1;
 
@@ -129,8 +128,13 @@ class TeiPdf {
 		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 		// set default font subsetting mode
 		$this->pdf->setFontSubsetting(true);
-		//
-		$this->pdf->SetFont('times', '', 12, '', true);
+
+		$font_family = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-family']")->item(0);
+		$font_size = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-size']")->item(0);
+		$font_size = preg_replace('/pt/', '', $font_size);
+
+
+		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 
 	}
 
@@ -148,10 +152,6 @@ class TeiPdf {
 
 	private function strip_whitespace($string) {
 		return preg_replace('/\s+/', ' ', $string);
-	}
-
-	private function strip_shortcodes($string) {
-		return preg_replace('/\[caption.*?\]/', '', $string);
 	}
 
 	private function get_paper_size() {
