@@ -446,7 +446,7 @@ class Anthologize_Project_Organizer {
 
 
 
-	function insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $src_seq ) {
+	function insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $source_seq ) {
 		global $wpdb;
 		if ( !isset( $project_id ) || !isset( $post_id ) || !isset( $dest_id ) || !isset( $dest_seq ) )
 			return false;
@@ -477,6 +477,7 @@ class Anthologize_Project_Organizer {
 				return false;
             }
             $post_id = $update_item_result;
+            $this->rearrange_items( $source_seq );
         }
 
         // JMC: not really any point in checking for errors at this point
@@ -495,7 +496,6 @@ class Anthologize_Project_Organizer {
 				return false;
         }*/
 
-        $this->rearrange_items( $src_seq );
 
 		return $post_id;
 
