@@ -31,12 +31,27 @@
 
 }
 
+#project-organizer-left-column .inside {
+	padding: 8px;
+}
+
 #project-organizer-left-column p {
 	padding: 5px 10px;
 }
 
 #project-organizer-left-column select {
 	width: 250px;
+}
+
+#posts-scrollbox {
+	height: 400px;
+	max-height: 400px;
+	overflow: scroll;
+	padding-top: 10px;
+	border-left: 2px solid #999;
+	border-bottom: 2px solid #999;
+	border-right: 2px solid #999;
+	padding: 4px;
 }
 
 

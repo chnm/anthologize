@@ -44,7 +44,7 @@ jQuery(document).ready( function() {
 			j('#sidebar-posts').empty();
 			j.each( s, function(index, value) {
 				var v = value.split(':');
-				var h = '<li class="item" id="new-' + v[0] + '">' + v[1] + '</li>';
+				var h = '<li class="item" id="new-' + v[0] + '"><h3 class="part-item">' + v[1] + '</h3></li>';
 				//alert(h); return false;
 				j('#sidebar-posts').append(h);
 			});

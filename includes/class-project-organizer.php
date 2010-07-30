@@ -79,11 +79,13 @@ class Anthologize_Project_Organizer {
 								<?php $this->filter_dropdown_tags() ?>
 							</p>
 
-							<h3><?php _e( 'Posts', 'anthologize' ) ?></h3>
 
-							<p id="new-items">
+							<h3 class="part-header"><?php _e( 'Posts', 'anthologize' ) ?></h3>
+							<div id="posts-scrollbox">
+
 								<?php $this->get_sidebar_posts() ?>
-							</p>
+
+							</div>
 
 					</div><!-- /.customlinkdiv -->
 					</div>
@@ -307,7 +309,7 @@ class Anthologize_Project_Organizer {
 		?>
 			<ul id="sidebar-posts">
 				<?php while ( $big_posts->have_posts() ) : $big_posts->the_post(); ?>
-					<li class="item" id="new-<?php the_ID() ?>"><?php the_title() ?></li>
+					<li class="item" id="new-<?php the_ID() ?>"><h3 class="part-item"><?php the_title() ?></h3></li>
 				<?php endwhile; ?>
 			</ul>
 		<?php
