@@ -22,14 +22,14 @@ class Anthologize_Admin_Main {
 	}
 
 	function init() {
-	    
-	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type ) 
+
+	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
     	{
             add_meta_box('anthologize', 'Anthologize', array($this,'item_meta_box'), $type, 'side', 'high');
     	}
-    	
+
     	add_action('save_post',array( $this, 'item_meta_save' ));
-		
+
 		do_action( 'anthologize_admin_init' );
 	}
 
@@ -42,11 +42,13 @@ class Anthologize_Admin_Main {
 
 //		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
 
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export Project', 'anthologize' ), __( 'Export Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
+
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), 'manage_options', __FILE__, 'anthologize_admin_panel' );
 
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
-			add_action( "admin_print_styles-$plugin_page", 'anthologize_admin_styles' );
+			add_action( "admin_print_styles-$plugin_page", array( $this, 'load_styles' ) );
 		}
 	}
 
@@ -55,6 +57,10 @@ class Anthologize_Admin_Main {
     	wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
 
 	}
+
+	function load_styles() {
+    	wp_enqueue_style( 'export-css', WP_PLUGIN_URL . '/anthologize/css2/export-panel.css' );
+    }
 
 	function load_project_organizer( $project_id ) {
 		require_once( dirname( __FILE__ ) . '/class-project-organizer.php' );
@@ -72,13 +78,13 @@ class Anthologize_Admin_Main {
 	}
 
     function get_project_parts($project_id = null) {
-        
+
         global $post;
-        
+
         if (!$project_id) {
             $project_id = $post->ID;
         }
-        
+
 		$args = array(
 			'post_parent' => $project_id,
 			'post_type' => 'parts',
@@ -94,19 +100,19 @@ class Anthologize_Admin_Main {
 		}
 
 	}
-	
+
 	function get_project_items($project_id = null) {
-        
+
         global $post;
-        
+
         if (!$project_id) {
             $project_id = $post->ID;
         }
-        
+
         $parts = $this->get_project_parts($project_id);
-        
+
         $items = array();
-        
+
         foreach ($parts as $part) {
             $args = array(
     			'post_parent' => $part->ID,
@@ -115,9 +121,9 @@ class Anthologize_Admin_Main {
     			'orderby' => 'menu_order',
     			'order' => ASC
     		);
-    		
+
     		$items_query = new WP_Query( $args );
-            
+
             // May need optimization
     		if ( $posts = $items_query->get_posts() ) {
                 foreach($posts as $post) {
@@ -125,7 +131,7 @@ class Anthologize_Admin_Main {
                 }
     		}
         }
-        
+
         return $items;
 
 	}
@@ -215,7 +221,7 @@ class Anthologize_Admin_Main {
 
 						</th>
 
-                        
+
 						<td scope="row anthologize-created-by">
                             <?php the_author(); ?>
  						</td>
@@ -223,10 +229,10 @@ class Anthologize_Admin_Main {
 						<td scope="row anthologize-number-parts">
                             <?php $parts = $this->get_project_parts();  echo count($parts); ?>
 						</td>
-                        
+
                         <td scope="row anthologize-number-items">
                             <?php $items = $this->get_project_items();  echo count($items); ?>
-                            
+
 						</td>
 
 						<td scope="row anthologize-date-created">
@@ -267,22 +273,22 @@ class Anthologize_Admin_Main {
      * item_meta_save
      *
      * Processes post save from the item_meta_box function. Saves
-     * custom post metadata. Also responsible for correctly 
+     * custom post metadata. Also responsible for correctly
      * redirecting to Anthologize pages after saving.
      **/
     function item_meta_save($post_id)
     {
         // make sure data came from our meta box
         if ( !wp_verify_nonce($_POST['anthologize_noncename'],__FILE__) ) return $post_id;
-        
+
         // check user permissions
         if ( !current_user_can('edit_post', $post_id) ) return $post_id;
 
         $current_data = get_post_meta($post_id, 'anthologize_meta', TRUE);
-        
-        $new_data = $_POST['anthologize_meta'];	
-        
-        if ( $current_data ) 
+
+        $new_data = $_POST['anthologize_meta'];
+
+        if ( $current_data )
     	{
     		if ( is_null($new_data) ) delete_post_meta($post_id,'anthologize_meta');
     		else update_post_meta($post_id,'anthologize_meta',$new_data);
@@ -303,18 +309,18 @@ class Anthologize_Admin_Main {
     }
     /**
      * item_meta_box
-     * 
+     *
      * Displays form for editing item metadata associated with
      * Anthologize. Includes hidden fields for post_parent and
      * menu_order because WP sets those values to 0 if those
      * fields are not present on the form.
      **/
     function item_meta_box() {
-        
+
         global $post;
-        
+
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
-        
+
         ?>
         <div class="my_meta_control">
 
@@ -362,7 +368,7 @@ function anthologize_admin_scripts() {}
 
 function anthologize_get_parts($parent_id) {
     $parts = ( 'post_type=parts&post_parent=' . the_ID() );
-    
+
     return $parts;
 }
 
