@@ -16,7 +16,7 @@ class TeiPdf {
 
 		// Creates an object of type DOMDocument
 		// and exposes it as the attribute $tei
-		$tei = $tei_dom->getTeiDom();
+		$this->tei = $tei_dom->getTeiDom();
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
