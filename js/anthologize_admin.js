@@ -1,11 +1,9 @@
-//
-// Boolean return:
+// return post_id
 //
 // Move an Item or Part
 // (in case of moving parts, just duplicate and src and dest content)
 // (in case of new=true, src vars = null)
 
-// Also, return post_id
 $.ajax({
         url: ajaxurl,
         type: 'POST',
@@ -53,9 +51,7 @@ $.ajax({
                post_id:item_id,
                child_post_ids:{},
                // TODO: create this data
-               new_seq:merge_seq,
-               author_str:xxx,
-               title_str:xxx},
+               new_seq:merge_seq},
         async:false,
         timeout:20000,
         beforeSend:function() {
@@ -77,6 +73,7 @@ $.ajax({
 
 
 // Change Part/Item metadata
+// TODO: what does this metadata package look like?
 $.ajax({
         url: ajaxurl,
         type: 'POST',
@@ -184,7 +181,8 @@ $.ajax({
         type: 'POST',
         data: {action:'insert_new_item',
                project_id:project_id,
-               part_id:!!!part_id!!!},
+               part_id:!!!part_id!!!,
+               new_seq:!!!new_seq!!!},
         async:false,
         timeout:20000,
         beforeSend:function() {
@@ -205,7 +203,8 @@ $.ajax({
         url: ajaxurl,
         type: 'POST',
         data: {action:'insert_new_part',
-               project_id:project_id},
+               project_id:project_id,
+               new_seq:!!!new_seq!!!},
         async:false,
         timeout:20000,
         beforeSend:function() {
