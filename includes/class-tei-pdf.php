@@ -2,6 +2,8 @@
 
 require_once('tcpdf/config/lang/eng.php');
 require_once('tcpdf/tcpdf.php');
+include(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
@@ -12,18 +14,17 @@ class TeiPdf {
 	public $tei;
 	public $pdf;
 
-	function __construct($wpContent = null) {
+	function __construct($tei_dom) {
 
 		// Creates an object of type DOMDocument
 		// and exposes it as the attribute $tei
-		$this->tei = new DOMDocument(); 
-	  $this->tei->load("../templates/tei/teiBase.xml");
+		$tei = $tei_dom->getTeiDom();
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 	}	
 
-	public function writePDF() {
+	public function write_pdf() {
 
 		//set auto page breaks
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -33,6 +34,10 @@ class TeiPdf {
 
 		//set some language-dependent strings
 		$this->pdf->setLanguageArray($l);
+
+		$this->set_docinfo();
+		$this->set_font();
+		$this->set_margins();
 
 		// ---------------------------------------------------------
 
@@ -56,25 +61,28 @@ class TeiPdf {
 		$xpath->registerNamespace('tei', TEI);
 		$xpath->registerNamespace('html', HTML);
 		$parts = $xpath->query("//tei:div[@type='part']");
+		$html = null;
 
 		foreach ($parts as $part) {
 			$title = $xpath->query("tei:head/tei:title", $part)->item(0);
-			$paras = $xpath->query("//html:p", $part);
+			$body  = $xpath->query("tei:div/html:body", $part)->item(0);
+			$paras = $xpath->query("html:p", $body); 
+
 			$html = $html . "<h1>" . $title->textContent . "</h1>";
 			foreach ($paras as $para) {
 				$html = $html . $this->strip_whitespace($this->node_to_string($para));
 			}
-			$this->pdf->WriteHTML($html, false, true, true, false, "L");
 		}
+		$this->pdf->WriteHTML($html, false, true, true, false, "L");
 
 		// Close and output PDF document
 		// This method has several options, check the source code
 		// documentation for more information.
 
-		// echo $html; // DEBUG
-		$this->pdf->Output('example_001.pdf', 'I');
+		//echo $html; // DEBUG
+		$this->pdf->Output('example_001.pdf');
 
-	} // writePDF 
+	} // write_pdf
 
 	public function set_header() {
 
@@ -127,15 +135,5 @@ class TeiPdf {
 
 
 } // TeiPdf
-
-$pdf_output = new TeiPdf();
-
-$pdf_output->set_header();
-$pdf_output->set_footer();
-$pdf_output->set_docinfo();
-$pdf_output->set_font();
-$pdf_output->set_margins();
-
-$pdf_output->writePDF();
 
 ?>
