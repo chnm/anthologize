@@ -91,7 +91,7 @@ class Anthologize_Ajax_Handlers {
             die();
         }
 
-        if ('true' == $_POST['new_item']) {
+        if ('true' === $_POST['new_post']) {
             $new_item = true;
             $src_part_id = false;
             $src_seq_array = false;

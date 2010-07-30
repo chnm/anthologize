@@ -16,26 +16,6 @@ class Anthologize_Project_Organizer {
 
 		$this->project_name = $project->post_title;
 
-		$this->boonetester();
-	}
-
-		function boonetester() {
-		$project_id = 1027;
-		$post_id = 859;
-		$new_post = 1;
-		$dest_id = 1059;
-		$source_id = 0;
-		$dest_seq = array(
-			1064 => 2,
-			1091 => 1
-		);
-		;
-/*		$src_seq = array(
-			1064 => 2,
-			1091 => 1
-		);
-*/
-		$this->insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $src_seq );
 	}
 
 
@@ -468,7 +448,6 @@ class Anthologize_Project_Organizer {
 
 	function insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $src_seq ) {
 		global $wpdb;
-
 		if ( !isset( $project_id ) || !isset( $post_id ) || !isset( $dest_id ) || !isset( $dest_seq ) )
 			return false;
 
@@ -483,7 +462,7 @@ class Anthologize_Project_Organizer {
 			);
 		*/
 
-		if ( $new_post ) {
+		if ( true === $new_post ) {
             $add_item_result = $this->add_item_to_part( $post_id, $dest_id );
 			if (false === $add_item_result)
 				return false;
@@ -491,13 +470,12 @@ class Anthologize_Project_Organizer {
             $dest_seq[$post_id] = $dest_seq['new_new_new'];
             unset($dest_seq['new_new_new']);
         } else {
-            // use wp_update_post
-            // ID, post_parent
             $post_params = Array('ID' => $post_id,
                                  'post_parent' => $dest_id);
             $update_item_result = wp_update_post($post_params);
-			if (false === $update_item_result)
+			if (0 === $update_item_result) {
 				return false;
+            }
             $post_id = $update_item_result;
         }
 
