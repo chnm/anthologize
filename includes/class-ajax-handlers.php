@@ -23,7 +23,6 @@ class Anthologize_Ajax_Handlers {
     function __construct() {
         $this->anthologize_ajax_handlers();
         $project_id = $_POST['project_id'];
-        // TODO: error check
         if ($this->project_organizer != null){
             $this->project_organizer = new Anthologize_Project_Organizer($project_id);
         }
@@ -87,14 +86,20 @@ class Anthologize_Ajax_Handlers {
         $dest_part_id = $_POST['dest_id'];
         $dest_seq = $_POST['dest_seq'];
         $dest_seq_array = json_decode($dest_seq);
-        // TODO: error check
+        if ( NULL === $dest_seq_array ) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
 
         if ('true' != $_POST['new_item']) {
             $new_item = true;
             $src_part_id = $_POST['src_id'];
             $src_seq = $_POST['src_seq'];
             $src_seq_array = json_decode($src_seq);
-            // TODO: error check
+            if ( NULL === $src_seq_array ) {
+                header('HTTP/1.1 500 Internal Server Error');
+                die();
+            }
         } else {
             $new_item = false;
             $src_part_id = false;
@@ -126,7 +131,10 @@ class Anthologize_Ajax_Handlers {
         $new_seq = $_POST['new_seq'];
 
         $new_seq_array = json_decode($new_seq);
-        // TODO: error check
+        if ( NULL === $new_seq_array ) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
 
         $append_result = $this->project_organizer->append_children($post_id, $child_post_ids);
 
@@ -168,7 +176,10 @@ class Anthologize_Ajax_Handlers {
         }
 
         $new_seq_array = json_decode($new_seq);
-        // TODO: error check
+        if ( NULL === $new_seq_array ) {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
+        }
         $this->project_organizer->rearrange_items($new_seq_array); 
 
         die();
