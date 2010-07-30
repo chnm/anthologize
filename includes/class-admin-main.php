@@ -38,7 +38,7 @@ class Anthologize_Admin_Main {
 
 		$plugin_pages[] = add_menu_page( __( 'Anthologize', 'anthologize' ), __( 'Anthologize', 'anthologize' ), 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
-		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export', 'anthologize' ), __( 'Export','anthologize' ), 'manage_options', __FILE__, array( $this, 'display' ) );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export', 'anthologize' ), __( 'Export', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
 
 //		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
 
@@ -90,11 +90,6 @@ class Anthologize_Admin_Main {
 			$this->load_project_organizer( $_GET['project_id'] );
 		}
 
-		if ( $_GET['action'] == 'export' && $_GET['project_id'] ) {
-			$this->load_export_panel( $_GET['project_id'] );
-		} else if ( $_GET['action'] == 'export' ) {
-			$this->load_export_panel();
-		}
 
 		if (
 			!isset( $_GET['action'] ) ||
