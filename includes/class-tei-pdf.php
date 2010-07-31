@@ -78,7 +78,7 @@ class TeiPdf {
 				foreach ($paras as $para) {
 
 					$strip1 = $this->strip_whitespace($this->node_to_string($para));
-					$strip2 = $this->strip_shortcodes($strip1);
+					$strip2 = strip_shortcodes($strip1);
 
 					$html = $html . $strip1;
 
