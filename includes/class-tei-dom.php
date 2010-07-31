@@ -29,7 +29,7 @@ class TeiDom {
     	$this->checkImgSrcs();
     }
 
-    //$this->processPostArray($postArray);
+    $this->processPostArray($postArray);
 
 	}
 
@@ -48,50 +48,74 @@ class TeiDom {
 
     //front1
     $f1Node = $this->xpath->query("//tei:div[@xml:id='f1']")->item(0);
-    $f1TitleNode = $this->xpath->query("tei:head/tei:title", $f1Node );
+    $f1TitleNode = $this->xpath->query("tei:head/tei:title", $f1Node )->item(0);
     $f1TitleNode->appendChild($this->dom->createTextNode($postArray['front1-title']));
-    $htmlNode = $this->buildHtmlDom($postArray['front1']);
-    $f1Node->appendChild($htmlNode);
+    //$htmlNode = $this->buildHtmlDom($postArray['front1']);
+    //$f1Node->appendChild($htmlNode);
 
     //front2
     $f2Node = $this->xpath->query("//tei:div[@xml:id='f2']")->item(0);
-    $f2TitleNode = $this->xpath->query("tei:head/tei:title", $f2Node );
+    $f2TitleNode = $this->xpath->query("tei:head/tei:title", $f2Node )->item(0);
     $f2TitleNode->appendChild($this->dom->createTextNode($postArray['front2-title']));
-    $htmlNode = $this->buildHtmlDom($postArray['front2']);
+    //$htmlNode = $this->buildHtmlDom($postArray['front2']);
 
 
     $outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
     //font-size
-    $fontSizeNode = $this->xpath->query("anth:param[@name='font-size']")->item(0);
+    $fontSizeNode = $this->xpath->query("anth:param[@name='font-size']", $outParamsNode)->item(0);
     $fontSizeNode->appendChild($this->dom->createTextNode($postArray['font-size']));
 
     //paper-type
-    $paperTypeNode = $this->xpath->query("anth:param[@name='paper-type']")->item(0);
-    $paperTypeNode->appendChild($this->dom->createTextNode($postArray['paper-type']));
+    $paperTypeNode = $this->xpath->query("anth:param[@name='paper-type']", $outParamsNode)->item(0);
+    $paperTypeNode->appendChild($this->dom->createTextNode($postArray['page-size']));
     //paper-size
-    $pageHNode = $this->xpath->query("anth:param[@name='page-height']")->item(0);
-    $pageWNode = $this->xpath->query("anth:param[@name='page-width']")->item(0);
+    $pageHNode = $this->xpath->query("anth:param[@name='page-height']", $outParamsNode)->item(0);
+    $pageWNode = $this->xpath->query("anth:param[@name='page-width']", $outParamsNode)->item(0);
 
 
-    switch($postArray['paper-type']) {
+    switch($postArray['page-size']) {
     	case 'A4':
         $pageHNode->appendChild($this->dom->createTextNode('297mm'));
         $pageWNode->appendChild($this->dom->createTextNode('210mm'));
       break;
 
-      case 'Letter':
+      case 'letter':
         $pageHNode->appendChild($this->dom->createTextNode('11in'));
         $pageWNode->appendChild($this->dom->createTextNode('8.5in'));
       break;
 
     }
     //font-family
-    $fontFamilyNode = $this->xpath->query("anth:param[@name='font-family']")->item(0);
+    $fontFamilyNode = $this->xpath->query("anth:param[@name='font-family']", $outParamsNode)->item(0);
+    $fontFamilyNode->appendChild($this->dom->createTextNode($postArray['font-face']));
+
+
+/*
+  Array
+(
+    [post-title] => title
+    [dedication] =>
+    [acknowledgements] =>
+    [filetype] => tei
+    [page-size] => letter
+    [font-size] => 9
+    [font-face] => times
+    [cyear] =>
+    [cname] =>
+    [ctype] =>
+    [edition] =>
+    [authors] =>
+    [project_id] =>
+    [export-step] => 2
+    [submit] => Next
+)
+
+ */
 
 
   }
 
-  public function addLicence($license) {
+  public function addLicense($license) {
   	$avlPNode = $this->xpath->query("//tei:availability/tei:p")->item(0);
     switch($license) {
     	case 'by':
@@ -297,6 +321,15 @@ class TeiDom {
           $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
         }
     }
+  }
+
+  public static function getFileName($postArray) {
+        $text = strtolower($postArray['post-title']);
+        $fileName = preg_replace('/\s/', "_", $text);
+        $fileName = preg_replace('/[^\w\-]/', '', $fileName);
+        $fileName = trim($fileName, "_");
+        $fileName = rtrim($fileName, ".");
+        return $fileName;
   }
 }
 
