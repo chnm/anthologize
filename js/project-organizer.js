@@ -10,8 +10,11 @@ jQuery(document).ready( function() {
         } else if ( filter == 'tag' ) {
 			var theaction = 'get_tags';
         } else {
+			j('#filter').val(0);
+            j('#filter').trigger('change');
 			j('#filter').empty();
 			j('#filter').append('<option value=""> - </option>');
+            // TODO: we want to repopulate the list of posts here
             return true;
         }
 
@@ -36,10 +39,10 @@ jQuery(document).ready( function() {
 
 	j('#filter').change( function() {
 		var term = j('#filter').val();
-        if (term == '') {
-            return true;
-        }
 		var tagorcat = j('#sortby-dropdown').val();
+        if (tagorcat == '') {
+            tagorcat = 'cat';
+        }
 
 		j.post( ajaxurl, {
 			action: 'get_posts_by',

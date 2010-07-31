@@ -156,7 +156,8 @@ class Anthologize_Project_Organizer {
 	}
 
 	function filter_dropdown_tags() {
-		$tags = get_tags();
+		//$tags = get_tags();
+        $tags = Array();
 
 		?>
 			<select name="filter" id="filter">
