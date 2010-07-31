@@ -8,6 +8,11 @@ var seq_stringify = function(seq_obj) {
     return seq_string;
 }
 
+var ajax_error_refresh = function() {
+    jQuery('#blockUISpinner').append('<p>There has been an unexpected error. Please wait while we reload the content</p');
+    location.reload();
+}
+
 jQuery.blockUI.defaults.onUnblock = function() {
     jQuery('#blockUISpinner').hide();
 }
@@ -19,14 +24,13 @@ var anth_admin_ajax = {
             type: 'POST',
             dataType: 'json',
             data: {action:'place_item',
-                project_id:config_obj.project_id,
-                post_id:config_obj.item_id,
-                new_post:config_obj.new_item,
-                dest_id:config_obj.dest_id,
-                src_id:config_obj.src_id,
-                dest_seq:seq_stringify(config_obj.dest_seq),
-                src_seq:seq_stringify(config_obj.src_seq)
-                },
+                   project_id:config_obj.project_id,
+                   post_id:config_obj.item_id,
+                   new_post:config_obj.new_item,
+                   dest_id:config_obj.dest_id,
+                   src_id:config_obj.src_id,
+                   dest_seq:seq_stringify(config_obj.dest_seq),
+                   src_seq:seq_stringify(config_obj.src_seq)},
             async:false,
             timeout:20000,
             success: function(data){
@@ -40,27 +44,7 @@ var anth_admin_ajax = {
                 jQuery.unblockUI();
             },
             error: function(){
-                // Move the Item back
-                if (config_obj.new_item == 'true') {
-                    jQuery('li#new_new_new').fadeOut('normal', function() {
-                        jQuery(this).remove();
-                    });
-                } else {
-                    if (config_obj.dest_id == config_obj.project_id) {
-                        item_selector = 'li#part-' + config_obj.item_id;
-                        home_selector = 'ul.project-parts';
-                        item_rev = jQuery(item_selector);
-                        item_rev.appendTo(home_selector);
-                        // TODO: put the item in the right sequence
-                    } else {
-                        item_selector = 'li#item-' + config_obj.item_id;
-                        home_selector = 'li#part-' + config_obj.src_id + ' .part-items ul';
-                        item_rev = jQuery(item_selector);
-                        item_rev.appendTo(home_selector);
-                        // TODO: put the item in the right sequence
-                        //item_rev.insertBefore(home_selector + ' li').eq(config_obj.org_seq_num-1).not(item_rev);
-                    }
-                }
+                ajax_error_refresh();
             }
         });
 
@@ -71,10 +55,10 @@ var anth_admin_ajax = {
             type: 'POST',
             dataType: 'json',
             data: {action:'merge_items',
-                project_id:config_obj.project_id,
-                post_id:config_obj.post_id,
-                child_post_ids:config_obj.child_post_ids,
-                new_seq:seq_stringify(config_obj.merge_seq)},
+                   project_id:config_obj.project_id,
+                   post_id:config_obj.post_id,
+                   child_post_ids:config_obj.child_post_ids,
+                   new_seq:seq_stringify(config_obj.merge_seq)},
             async:false,
             timeout:20000,
             complete: function(){
@@ -84,8 +68,7 @@ var anth_admin_ajax = {
                 anthologize.updateAppendedItems(config_obj.child_post_ids);
             },
             error: function(){
-                // Post error alert?
-                alert('Error merging items');
+                ajax_error_refresh();
             }
         });
     }

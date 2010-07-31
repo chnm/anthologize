@@ -11,20 +11,20 @@ Author URI: http://anthologize.org
 /*
 Copyright (C) 2010 Center for History and New Media, George Mason University
 
-This program is free software: you can redistribute it and/or modify it under 
-the terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU General Public License along with 
+You should have received a copy of the GNU General Public License along with
 this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Anthologize includes TCPDF, which is released under the LGPL Use and 
+Anthologize includes TCPDF, which is released under the LGPL Use and
 modifications of TDPDF must comply with its license.
 */
 
@@ -45,13 +45,11 @@ function anthologize_loader () {
 	// Load the post types
 	add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
-
 	// Load constants
 	//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
 	// Load the custom feed
 	add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
-
 
 	// Include the necessary files
 	add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
@@ -59,8 +57,11 @@ function anthologize_loader () {
 	// Attach textdomain for localization
 	add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
 
-
 	add_action( 'anthologize_init', array ( $this, 'load_template' ) );
+
+	add_filter( 'custom_menu_order', array( $this, 'custom_menu_order_function' ) );
+
+	add_filter( 'menu_order', array( $this, 'menu_order_my_function' ) );
 
 	// activation sequence
 	register_activation_hook( __FILE__, array( $this, 'activation' ) );
@@ -71,7 +72,7 @@ function anthologize_loader () {
 
 	// Let plugins know that we're initializing
 	function init() {
-	do_action( 'anthologize_init' );
+		do_action( 'anthologize_init' );
 	}
 
 	// Allow this plugin to be translated by specifying text domain
@@ -79,13 +80,34 @@ function anthologize_loader () {
 	// todo: load the text domain
 	}
 
+	// The next two functions are a hack to make WordPress hide the menu items for Parts and Library Items
+	function custom_menu_order_function(){
+		return true;
+	}
+
+	function menu_order_my_function($menu_order){
+		global $menu;
+
+		foreach ( $menu as $mkey => $m ) {
+
+			$key = array_search( 'edit.php?post_type=parts', $m );
+			$keyb = array_search( 'edit.php?post_type=library_items', $m );
+
+			if ( $key || $keyb )
+				unset( $menu[$mkey] );
+		}
+
+		return $menu_order;
+	}
+
+
 	// Custom post types - Oh, Oh, Oh, It's Magic
 	function register_post_types() {
 		register_post_type( 'projects', array(
 			'label' => __( 'Projects', 'anthologize' ),
 			'public' => true,
 			'_builtin' => false,
-			'show_ui' => true, // todo: hide
+			'show_ui' => false,
 			'capability_type' => 'page',
 			'hierarchical' => false,
 			'supports' => array('title', 'editor', 'revisions'),
