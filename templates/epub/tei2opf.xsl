@@ -30,10 +30,12 @@
         <dc:creator>Anthologize</dc:creator>
         <!-- How to change the language? This should be a user option -->
         <dc:language>en-US</dc:language>
-        <!--<dc:rights>Public Domain</dc:rights>-->
+        <dc:rights></dc:rights>
         <!--<dc:publisher>Jedisaber.com</dc:publisher>-->
         <dc:identifier id="{$book-id}"
-          >[what should go here?]</dc:identifier>
+          >
+          <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident"/>
+        </dc:identifier>
       </metadata>
       <!--  
         Each item in the manifest describes a document, an image file, a style sheet, 
@@ -43,7 +45,7 @@
         so even if you have several chapters in one xhtml file, just list that xhtml file once.
         A single resource (href) must not be listed in the manifest more than once.
         
-        Dynamically generated: list of 
+        Dynamically generated: list of images
       -->
       <manifest>
 
@@ -73,7 +75,7 @@
 
         <!-- Image references  -->
 
-        <xsl:for-each select="/tei:TEI/tei:text//html:img/@src">
+        <xsl:for-each select="/tei:TEI/tei:text//img/@src">
 
           <xsl:variable name="image-filename">
             <xsl:call-template name="strip-url-of-directories">
