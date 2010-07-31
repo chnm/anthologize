@@ -1,5 +1,7 @@
 <?php
 
+  error_reporting(0);
+
   /*
    
     Anthologize ePub generator
@@ -12,9 +14,13 @@
     6. Delete all temp stuff
    
   */
+
+  define('TEI',  'http://www.tei-c.org/ns/1.0'  );
+  define('HTML', 'http://www.w3.org/1999/xhtml' );
+  define('ANTH', 'http://www.anthologize.org/ns');
     
   $plugin_dir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize';
-  $epub_dir   = $plugin_dir . DIRECTORY_SEPARATOR . 'templates';
+  $epub_dir   = $plugin_dir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub';
   
   // echo $plugin_dir . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php'; die();
   
@@ -22,35 +28,38 @@
   
   // Constants
 
-  $temp_dir_name          = $plugin_root . DIRECTORY_SEPARATOR . 'temp'; // Does this need to be mapped??
-  $temp_epub_dir_name     = $temp_dir_name       . DIRECTORY_SEPARATOR . 'epub';
+  $temp_dir_name          = WP_CONTENT_DIR       . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'epub-tmp'; // Temporary area for building ZIP
+  $temp_epub_dir_name     = $temp_dir_name       . DIRECTORY_SEPARATOR . 'epub_under_construction'; // ePub dir structure temp area
   $temp_epub_meta_inf_dir = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'META-INF';
   $temp_epub_oebps_dir    = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'OEBPS';
   $temp_epub_images_dir   = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR . 'images';
-  $temp_zip_filename      = $temp_dir_name       . DIRECTORY_SEPARATOR . 'book.zip';
-
-  // echo realpath(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize . "$temp_dir_name) . "<br />" . $temp_epub_dir_name . "<br />";
-  // include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+  $temp_zip_filename      = $temp_dir_name       . DIRECTORY_SEPARATOR . 'book.epub'; // Temporary ZIP file
   
-  die();
+  $zip_download_filename  = 'anthologize_book.epub'; // The name of the filename when it downloads
+  
+  // Create temp directory if doesn't exist
 
-/*
+  if (! file_exists ( $temp_dir_name ))
+  {
+    mkdir($temp_dir_name, 0777, true);  
+  }
+  
   // Create directories in temp directory
-  
+
   mkdir($temp_epub_meta_inf_dir, 0777, true);
   mkdir($temp_epub_oebps_dir,    0777, true);
   mkdir($temp_epub_images_dir,   0777, true);
   
   // Create & populate mimetype file
   
-  $mimetype_filename = $temp_epub_dir_name . "/mimetype";
+  $mimetype_filename = $temp_epub_dir_name .  DIRECTORY_SEPARATOR . "mimetype";
   $fp = fopen($mimetype_filename, "w") or die("Couldn't open temporary file for epub archive (mimetype)");
   fwrite($fp, "application/epub+zip");
   fclose($fp);
   
   // Create & populate container.xml file
 
-  $container_filename = $temp_epub_dir_name . "/META-INF/container.xml";
+  $container_filename = $temp_epub_dir_name .  DIRECTORY_SEPARATOR . "META-INF" .  DIRECTORY_SEPARATOR . "container.xml";
   $fp = fopen($container_filename, "w") or die("Couldn't open temporary file for epub archive (container.xml)");
   
   $container_file_contents  = '<?xml version="1.0"?>';
@@ -65,12 +74,19 @@
   
   // Load intermediate TEI file
   
-  $teiDom = $tei->getTeiDom($_POST);
-  
+  $tei_data = new TeiDom($_POST);
+  $teiDom = $tei_data->getTeiDom();
+
+  // echo $tei_data->getTeiString(); die();
+
   // Get all images referenced in tei & copy over to image directory
   // DOM Query using xpath: http://www.exforsys.com/tutorials/php-oracle/querying-a-dom-document-with-xpath.html
-  
+
   $xpath = new DOMXPath($teiDom);
+  $xpath->registerNamespace('tei', TEI);
+  $xpath->registerNamespace('html', HTML);
+  $xpath->registerNamespace('anth', ANTH);
+  
   $query = '//img/@src';
   $image_url_nodes = $xpath->query($query);
   
@@ -94,36 +110,41 @@
     fclose($fp);
   }
   
+  $xsl_html_file = $epub_dir . DIRECTORY_SEPARATOR . 'tei2html.xsl';
+  $xsl_ncx_file  = $epub_dir . DIRECTORY_SEPARATOR . 'tei2ncx.xsl';
+  $xsl_opf_file  = $epub_dir . DIRECTORY_SEPARATOR . 'tei2opf.xsl';
+    
   // Load stylesheets
   
   $tei2html_xsl = new DOMDocument();
-  $tei2html_xsl->load("tei2html.xsl");
+  $tei2html_xsl->load($xsl_html_file);
   
   $tei2ncx_xsl = new DOMDocument();
-  $tei2ncx_xsl->load("tei2ncx.xsl");
+  $tei2ncx_xsl->load($xsl_ncx_file);
   
   $tei2opf_xsl = new DOMDocument();
-  $tei2opf_xsl->load("tei2opf.xsl");
-  
+  $tei2opf_xsl->load($xsl_opf_file);
+
   // Create XSLT processor
   
   $proc = new XSLTProcessor();
   
   // Import stylesheets & transform & save
+
+  $html_filename = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR . "main_content.html";
+  $ncx_filename  = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR . "toc.ncx";
+  $opf_filename  = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR . "book.opf";
   
   // XHTML
   
   $proc->importStylesheet($tei2html_xsl);
-  $html_filename = $temp_epub_dir_name . "/META-INF/main_content.html";
-  $fp = fopen($mimetype_filename, "w") or die("Couldn't open temporary file for epub archive (main_content.html)");
+  $fp = fopen($html_filename, "w") or die("Couldn't open temporary file for epub archive (main_content.html)");
   fwrite($fp, $proc->transformToXML($teiDom));
   fclose($fp);
-  
+
   // NCX
   
   $proc->importStylesheet($tei2ncx_xsl);
-  $proc->transformToXML($teiDom);
-  $ncx_filename = $temp_epub_dir_name . "/META-INF/toc.ncx";
   $fp = fopen($ncx_filename, "w") or die("Couldn't open temporary file for epub archive (toc.ncx)");
   fwrite($fp, $proc->transformToXML($teiDom));
   fclose($fp);
@@ -131,38 +152,35 @@
   // OPF
   
   $proc->importStylesheet($tei2opf_xsl);
-  $proc->transformToXML($teiDom);
-  $opf_filename = $temp_epub_dir_name . "/META-INF/book.opf";
   $fp = fopen($opf_filename, "w") or die("Couldn't open temporary file for epub archive (book.opf)");
   fwrite($fp, $proc->transformToXML($teiDom));
   fclose($fp);
   
   // zip up contents of temp directory into a ZIP file
 
-  Zip($temp_epub_dir_name, $temp_zip_filename) or die "Couldn't create ZIP archive file: " . $temp_zip_filename;
+  zip_it($temp_epub_dir_name, $temp_zip_filename) or die("Couldn't create ZIP archive file: ") . $temp_zip_filename;
   
   // Serve up zip file
+    
+  header("Content-type: application/epub+zip");
+  header("Content-Disposition: attachment; filename=" . $zip_download_filename);
+  header("Pragma: no-cache");
+  header("Expires: 0");
+  readfile($temp_zip_filename);
   
-  header("Content-type: application/xml");
-  echo file_get_contents($temp_zip_filename);
-  
-
   // Delete all contents in temp dir
   // Code derived from http://www.php.net/manual/en/class.recursiveiteratoriterator.php
   
-  deleteDirectoryWithContents($temp_dir_name);
+  // deleteDirectoryWithContents($temp_dir_name);
   //  $dir = '/home/nash/tmp';
   // rmdir_recursive($dir);
 
-  
-  // END
-  
-  die();
+  die();  // END
 
   // Function to take a source directory and zip it up into a destination archive
   // Code derived from http://stackoverflow.com/questions/1334613/how-to-recursively-zip-a-directory-in-php
 
-  function Zip($source, $destination) 
+  function zip_it($source, $destination) 
   {
     if (extension_loaded('zip') === true)
     {
@@ -196,10 +214,10 @@
     }
     return false;
   }
-  
+
   // Delete a directory and its contents
   // Derived from code at http://nashruddin.com/Remove_Directories_Recursively_with_PHP
-  
+  /*
   function deleteDirectoryWithContents ($dir)
   {
     // DISABLED UNTIL TESTED
@@ -229,5 +247,7 @@
     rmdir($dir);
   }
   */
+
+die();
 
 ?>
