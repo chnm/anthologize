@@ -153,7 +153,9 @@ a.disabled {
 a.active-append {
 	color: inherit;
 }
-
+.part-item-buttons a:hover {
+	text-decoration: underline;
+}
 
 
 #export-project-button {
