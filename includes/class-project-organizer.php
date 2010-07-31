@@ -275,7 +275,7 @@ class Anthologize_Project_Organizer {
 						<?php the_title() ?>
 
 						<div class="part-item-buttons">
-							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>" class="edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 							<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a>
 						</div>
 
