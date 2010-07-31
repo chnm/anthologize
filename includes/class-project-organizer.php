@@ -48,11 +48,11 @@ class Anthologize_Project_Organizer {
 			$this->append_children( $_POST['append_parent'], $_POST['append_children'] );
 		}
 		?>
-		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
+		<div class="wrap anthologize" id="project-<?php echo $_GET['project_id'] ?>">
 
         <div id="blockUISpinner"><img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img></div>
 
-		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 
 		<h2><?php echo $this->project_name ?></h2>
 

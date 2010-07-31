@@ -48,9 +48,9 @@ class Anthologize_New_Project {
 	    $meta = get_post_meta( $project->ID, 'anthologize_meta', TRUE );
 
 	?>
-		<div class="wrap">
+		<div class="wrap anthologize">
 
-			<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
             <?php if ( $project ): ?>
 			<h2><?php _e( 'Edit Project', 'anthologize' ) ?></h2>
             <?php else: ?>
