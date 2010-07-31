@@ -31,6 +31,11 @@ var anthologize = {
 
     if (ui.item.hasClass("item")){
       dest_id = ui.item.closest("li.part").attr("id");
+      // src_id is null if we didn't receive it from another list,
+      // so keep the parent id
+      if (src_id == null){
+	       src_id = dest_id;
+      }
     }else{
 	    //dest and src for for parts is the project id
       dest_id = project_id;
@@ -39,7 +44,7 @@ var anthologize = {
 
     var ajax_options = {
 	    "project_id": project_id,
-	    "src_id": this.cleanPostIds(anthologize.src_id),
+	    "src_id": this.cleanPostIds(src_id),
 	    "dest_id": this.cleanPostIds(dest_id),
 	    "new_item": new_item,
 	    "item_id": item_id,
@@ -47,7 +52,6 @@ var anthologize = {
 	    "dest_seq":  dest_seq,
 	    "src_seq": anthologize.src_seq
     };
-    //console.log(ajax_options);
     anth_admin_ajax.place_item(ajax_options);
   },
   "getProjectId" : function(){
@@ -177,7 +181,6 @@ jQuery(document).ready(function(){
  
   jQuery("body").delegate("a.cancelAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
-	  //var appendPanel = item.children("div.append-panel").first();
 	  jQuery(this).parents("li.item").find("a.append").removeClass("active-append");
 	  jQuery("div.append-panel").remove();
 	  jQuery(".project-parts").sortable("enable");
@@ -189,7 +192,7 @@ jQuery(document).ready(function(){
   jQuery("body").delegate("input.doAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 	  var append_items = {};
-	  var merg_seq = {};
+	  var merge_seq = {};
 	  var i = 0;
 	  jQuery(".append-items input:checkbox:checked").each(function(){
 		  append_items[i] = anthologize.cleanPostIds(this.value);
@@ -207,13 +210,12 @@ jQuery(document).ready(function(){
 			  k++;
 			}
 			if (! skip){
-			  merg_seq[id] = j;
+			  merge_seq[id] = j;
 			  j++;
 			}
 	  });
 	  var project_id = anthologize.getProjectId();
 	  var post_id = anthologize.cleanPostIds(item.attr("id"));
-	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merg_seq});
-    //anthologize.updateAppendedItems(appendThese);
+	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merge_seq});
   });
 });
