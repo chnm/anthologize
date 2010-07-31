@@ -7,7 +7,6 @@ var seq_stringify = function(seq_obj) {
     seq_string += '}';
     return seq_string;
 }
-
 var anth_admin_ajax = {
     place_item: function(config_obj) {
         jQuery.ajax({
@@ -27,12 +26,16 @@ var anth_admin_ajax = {
             timeout:20000,
             beforeSend:function() {
                 // TODO: spinny popup
+                jQuery.blockUI({ message: '<div></div>' });
             },
             success: function(data){
                 if (config_obj.new_item == 'true') {
                     anthologize.updateAddedItem(data.post_id);
                 }
                 return true;
+            },
+            complete: function(){
+                jQuery.unblockUI();
             },
             error: function(){
                 // Move the Item back
