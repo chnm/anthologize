@@ -173,20 +173,21 @@ jQuery(document).ready(function(){
 	  var item = jQuery(this).closest("li.item");
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-append");
-		  var appendPanel = '<div class="append-panel"><form><div class="append-items"></div>' +
+		  var appendPanel = '<div class="append-panel" style="display:none;"><form><div class="append-items"></div>' +
 		                    '<input type="button" class="doAppend" name="doAppend" value="Append" /> ' + 
 		                    '<a href="#" class="cancelAppend">Cancel</a></form></div>';
 		  item.append(appendPanel);
-		  var panel = item.find("div.append-items").first();
+		  var panelItems = item.find("div.append-items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));
 		  for (var itemId in appendable){
-			  panel.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
+			  panelItems.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
 			               '<label for="append-' + itemId+ '">' + appendable[itemId] + '</label></div>');
 		  }
 		
 		  jQuery(".project-parts").sortable("disable");
 		  jQuery(".part-items ul").sortable("disable");
 		  jQuery("a.append").addClass("disabled");
+		  item.find("div.append-panel").first().slideToggle();
 		  anthologize.appending = true;
 	  }
   });
@@ -194,7 +195,10 @@ jQuery(document).ready(function(){
   jQuery("body").delegate("a.cancelAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 	  jQuery(this).parents("li.item").find("a.append").removeClass("active-append");
-	  jQuery("div.append-panel").remove();
+	  var panel = jQuery("div.append-panel");
+	  jQuery("div.append-panel").slideToggle('slow', function(){
+		  jQuery(this).remove();
+	  });
 	  jQuery(".project-parts").sortable("enable");
 	  jQuery(".part-items ul").sortable("enable");
 	  anthologize.setAppendStatus();
