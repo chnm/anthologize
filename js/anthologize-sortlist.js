@@ -104,7 +104,7 @@ var anthologize = {
 	
 	  var buttons = '<div class="part-item-buttons">' +
 							'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
-							'<a class="append" href="#append">Append</a> | ' +
+							'<a class="append" href="#append">Append | </a> ' +
 							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 
 							'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">Remove</a>' +
 						  '</div>';
@@ -192,6 +192,7 @@ jQuery(document).ready(function(){
 		  jQuery(".project-parts").sortable("disable");
 		  jQuery(".part-items ul").sortable("disable");
 		  jQuery("a.append").addClass("disabled");
+		  jQuery(this).removeClass("disabled");
 		  item.find("div.append-panel").first().slideToggle();
 		  anthologize.appending = true;
 	  }else{
@@ -205,10 +206,10 @@ jQuery(document).ready(function(){
 	  var panel = jQuery("div.append-panel");
 	  jQuery("div.append-panel").slideToggle('slow', function(){
 		  jQuery(this).remove();
+		  anthologize.setAppendStatus();
 	  });
 	  jQuery(".project-parts").sortable("enable");
 	  jQuery(".part-items ul").sortable("enable");
-	  anthologize.setAppendStatus();
 	  anthologize.appending = false;
   });
 
