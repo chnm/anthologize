@@ -109,8 +109,8 @@ class Anthologize_Project_Organizer {
                                 </ul>
 
 				<noscript>
-					<h3>New Parts</h3>
-					<p>Wanna create a new part? You know you do.</p>
+					<h3><?php _e( 'New Parts', 'anthologize' ) ?></h3>
+					<p><?php _e( 'Wanna create a new part? You know you do.', 'anthologize' ) ?></p>
 					<form action="" method="post">
 						<input type="text" name="new_part_name" />
 						<input type="submit" name="new_part" value="New Part" />
@@ -208,7 +208,7 @@ class Anthologize_Project_Organizer {
 		  'post_excerpt' => $post->post_excerpt,
 		  'post_parent' => $part_id,
 		  'post_password' => $post->post_password,
-		  'post_status' => $post->post_status, // todo: yes?
+		  'post_status' => 'publish',
 		  'post_title' => $post->post_title,
 		  'post_type' => 'library_items',
 		  'to_ping' => $post->to_ping, // todo: tags and categories
@@ -282,10 +282,9 @@ class Anthologize_Project_Organizer {
 						</h3>
 
 						<div class="part-items">
-                                                    <ul>
-							<?php $this->get_part_items( $part_id ) ?>
-                                                    </ul>
-
+                        	<ul>
+								<?php $this->get_part_items( $part_id ) ?>
+                            </ul>
 						</div>
 
 						<?php /* Noscript solution. Removed at the moment to avoid db queries. Todo: refactor ?>
@@ -470,12 +469,6 @@ class Anthologize_Project_Organizer {
 				return false;
 		}
 
-		/* $dest_seq, $src_seq:
-			array(
-				$item_id => $seq_no
-			);
-		*/
-
 		if ( true === $new_post ) {
             $add_item_result = $this->add_item_to_part( $post_id, $dest_id );
 			if (false === $add_item_result)
@@ -568,7 +561,6 @@ class Anthologize_Project_Organizer {
 		update_post_meta( $append_parent, 'author_name_array', $author_name_array );
 
 		return true;
-		// todo Jeremy: make sure that the form action goes to the right place after an append
 	}
 
 	function display_item( $append_parent ) {
