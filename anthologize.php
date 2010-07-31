@@ -2,10 +2,10 @@
 /*
 Plugin Name: Anthologize
 Plugin URI: http://oneweekonetool.org
-Description: Rocks your world
-Version: 0.1-alpha
+Description: Use the power of WordPress to transform your content into a book.
+Version: 0.3-alpha
 Author: One Week | One Tool
-Author URI: http://oneweekonetool.org
+Author URI: http://anthologize.org
 */
 
 

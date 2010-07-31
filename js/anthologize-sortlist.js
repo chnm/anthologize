@@ -198,7 +198,6 @@ jQuery(document).ready(function(){
 	  jQuery("div.append-panel").remove();
 	  jQuery(".project-parts").sortable("enable");
 	  jQuery(".part-items ul").sortable("enable");
-	  //jQuery("a.append").removeClass("disabled");
 	  anthologize.setAppendStatus();
 	  anthologize.appending = false;
   });
