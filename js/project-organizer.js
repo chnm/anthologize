@@ -2,6 +2,8 @@
 jQuery(document).ready( function() {
 	var j = jQuery;
 
+    j('#sortby-dropdown').val('');
+
 	j('#sortby-dropdown').change( function() {
 		var filter = j('#sortby-dropdown').val();
 
