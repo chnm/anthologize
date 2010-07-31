@@ -43,19 +43,13 @@ class Anthologize_Admin_Main {
 
         $plugin_pages[] = add_submenu_page( 'anthologize', __('New Project','anthologize'), __('New Project','anthologize'), 'manage_options', dirname( __FILE__ ) . '/class-new-project.php');
 
-//		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','bp-invite-anyone'), __('My Projects','bp-invite-anyone'), 'manage_options', __FILE__, array( $this, 'display' ) );
-
-//		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Edit Project', 'anthologize' ), __('Edit Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-project-organizer.php' );
-
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export Project', 'anthologize' ), __( 'Export Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
 
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Import Content', 'anthologize' ), __( 'Import Content', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-import-feeds.php' );
 
-		//$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), 'manage_options', __FILE__, 'anthologize_admin_panel' );
-
 		foreach ( $plugin_pages as $plugin_page ) {
+			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
-			add_action( "admin_print_styles-$plugin_page", array( $this, 'load_styles' ) );
 		}
 	}
 
@@ -74,10 +68,6 @@ class Anthologize_Admin_Main {
     	wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
 
 	}
-
-	function pload_styles() {
-    	wp_enqueue_style( 'export-css', WP_PLUGIN_URL . '/anthologize/css2/export-panel.css' );
-    }
 
 	function load_project_organizer( $project_id ) {
 		require_once( dirname( __FILE__ ) . '/class-project-organizer.php' );

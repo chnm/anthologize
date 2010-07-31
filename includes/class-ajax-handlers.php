@@ -29,7 +29,7 @@ class Anthologize_Ajax_Handlers {
 
         $the_tags = '';
         foreach( $tags as $tag ) {
-            $the_tags .= $tag->term_id . ':' . $tag->name . ',';
+            $the_tags .= $tag->slug . ':' . $tag->name . ',';
         }
 
         if (strlen($the_tags) > 0) {
@@ -61,7 +61,7 @@ class Anthologize_Ajax_Handlers {
         $tagorcat = $_POST['tagorcat'];
 
         // Blech
-        $t_or_c = ( $tagorcat == 'tag' ) ? 'tag_id' : 'cat';
+        $t_or_c = ( $tagorcat == 'tag' ) ? 'tag' : 'cat';
 
         $args = array(
             'post_type' => array('post', 'page', 'imported_items' ),
@@ -69,8 +69,6 @@ class Anthologize_Ajax_Handlers {
             'posts_per_page' => -1
         );
 
-
-        // TODO: JMC: Get help from Boone
         query_posts( $args );
 
         $response = '';

@@ -149,7 +149,7 @@ class Anthologize_Project_Organizer {
 		?>
             <span>Filter by</span>
 			<select name="sortby" id="sortby-dropdown">
-				<option value=""><?php _e( 'All posts', 'anthologize' ) ?></option>
+				<option value="" selected="selected"><?php _e( 'All posts', 'anthologize' ) ?></option>
 				<?php foreach( $filters as $filter => $name ) : ?>
 					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
 				<?php endforeach; ?>
