@@ -5,10 +5,15 @@ jQuery(document).ready( function() {
 	j('#sortby-dropdown').change( function() {
 		var filter = j('#sortby-dropdown').val();
 
-		if ( filter == 'category' )
+		if ( filter == 'category' ) {
 			var theaction = 'get_cats';
-		else
+        } else if ( filter == 'tag' ) {
 			var theaction = 'get_tags';
+        } else {
+			j('#filter').empty();
+			j('#filter').append('<option value=""> - </option>');
+            return true;
+        }
 
 		j.post( ajaxurl, {
 			action: theaction,
@@ -17,7 +22,7 @@ jQuery(document).ready( function() {
 		{
 			var s = response.split(',');
 			j('#filter').empty();
-			j('#filter').append('<option value="" disabled="disabled"> - </option>');
+			j('#filter').append('<option value=""> - </option>');
 			j.each( s, function(index, value) {
 				var v = value.split(':');
 				var h = '<option value="' + v[0] + '">' + v[1] + '</option>';
@@ -31,6 +36,9 @@ jQuery(document).ready( function() {
 
 	j('#filter').change( function() {
 		var term = j('#filter').val();
+        if (term == '') {
+            return true;
+        }
 		var tagorcat = j('#sortby-dropdown').val();
 
 		j.post( ajaxurl, {

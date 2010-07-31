@@ -9,15 +9,15 @@ class Anthologize_Ajax_Handlers {
     var $project_organizer = null;
 
     function anthologize_ajax_handlers() {
-        add_action( 'wp_ajax_get_tags', array( $this, 'get_tags' ) );
-        add_action( 'wp_ajax_get_cats', array( $this, 'get_cats' ) );
+        add_action( 'wp_ajax_get_tags', array( $this, 'fetch_tags' ) );
+        add_action( 'wp_ajax_get_cats', array( $this, 'fetch_cats' ) );
         add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
         add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
         add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
-        add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
-        add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
+        //add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
+        //add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
     }
 
     function __construct() {
@@ -28,7 +28,7 @@ class Anthologize_Ajax_Handlers {
         }
     }
 
-    function get_tags() {
+    function fetch_tags() {
         $tags = get_tags();
 
         $the_tags = '';
@@ -36,11 +36,15 @@ class Anthologize_Ajax_Handlers {
             $the_tags .= $tag->term_id . ':' . $tag->name . ',';
         }
 
-        print_r($the_tags);
+        if (strlen($the_tags) > 0) {
+            $the_tags = substr($the_tags, 0, strlen($the_tags)-1);
+        }
+
+        print($the_tags);
         die();
     }
 
-    function get_cats() {
+    function fetch_cats() {
         $cats = get_categories();
 
         $the_cats = '';
@@ -48,7 +52,11 @@ class Anthologize_Ajax_Handlers {
             $the_cats .= $cat->term_id . ':' . $cat->name . ',';
         }
 
-        print_r($the_cats);
+        if (strlen($the_cats) > 0) {
+            $the_cats = substr($the_cats, 0, strlen($the_cats)-1);
+        }
+
+        print($the_cats);
         die();
     }
 
@@ -66,6 +74,7 @@ class Anthologize_Ajax_Handlers {
         );
 
 
+        // TODO: JMC: Get help from Boone
         query_posts( $args );
 
         $response = '';
@@ -75,7 +84,12 @@ class Anthologize_Ajax_Handlers {
             $response .= get_the_ID() . ':' . get_the_title() . ',';
         }
 
-        print_r($response);
+
+        if (strlen($response) > 0) {
+            $response = substr($response, 0, strlen($response)-1);
+        }
+
+        print($response);
 
         die();
     }
