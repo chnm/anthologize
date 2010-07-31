@@ -2,7 +2,7 @@
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
-define('XML', 'http://www.w3.org/2001/XMLSchema#');
+define('ANTH', "http://www.anthologize.org/ns");
 
 class TeiDom {
 
@@ -29,21 +29,106 @@ class TeiDom {
     	$this->checkImgSrcs();
     }
 
-
-    $this->processPostArray($postArray);
+    //$this->processPostArray($postArray);
 
 	}
 
   public function processPostArray($postArray) {
+    //process all the data and stuff it into the appropriate place in
+
+    //copyright/license info (availability)
+    $this->addLicense($postArray['license']);
+    //"editors" copyright and title page
+
+    //date
+
+    //edition
+    $edNode = $this->xpath->query("//tei:editionStmt/tei:edition")->item(0);
+    $edNode->appendChild($this->dom->createTextNode($postArray['edition']));
+
+    //front1
+    $f1Node = $this->xpath->query("//tei:div[@xml:id='f1']")->item(0);
+    $f1TitleNode = $this->xpath->query("tei:head/tei:title", $f1Node );
+    $f1TitleNode->appendChild($this->dom->createTextNode($postArray['front1-title']));
+    $htmlNode = $this->buildHtmlDom($postArray['front1']);
+    $f1Node->appendChild($htmlNode);
+
+    //front2
+    $f2Node = $this->xpath->query("//tei:div[@xml:id='f2']")->item(0);
+    $f2TitleNode = $this->xpath->query("tei:head/tei:title", $f2Node );
+    $f2TitleNode->appendChild($this->dom->createTextNode($postArray['front2-title']));
+    $htmlNode = $this->buildHtmlDom($postArray['front2']);
 
 
+    $outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
+    //font-size
+    $fontSizeNode = $this->xpath->query("anth:param[@name='font-size']")->item(0);
+    $fontSizeNode->appendChild($this->dom->createTextNode($postArray['font-size']));
 
+    //paper-type
+    $paperTypeNode = $this->xpath->query("anth:param[@name='paper-type']")->item(0);
+    $paperTypeNode->appendChild($this->dom->createTextNode($postArray['paper-type']));
+    //paper-size
+    $pageHNode = $this->xpath->query("anth:param[@name='page-height']")->item(0);
+    $pageWNode = $this->xpath->query("anth:param[@name='page-width']")->item(0);
+
+
+    switch($postArray['paper-type']) {
+    	case 'A4':
+        $pageHNode->appendChild($this->dom->createTextNode('297mm'));
+        $pageWNode->appendChild($this->dom->createTextNode('210mm'));
+      break;
+
+      case 'Letter':
+        $pageHNode->appendChild($this->dom->createTextNode('11in'));
+        $pageWNode->appendChild($this->dom->createTextNode('8.5in'));
+      break;
+
+    }
+    //font-family
+    $fontFamilyNode = $this->xpath->query("anth:param[@name='font-family']")->item(0);
+
+
+  }
+
+  public function addLicence($license) {
+  	$avlPNode = $this->xpath->query("//tei:availability/tei:p")->item(0);
+    switch($license) {
+    	case 'by':
+
+      break;
+
+      case 'by-sa':
+
+      break;
+
+      case 'by-nd':
+
+      break;
+
+      case 'by-nc':
+
+      break;
+
+      case 'by-nc-sa':
+
+      break;
+
+      case 'by-nc-nd':
+
+      break;
+
+      default:
+
+      break;
+    }
   }
 
   public function setXPath() {
     $this->xpath = new DOMXPath($this->dom);
     $this->xpath->registerNamespace('tei', TEI);
     $this->xpath->registerNamespace('html', HTML);
+    $this->xpath->registerNamespace('anth', ANTH);
     $authorAB =  $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
     $this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
     $this->bodyNode = $this->xpath->query("//tei:body")->item(0);
@@ -92,6 +177,8 @@ class TeiDom {
     $titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
     //yes, I tried $titleNode->textContent=$project->post_title. No, it didn't work. No, I don't know why
     $titleNode->appendChild($this->dom->createTextNode($project->post_title));
+
+    //TODO: also slap title into titlePage
     $identNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident')->item(0);
 
     $identNode->appendChild($this->dom->createCDataSection($project->guid));

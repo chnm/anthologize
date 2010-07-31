@@ -13,7 +13,8 @@ print_r($op);
 */
 
 
-header("Content-type: text/xml");
+header("Content-type: application/xml");
+header('Content-Disposition: attachment; filename="tei.xml"');
 echo $tei->getTeiString();
 
 

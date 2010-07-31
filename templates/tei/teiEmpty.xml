@@ -7,8 +7,16 @@
             <titleStmt>
                 <title></title>
             </titleStmt>
+            <editionStmt>
+                <edition></edition>
+            </editionStmt>
             <publicationStmt>
-                <p>This edition produced with the Anthologize blog-to-bookshelf WordPress plugin (http://anthologize.org) </p>
+                <availability>
+                    <p></p>
+                </availability>
+                
+                <date></date>
+
             </publicationStmt>
             <sourceDesc>
                 <bibl>
@@ -35,16 +43,40 @@
             <appInfo>
                 <application ident="anthologize" version="0.3">
                     <label>Anthologize</label>
+                    <desc>Bits to Bookshelf</desc>
+                    <p><graphic url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"/></p>
                 </application>
             </appInfo>
         </encodingDesc>
-        <revisionDesc>
-            <!-- We'll figure out what to put into the revision description when other people figure out how they want to handle it. Since this is the cool political part, we'll put it in our namespace -->
-        </revisionDesc>
     </teiHeader>
     <text>
+        <front>
+            <titlePage>
+                <docTitle>
+                    <titlePart type="main"></titlePart>
+                    <titlePart type="sub"></titlePart>
+                </docTitle>
+                <docAuthor></docAuthor>
+                
+                <docDate></docDate>
+                <docEdition></docEdition>
+
+            </titlePage>
+
+            <div xml:id="f1">
+                <head>
+                    <title></title>
+                </head>
+            </div>
+            <div xml:id="f2" >
+                <head>
+                    <title></title>
+                </head>
+            </div>
+        </front>
         <body>
-            <!-- TEI @type is designed to be free-form, the content coming from WP will go into @type="post". Everything else we can keep loose and extendable -->
+            
         </body>
+        <back></back>
     </text>
 </TEI>
