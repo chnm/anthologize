@@ -45,7 +45,7 @@ class TeiDom {
 
     //"editors" copyright and title page
     $authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
-    $authorsNode->appendChild($this->dom->createTextNode($postArray['authors']));
+    $authorsNode->appendChild($this->dom->createTextNode($postArray['cname'] . ', ' . $postArray['authors']));
 
     $docEditionNode = $this->xpath->query("//tei:docEdition")->item(0);
     $docEditionNode->appendChild($this->dom->createTextNode($postArray['edition']));
@@ -112,34 +112,14 @@ class TeiDom {
     $fontFamilyNode->appendChild($this->dom->createTextNode($postArray['font-face']));
 
 
-/*
-  Array
-(
-    [post-title] => title
-    [dedication] =>
-    [acknowledgements] =>
-    [filetype] => tei
-    [page-size] => letter
-    [font-size] => 9
-    [font-face] => times
-    [cyear] =>
-    [cname] =>
-    [ctype] =>
-    [edition] =>
-    [authors] =>
-    [project_id] =>
-    [export-step] => 2
-    [submit] => Next
-)
 
- */
 
 
   }
 
   public function addLicense($postArray) {
   	$avlPNode = $this->xpath->query("//tei:availability/tei:p")->item(0);
-    $avlPNode->appendChild($this->dom->createTextNode('Copyright ' . $postArray['cyear']));
+    $avlPNode->appendChild($this->dom->createTextNode('Copyright ' . $postArray['cyear'] . ', ' . $postArray['cname']));
     if($postArray['ctype'] == 'c') {
       return;
     }

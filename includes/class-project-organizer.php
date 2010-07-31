@@ -219,7 +219,9 @@ class Anthologize_Project_Organizer {
 
 		// Author data
 		$user = get_userdata( $post->post_author );
-		$author_name = $user->display_name;
+
+		if ( !$author_name = get_post_meta( $item_id, 'author_name', true ) )
+			$author_name = $user->display_name;
 		$author_name_array = array( $author_name );
 
 		update_post_meta( $imported_item_id, 'author_name', $author_name );

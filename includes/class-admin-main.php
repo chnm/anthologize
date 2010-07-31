@@ -318,10 +318,12 @@ class Anthologize_Admin_Main {
     	{
     		if ( is_null($new_data) ) delete_post_meta($post_id,'anthologize_meta');
     		else update_post_meta($post_id,'anthologize_meta',$new_data);
+			update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
     	}
     	elseif ( !is_null($new_data) )
     	{
     		add_post_meta($post_id,'anthologize_meta',$new_data,TRUE);
+			update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
     	}
 
         add_filter('redirect_post_location', array($this , 'item_meta_redirect'));
@@ -352,14 +354,14 @@ class Anthologize_Admin_Main {
 
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
         $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
-
+       	$author_name = get_post_meta( $post->ID, 'author_name', true );
         ?>
         <div class="my_meta_control">
 
         	<label>Author Name <span>(optional)</span></label>
 
         	<p>
-        		<textarea name="anthologize_meta[author_name]" rows="3" cols="27"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea>
+        		<textarea name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo $author_name ?></textarea>
         	</p>
 
         	<?php /* Display content for imported feed, if there is any */ ?>
@@ -425,34 +427,5 @@ endif;
 
 $anthologize_admin_main = new Anthologize_Admin_Main();
 
-function add_em_scripts() {
-?>
-  <script type="text/javascript">
-  Position.includeScrollOffsets = true;
-  Sortable.create('sortcontainer',{
-   tag: 'li',
-   scroll: window
-  });
-</script>
-<?php
-}
-add_action( 'admin_head', 'add_em_scripts' );
-
-
-function okokok( $it ) {
-	echo $it;
-	return $it;
-}
-//add_filter( 'posts_request', 'okokok' );
-
-function anthologize_admin_styles() {}
-
-function anthologize_admin_scripts() {}
-
-function anthologize_get_parts($parent_id) {
-    $parts = ( 'post_type=parts&post_parent=' . the_ID() );
-
-    return $parts;
-}
 
 ?>
