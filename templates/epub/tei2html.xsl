@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:tei="http://www.tei-c.org/ns/1.0" 
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:az="http://www.anthologize.org/ns"
-  xmlns="http://www.w3.org/1999/xhtml"
-  exclude-result-prefixes="#default html az xd tei"
-  version="1.0">
-  
+  xmlns:az="http://www.anthologize.org/ns" xmlns="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="#default html az xd tei" version="1.0">
+
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> Jul 29, 2010</xd:p>
@@ -33,9 +31,11 @@
         </title>
         <!--<link href="stylesheet.css" type="text/css" rel="stylesheet" />-->
         <style type="text/css">
-          <xsl:text>@page { margin: 3cm }</xsl:text>
-          <xsl:text>&#xa;body {&#xa;</xsl:text>
-          <xsl:text>padding-top: 10em; </xsl:text>
+          <xsl:text>
+            @page { margin: 3cm }
+            body {
+              padding-top: 10em; 
+          </xsl:text>
           
           <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()">          
             <xsl:value-of select="concat('&#xa;font-size:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()), ';')"/>
@@ -45,37 +45,103 @@
             <xsl:value-of select="concat('&#xa;font-family:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()), ';')"/>
           </xsl:if>
           
-          <xsl:text>&#xa;}&#xa;</xsl:text>
-          <xsl:text>#title-page h1 { border-bottom: 0.5em solid #aaa; page-break-after: always; }&#xa;</xsl:text>
-          <xsl:text>#publication-statement-page { page-break-after: always; padding-top: 10em; text-align: center }&#xa;</xsl:text>
-          <xsl:text>.chapter-title { border-bottom: 1px solid black; page-break-before: always; }&#xa;</xsl:text>
+          <xsl:text>
+            }
+            #anthologize-title-page
+            {
+              page-break-after: always;
+            }
+            #anthologize-title-page h1 
+            { 
+              border-bottom: 0.3em solid #aaa;  
+            }
+            #publication-statement-page 
+            { 
+              page-break-after: always; padding-top: 10em; text-align: center
+            }
+            .anthologize-chapter-title 
+            { 
+              border-bottom: 1px solid black; 
+              page-break-before: always;
+              text-transform:uppercase;
+              padding-bottom: 0.5em;
+            }
+            .anthologize-image-wrapper 
+            {
+              text-align: center;
+              margin-top: 2em;
+              margin-bottom: 2em;
+            }
+          </xsl:text>
         </style>
         <!--<link rel="stylesheet" type="application/vnd.adobe-page-template+xml"
           href="page-template.xpgt"/>-->
       </head>
       <body>
-        <div id="title-page">
+
+        <!-- Title page -->
+
+        <div id="anthologize-title-page">
           <h1>
-            Version 101: 
             <xsl:value-of
-              select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"
+              select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='main']"
             />
           </h1>
+          <h2>
+            <xsl:value-of
+              select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']"
+            />
+          </h2>
+          <h3>
+            <xsl:value-of
+              select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor"/>
+          </h3>
         </div>
+
+        <!-- Publication statement page -->
+
         <div id="publication-statement-page">
+
+          <p>
+            <em>
+              <!-- Title  -->
+              <xsl:value-of
+                select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='main']"/>
+              <xsl:if
+                test="normalize-space(/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']) != ''">
+                <xsl:text>: </xsl:text>
+                <xsl:value-of
+                  select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']"
+                />
+              </xsl:if>
+            </em>
+            
+            <br />
+
+            <!-- License statement -->
+
+            <xsl:value-of
+              select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability"/>
+          </p>
+          
+          <!-- Anthologize statement -->
+          
           <p>
             <em>
               <xsl:value-of select="$anthologize-statement"/>
             </em>
           </p>
         </div>
+
+        <!-- Main content -->
+
         <!-- <div id="publication-statement"></div>-->
         <!-- <div class="book-description">
         <xsl:copy-of select="/TEI/teiHeader/fileDesc/sourceDesc"/> -->
 
         <xsl:for-each select="/tei:TEI/tei:text/tei:body/tei:div[@type='part']">
           <div class="chapter" id="epub-chapter-{position()}">
-            <h2 class="chapter-title">
+            <h2 class="anthologize-chapter-title">
               <xsl:value-of select="tei:head/tei:title"/>
             </h2>
             <div class="chapter-content">
@@ -119,7 +185,7 @@
   <!-- Pass-through subset of XHTML that is recognised by ePub format -->
 
   <xsl:template
-    match="abbr|acronym|address|blockquote|br|cite|code|dfn|div|em|h1|h2|h3|h4|h5|h6|kbd|p|pre|q|samp|span|strong|var|dl|dt|dd|ol|ul|li|a|object|param|b|big|hr|i|small|sub|sup|tt|del|ins|bdo|caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|area|map|style|img"
+    match="abbr|acronym|address|blockquote|br|cite|code|dfn|div|em|h1|h2|h3|h4|h5|h6|kbd|p|pre|q|samp|span|strong|var|dl|dt|dd|ol|ul|li|a|object|param|b|big|hr|i|small|sub|sup|tt|del|ins|bdo|caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|area|map|style"
     mode="html-content">
     <xsl:comment> copied at 1 </xsl:comment>
     <xsl:copy>
@@ -149,7 +215,7 @@
   
   -->
 
-  <!-- FOR NOW: Pass through -->
+  <!-- FOR NOW: Pass through object tags -->
 
   <xsl:template match="object" mode="html-content">
     <xsl:copy>
@@ -172,7 +238,18 @@
   <xsl:template match="a[img]" mode="html-content">
     <xsl:apply-templates mode="html-content"/>
   </xsl:template>
-  
+
+  <!-- Wrap images in a div -->
+  <!-- (does this eliminate the xmlns attribute? If so, the regex can be taken out of the PHP page) -->
+
+  <xsl:template match="img" mode="html-content">
+    <div class="anthologize-image-wrapper">
+      <img>
+        <xsl:apply-templates select="@*" mode="html-content"/>
+      </img>
+    </div>
+  </xsl:template>
+
   <!-- 
     Images have to have their URLs rewritten to make them relative and in the ePub image directory 
     take off everything before the LAST slash
