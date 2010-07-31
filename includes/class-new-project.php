@@ -9,7 +9,8 @@ class Anthologize_New_Project {
         $post_data = array();
         $post_data['post_title'] = $_POST['post_title'];
         $post_data['post_type'] = 'projects';
-
+        $post_data['post_status'] = 'publish'; // Should come up with a way to manage drafts vs. publishing.
+        
         $new_anthologize_meta = $_POST['anthologize_meta'];
 
         // If we're editing an existing project.

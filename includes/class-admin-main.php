@@ -159,7 +159,8 @@ class Anthologize_Admin_Main {
 		if (
 			!isset( $_GET['action'] ) ||
 			$_GET['action'] == 'list-projects' ||
-			( $_GET['action'] == 'edit' && !$project )
+			( $_GET['action'] == 'edit' && !$project ) ||
+			( $_GET['action'] == 'delete')
 
 		) {
 
