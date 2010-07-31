@@ -1,6 +1,5 @@
 <?php
 
-
 if ( !class_exists( 'Anthologize_Export_Panel' ) ) :
 
 class Anthologize_Export_Panel {
@@ -12,8 +11,12 @@ class Anthologize_Export_Panel {
 	 */
 	function anthologize_export_panel ( $project_id ) {
 		$this->project_id = $project_id;
-
 	}
+
+	function load_styles() {
+		echo "Loaded!"; die();
+	}
+
 
 	function display() {
 	?>
