@@ -336,7 +336,12 @@ class Anthologize_Admin_Main {
 
     function item_meta_redirect($location) {
         $postParent = get_post($_POST['post_parent']);
-        $location = 'admin.php?page=anthologize&action=edit&project_id='.$postParent->post_parent;
+        if ( isset( $_POST['new_part'] ) )
+        	$arg = $_POST['post_parent'];
+        else
+        	$arg = $postParent->post_parent;
+        $location = 'admin.php?page=anthologize&action=edit&project_id='.$arg;
+
         return $location;
     }
     /**
@@ -367,6 +372,11 @@ class Anthologize_Admin_Main {
             <?php else : ?>
                  <input type="hidden" name="parent_id" value="<?php echo $post->post_parent; ?>">
             <?php endif; ?>
+
+            <?php if ( isset( $_GET['new_part'] ) ) : ?>
+            	<input type="hidden" name="new_part" value="1" />
+            <?php endif; ?>
+
             <input type="hidden" name="menu_order" value="<?php echo $post->menu_order; ?>">
             <input type="hidden" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
         </div>
