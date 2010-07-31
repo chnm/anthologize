@@ -46,6 +46,10 @@ function anthologize_loader () {
 
 	add_action( 'anthologize_init', array ( $this, 'load_template' ) );
 
+	add_filter( 'custom_menu_order', array( $this, 'custom_menu_order_function' ) );
+
+	add_filter( 'menu_order', array( $this, 'menu_order_my_function' ) );
+
 	// activation sequence
 	register_activation_hook( __FILE__, array( $this, 'activation' ) );
 
@@ -55,7 +59,7 @@ function anthologize_loader () {
 
 	// Let plugins know that we're initializing
 	function init() {
-	do_action( 'anthologize_init' );
+		do_action( 'anthologize_init' );
 	}
 
 	// Allow this plugin to be translated by specifying text domain
@@ -63,13 +67,28 @@ function anthologize_loader () {
 	// todo: load the text domain
 	}
 
+	function custom_menu_order_function(){
+		return true;
+	}
+
+	function menu_order_my_function($menu_order){
+		$key = array_search( 'edit.php?post_type=parts', $menu_order );
+		unset( $menu_order[$key] );
+
+		$key = array_search( 'edit.php?post_type=library_items', $menu_order );
+		unset( $menu_order[$key] );
+
+		return array_values( $menu_order );
+	}
+
+
 	// Custom post types - Oh, Oh, Oh, It's Magic
 	function register_post_types() {
 		register_post_type( 'projects', array(
 			'label' => __( 'Projects', 'anthologize' ),
 			'public' => true,
 			'_builtin' => false,
-			'show_ui' => true, // todo: hide
+			'show_ui' => false,
 			'capability_type' => 'page',
 			'hierarchical' => false,
 			'supports' => array('title', 'editor', 'revisions'),
