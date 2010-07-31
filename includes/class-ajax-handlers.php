@@ -14,10 +14,6 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
-        add_action( 'wp_ajax_update_post_metadata', array( $this, 'update_post_metadata' ) );
-        add_action( 'wp_ajax_remove_item_part', array( $this, 'remove_item_part' ) );
-        //add_action( 'wp_ajax_insert_new_item', array( $this, 'insert_new_item' ) );
-        //add_action( 'wp_ajax_insert_new_part', array( $this, 'insert_new_part' ) );
     }
 
     function __construct() {
@@ -95,8 +91,6 @@ class Anthologize_Ajax_Handlers {
     }
 
     function place_item() {
-            header('HTTP/1.1 500 Internal Server Error');
-            die();
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $dest_part_id = $_POST['dest_id'];
@@ -168,75 +162,6 @@ class Anthologize_Ajax_Handlers {
         die();
     }
 
-    /*function update_post_metadata() {
-        $project_id = $_POST['project_id'];
-        $post_id = $_POST['post_id'];
-
-        // TODO: What metadata do we expect?
-        //
-        // TODO: update metadata
-
-        die();
-    }*/
-
-    function remove_item_part() {
-        $project_id = $_POST['project_id'];
-        $post_id = $_POST['post_id'];
-        $new_seq = stripslashes($_POST['new_seq']);
-
-        $remove_result = $this->project_organizer->remove_item($post_id);
-
-        if (false === $remove_result) {
-            header('HTTP/1.1 500 Internal Server Error');
-            die();
-        }
-
-        $new_seq_array = json_decode($new_seq, $assoc=true);
-        if ( NULL === $new_seq_array ) {
-            header('HTTP/1.1 500 Internal Server Error');
-            die();
-        }
-        $this->project_organizer->rearrange_items($new_seq_array); 
-
-        die();
-    }
-/*
-    function insert_new_item() {
-        $project_id = $_POST['project_id'];
-        $part_id = $_POST['part_id'];
-        $new_seq = $_POST['new_seq'];
-
-        // TODO: Create a new bare item
-
-        $new_seq_array = json_decode($new_seq);
-        // TODO: error check
-        $this->resequence_items($new_seq_array); 
-
-        // TODO: What is all of the metadata we need to return?
-        print "{post_id:$post_id,seq_num:$seq_num}";
-
-        die();
-    }
-
-    function insert_new_part() {
-        $project_id = $_POST['project_id'];
-        $new_seq = $_POST['new_seq'];
-
-        // TODO: what metadata do we expect?
-
-
-        // TODO: Create a new bare part
-
-        $new_seq_array = json_decode($new_seq);
-        // TODO: error check
-        $this->resequence_items($new_seq_array); 
-
-        // TODO: What is all of the metadata we need to return?
-        print "{part_id:$part_id,seq_num:$seq_num}";
-
-        die();
-    }
- */
 }
 
 endif;
