@@ -338,6 +338,10 @@ class Anthologize_Admin_Main {
         	$arg = $postParent->post_parent;
         $location = 'admin.php?page=anthologize&action=edit&project_id='.$arg;
 
+
+		if ( isset( $_POST['return_to_project'] ) )
+			$location = 'admin.php?page=anthologize&action=edit&project_id=' . $_POST['return_to_project'];
+
         return $location;
     }
     /**
@@ -404,6 +408,10 @@ class Anthologize_Admin_Main {
         		</dl>
 
         	<?php endif; ?>
+
+			<?php if ( isset( $_GET['return_to_project'] ) ) : ?>
+				<input type="hidden" name="return_to_project" value="<?php echo $_GET['return_to_project'] ?>" />
+			<?php endif; ?>
 
         	<?php if ( isset( $_GET['project_id'] ) ) : ?>
         		<input type="hidden" name="parent_id" value="<?php echo $_GET['project_id'] ?>">
