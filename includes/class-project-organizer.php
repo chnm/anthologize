@@ -483,7 +483,7 @@ class Anthologize_Project_Organizer {
             $this->rearrange_items( $source_seq );
         }
 
-        // JMC: not really any point in checking for errors at this point
+        // not really any point in checking for errors at this point
         // Since the insert succeeded
         // We should use more detailed Exceptions eventually
         //
@@ -492,16 +492,7 @@ class Anthologize_Project_Organizer {
     return false;*/
         $this->rearrange_items( $dest_seq );
 
-
-		// You only need to rearrange the source when moving between parts
-        /*if ( !$new_post ) {
-			if ( !$this->rearrange_items( $src_seq ) )
-				return false;
-        }*/
-
-
 		return $post_id;
-
 	}
 
 	function rearrange_items( $seq ) {
