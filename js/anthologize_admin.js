@@ -73,11 +73,11 @@ merge_items: function(config_obj) {
     jQuery.ajax({
         url: ajaxurl,
         type: 'POST',
+        dataType: 'json',
         data: {action:'merge_items',
-               project_id:project_id,
-               post_id:item_id,
-               child_post_ids:{},
-               // TODO: create this data
+               project_id:config_obj.project_id,
+               post_id:config_obj.post_id,
+               child_post_ids:config_obj.child_post_ids,
                new_seq:seq_stringify(config_obj.merge_seq)},
         async:false,
         timeout:20000,
@@ -86,11 +86,12 @@ merge_items: function(config_obj) {
         },
         success: function(data){
             // Remove the other IDs
-            jQuery.each(child_post_ids, function(post_id) {
-                jQuery('li#' + post_id).fadeOut('normal', function() {
-                    jQuery(this).remove();
-                });
-            });
+            anthologize.updateAppendedItems(config_obj.child_post_ids);
+            // jQuery.each(child_post_ids, function(post_id) {
+            //     jQuery('li#' + post_id).fadeOut('normal', function() {
+            //         jQuery(this).remove();
+            //     });
+            // });
         },
         error: function(){
             // Post error alert?
