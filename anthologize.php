@@ -21,98 +21,98 @@ class Anthologize_Loader {
 */
 function anthologize_loader () {
 
-// Give me something to believe in
-add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
+	// Give me something to believe in
+	add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
 
-add_action( 'init', array ( $this, 'init' ) );
+	add_action( 'init', array ( $this, 'init' ) );
 
-// Load the post types
-add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
-
-
-		// Load constants
-		//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
-
-		// Load the custom feed
-		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
+	// Load the post types
+	add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
 
-// Include the necessary files
-add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
+	// Load constants
+	//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
-// Attach textdomain for localization
-add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
+	// Load the custom feed
+	add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
 
 
-add_action( 'anthologize_init', array ( $this, 'load_template' ) );
+	// Include the necessary files
+	add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
 
-// activation sequence
-register_activation_hook( __FILE__, array( $this, 'activation' ) );
+	// Attach textdomain for localization
+	add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
 
-// deactivation sequence
-register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
-}
 
-// Let plugins know that we're initializing
-function init() {
-do_action( 'anthologize_init' );
-}
+	add_action( 'anthologize_init', array ( $this, 'load_template' ) );
 
-// Allow this plugin to be translated by specifying text domain
-function textdomain() {
-// todo: load the text domain
-}
+	// activation sequence
+	register_activation_hook( __FILE__, array( $this, 'activation' ) );
 
-// Custom post types - Oh, Oh, Oh, It's Magic
-function register_post_types() {
-register_post_type( 'projects', array(
-'label' => __( 'Projects', 'anthologize' ),
-'public' => true,
-'_builtin' => false,
-'show_ui' => true, // todo: hide
-'capability_type' => 'page',
-'hierarchical' => false,
-'supports' => array('title', 'editor', 'revisions'),
-'rewrite' => array("slug" => "project"), // Permalinks format
-));
+	// deactivation sequence
+	register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+	}
 
-register_post_type( 'parts', array(
-'label' => __( 'Parts', 'anthologize' ),
-'public' => true,
-'_builtin' => false,
-'show_ui' => true, // todo: hide
-'capability_type' => 'page',
-'hierarchical' => true,
-'supports' => array('title', 'editor', 'revisions'),
-'rewrite' => array("slug" => "part"), // Permalinks format
-));
+	// Let plugins know that we're initializing
+	function init() {
+	do_action( 'anthologize_init' );
+	}
 
-register_post_type( 'library_items', array(
-'label' => __('Library Items', 'anthologize' ),
-'public' => true,
-'_builtin' => false,
-'show_ui' => true, // todo: hide
-'capability_type' => 'page',
-'hierarchical' => true,
-'supports' => array('title', 'editor', 'revisions'),
-'rewrite' => array("slug" => "library_item"), // Permalinks format
-));
+	// Allow this plugin to be translated by specifying text domain
+	function textdomain() {
+	// todo: load the text domain
+	}
 
-register_post_type( 'imported_items', array(
-'label' => __('Imported Items', 'anthologize' ),
-'public' => true,
-'_builtin' => false,
-'show_ui' => true, // todo: hide
-'capability_type' => 'page',
-'hierarchical' => true,
-'supports' => array('title', 'editor', 'revisions'),
-'rewrite' => array("slug" => "imported_item"), // Permalinks format
-));
-}
+	// Custom post types - Oh, Oh, Oh, It's Magic
+	function register_post_types() {
+		register_post_type( 'projects', array(
+			'label' => __( 'Projects', 'anthologize' ),
+			'public' => true,
+			'_builtin' => false,
+			'show_ui' => true, // todo: hide
+			'capability_type' => 'page',
+			'hierarchical' => false,
+			'supports' => array('title', 'editor', 'revisions'),
+			'rewrite' => array("slug" => "project"), // Permalinks format
+		));
 
-function register_custom_feed() {
-load_template( dirname( __FILE__ ) . '/templates/customfeed.php');
-}
+		register_post_type( 'parts', array(
+			'label' => __( 'Parts', 'anthologize' ),
+			'public' => true,
+			'_builtin' => false,
+			'show_ui' => true, // todo: hide
+			'capability_type' => 'page',
+			'hierarchical' => true,
+			'supports' => array('title', 'editor', 'revisions'),
+			'rewrite' => array("slug" => "part"), // Permalinks format
+		));
+
+		register_post_type( 'library_items', array(
+			'label' => __('Library Items', 'anthologize' ),
+			'public' => true,
+			'_builtin' => false,
+			'show_ui' => true, // todo: hide
+			'capability_type' => 'page',
+			'hierarchical' => true,
+			'supports' => array('title', 'editor', 'revisions'),
+			'rewrite' => array("slug" => "library_item"), // Permalinks format
+		));
+
+		register_post_type( 'imported_items', array(
+			'label' => __('Imported Items', 'anthologize' ),
+			'public' => true,
+			'_builtin' => false,
+			'show_ui' => true, // todo: hide
+			'capability_type' => 'page',
+			'hierarchical' => true,
+			'supports' => array('title', 'editor', 'revisions'),
+			'rewrite' => array("slug" => "imported_item"), // Permalinks format
+		));
+	}
+
+	function register_custom_feed() {
+	load_template( dirname( __FILE__ ) . '/templates/customfeed.php');
+	}
 
 
 	function includes() {
@@ -125,10 +125,10 @@ load_template( dirname( __FILE__ ) . '/templates/customfeed.php');
 
 	}
 
-// Let plugins know that we're done loading
-function loaded() {
-do_action( 'anthologize_loaded' );
-}
+	// Let plugins know that we're done loading
+	function loaded() {
+		do_action( 'anthologize_loaded' );
+	}
 
 
 	function load_template() {
@@ -146,33 +146,33 @@ do_action( 'anthologize_loaded' );
 		}
 	}
 
-function grab() { // todo: make this make sense
+	function grab() { // todo: make this make sense
 
-if ( isset( $_POST['save_project']) || ($_GET['action'] == 'delete'))
-        wp_redirect( 'admin.php?page=anthologize');
-
-
-if ( $_GET['output'] == 'customfeed' ) {
-
-load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
-return false;
-} else if ($_GET['output'] == 'tei') {
-load_template( dirname(__FILE__) . '/templates/tei/base.php' );
-return false;
-} else if ($_GET['output'] == 'epub') {
-load_template( dirname(__FILE__) . '/templates/epub/index.php' );
-return false;
-} else if ($_GET['output'] == 'pdf') {
-	load_template( dirname(__FILE__) . '/templates/pdf/base.php' );
-  return false;
-}
-}
+		if ( isset( $_POST['save_project']) || ($_GET['action'] == 'delete'))
+				wp_redirect( 'admin.php?page=anthologize');
 
 
-function activation() {}
+		if ( $_GET['output'] == 'customfeed' ) {
 
-function deactivation() {}
-}
+		load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
+		return false;
+		} else if ($_GET['output'] == 'tei') {
+		load_template( dirname(__FILE__) . '/templates/tei/base.php' );
+		return false;
+		} else if ($_GET['output'] == 'epub') {
+		load_template( dirname(__FILE__) . '/templates/epub/index.php' );
+		return false;
+		} else if ($_GET['output'] == 'pdf') {
+			load_template( dirname(__FILE__) . '/templates/pdf/base.php' );
+		  return false;
+		}
+	}
+
+
+	function activation() {}
+
+	function deactivation() {}
+	}
 
 endif; // class exists
 
