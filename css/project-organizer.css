@@ -80,15 +80,20 @@
 	padding: 8px;
 }
 
+#project-organizer-frame a.disabled {
+	display: none;
+	visibility: hidden;
+}
+
 .part-header {
-	background: #B38080 !important;
-	color: #3F0D11 !important;
+	background: #e3c1aa !important;
+	color: #5e2600 !important;
 	text-shadow: none !important;
 	border-top-right-radius: 3px !important;
 	border-top-left-radius: 3px !important;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
-	border: 2px solid #3F0D11;
+	border: 2px solid #5e2600;
 }
 
 .part-items {
@@ -97,8 +102,8 @@
 
 /* Individual parts */
 .part-item {
-	background: #84A9CA !important;
-	color: #13395F !important;
+	background: #cfdae9 !important;
+	color: #25589a !important;
 	text-shadow: none !important;
 	border-top-right-radius: 3px !important;
 	border-top-left-radius: 3px !important;
@@ -112,6 +117,8 @@
 	float: right;
 	text-align: right;
 }
+
+/* brown: a40   blue 25589a    paper ffffee		*/
 
 .part-item-buttons a, #new-part a {
 	text-decoration: none;
@@ -127,10 +134,10 @@
 	border-top-left-radius: 1px;
 	border-bottom-right-radius: 1px;
 	border-bottom-left-radius: 1px;
-	background: #B38080 !important;
-	color: #3F0D11 !important;
+	background: #e3c1aa !important;
+	color: #5e2600 !important;
 	text-shadow: none !important;
-	border: 2px solid #3F0D11;
+	border: 2px solid #5e2600;
 
 }
 
