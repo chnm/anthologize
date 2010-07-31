@@ -15,9 +15,9 @@ class Anthologize_Import_Feeds_Panel {
 	function display() {
 
 	?>
-		<div class="wrap">
+		<div class="wrap anthologize">
 
-			<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 			<h2><?php _e( 'Import Content', 'anthologize' ) ?></h2>
 
 			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>
@@ -185,6 +185,8 @@ class Anthologize_Import_Feeds_Panel {
 
 		$post_id = wp_insert_post( $args );
 
+		$author_name = $item['authors'][0]->name;
+		update_post_meta( $post_id, 'author_name', $author_name );
 		update_post_meta( $post_id, 'imported_item_meta', $item );
 
 		return $post_id;

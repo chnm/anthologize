@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: boonebgorges
+Contributors: boonebgorges, chnm, digitaleffie, gossettphd, janaremy, jcmeloni, jeremyboggs, knoxdw, oneweekonetool, zmccune
 Donate link: http://anthologize.com/
 Tags: book, pdf, tei, epub, publish
 Requires at least: 3.0
@@ -21,7 +21,6 @@ To install Anthologize, follow these steps.
 1. Upload the `anthologize` directory to `/wp-content/plugins/`
 1. Activate Anthologize through the WordPres 'Plugins' menu
 1. Visit Dashboard > Anthologize to start compiling your project
-
 
 == Changelog ==
 

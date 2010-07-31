@@ -48,11 +48,11 @@ class Anthologize_Project_Organizer {
 			$this->append_children( $_POST['append_parent'], $_POST['append_children'] );
 		}
 		?>
-		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
+		<div class="wrap anthologize" id="project-<?php echo $_GET['project_id'] ?>">
 
         <div id="blockUISpinner"><img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img></div>
 
-		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 
 		<h2><?php echo $this->project_name ?></h2>
 
@@ -219,7 +219,9 @@ class Anthologize_Project_Organizer {
 
 		// Author data
 		$user = get_userdata( $post->post_author );
-		$author_name = $user->display_name;
+
+		if ( !$author_name = get_post_meta( $item_id, 'author_name', true ) )
+			$author_name = $user->display_name;
 		$author_name_array = array( $author_name );
 
 		update_post_meta( $imported_item_id, 'author_name', $author_name );
@@ -268,7 +270,16 @@ class Anthologize_Project_Organizer {
 
 				?>
 					<li class="part" id="part-<?php echo $part_id ?>">
-						<h3 class="part-header"><noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript><?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
+						<h3 class="part-header"><noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript>
+
+						<?php the_title() ?>
+
+						<div class="part-item-buttons">
+							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>" class="edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+							<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a>
+						</div>
+
+						</h3>
 
 						<div class="part-items">
                                                     <ul>
@@ -579,7 +590,8 @@ class Anthologize_Project_Organizer {
 				<span class="part-title"><?php the_title() ?></span>
 				<div class="part-item-buttons">
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
-					<a href="#append" class="append">Append</a> |
+
+					<a href="#append" class="append"><?php _e( 'Append', 'anthologize' ) ?> |</a>
 					<?
 					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
 					?>
