@@ -35,8 +35,13 @@
   $temp_epub_images_dir   = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR; // . 'images';
   $temp_zip_filename      = $temp_dir_name       . DIRECTORY_SEPARATOR . 'book.epub'; // Temporary ZIP file
   
-  $zip_download_filename  = 'anthologize_book.epub'; // The name of the filename when it downloads
+  $zip_download_filename  = TeiDom::getFileName($_POST) . '.epub'; // The name of the filename when it downloads
+
+  // Set internal & output text encoding to UTF-16
   
+  // iconv_set_encoding("internal_encoding", "UTF-16");
+  // iconv_set_encoding("output_encoding",   "UTF-16");
+
   // Create temp directory if doesn't exist
 
   if (! file_exists ( $temp_dir_name ))
@@ -139,9 +144,23 @@
   
   $proc->importStylesheet($tei2html_xsl);
   $fp = fopen($html_filename, "w") or die("Couldn't open temporary file for epub archive (main_content.html)");
-  fwrite($fp, $proc->transformToXML($teiDom));
+  $html = $proc->transformToXML($teiDom);
+  $empty_namespace_pattern = '/\sxmlns=""\s/i';
+  //$html_no_empty_namespaces = preg_replace('/x/', 'xyz', $html);
+  $html_no_empty_namespaces = preg_replace('/xmlns=""/u', '', $html);
+  //$html_no_empty_namespaces .= "<!-- THIS IS A NEW DOC -->";
+  fwrite($fp, $html_no_empty_namespaces);
+  // fwrite($fp, $proc->transformToXML($teiDom));
   fclose($fp);
-
+  
+  // (clean out empty namespaces using a regex)
+  /*
+  $string = 'April 15, 2003';
+$pattern = '/(\w+) (\d+), (\d+)/i';
+$replacement = '${1}1,$3';
+echo preg_replace($pattern, $replacement, $string);
+  */
+  
   // NCX
   
   $proc->importStylesheet($tei2ncx_xsl);
@@ -171,8 +190,8 @@
   // Delete all contents in temp dir
   // Code derived from http://www.php.net/manual/en/class.recursiveiteratoriterator.php
   
-  deleteDirectoryWithContents($temp_epub_dir_name);
-  unlink($temp_zip_filename);
+  // deleteDirectoryWithContents($temp_epub_dir_name);
+  // unlink($temp_zip_filename);
 
   die();  // END
 

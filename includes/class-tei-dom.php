@@ -37,10 +37,15 @@ class TeiDom {
     //process all the data and stuff it into the appropriate place in
 
     //copyright/license info (availability)
-    $this->addLicense($postArray['license']);
+    $this->addLicense($postArray);
     //"editors" copyright and title page
 
+
+
     //date
+    $pubDateNode = $this->xpath->query("//tei:publicationStmt/tei:date")->item(0);
+    $pubDateNode->appendChild($this->dom->createTextNode($postArray['cyear']));
+
 
     //edition
     $edNode = $this->xpath->query("//tei:editionStmt/tei:edition")->item(0);
@@ -115,37 +120,45 @@ class TeiDom {
 
   }
 
-  public function addLicense($license) {
+  public function addLicense($postArray) {
   	$avlPNode = $this->xpath->query("//tei:availability/tei:p")->item(0);
-    switch($license) {
-    	case 'by':
+    $avlPNode->appendChild($this->dom->createTextNode('Copyright ' . $postArray['cyear']));
+    if($postArray['ctype'] == 'c') {
+      return;
+    }
 
+    $ccNode = $this->dom->createElementNS(TEI, 'p');
+
+    switch($postArray['cctype']) {
+    	case 'by':
+        $ccNode->appendChild($this->dom->createTextNode('Creative Commons By'));
       break;
 
       case 'by-sa':
-
+        $ccNode->appendChild($this->dom->createTextNode('Creative Commons By ShareAlike'));
       break;
 
       case 'by-nd':
-
+        $ccNode->appendChild($this->dom->createTextNode('Creative Commons By No Derivatives'));
       break;
 
       case 'by-nc':
-
+        $ccNode->appendChild($this->dom->createTextNode('Creative Commons By Non-Commercial'));
       break;
 
       case 'by-nc-sa':
-
+        $ccNode->appendChild($this->dom->createTextNode('Creative Commons By Non-Commercial ShareAlike'));
       break;
 
       case 'by-nc-nd':
-
+        $ccNode->appendChild($this->dom->createTextNode('Creative Commons By Non-Commercial No Derivatives'));
       break;
 
       default:
 
       break;
     }
+    $avlPNode->parentNode->appendChild($ccNode);
   }
 
   public function setXPath() {
@@ -203,6 +216,9 @@ class TeiDom {
     $titleNode->appendChild($this->dom->createTextNode($project->post_title));
 
     //TODO: also slap title into titlePage
+
+
+
     $identNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident')->item(0);
 
     $identNode->appendChild($this->dom->createCDataSection($project->guid));
