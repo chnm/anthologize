@@ -14,10 +14,6 @@ jQuery.blockUI.defaults.onUnblock = function() {
 
 var anth_admin_ajax = {
     place_item: function(config_obj) {
-
-        jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
-                        message: jQuery('#blockUISpinner').show() });
-
         jQuery.ajax({
             url: ajaxurl,
             type: 'POST',
@@ -70,9 +66,6 @@ var anth_admin_ajax = {
 
     },
     merge_items: function(config_obj) {
-        jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
-                        message: jQuery('#blockUISpinner').show() });
-
         jQuery.ajax({
             url: ajaxurl,
             type: 'POST',
