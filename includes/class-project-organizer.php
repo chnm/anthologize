@@ -146,8 +146,9 @@ class Anthologize_Project_Organizer {
 		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
 
 		?>
+            <span>Filter by</span>
 			<select name="sortby" id="sortby-dropdown">
-				<option value=""><?php _e( 'Sort by', 'anthologize' ) ?></option>
+				<option value=""><?php _e( 'All posts', 'anthologize' ) ?></option>
 				<?php foreach( $filters as $filter => $name ) : ?>
 					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
 				<?php endforeach; ?>

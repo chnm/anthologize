@@ -32,7 +32,7 @@
   $temp_epub_dir_name     = $temp_dir_name       . DIRECTORY_SEPARATOR . 'epub_under_construction'; // ePub dir structure temp area
   $temp_epub_meta_inf_dir = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'META-INF';
   $temp_epub_oebps_dir    = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'OEBPS';
-  $temp_epub_images_dir   = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR . 'images';
+  $temp_epub_images_dir   = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR; // . 'images';
   $temp_zip_filename      = $temp_dir_name       . DIRECTORY_SEPARATOR . 'book.epub'; // Temporary ZIP file
   
   $zip_download_filename  = 'anthologize_book.epub'; // The name of the filename when it downloads
@@ -161,19 +161,18 @@
   zip_it($temp_epub_dir_name, $temp_zip_filename) or die("Couldn't create ZIP archive file: ") . $temp_zip_filename;
   
   // Serve up zip file
-    
+
   header("Content-type: application/epub+zip");
   header("Content-Disposition: attachment; filename=" . $zip_download_filename);
   header("Pragma: no-cache");
   header("Expires: 0");
   readfile($temp_zip_filename);
-  
+
   // Delete all contents in temp dir
   // Code derived from http://www.php.net/manual/en/class.recursiveiteratoriterator.php
   
-  // deleteDirectoryWithContents($temp_dir_name);
-  //  $dir = '/home/nash/tmp';
-  // rmdir_recursive($dir);
+  deleteDirectoryWithContents($temp_epub_dir_name);
+  unlink($temp_zip_filename);
 
   die();  // END
 
@@ -217,7 +216,7 @@
 
   // Delete a directory and its contents
   // Derived from code at http://nashruddin.com/Remove_Directories_Recursively_with_PHP
-  /*
+
   function deleteDirectoryWithContents ($dir)
   {
     // DISABLED UNTIL TESTED
@@ -233,21 +232,13 @@
       if (is_dir($file))
       {
         deleteDirectoryWithContents($file);
-        echo "rm dir " . $file . "\n"; // DIAGNOSTIC
-        // DISABLED
-        // rmdir($file); 
       }
       else
       {
-        echo "unlink " . $file . "\n"; // DIAGNOSTIC
-        // DISABLED
-        // unlink($file);
+        unlink($file);
       }
     }
     rmdir($dir);
   }
-  */
-
-die();
 
 ?>
