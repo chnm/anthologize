@@ -32,6 +32,7 @@ var anth_admin_ajax = {
                 if (config_obj.new_item == 'true') {
                     anthologize.updateAddedItem(data.post_id);
                 }
+                anthologize.setAppendStatus();
                 return true;
             },
             error: function(){
