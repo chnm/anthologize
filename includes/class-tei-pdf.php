@@ -76,7 +76,7 @@ class TeiPdf {
 
 		$this->pdf->AddPage();
 
-		//$book_title = $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
+		$book_title = $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
 		
 		// Create a nodeList containing all parts.
 		$parts = $this->xpath->query("//tei:div[@type='part']");
@@ -119,7 +119,8 @@ class TeiPdf {
 		// documentation for more information.
 
 		//echo $html; // DEBUG
-		$this->pdf->Output('example.pdf', 'I');
+		$filename = $book_title . ".pdf";
+		$this->pdf->Output($filename, 'I');
 
 	} // writePDF 
 
@@ -158,10 +159,10 @@ class TeiPdf {
 		$font_family = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-family']")->item(0);
 		$font_size = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-size']")->item(0);
 
-		$font_family = $font_size->textContent;
-		$font_size= $font_size->textContent;
+		$font_family = $font_family->textContent;
+		$font_size= (int)$font_size->textContent;
 
-		$this->pdf->SetFont('times', '', 12, '', true);
+		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 
 	}
 

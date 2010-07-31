@@ -105,7 +105,8 @@ var anthologize = {
 	  var buttons = '<div class="part-item-buttons">' +
 							'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
 							'<a class="append" href="#append">Append</a> | ' +
-							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;project_id=4&amp;remove=' + new_item_id + '">Remove</a>' +
+							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 
+							'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">Remove</a>' +
 						  '</div>';
 		newItem.children("h3").append(buttons);
   },
