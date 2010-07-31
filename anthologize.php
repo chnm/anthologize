@@ -114,14 +114,29 @@ function anthologize_loader () {
 			'rewrite' => array("slug" => "project"), // Permalinks format
 		));
 
+		 $parts_labels = array(
+			'name' => _x('Parts', 'post type general name'),
+			'singular_name' => _x('Part', 'post type singular name'),
+			'add_new' => _x('Add New', 'book'),
+			'add_new_item' => __('Add New Part'),
+			'edit_item' => __('Edit Part'),
+			'new_item' => __('New Part'),
+			'view_item' => __('View Part'),
+			'search_items' => __('Search Parts'),
+			'not_found' =>  __('No parts found'),
+			'not_found_in_trash' => __('No parts found in Trash'),
+			'parent_item_colon' => ''
+		  );
+
 		register_post_type( 'parts', array(
 			'label' => __( 'Parts', 'anthologize' ),
+			'labels' => $parts_labels,
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions'),
+			'supports' => array('title'),
 			'rewrite' => array("slug" => "part"), // Permalinks format
 		));
 
@@ -136,8 +151,23 @@ function anthologize_loader () {
 			'rewrite' => array("slug" => "library_item"), // Permalinks format
 		));
 
+		 $imported_items_labels = array(
+			'name' => _x('Imported Items', 'post type general name'),
+			'singular_name' => _x('Imported Items', 'post type singular name'),
+			'add_new' => _x('Add New', 'book'),
+			'add_new_item' => __('Add New Imported Item'),
+			'edit_item' => __('Edit Imported Item'),
+			'new_item' => __('New Imported Item'),
+			'view_item' => __('View Imported Item'),
+			'search_items' => __('Search Imported Items'),
+			'not_found' =>  __('No imported items found'),
+			'not_found_in_trash' => __('No imported items found in Trash'),
+			'parent_item_colon' => ''
+		  );
+
 		register_post_type( 'imported_items', array(
 			'label' => __('Imported Items', 'anthologize' ),
+			'labels' => $imported_items_labels,
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
