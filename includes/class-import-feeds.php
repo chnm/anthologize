@@ -22,6 +22,7 @@ class Anthologize_Import_Feeds_Panel {
 	?>
 		<div class="wrap">
 
+			<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 			<h2><?php _e( 'Import Content', 'anthologize' ) ?></h2>
 
 			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>

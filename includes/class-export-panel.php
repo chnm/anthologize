@@ -19,7 +19,10 @@ class Anthologize_Export_Panel {
 	?>
 		<div class="wrap">
 
+			<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 			<h2><?php _e( 'Export Project', 'anthologize' ) ?></h2>
+
+			<br />
 
 			<div id="export-form">
 
