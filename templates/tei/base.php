@@ -5,16 +5,14 @@ error_reporting(0);
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 
-$tei = new TeiDom($_POST);
 
-/*
-$op = get_option('anthologize_settings');
-print_r($op);
-*/
+$tei = new TeiDom($_POST);
+$fileName = TeiDom::getFileName($_POST);
+$ext = "xml";
 
 
 header("Content-type: application/xml");
-header('Content-Disposition: attachment; filename="tei.xml"');
+header("Content-Disposition: attachment; filename=$fileName.$ext");
 echo $tei->getTeiString();
 
 

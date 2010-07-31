@@ -1,55 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
     <teiHeader>
         <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
         <fileDesc>
             <titleStmt>
-                <title></title>
+                <title>hmm, a project?</title>
             </titleStmt>
             <editionStmt>
+
                 <edition></edition>
             </editionStmt>
             <publicationStmt>
                 <availability>
                     <p></p>
                 </availability>
-                
+
                 <date></date>
 
             </publicationStmt>
+
             <sourceDesc>
                 <bibl>
-                    <ident></ident>
+                    <ident><![CDATA[http://localhost/workspace/wordpress/?post_type=projects&p=877]]></ident>
                 </bibl>
             </sourceDesc>
         </fileDesc>
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
         <outputParams xmlns="http://www.anthologize.org/ns">
-            <param name="paper-type">Letter</param>
-            <param name="page-width">8.5in</param>
-            <param name="page-height">11in</param>
-            <param name="font-size">12pt</param>
-            <param name="font-family">Times New Roman, Serif</param>
+            <param name="paper-type"></param>
+            <param name="page-width"></param>
+            <param name="page-height"></param>
+            <param name="font-size"></param>
+            <param name="font-family"></param>
         </outputParams>
 
         <encodingDesc>
             <refsDecl>
+
                 <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
-                    <listPerson> </listPerson>
+                    <listPerson>
+                        <person xml:id="admin" role="administrator ">
+                            <persName><forename xmlns:tei="http://www.tei-c.org/ns/1.0">First
+                                    Name</forename><surname xmlns="http://www.tei-c.org/ns/1.0">Last
+                                    Name</surname><ident xmlns="http://www.tei-c.org/ns/1.0"
+                                    type="url"
+                                ><![CDATA[http://myurl.not.example.com]]></ident></persName>
+                        </person>
+                        <person xml:id="boone-gorges" role="subscriber ">
+                            <persName><forename xmlns:tei="http://www.tei-c.org/ns/1.0"
+                                    ></forename><surname xmlns="http://www.tei-c.org/ns/1.0"
+                                    ></surname><ident xmlns="http://www.tei-c.org/ns/1.0" type="url"
+                                    ><![CDATA[]]></ident></persName>
+                        </person>
+                    </listPerson>
                 </ab>
             </refsDecl>
             <appInfo>
                 <application ident="anthologize" version="0.3">
+
                     <label>Anthologize</label>
                     <desc>Bits to Bookshelf</desc>
-                    <p><graphic url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"/></p>
+                    <p><graphic
+                            url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"
+                        ></graphic></p>
                 </application>
             </appInfo>
         </encodingDesc>
     </teiHeader>
     <text>
+
         <front>
             <titlePage>
                 <docTitle>
@@ -57,7 +77,7 @@
                     <titlePart type="sub"></titlePart>
                 </docTitle>
                 <docAuthor></docAuthor>
-                
+
                 <docDate></docDate>
                 <docEdition></docEdition>
 
@@ -68,14 +88,476 @@
                     <title></title>
                 </head>
             </div>
-            <div xml:id="f2" >
+            <div xml:id="f2">
                 <head>
                     <title></title>
                 </head>
             </div>
         </front>
         <body>
-            
+
+            <div type="part">
+                <head><title>Partay</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=partay]]></ident><bibl><author
+                            ref="admin"></author></bibl></head>
+                <div type="libraryItem" subtype="html">
+                    <head><title>About Boone</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=about-boone]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>My name is Boone Gorges and Teleogistic is my personal blog.</p>
+
+                        <p>I am a PhD student in <a href="http://web.gc.cuny.edu/Philosophy/"
+                                >philosophy</a> at the <a href="http://www.gc.cuny.edu">CUNY
+                                Graduate Center</a>.</p>
+
+                        <p>I am a WordPress developer specializing in BuddyPress. I am currently the
+                            lead developer for the <a href="http://commons.gc.cuny.edu">CUNY
+                                Academic Commons</a></p>
+
+                        <p>In a previous incarnation, I was an instructional designer at <a
+                                href="http://www.qc.cuny.edu">CUNY Queens College</a>.</p>
+
+                        <p>On this blog I talk about philosophy, technology, education, etc.</p>
+
+                        <p>You can email me if you want to shoot the breeze. Combine my Twitter
+                            handle (located in the left sidebar of this page) with @gmail.com.</p>
+                    </body>
+                </div>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Code</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=code]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml"><p>Looking for WordPress, BuddyPress,
+                            bbPress, or MediaWiki code that I've written? Have questions or comments
+                            about a piece of software I've released? Use the following links to find
+                            what you're looking for.</p>
+                        <p>I'm in the process of moving things over here. In the meantime, check
+                            out: <a href="http://teleogistic.net/tag/wordpress/">posts tagged
+                                'Wordpress'</a>; <a
+                                href="http://profiles.wordpress.org/boonebgorges/">Boone's corner of
+                                the WP repo</a></p> [child-pages]</body>
+                </div>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Donate</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=donate]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>Whenever possible, I release my code under the GPL and my writing under a
+                            Creative Commons license. As such, you are under no moral or legal
+                            obligation to give me anything. (I won't even be mad at you if you
+                            don't!) I get paid for some of the development I do, but I give a lot of
+                            my free time to updating my plugins, providing support to users, etc. If
+                            you use and enjoy my plugins and my Extremely Friendly Support, and
+                            you'd like to thank me with a cup of coffee (or a new computer!), you
+                            can do so by clicking the "Donate" button below.</p>
+
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_donations"></input>
+                            <input type="hidden" name="business" value="boonebgorges@gmail.com"></input>
+                            <table>
+                                <tr>
+                                    <th scope="row">I'm donating to say thanks for: </th>
+                                    <td> </td>
+
+                                    <td>
+                                        <select name="item_name"><option
+                                                value="Plugin donation for teleogistic.net"
+                                            ></option>Boone's General Awesomeness <option
+                                                value="BP Group Management"></option>BP Group
+                                            Management <option value="BP Import Blog Activity"
+                                            ></option>BP Import Blog Activity <option
+                                                value="BP Include Non-Member Comments"></option>BP
+                                            Include Non-Member Comments <option
+                                                value="BP MPO Activity Filter"></option>BP MPO
+                                            Activity Filter <option value="BP TinyMCE"></option>BP
+                                            TinyMCE <option
+                                                value="Custom Profile Filters for BuddyPress"
+                                            ></option>Custom Profile Filters for BuddyPress <option
+                                                value="Enhanced BuddyPress Widgets"
+                                            ></option>Enhanced BuddyPress Widgets <option
+                                                value="Forum Attachments for BuddyPress"
+                                            ></option>Forum Attachments for BuddyPress <option
+                                                value="Group Forum Subscription for BuddyPress"
+                                            ></option>Group Forum Subscription for BuddyPress
+                                                <option value="Import from Ning"></option>Import
+                                            from Ning <option value="Invite Anyone"></option>Invite
+                                            Anyone <option value="Shared Blogroll"></option>Shared
+                                            Blogroll </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"> Amount (format: 10.00): </th>
+                                    <td>$</td>
+                                    <td>
+                                        <input type="textbox" name="amount" size="8" value="10.00"
+                                            style="float: left;"></input>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="currency_code" value="USD"></input>
+                                        <input type="image"
+                                            src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif"
+                                            border="0" name="submit"
+                                            alt="PayPal - The safer, easier way to pay online!"></input>
+                                        <img alt="" border="0"
+                                            src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+                                            width="1" height="1"></img>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </body>
+                </div>
+            </div>
+            <div type="part">
+                <head><title>KLINGONS!</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=klingons]]></ident><bibl><author
+                            ref="admin"></author></bibl></head>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Enhanced BuddyPress Widgets</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=enhanced-buddypress-widgets]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>This plugin adds two widgets to your WordPress MU/BuddyPress
+                            installation: Groups and Members. Use them instead of the Groups and
+                            Members widgets that ship with BuddyPress. They provide the ability to
+                            select which of the three tabs - Newest, Active, or Popular - will be
+                            the widget's default view.</p>
+
+                        <p><a
+                                href="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/"
+                                >Download the plugin here</a>.</p>
+
+                        <p>Enhanced BuddyPress Widgets has been downloaded <strong>[downloadstat
+                                url="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/stats/"
+                                get="total" autop="false"]</strong> times. Are you using this
+                            plugin? Consider a <strong><a href="/donate">donation</a></strong>.</p>
+
+                        <p>Since version 0.2 of the plugin, it works only with BuddyPress 1.2RC and
+                            newer. For support on older versions of BuddyPress, download version 0.1
+                            from the <a
+                                href="http://wordpress.org/extend/plugins/enhanced-buddypress-widgets/download/"
+                                >Older Versions</a> page.</p>
+
+                        <p>Other posts about this plugin can be found <a
+                                href="http://teleogistic.net/2009/09/new-buddypress-plugin-enhanced-buddypress-widgets/"
+                                >here</a> and <a
+                                href="http://dev.commons.gc.cuny.edu/2009/09/07/new-buddypress-plugin-enhanced-buddypress-widgets/"
+                                >here</a>.</p>
+
+                        <h2>Version history</h2>
+
+                        <dl>
+                            <dt>
+                                <strong>0.1</strong>
+                            </dt>
+                            <dd>Initial release</dd>
+                            <br></br>
+                            <dt>
+                                <strong>0.2 - February 27, 2010</strong>
+                            </dt>
+                            <dd>Updated for version 1.2 of BuddyPress.</dd>
+
+                            <dt>
+                                <strong>0.2 - March 27, 2010</strong>
+                            </dt>
+                            <dd>Loader file added to prevent crashing on BP upgrade</dd>
+
+                        </dl>
+                    </body>
+                </div>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Facebook and content</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=facebook-and-content]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml"><p><a
+                                href="http://www.consumerist.com">The Consumerist</a> published <a
+                                href="http://consumerist.com/5150175/facebooks-new-terms-of-service-we-can-do-anything-we-want-with-your-content-forever"
+                                >a story</a> yesterday about <a
+                                href="http://www.facebook.com/terms.php?ref=pf">Facebook's new Terms
+                                of Service</a>. The gist of the changes appears to be something like
+                            this. Facebook has always claimed rights to the content that you post
+                            there. But there used to be a clause stating that </p><blockquote>You
+                            may remove your User Content from the Site at any time. If you choose to
+                            remove your User Content, the license granted above will automatically
+                            expire, however you acknowledge that the Company may retain archived
+                            copies of your User Content.</blockquote> Now this clause is gone. Thus
+                        Facebook has legal ("irrevocable, perpetual, non-exclusive, transferable,
+                        fully paid, worldwide") rights to your content. <p>On a personal note, these
+                            terms apply even to the content created by those individuals who place a
+                            Share This link on their personal sites, whether or not they are the
+                            ones who post the content on Facebook. I have a hard time believing that
+                            this would qualify as a <a
+                                href="http://en.wikipedia.org/wiki/Unconscionability">conscionable
+                                contract</a>, but I'm not a lawyer so what do I know. In any case,
+                            this means that I'll be removing the Share on Facebook link from this
+                            blog.</p>
+                        <p>The educational ramifications are important, I think. <a
+                                href="http://twitter.com/academicdave/status/1215456839"
+                                >@academicdave</a> tweeted the following this morning:
+                            </p><blockquote>Just realized that facebook now owns the rights to one
+                            of my students recent projects (story told using facebook) even if they
+                            delete it.</blockquote> This is a troubling thought. Instructors have a
+                        responsibility to their students and the work that those students do, and
+                        requiring that the students give essentially unlimited rights to their work
+                        to a corporate entity does not seem to me to be coincident with this
+                        responsibility. Of course, it was already the case that Facebook retained
+                        rights to these items before this TOS update, but the fact that these rights
+                        are now irrevocable, in my view, makes the question qualitatively different.
+                        Different enough that, while I used to be eager to talk to faculty members
+                        about how they might incorporate Facebook into their classes, I'm not
+                        certain that I can continue to do so with a clear conscience. There are lots
+                        of alternative spaces in which to share content where the restrictions
+                        aren't so harsh. <p>Again, I'm not a lawyer, but I would be interested in
+                            knowing how the act of publishing something on Facebook, and the
+                            transfer of rights that it implies, interacts with any <em>explicit</em>
+                            licenses (e.g. Creative Commons) that you have given the content,
+                            especially where the Facebook license and the CC license are in
+                            disagreement with each other. Does anyone know anything about this?</p>
+                        <p>I also wonder whether there will be sufficient backlash among the users
+                            of Facebook to make the company reconsider this updated TOS. I am
+                            pessimistic. My sense is that most people who use Facebook heavily
+                            aren't thinking about this sort of issue.</p></body>
+                </div>
+            </div>
+            <div type="part">
+                <head><title>You call that a part?</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=you-call-that-a-part]]></ident><bibl><author
+                            ref="admin"></author></bibl></head>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Blatz, venison, and the dreaded "What do you do for a living"
+                            question</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=blatz-venison-and-the-dreaded-what-do-you-do-for-a-living-question]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>It's always been tough explaining to my family what I do. 'Student' they
+                            understand; 'graduate student' is easy enough by extension. 'Philosophy'
+                            is hit-and-miss. While the folk (i.e. my folks) has an sense that
+                            philosophy involves far-out, abstract thinking (and maybe a pipe and
+                            leather elbow patches), it's harder to grasp what it means to write a
+                            dissertation on the subject. Trying to explain the specific nature of
+                            the problems I'm interested in, or even how my subdiscipline is
+                            delineated, is a non-starter. It takes lots of setup for the problems to
+                            make sense, and lots of persuasion to convince that the problems are
+                            worthy of a research program. This is either a testament to the erudite
+                            nature of philosophy, the pointlessness of philosophy, or my ineptitude
+                            as an explainer. (I am indifferent between these possibilities.)
+                            [caption id="attachment_18" align="alignright" width="300"
+                            caption="Fridge-o-Blatz: taken at a more carefree moment in my
+                                life"]<img class="size-medium wp-image-18" title="Fridge-o-Blatz"
+                                src="http://teleogistic.net/wp-content/uploads/2008/12/blatz-300x225.jpg"
+                                alt="Fridge-o-Blatz" width="300" height="225"></img>[/caption] I had
+                            a new spiel this Christmas Eve, trying to explain my new job as an
+                            educational technologist. In some ways it's easier. When I tell them
+                            that it has to do with computers they usually glaze over and that's
+                            that. (Unlike, incidentally, when I tell people that I'm doing
+                            philosophy and they really want to engage in a philosophical discussion
+                            with me. Seriously, what is up with that? I just want to drink this
+                            Blatz and eat this venison sausage and not think about Kripke for like
+                            ten minutes.) Of course, when I try to dodge the question with the "work
+                            with computers" line, I'm sure the position they imagine is something
+                            very different from what I actually do (they probably envision the
+                            administrator that Jim Groom describes <a
+                                href="http://bavatuesdays.com/what-is-an-instructional-technologist/"
+                                >here</a>). Does it make me cynical that I don't care to disillusion
+                            them? Seriously, I just want to drink this Blatz and eat this venison
+                            sausage and not think about pedagogy for like ten minutes. I'm curious
+                            to know how other people deal with the "What do you do?" question, when
+                            "what you do" is not well-defined by the kinds of categories familiar
+                            to, say, my grandfather.</p>
+                    </body>
+                </div>
+                <div type="libraryItem" subtype="html">
+                    <head><title>About Boone</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=about-boone-2]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>My name is Boone Gorges and Teleogistic is my personal blog.</p>
+
+                        <p>I am a PhD student in <a href="http://web.gc.cuny.edu/Philosophy/"
+                                >philosophy</a> at the <a href="http://www.gc.cuny.edu">CUNY
+                                Graduate Center</a>.</p>
+
+                        <p>I am a WordPress developer specializing in BuddyPress. I am currently the
+                            lead developer for the <a href="http://commons.gc.cuny.edu">CUNY
+                                Academic Commons</a></p>
+
+                        <p>In a previous incarnation, I was an instructional designer at <a
+                                href="http://www.qc.cuny.edu">CUNY Queens College</a>.</p>
+
+                        <p>On this blog I talk about philosophy, technology, education, etc.</p>
+
+                        <p>You can email me if you want to shoot the breeze. Combine my Twitter
+                            handle (located in the left sidebar of this page) with @gmail.com.</p>
+                    </body>
+                </div>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Shared Blogroll</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=shared-blogroll]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>This plugin adds a widget to your WPMU blog that allows the blog
+                            administrator to display a list of links from any blog on the
+                            installation. Imagine, for instance, that Josie is teaching a class in
+                            which she and each of her students have individual blogs. Josie's got a
+                            list of important links (a class blogroll, or maybe links that are
+                            relevant to the class), and she'd like to share the links with her
+                            students. Using this plugin, her students can place a widget on their
+                            blogs that automatically pulls in a certain category of links from her
+                            blog.</p>
+
+                        <a
+                            href="http://localhost/workspace/wordpress/wp-content/uploads/2010/01/shared-blogroll.jpg">
+                            <img
+                                src="http://teleogistic.net/wp-content/uploads/2010/01/shared-blogroll-271x300.jpg"
+                                alt="" title="shared-blogroll" width="271" height="300"
+                                class="alignright size-medium wp-image-477"></img>
+                        </a>
+
+                        <p>At the moment, the plugin works like this: Drop the Shared Blogroll
+                            widget into one of your blog's sidebars. You'll need to know the blog_id
+                            of the blog from which you'll be pulling the links. (This is the big
+                            weakness in the plugin for now. For the moment, I'll probably add a line
+                            of code to the Dashboard that echoes the global $blog_id, so that blog
+                            owners will know their blog_id and be able to pass it along to other who
+                            want to share their links. In the future I may add autocomplete or
+                            something. If you have a suggestion, let me know.) Once you've entered
+                            the source blog id, the plugin automatically populates the Category
+                            dropdown list with the categories from the source blog, so if you only
+                            want to include one of the link categories you can. You can have as many
+                            shared blogroll widgets on a blog as you'd like.</p>
+
+                        <p><a href="http://wordpress.org/extend/plugins/shared-blogroll/">Get the
+                                plugin here.</a>. I suggest putting it into mu-plugins, but you
+                            could activate it on individual blogs if you wanted to instead.</p>
+
+                        <p>Shared Blogroll has been downloaded <strong>[downloadstat
+                                url="http://wordpress.org/extend/plugins/shared-blogroll/stats/"
+                                get="total" autop="false"]</strong> times. Are you using this
+                            plugin? Consider a <strong><a href="/donate">donation</a></strong>.</p>
+
+                        <h2>Version history</h2>
+                        <dl>
+                            <dt>
+                                <strong>0.1 - January 21, 2010</strong>
+                            </dt>
+                            <dd> Initial release</dd>
+                            <br></br>
+                            <dt>
+                                <strong>1.0 - January 24, 2010</strong>
+                            </dt>
+                            <dd> Added some AJAX that loads the source blog title when you click/tab
+                                out of the id box, as well as some slidey/fadey jQuery stuff that
+                                shows or hides parts of the widget admin depending on the nature of
+                                the source blog.</dd>
+                        </dl>
+                    </body>
+                </div>
+            </div>
+            <div type="part">
+                <head><title>part 2</title><ident type="guid"
+                        ><![CDATA[http://localhost/workspace/wordpress/?parts=part-2]]></ident><bibl><author
+                            ref="admin"></author></bibl></head>
+                <div type="libraryItem" subtype="html">
+                    <head><title>Forum Attachments for BuddyPress</title><ident type="guid"
+                            ><![CDATA[http://localhost/workspace/wordpress/?library_items=forum-attachments-for-buddypress]]></ident><bibl><author
+                                ref="boone-gorges"></author></bibl></head>
+                    <body xmlns="http://www.w3.org/1999/xhtml">
+                        <p>This plugin ives members the ability to upload attachments on their
+                            posts.</p>
+
+                        <p>It's a port of a plugin originally created for bbPress by _ck_. See the
+                            original plugin page here: <a
+                                href="http://bbpress.org/plugins/topic/bb-attachments"
+                                >http://bbpress.org/plugins/topic/bb-attachments/</a>. _ck_ is not
+                            supporting this plugin anymore. Insofar as the code works, it is thanks
+                            to her; insofar as it does not, it is my fault.</p>
+
+                        <h2>Installation</h2>
+                        <ul>
+                            <li>Upload to plugin directory and activate</li>
+                            <li>If you'd like to change the default settings (as described in step 5
+                                here <a
+                                    href="http://bbpress.org/plugins/topic/bb-attachments/installation/"
+                                    >http://bbpress.org/plugins/topic/bb-attachments/installation/</a>),
+                                you may do so by editing
+                                forum-attachments-for-buddypress-bp-functions.php</li>
+                            <li>Create a directory 'bb-attachments' one level above your WP root and
+                                make sure that it is writeable by the server. So if your WP
+                                installation is at /home/html/, create a directory
+                                /home/bb-attachments.</li>
+
+                            <li>I use a JavaScript trick to make uploads possible. If you are
+                                confident that most of your users will have JS enabled, you do not
+                                need to do anything else.</li>
+                            <li>If you want to make uploads possible for users with JS turned off,
+                                you will need to alter the &lt;form&gt; tags on your theme's forum
+                                files: <strong>groups/single/forum/topic.php</strong> and
+                                    <strong>groups/single/forum.php</strong>. Change [code
+                                    language="html"]<form action="" method="post"
+                                    id="forum-topic-form" class="standard-form">[/code] to [code
+                                    language="html"]</form><form action="" method="post"
+                                    id="forum-topic-form" class="standard-form"
+                                    enctype="multipart/form-data">[/code]</form></li>
+                            <li>If you have an unusual setup (in particular, if your WP_PLUGIN_URL
+                                is somewhere other than /wp-content/) you may have to play with the
+                                path settings in download.php and image.php to make things work
+                                correctly.</li>
+
+                        </ul>
+                        <p>Read an <a
+                                href="http://teleogistic.net/2009/10/help-me-alpha-test-buddypress-forum-attachments/"
+                                >older comment thread</a> about this plugin.</p>
+
+                        <p><strong><a
+                                    href="http://wordpress.org/extend/plugins/forum-attachments-for-buddypress/'"
+                                    >Download the plugin here.</a></strong></p>
+
+                        <p>Forum Attachments for BuddyPress has been downloaded
+                                <strong>[downloadstat
+                                url="http://wordpress.org/extend/plugins/forum-attachments-for-buddypress/stats/"
+                                get="total" autop="false"]</strong> times. Are you using this
+                            plugin? Consider a <strong><a href="/donate">donation</a></strong>.</p>
+
+                        <h2>Translation credits</h2>
+                        <ul>
+                            <li><em>Russian</em> - slaFFik</li>
+                        </ul>
+                        <h2>Version history</h2>
+                        <dl>
+                            <dt>
+                                <strong>0.1</strong>
+                            </dt>
+                            <dd> Initial release</dd>
+
+                            <dt>
+                                <strong>0.2 - March 19, 2010</strong>
+                            </dt>
+                            <dd>BuddyPress 1.2 compatible</dd>
+
+                            <dd>Removed the need for custom theme hooks</dd>
+                            <dd>Enabled inline images</dd>
+                            <dd>Improved download process to avoid header conflicts</dd>
+
+                            <dt>
+                                <strong>0.2.1 - March 19, 2010</strong>
+                            </dt>
+                            <dd>Corrected redirect after deleting attachments</dd>
+                            <dd>Removed header requirements causing errors on some Apache
+                                setups</dd>
+
+                            <dt>
+                                <strong>0.2.2 - March 22, 2010</strong>
+                            </dt>
+                            <dd>Corrected typo that was causing redirect conflicts with certain
+                                forum-related plugins</dd>
+
+                        </dl>
+                    </body>
+                </div>
+            </div>
         </body>
         <back></back>
     </text>
