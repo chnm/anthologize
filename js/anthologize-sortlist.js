@@ -16,6 +16,9 @@ var anthologize = {
     var project_id = anthologize.getProjectId();
     var org_seq_num = anthologize.org_seq_num;
 
+    jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                    message: jQuery('#blockUISpinner').show() });
+
     if (anthologize.fromNew){
       new_item = "true";
       org_seq_num = anthologize.new_item_org_seq_num;
@@ -99,6 +102,16 @@ var anthologize = {
 		  remove.remove();		  
 	  }
 	  appendedTo.find("a.cancelAppend").click();
+	  anthologize.setAppendStatus();
+  },
+  "setAppendStatus" : function(){
+	   jQuery("a.append").removeClass("disabled");
+	   jQuery(".part-items").each(function(){
+		   var items = jQuery(this).find("li.item");
+		   if (items.length == 1){
+			   items.first().find("a.append").addClass("disabled");
+		   }
+	   });
   }
 };
 
@@ -143,7 +156,7 @@ jQuery(document).ready(function(){
   jQuery(".part-items ul").anthologizeSortList({
     connectWith: ".part-items ul"
   });
-     
+  anthologize.setAppendStatus();   
   jQuery("#sidebar-posts li").draggable({
     connectToSortable: ".part-items ul",
     helper: "clone",
@@ -160,7 +173,7 @@ jQuery(document).ready(function(){
 
   jQuery("body").delegate("a.append", "click", function(){
 	  var item = jQuery(this).closest("li.item");
-    if (anthologize.appending == false){
+    if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-append");
 		  var appendPanel = '<div class="append-panel"><form><div class="append-items"></div>' +
 		                    '<input type="button" class="doAppend" name="doAppend" value="Append" /> ' + 
@@ -185,7 +198,8 @@ jQuery(document).ready(function(){
 	  jQuery("div.append-panel").remove();
 	  jQuery(".project-parts").sortable("enable");
 	  jQuery(".part-items ul").sortable("enable");
-	  jQuery("a.append").removeClass("disabled");
+	  //jQuery("a.append").removeClass("disabled");
+	  anthologize.setAppendStatus();
 	  anthologize.appending = false;
   });
 
@@ -194,6 +208,10 @@ jQuery(document).ready(function(){
 	  var append_items = {};
 	  var merge_seq = {};
 	  var i = 0;
+
+      jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                      message: jQuery('#blockUISpinner').show() });
+
 	  jQuery(".append-items input:checkbox:checked").each(function(){
 		  append_items[i] = anthologize.cleanPostIds(this.value);
 		  i++;
