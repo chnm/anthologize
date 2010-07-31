@@ -153,7 +153,7 @@ class Anthologize_Ajax_Handlers {
             die();
         }
 
-        $reseq_result = $this->project_organizer->rearrange_items($new_seq_array); 
+        $reseq_result = $this->project_organizer->rearrange_items($new_seq_array);
 
         if (false === $reseq_result) {
             // TODO: What to do? If the merge succeeded but the resort failed, ugh...

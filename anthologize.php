@@ -29,16 +29,13 @@ add_action( 'init', array ( $this, 'init' ) );
 // Load the post types
 add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
-<<<<<<< HEAD
-// Load the custom feed
-add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
-=======
+
 		// Load constants
-		add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
+		//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
 		// Load the custom feed
 		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
->>>>>>> ajaxify
+
 
 // Include the necessary files
 add_action( 'anthologize_loaded', array ( $this, 'includes' ) );

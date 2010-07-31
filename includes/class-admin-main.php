@@ -52,11 +52,7 @@ class Anthologize_Admin_Main {
 
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
-<<<<<<< HEAD
 			add_action( "admin_print_styles-$plugin_page", array( $this, 'load_styles' ) );
-=======
-			add_action( "admin_print_styles-$plugin_page", array( $this, 'load_styles' )  );
->>>>>>> ajaxify
 		}
 	}
 
@@ -75,7 +71,7 @@ class Anthologize_Admin_Main {
 
 	}
 
-	function load_styles() {
+	function pload_styles() {
     	wp_enqueue_style( 'export-css', WP_PLUGIN_URL . '/anthologize/css2/export-panel.css' );
     }
 
@@ -177,13 +173,10 @@ class Anthologize_Admin_Main {
 
 		<div class="wrap">
 
-<<<<<<< HEAD
-		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize/includes/class-new-project.php" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
-=======
-		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 
-		<h2>My Projects</h2>
->>>>>>> ajaxify
+		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize/includes/class-new-project.php" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
+
 
 		<?php
 
