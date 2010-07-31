@@ -360,6 +360,7 @@ class Anthologize_Admin_Main {
         global $post;
 
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
+        $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
 
         ?>
         <div class="my_meta_control">
@@ -369,6 +370,47 @@ class Anthologize_Admin_Main {
         	<p>
         		<textarea name="anthologize_meta[author_name]" rows="3" cols="27"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea>
         	</p>
+
+        	<?php /* Display content for imported feed, if there is any */ ?>
+        	<?php if ( $imported_item_meta ) : ?>
+        		<dl>
+        		<?php foreach ( $imported_item_meta as $key => $value ) : ?>
+        			<?php
+        				$the_array = array( 'feed_title', 'link', 'created_date' );
+        				if ( !in_array( $key, $the_array ) )
+        					continue;
+
+						switch ( $key ) {
+							case 'feed_title':
+								$dt = __( 'Source feed:', 'anthologize' );
+								$dd = '<a href="' . $imported_item_meta['feed_permalink'] . '">' . $value . '</a>';
+								break;
+							case 'link':
+								$dt = __( 'Source URL:', 'anthologize' );
+								$dd = '<a href="' . $value . '">' . $value . '</a>';
+								break;
+							/*case 'authors':
+								$dt = __( 'Author:', 'anthologize' );
+								$ddv = $value[0];
+								$dd = $ddv->name;
+								break; todo: fixme */
+							case 'created_date':
+								$dt = __( 'Date created:', 'anthologize' );
+								$dd = $value;
+								break;
+							default:
+								continue;
+								break;
+						}
+        			?>
+
+
+        			<dt><?php echo $dt ?></dt>
+        			<dd><?php echo $dd ?></dd>
+        		<?php endforeach; ?>
+        		</dl>
+
+        	<?php endif; ?>
 
         	<?php if ( isset( $_GET['project_id'] ) ) : ?>
         		<input type="hidden" name="parent_id" value="<?php echo $_GET['project_id'] ?>">
