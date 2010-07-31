@@ -54,7 +54,7 @@
 #posts-scrollbox {
 	height: 400px;
 	max-height: 400px;
-	overflow: scroll;
+	overflow: auto;
 	padding-top: 10px;
 	border-left: 2px solid #999;
 	border-bottom: 2px solid #999;
