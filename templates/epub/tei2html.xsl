@@ -29,6 +29,7 @@
         <!--<link href="stylesheet.css" type="text/css" rel="stylesheet" />-->
         <style type="text/css">
           <xsl:text>&#xa;body {&#xa;</xsl:text>
+          <xsl:text>&#xa;padding: 5em;</xsl:text>
           <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()">          
             <xsl:value-of select="concat('&#xa;font-size:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()), ';')"/>
           </xsl:if>
@@ -36,9 +37,10 @@
             <xsl:value-of select="concat('&#xa;font-family:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()), ';')"/>
           </xsl:if>
           <xsl:text>&#xa;}&#xa;</xsl:text>
+          <xsl:text>.chapter-title { border-bottom: 1px solid black; page-break-before: always; }&#xa;</xsl:text>
         </style>
-        <link rel="stylesheet" type="application/vnd.adobe-page-template+xml"
-          href="page-template.xpgt"/>
+        <!--<link rel="stylesheet" type="application/vnd.adobe-page-template+xml"
+          href="page-template.xpgt"/>-->
       </head>
       <body>
         <div id="title-page">
@@ -58,14 +60,21 @@
               <xsl:value-of select="tei:head/tei:title"/>
             </h2>
             <div class="chapter-content">
-              <xsl:for-each select="./tei:div[@type='libraryItem']">
+              <xsl:for-each select="tei:div[@type='libraryItem']">
+                <div class="library-item">
+                  <xsl:if test="tei:head/tei:title">
+                  <h3 class="library-item-title">
+                    <xsl:value-of select="tei:head/tei:title"/>
+                  </h3>
+                </xsl:if>
+                <div class="library-item-content">
+                  <xsl:apply-templates select="body" mode="html-content"/>
+                </div>
                 <!--
               <p class="post-description">&#8594; Source: <span
                 style="font-family: monospace"><xsl:value-of select="tei:link"
                 /></span>, published on <xsl:value-of select="tei:pubDate"/> by
                   <xsl:value-of select="dc:creator"/>. </p>-->
-                <div class="post-content">
-                  <xsl:apply-templates select="html:body"/>
                 </div>
               </xsl:for-each>
             </div>
@@ -77,31 +86,32 @@
 
   <!-- Skip through HTML body tags -->
 
-  <xsl:template match="html:body">
-    <xsl:apply-templates/>
+  <xsl:template match="body" mode="html-content">
+    <xsl:apply-templates mode="html-content"/>
   </xsl:template>
 
   <!-- Filter out script tags, but pass through noscript -->
 
-  <xsl:template match="html:script"/>
-  <xsl:template match="html:noscript">
+  <xsl:template match="script" mode="html-content"/>
+  <xsl:template match="noscript" mode="html-content">
     <xsl:copy-of select="*"/>
   </xsl:template>
 
   <!-- Pass-through subset of XHTML that is recognised by ePub format -->
 
   <xsl:template
-    match="html:abbr|html:acronym|html:address|html:blockquote|html:br|html:cite|html:code|html:dfn|html:div|html:em|html:h1|html:h2|html:h3|html:h4|html:h5|html:h6|html:kbd|html:p|html:pre|html:q|html:samp|html:span|html:strong|html:var|html:dl|html:dt|html:dd|html:ol|html:ul|html:li|html:a|html:object|html:param|html:b|html:big|html:hr|html:i|html:small|html:sub|html:sup|html:tt|html:del|html:ins|html:bdo|html:caption|html:col|html:colgroup|html:table|html:tbody|html:td|html:tfoot|html:th|html:thead|html:tr|html:area|html:map|html:style|html:img">
+    match="abbr|acronym|address|blockquote|br|cite|code|dfn|div|em|h1|h2|h3|h4|h5|h6|kbd|p|pre|q|samp|span|strong|var|dl|dt|dd|ol|ul|li|a|object|param|b|big|hr|i|small|sub|sup|tt|del|ins|bdo|caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|area|map|style|img"
+    mode="html-content">
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:apply-templates select="@*|node()" mode="html-content"/>
     </xsl:copy>
   </xsl:template>
 
   <!-- Pass-through attributes of html tags and text nodes -->
 
-  <xsl:template match="html:*/@*|node()">
+  <xsl:template match="*/@*|node()" mode="html-content">
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:apply-templates select="@*|node()" mode="html-content"/>
     </xsl:copy>
   </xsl:template>
 
@@ -121,9 +131,9 @@
 
   <!-- FOR NOW: Pass through -->
 
-  <xsl:template match="html:object">
+  <xsl:template match="object" mode="html-content">
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:apply-templates select="@*|node()" mode="html-content"/>
     </xsl:copy>
   </xsl:template>
 
@@ -137,7 +147,7 @@
     take off everything before the LAST slash
   -->
 
-  <xsl:template match="html:img/@src">
+  <xsl:template match="img/@src" mode="html-content">
     <xsl:attribute name="src">
       <xsl:variable name="img-url-filename-only">
         <xsl:call-template name="strip-url-of-directories">
@@ -156,8 +166,6 @@
         <xsl:call-template name="strip-url-of-directories">
           <xsl:with-param name="url" select="substring-after($url,'/')"/>
         </xsl:call-template>
-        <!--<xsl:value-of select="substring-after(.,'/')"/>|
-        <xsl:value-of select="substring-after(substring-after(.,'/'), '/')"/>-->
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$url"/>
