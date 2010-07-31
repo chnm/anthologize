@@ -158,7 +158,7 @@
   
   // zip up contents of temp directory into a ZIP file
 
-  zip_it($temp_epub_dir_name, $temp_zip_filename) or die("Couldn't create ZIP archive file: ") . $temp_zip_filename;
+  zip_it($temp_epub_dir_name, $temp_zip_filename) or die("Couldn't create ZIP archive file: '" . $temp_zip_filename);
   
   // Serve up zip file
 
