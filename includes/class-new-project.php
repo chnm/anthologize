@@ -73,13 +73,11 @@ class Anthologize_New_Project {
             	    <td><textarea name="anthologize_meta[author_name]" rows="5" cols="50"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea></td>
             	</tr>
 
-            	<tr valign="top">
-            	   <th></th>
-            	   <td><input type="submit" name="save_project" value="Save Project"></td>
-            	</tr>
 
             </table>
 
+
+       	   <div class="anthologize-button"><input type="submit" name="save_project" value="Save Project"></div>
             <input type="hidden" name="project_id" value="<?php echo $project->ID ?>">
             </form>
 

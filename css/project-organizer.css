@@ -1,8 +1,11 @@
 /* global */
 
-.anthologize-includes-class-export-panel-php h3 {
-
-
+.anthologize-button input {
+	font-size: 16pt !important;
+	padding: 6px 12px;
+	margin-top: 26px;
+	margin-bottom: 26px;
+	font-weight: bold;
 }
 
 

@@ -55,7 +55,7 @@ class Anthologize_Export_Panel {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Name', 'anthologize' ) ?></th>
+					<th scope="row"><?php _e( 'Copyright Holder', 'anthologize' ) ?></th>
 					<td><input type="text" id="cname" name="cname" /></td>
 				</tr>
 
@@ -88,7 +88,7 @@ class Anthologize_Export_Panel {
 			</table>
 
 			<input type="hidden" name="export-step" value="1" />
-			<div id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Next', 'anthologize' ) ?>" /></div>
+			<div class="anthologize-button" id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Next', 'anthologize' ) ?>" /></div>
 
 			</form>
 
@@ -168,7 +168,7 @@ class Anthologize_Export_Panel {
 
 				<div style="clear: both;"> </div>
 
-				<div id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Next', 'anthologize' ) ?>" /></div>
+				<div class="anthologize-button" id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Export', 'anthologize' ) ?>" /></div>
 
 			</form>
 

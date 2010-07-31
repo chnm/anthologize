@@ -1,10 +1,5 @@
 <?php
 
-
-session_start();
-
-
-
 if ( !class_exists( 'Anthologize_Import_Feeds_Panel' ) ) :
 
 class Anthologize_Import_Feeds_Panel {
@@ -37,7 +32,7 @@ class Anthologize_Import_Feeds_Panel {
 				<h4><?php _e( 'Feed URL:', 'anthologize' ) ?></h4>
 				<input type="text" name="feedurl" id="feedurl" size="100" />
 
-				<p><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></p>
+				<div class="anthologize-button"><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></div>
 
 				</form>
 
@@ -55,11 +50,9 @@ class Anthologize_Import_Feeds_Panel {
 
 				<p><?php _e( 'Select the items you\'d like to import to your Imported Items library and click Import.', 'anthologize' ) ?></p>
 
-				<p><?php _e( 'Or enter a new feed URL and click Go to import different feed content.', 'anthologize' ) ?></p>
-
 				<form action="" method="post">
 
-					<h4><?php _e( 'Feed items:', 'anthologize' ) ?></h4>
+					<h3><?php _e( 'Feed items:', 'anthologize' ) ?></h3>
 
 					<ul class="potential-feed-items">
 					<?php foreach ( $items as $key => $item ) : ?>
@@ -76,17 +69,19 @@ class Anthologize_Import_Feeds_Panel {
 					</ul>
 
 					<input type="hidden" name="feedurl" value="<?php echo $_POST['feedurl'] ?>" />
-					<p><input type="submit" name="submit_items" id="submit" value="<?php _e( 'Import', 'anthologize' ) ?>" /></p>
+					<div class="anthologize-button"><input type="submit" name="submit_items" id="submit" value="<?php _e( 'Import', 'anthologize' ) ?>" /></div>
 
 				</form>
 
 
+				<p><?php _e( 'Or enter a new feed URL and click Go to import different feed content.', 'anthologize' ) ?></p>
+
 				<form action="" method="post">
 
-					<h4><?php _e( 'Feed URL:', 'anthologize' ) ?></h4>
+					<h3><?php _e( 'Feed URL:', 'anthologize' ) ?></h3>
 					<input type="text" name="feedurl" id="feedurl" size="100" value="<?php echo $_POST['feedurl'] ?>" />
 
-					<p><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></p>
+					<div class="anthologize-button"><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></div>
 
 				</form>
 
@@ -112,7 +107,7 @@ class Anthologize_Import_Feeds_Panel {
 
 				<?php $howmany = count( $imported_items ) ?>
 
-				<p>Successfully imported!</p>
+				<h3>Successfully imported!</h3>
 
 				<p><a href="admin.php?page=anthologize"><?php _e( 'Back to Anthologize', 'anthologize' ) ?></a></p>
 
