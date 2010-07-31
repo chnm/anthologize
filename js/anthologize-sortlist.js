@@ -57,6 +57,21 @@ var anthologize = {
     };
     anth_admin_ajax.place_item(ajax_options);
   },
+  "initSidebar" : function(){
+	  jQuery("#sidebar-posts li").draggable({
+	    connectToSortable: ".part-items ul",
+	    helper: "clone",
+	    revert: "invalid",
+	    start: function(event, ui){
+	      anthologize.new_item_org_seq_num = jQuery(this).index() + 1;
+	    },
+	    drag: function(event, ui){
+		    if (anthologize.fromNew == false){
+			    anthologize.fromNew = true;
+		    }
+	    }
+	  });	
+  },
   "getProjectId" : function(){
 	  return this.cleanPostIds(jQuery(".wrap").attr("id"));
   },
@@ -89,8 +104,9 @@ var anthologize = {
 	
 	  var buttons = '<div class="part-item-buttons">' +
 							'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
-							'<a class="append" href="#">Append</a> | ' +
-							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;project_id=4&amp;remove=' + new_item_id + '">Remove</a>' +
+							'<a class="append" href="#append">Append</a> | ' +
+							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 
+							'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">Remove</a>' +
 						  '</div>';
 		newItem.children("h3").append(buttons);
   },
@@ -154,20 +170,8 @@ jQuery(document).ready(function(){
   jQuery(".part-items ul").anthologizeSortList({
     connectWith: ".part-items ul"
   });
-  anthologize.setAppendStatus();   
-  jQuery("#sidebar-posts li").draggable({
-    connectToSortable: ".part-items ul",
-    helper: "clone",
-    revert: "invalid",
-    start: function(event, ui){
-      anthologize.new_item_org_seq_num = jQuery(this).index() + 1;
-    },
-    drag: function(event, ui){
-	    if (anthologize.fromNew == false){
-		    anthologize.fromNew = true;
-	    }
-    }
-  });
+  anthologize.setAppendStatus(); 
+  anthologize.initSidebar();  
 
   jQuery("body").delegate("a.append", "click", function(){
 	  var item = jQuery(this).closest("li.item");
@@ -175,7 +179,7 @@ jQuery(document).ready(function(){
 	    jQuery(this).addClass("active-append");
 		  var appendPanel = '<div class="append-panel" style="display:none;"><form><div class="append-items"></div>' +
 		                    '<input type="button" class="doAppend" name="doAppend" value="Append" /> ' + 
-		                    '<a href="#" class="cancelAppend">Cancel</a></form></div>';
+		                    '<a href="#cancel" class="cancelAppend">Cancel</a></form></div>';
 		  item.append(appendPanel);
 		  var panelItems = item.find("div.append-items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));

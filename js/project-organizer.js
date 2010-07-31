@@ -72,6 +72,7 @@ jQuery(document).ready( function() {
 				//alert(h); return false;
 				j('#sidebar-posts').append(h);
 			});
+			anthologize.initSidebar();
 
 		});
 
