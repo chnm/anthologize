@@ -50,6 +50,7 @@ class Anthologize_Project_Organizer {
 		?>
 		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
 
+        <div id="blockUISpinner"><img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img></div>
 
 		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 

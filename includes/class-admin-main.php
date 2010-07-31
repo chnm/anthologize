@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 if ( !class_exists( 'Anthologize_Admin_Main' ) ) :
 
 class Anthologize_Admin_Main {

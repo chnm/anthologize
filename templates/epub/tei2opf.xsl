@@ -3,8 +3,7 @@
   xmlns="http://www.idpf.org/2007/opf"
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:tei="http://www.tei-c.org/ns/1.0"
-  xmlns:html="http://www.w3.org/1999/xhtml" 
-  version="1.0">
+  xmlns:html="http://www.w3.org/1999/xhtml" version="1.0">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> Jul 29, 2010</xd:p>
@@ -16,7 +15,8 @@
 
   <xsl:variable name="main-content-filename" select="'main_content.html'"/>
   <xsl:variable name="book-id" select="'bookid'"/>
-  <xsl:variable name="images-directory" select="'images'"/>
+  <!--<xsl:variable name="images-directory" select="'OEBPS/images'"/>-->
+  <xsl:variable name="images-directory" select="''"/>
 
   <xsl:template match="/">
     <package version="2.0" unique-identifier="{$book-id}">
@@ -30,11 +30,12 @@
         <dc:creator>Anthologize</dc:creator>
         <!-- How to change the language? This should be a user option -->
         <dc:language>en-US</dc:language>
-        <dc:rights></dc:rights>
+        <dc:rights/>
         <!--<dc:publisher>Jedisaber.com</dc:publisher>-->
-        <dc:identifier id="{$book-id}"
-          >
-          <xsl:value-of select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident"/>
+        <dc:identifier id="{$book-id}">
+          <xsl:value-of
+            select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident"
+          />
         </dc:identifier>
       </metadata>
       <!--  
@@ -83,8 +84,8 @@
             </xsl:call-template>
           </xsl:variable>
 
-          <item id="image_{position()}"
-            href="{$images-directory}/{$image-filename}">
+          <item id="image_{position()}" href="{$image-filename}">
+            <!--href="{$images-directory}/{$image-filename}">-->
             <xsl:attribute name="media-type">
               <xsl:choose>
                 <xsl:when test="contains(., '.png')">

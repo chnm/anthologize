@@ -9,6 +9,10 @@ var seq_stringify = function(seq_obj) {
 }
 var anth_admin_ajax = {
     place_item: function(config_obj) {
+
+        jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                        message: jQuery('#blockUISpinner').show() });
+
         jQuery.ajax({
             url: ajaxurl,
             type: 'POST',
@@ -24,10 +28,6 @@ var anth_admin_ajax = {
                 },
             async:false,
             timeout:20000,
-            beforeSend:function() {
-                // TODO: spinny popup
-                jQuery.blockUI({ message: '<div></div>' });
-            },
             success: function(data){
                 if (config_obj.new_item == 'true') {
                     anthologize.updateAddedItem(data.post_id);
@@ -64,6 +64,9 @@ var anth_admin_ajax = {
 
     },
     merge_items: function(config_obj) {
+        jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                        message: jQuery('#blockUISpinner').show() });
+
         jQuery.ajax({
             url: ajaxurl,
             type: 'POST',
@@ -75,8 +78,8 @@ var anth_admin_ajax = {
                 new_seq:seq_stringify(config_obj.merge_seq)},
             async:false,
             timeout:20000,
-            beforeSend:function() {
-                // TODO: spinny popup
+            complete: function(){
+                jQuery.unblockUI();
             },
             success: function(data){
                 anthologize.updateAppendedItems(config_obj.child_post_ids);
