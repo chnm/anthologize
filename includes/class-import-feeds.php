@@ -22,6 +22,7 @@ class Anthologize_Import_Feeds_Panel {
 	?>
 		<div class="wrap">
 
+			<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 			<h2><?php _e( 'Import Content', 'anthologize' ) ?></h2>
 
 			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>
@@ -109,6 +110,11 @@ class Anthologize_Import_Feeds_Panel {
 					<?php $imported_items[] = $this->import_item( $item ) ?>
 				<?php endforeach; ?>
 
+				<?php $howmany = count( $imported_items ) ?>
+
+				<p>Successfully imported!</p>
+
+				<p><a href="admin.php?page=anthologize"><?php _e( 'Back to Anthologize', 'anthologize' ) ?></a></p>
 
 
 
@@ -159,9 +165,10 @@ class Anthologize_Import_Feeds_Panel {
 
 	function import_item( $item ) {
 		global $current_user;
+		//echo "<pre>";
+		//print_r($item);die();
 
 		$tags = array();
-
 
 		foreach( $item['categories'] as $cat ) {
 			if ( $cat->term )
@@ -173,15 +180,18 @@ class Anthologize_Import_Feeds_Panel {
 			'post_type' => 'imported_items',
 			'post_author' => $current_user->ID,
 			'guid' => $item['permalink'],
-			'post_content_filtered' => $item['content'],
+			'post_content' => $item['content'],
 			'post_excerpt' => $item['description'],
 			'comment_status' => 'closed',
-			'ping_status' => 'closed'
+			'ping_status' => 'closed',
+			'post_title' => $item['title'],
+			'tags_input' => $tags
 		);
 
-
-
 		$post_id = wp_insert_post( $args );
+
+		update_post_meta( $post_id, 'imported_item_meta', $item );
+
 		return $post_id;
 	}
 

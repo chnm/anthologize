@@ -126,7 +126,7 @@ class Anthologize_Project_Organizer {
 
 				</div> <!-- #anthologize-part-box -->
 
-			<div class="button" id="export-project-button"><a href="#" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
+			<div class="button" id="export-project-button"><a href="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $this->project_id ?>" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
 
 			</div> <!-- #project-organizer-right-column -->
 
