@@ -11,20 +11,20 @@ Author URI: http://anthologize.org
 /*
 Copyright (C) 2010 Center for History and New Media, George Mason University
 
-This program is free software: you can redistribute it and/or modify it under 
-the terms of the GNU General Public License as published by the Free Software 
-Foundation, either version 3 of the License, or (at your option) any later 
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
 version.
 
-This program is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU General Public License along with 
+You should have received a copy of the GNU General Public License along with
 this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Anthologize includes TCPDF, which is released under the LGPL Use and 
+Anthologize includes TCPDF, which is released under the LGPL Use and
 modifications of TDPDF must comply with its license.
 */
 
@@ -45,20 +45,17 @@ function anthologize_loader () {
 	// Load the post types
 	add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
-
 	// Load constants
 	//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
 	// Load the custom feed
 	add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
 
-
 	// Include the necessary files
 	add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
 
 	// Attach textdomain for localization
 	add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
-
 
 	add_action( 'anthologize_init', array ( $this, 'load_template' ) );
 
@@ -83,18 +80,24 @@ function anthologize_loader () {
 	// todo: load the text domain
 	}
 
+	// The next two functions are a hack to make WordPress hide the menu items for Parts and Library Items
 	function custom_menu_order_function(){
 		return true;
 	}
 
 	function menu_order_my_function($menu_order){
-		$key = array_search( 'edit.php?post_type=parts', $menu_order );
-		unset( $menu_order[$key] );
+		global $menu;
 
-		$key = array_search( 'edit.php?post_type=library_items', $menu_order );
-		unset( $menu_order[$key] );
+		foreach ( $menu as $mkey => $m ) {
 
-		return array_values( $menu_order );
+			$key = array_search( 'edit.php?post_type=parts', $m );
+			$keyb = array_search( 'edit.php?post_type=library_items', $m );
+
+			if ( $key || $keyb )
+				unset( $menu[$mkey] );
+		}
+
+		return $menu_order;
 	}
 
 
@@ -111,14 +114,29 @@ function anthologize_loader () {
 			'rewrite' => array("slug" => "project"), // Permalinks format
 		));
 
+		 $parts_labels = array(
+			'name' => _x('Parts', 'post type general name'),
+			'singular_name' => _x('Part', 'post type singular name'),
+			'add_new' => _x('Add New', 'book'),
+			'add_new_item' => __('Add New Part'),
+			'edit_item' => __('Edit Part'),
+			'new_item' => __('New Part'),
+			'view_item' => __('View Part'),
+			'search_items' => __('Search Parts'),
+			'not_found' =>  __('No parts found'),
+			'not_found_in_trash' => __('No parts found in Trash'),
+			'parent_item_colon' => ''
+		  );
+
 		register_post_type( 'parts', array(
 			'label' => __( 'Parts', 'anthologize' ),
+			'labels' => $parts_labels,
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions'),
+			'supports' => array('title'),
 			'rewrite' => array("slug" => "part"), // Permalinks format
 		));
 
@@ -133,8 +151,23 @@ function anthologize_loader () {
 			'rewrite' => array("slug" => "library_item"), // Permalinks format
 		));
 
+		 $imported_items_labels = array(
+			'name' => _x('Imported Items', 'post type general name'),
+			'singular_name' => _x('Imported Items', 'post type singular name'),
+			'add_new' => _x('Add New', 'book'),
+			'add_new_item' => __('Add New Imported Item'),
+			'edit_item' => __('Edit Imported Item'),
+			'new_item' => __('New Imported Item'),
+			'view_item' => __('View Imported Item'),
+			'search_items' => __('Search Imported Items'),
+			'not_found' =>  __('No imported items found'),
+			'not_found_in_trash' => __('No imported items found in Trash'),
+			'parent_item_colon' => ''
+		  );
+
 		register_post_type( 'imported_items', array(
 			'label' => __('Imported Items', 'anthologize' ),
+			'labels' => $imported_items_labels,
 			'public' => true,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide

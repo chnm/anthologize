@@ -35,7 +35,7 @@ class Anthologize_Export_Panel {
 
 			<?php $projects = $this->get_projects() ?>
 
-			<select name="project_id">
+			<select name="project_id" id="project-id-dropdown">
 			<option value=""><?php _e( 'Select Project...', 'anthologize' ) ?></option>
 			<?php foreach ( $projects as $project_id => $project_name ) : ?>
 				<option value="<?php echo $project_id ?>"

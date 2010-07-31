@@ -1,3 +1,11 @@
+/* global */
+
+.anthologize-includes-class-export-panel-php h3 {
+
+
+}
+
+
 #adminmenu #toplevel_page_anthologize .wp-menu-image a {
 	background-image: url(../images/little-logo.png) !important;
 	background-repeat: no-repeat;
@@ -128,7 +136,7 @@ div.append-panel {
 
 div.append-items {
 	max-height: 200px;
-	overflow: auto;	
+	overflow: auto;
 }
 
 div.append-items div {
@@ -162,4 +170,11 @@ a.active-append {
 #blockUISpinner {
     display:none;
     padding: 20px 0px 20px 0px;
+}
+
+
+/* Export screens */
+#project-id-dropdown {
+	width: 300px;
+	font-size: 13pt !important;
 }
