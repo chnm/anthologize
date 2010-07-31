@@ -1,11 +1,20 @@
 /* global */
 
-.anthologize-button input {
+.anthologize-button input, #export-project-button {
 	font-size: 16pt !important;
 	padding: 6px 12px;
 	margin-top: 26px;
 	margin-bottom: 26px;
 	font-weight: bold;
+}
+
+#export-project-button {
+	display: inline;
+	width: auto;
+}
+
+#export-project-button a {
+	color: #333;
 }
 
 
@@ -104,7 +113,7 @@
 	text-align: right;
 }
 
-.part-item-buttons a {
+.part-item-buttons a, #new-part a {
 	text-decoration: none;
 	color: #13395F;
 }
@@ -118,6 +127,10 @@
 	border-top-left-radius: 1px;
 	border-bottom-right-radius: 1px;
 	border-bottom-left-radius: 1px;
+	background: #B38080 !important;
+	color: #3F0D11 !important;
+	text-shadow: none !important;
+	border: 2px solid #3F0D11;
 
 }
 
@@ -159,7 +172,7 @@ a.active-append {
 
 
 #export-project-button {
-	width: auto;
+	//width: auto;
 	border-top-right-radius: 1px;
 	border-top-left-radius: 1px;
 	border-bottom-right-radius: 1px;
