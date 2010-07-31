@@ -9,6 +9,9 @@ Author URI: http://oneweekonetool.org
 */
 
 
+
+
+
 if ( !class_exists( 'Anthologize_Loader' ) ) :
 
 class Anthologize_Loader {
@@ -26,8 +29,16 @@ add_action( 'init', array ( $this, 'init' ) );
 // Load the post types
 add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
+<<<<<<< HEAD
 // Load the custom feed
 add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
+=======
+		// Load constants
+		add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
+
+		// Load the custom feed
+		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
+>>>>>>> ajaxify
 
 // Include the necessary files
 add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
@@ -106,12 +117,16 @@ function register_custom_feed() {
 load_template( dirname( __FILE__ ) . '/templates/customfeed.php');
 }
 
-function includes() {
 
-if ( is_admin() )
-require( dirname( __FILE__ ) . '/includes/class-admin-main.php' );
+	function includes() {
 
-}
+		if ( is_admin() )
+			require( dirname( __FILE__ ) . '/includes/class-admin-main.php' );
+
+		require( dirname( __FILE__ ) . '/includes/class-ajax-handlers.php' );
+		$ajax_handlers = new Anthologize_Ajax_Handlers();
+
+	}
 
 // Let plugins know that we're done loading
 function loaded() {
