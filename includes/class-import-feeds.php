@@ -109,6 +109,11 @@ class Anthologize_Import_Feeds_Panel {
 					<?php $imported_items[] = $this->import_item( $item ) ?>
 				<?php endforeach; ?>
 
+				<?php $howmany = count( $imported_items ) ?>
+
+				<p>Successfully imported!</p>
+
+				<p><a href="admin.php?page=anthologize"><?php _e( 'Back to Anthologize', 'anthologize' ) ?></a></p>
 
 
 
@@ -159,7 +164,7 @@ class Anthologize_Import_Feeds_Panel {
 
 	function import_item( $item ) {
 		global $current_user;
-		echo "<pre>";
+		//echo "<pre>";
 		//print_r($item);die();
 
 		$tags = array();
