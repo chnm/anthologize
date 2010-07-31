@@ -158,7 +158,7 @@ class TeiDom {
 
       break;
     }
-    $avlNodeP->parentNode->appendChild($ccNode);
+    $avlPNode->parentNode->appendChild($ccNode);
   }
 
   public function setXPath() {
