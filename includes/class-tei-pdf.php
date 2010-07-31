@@ -34,7 +34,7 @@ class TeiPdf {
 // -------------------------------------------------------- //
 
 		//set auto page breaks
-		//$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 		//set image scale factor
 		$this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -52,6 +52,7 @@ class TeiPdf {
 
 		$this->pdf->AddPage();
 
+		//$book_title = $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
 		
 		// Create a nodeList containing all parts.
 		$parts = $this->xpath->query("//tei:div[@type='part']");
@@ -77,6 +78,7 @@ class TeiPdf {
 				foreach ($paras as $para) {
 
 					$strip1 = $this->strip_whitespace($this->node_to_string($para));
+					$strip2 = $this->strip_shortcodes($strip1);
 
 					$html = $html . $strip1;
 
@@ -135,7 +137,6 @@ class TeiPdf {
 		$font_family = $font_size->textContent;
 		$font_size= $font_size->textContent;
 
-		// Hardcoded for now; will change once TEI changes.
 		$this->pdf->SetFont('times', '', 12, '', true);
 
 	}
@@ -152,8 +153,15 @@ class TeiPdf {
 		return $this->tei->saveXML($node);
 	}
 
-	private function strip_whitespace($string) {
-		return preg_replace('/\s+/', ' ', $string);
+	private function strip_whitespace($target) {
+		return preg_replace('/\s+/', ' ', $target);
+	}
+
+	private function strip_shortcodes($target) {
+
+		$shortcode = get_shortcode_regex();
+		return preg_replace($shortcode, '', $target);
+
 	}
 
 	private function get_paper_size() {
