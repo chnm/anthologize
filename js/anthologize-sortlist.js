@@ -175,6 +175,7 @@ jQuery(document).ready(function(){
 
   jQuery("body").delegate("a.append", "click", function(){
 	  var item = jQuery(this).closest("li.item");
+	
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-append");
 		  var appendPanel = '<div class="append-panel" style="display:none;"><form><div class="append-items"></div>' +
@@ -193,6 +194,8 @@ jQuery(document).ready(function(){
 		  jQuery("a.append").addClass("disabled");
 		  item.find("div.append-panel").first().slideToggle();
 		  anthologize.appending = true;
+	  }else{
+		  item.find("a.cancelAppend").click();
 	  }
   });
  
