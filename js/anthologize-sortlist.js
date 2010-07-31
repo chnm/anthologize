@@ -16,6 +16,9 @@ var anthologize = {
     var project_id = anthologize.getProjectId();
     var org_seq_num = anthologize.org_seq_num;
 
+    jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                    message: jQuery('#blockUISpinner').show() });
+
     if (anthologize.fromNew){
       new_item = "true";
       org_seq_num = anthologize.new_item_org_seq_num;
@@ -204,6 +207,10 @@ jQuery(document).ready(function(){
 	  var append_items = {};
 	  var merge_seq = {};
 	  var i = 0;
+
+      jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                      message: jQuery('#blockUISpinner').show() });
+
 	  jQuery(".append-items input:checkbox:checked").each(function(){
 		  append_items[i] = anthologize.cleanPostIds(this.value);
 		  i++;
