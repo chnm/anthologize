@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 
 if ( !class_exists( 'Anthologize_Import_Feeds_Panel' ) ) :
 
@@ -20,7 +21,7 @@ class Anthologize_Import_Feeds_Panel {
 
 			<h2><?php _e( 'Import Content', 'anthologize' ) ?></h2>
 
-			<?php if ( !isset( $_POST['feedurl'] ) ) : ?>
+			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['items'] ) ) : ?>
 
 				<div id="export-form">
 
@@ -36,9 +37,9 @@ class Anthologize_Import_Feeds_Panel {
 
 				</form>
 
-			<?php else : ?>
+			<?php elseif ( isset( $_POST['feedurl'] ) ) : ?>
 
-				<?php include_once( ABSPATH . 'wp-includes/rss.php' ) ?>
+				<?php $items = $this->grab_feed( $_POST['feedurl'] ) ?>
 
 				<div id="export-form">
 
@@ -49,6 +50,20 @@ class Anthologize_Import_Feeds_Panel {
 				<form action="" method="post">
 
 					<h4><?php _e( 'Feed items:', 'anthologize' ) ?></h4>
+
+					<ul class="potential-feed-items">
+					<?php foreach ( $items as $key => $item ) : ?>
+						<?php
+							$author = '';
+							foreach ( $item['authors'] as $author ) {
+								$author .= $author->name . ' ';
+							}
+						?>
+						<li>
+							<input name="items[]" type="checkbox" checked="checked" value="<?php echo $key ?>"> <strong><?php echo $item['title'] ?></strong>  <?php echo $item['description'] ?>
+						</li>
+					<?php endforeach; ?>
+					</ul>
 
 					<p><input type="submit" name="submit_items" id="submit" value="<?php _e( 'Import', 'anthologize' ) ?>" /></p>
 
@@ -67,12 +82,86 @@ class Anthologize_Import_Feeds_Panel {
 
 				</div>
 
+			<?php elseif ( isset( $_POST['items'] ) ) : ?>
+				<?php
+					$items = $this->grab_feed( $_POST['feedurl'] );
+					foreach ( $items as $key => $item ) {
+						if ( !in_array( $key, $_POST['items'] ) )
+							unset( $items[$key] );
+					}
+				?>
+
+				<?php $imported_items = array(); ?>
+				<?php foreach( $items as $item ) : ?>
+					<?php $imported_items[] = $this->import_item( $items ) ?>
+				<?php endforeach; ?>
+
+				<?php print_r($imported_items); ?>
+
+
 			<?php endif; ?>
 
 			</div>
 		</div>
 		<?php
 
+	}
+
+	function grab_feed( $feedurl ) {
+
+		include_once( ABSPATH . 'wp-includes/rss.php' );
+
+		$rss = fetch_feed( trim( $feedurl ) );
+
+		$maxitems = $rss->get_item_quantity();
+
+		$feed_title = $rss->get_title();
+		$feed_permalink = $rss->get_permalink();
+
+		$rss_items = $rss->get_items(0, $maxitems);
+
+		$items_data = array( 'feed_title' => $feed_title, 'feed_permalink' => $feed_permalink );
+
+		$items = array();
+		foreach ($rss->get_items(0, $maxitems) as $rss_item ) {
+			$item_data = $items_data;
+
+			$item_data['link'] = $rss_item->get_link();
+			$item_data['title'] = $rss_item->get_title();
+			$item_data['authors'] = $rss_item->get_authors();
+			$item_data['created_date'] = $rss_item->get_date();
+			$item_data['categories'] = $rss_item->get_categories();
+			$item_data['contributors'] = $rss_item->get_contributors();
+			$item_data['copyright'] = $rss_item->get_copyright();
+			$item_data['description'] = $rss_item->get_description();
+			$item_data['content'] = $rss_item->get_content();
+			$item_data['permalink'] = $rss_item->get_permalink();
+
+			$items[] = $item_data;
+			//$this->record_item( $item_data );
+		}
+
+		return $items;
+	}
+
+	function import_item( $item ) {
+echo $item; die();
+		$tags = array();
+
+		foreach( $item_data['categories'] as $cat ) {
+
+		}
+
+		$args = array(
+			'post_status' => 'publish',
+			'post_type' => 'imported_items',
+			'guid' => $item_data['permalink'],
+			'post_content_filtered' => $item_data['content'],
+			'post_excerpt' => $item_data['description']
+		);
+
+		$post_id = wp_insert_post( $args );
+		return $post_id;
 	}
 
 }
