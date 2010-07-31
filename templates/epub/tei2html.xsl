@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:tei="http://www.tei-c.org/ns/1.0"
+  xmlns:tei="http://www.tei-c.org/ns/1.0" 
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:regexp="http://exslt.org/regular-expressions"
-  xmlns:az="http://www.anthologize.org/ns" extension-element-prefixes="regexp"
+  xmlns:az="http://www.anthologize.org/ns"
+  xmlns="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="#default html az xd tei"
   version="1.0">
+  
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> Jul 29, 2010</xd:p>
@@ -15,7 +17,7 @@
         inclusion</xd:p>
     </xd:desc>
   </xd:doc>
-  <xsl:output method="xml" encoding="UTF-16"/>
+  <xsl:output method="xml" encoding="UTF-8"/>
   <!--<xsl:variable name="images-directory" select="'OEBPS/images'"/>-->
   <xsl:variable name="images-directory" select="''"/>
   <xsl:variable name="anthologize-statement"
@@ -34,12 +36,15 @@
           <xsl:text>@page { margin: 3cm }</xsl:text>
           <xsl:text>&#xa;body {&#xa;</xsl:text>
           <xsl:text>padding-top: 10em; </xsl:text>
+          
           <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()">          
             <xsl:value-of select="concat('&#xa;font-size:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()), ';')"/>
           </xsl:if>
+          
           <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()">
             <xsl:value-of select="concat('&#xa;font-family:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()), ';')"/>
           </xsl:if>
+          
           <xsl:text>&#xa;}&#xa;</xsl:text>
           <xsl:text>#title-page h1 { border-bottom: 0.5em solid #aaa; page-break-after: always; }&#xa;</xsl:text>
           <xsl:text>#publication-statement-page { page-break-after: always; padding-top: 10em; text-align: center }&#xa;</xsl:text>
@@ -50,7 +55,8 @@
       </head>
       <body>
         <div id="title-page">
-          <h1> 
+          <h1>
+            Version 101: 
             <xsl:value-of
               select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"
             />
@@ -115,6 +121,7 @@
   <xsl:template
     match="abbr|acronym|address|blockquote|br|cite|code|dfn|div|em|h1|h2|h3|h4|h5|h6|kbd|p|pre|q|samp|span|strong|var|dl|dt|dd|ol|ul|li|a|object|param|b|big|hr|i|small|sub|sup|tt|del|ins|bdo|caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|area|map|style|img"
     mode="html-content">
+    <xsl:comment> copied at 1 </xsl:comment>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="html-content"/>
     </xsl:copy>
@@ -155,6 +162,17 @@
     <xsl:if test="html:object"
   </xsl:template> -->
 
+  <!--
+    Wordpress wraps all images in anchor tags, which the epub format doesn't like.
+    Strip all links from images
+    
+    CHANGE: should also confirm that the image tag is the only child
+  -->
+
+  <xsl:template match="a[img]" mode="html-content">
+    <xsl:apply-templates mode="html-content"/>
+  </xsl:template>
+  
   <!-- 
     Images have to have their URLs rewritten to make them relative and in the ePub image directory 
     take off everything before the LAST slash
@@ -168,7 +186,7 @@
         </xsl:call-template>
       </xsl:variable>
       <xsl:value-of select="concat($images-directory, $img-url-filename-only)"/>
-        <!--select="concat($images-directory, '/', $img-url-filename-only)"/>-->
+      <!--select="concat($images-directory, '/', $img-url-filename-only)"/>-->
     </xsl:attribute>
   </xsl:template>
 
