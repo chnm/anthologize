@@ -98,7 +98,7 @@ class Anthologize_Project_Organizer {
 
 				<div class="postbox" id="anthologize-parts-box">
 
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts&project_id=<?php echo $this->project_id ?>"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
 				<?php /* Todo: Add argument to new part button for redirect */ ?>
 
 				<div id="partlist">
@@ -146,8 +146,9 @@ class Anthologize_Project_Organizer {
 		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
 
 		?>
+            <span>Filter by</span>
 			<select name="sortby" id="sortby-dropdown">
-				<option value=""><?php _e( 'Sort by', 'anthologize' ) ?></option>
+				<option value=""><?php _e( 'All posts', 'anthologize' ) ?></option>
 				<?php foreach( $filters as $filter => $name ) : ?>
 					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
 				<?php endforeach; ?>
