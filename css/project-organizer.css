@@ -120,12 +120,30 @@
       height: 2em;
 }
 
+div.append-panel {
+	border: 2px solid #13395F;
+	border-top: none;
+	padding: 9px;
+}
+
+div.append-items {
+	max-height: 200px;
+	overflow: auto;	
+}
+
+div.append-items div {
+	margin-bottom: 4px;
+
+}
+
 a.disabled {
 	color: #ccc;
 }
 a.active-append {
 	color: inherit;
 }
+
+
 
 #export-project-button {
 	width: auto;

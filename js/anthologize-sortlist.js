@@ -149,8 +149,6 @@ jQuery.fn.anthologizeSortList = function (options){
   return this.each(function(){jQuery(this).sortable(settings)});
 }
 
-
-
 jQuery(document).ready(function(){
   jQuery(".project-parts").anthologizeSortList({});
   jQuery(".part-items ul").anthologizeSortList({
@@ -182,7 +180,8 @@ jQuery(document).ready(function(){
 		  var panel = item.find("div.append-items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));
 		  for (var itemId in appendable){
-			  panel.append('<input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
+			  panel.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
+			               '<label for="append-' + itemId+ '">' + appendable[itemId] + '</label></div>');
 		  }
 		
 		  jQuery(".project-parts").sortable("disable");
