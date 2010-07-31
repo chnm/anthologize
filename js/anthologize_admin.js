@@ -7,6 +7,11 @@ var seq_stringify = function(seq_obj) {
     seq_string += '}';
     return seq_string;
 }
+
+jQuery.blockUI.defaults.onUnblock = function() {
+    jQuery('#blockUISpinner').hide();
+}
+
 var anth_admin_ajax = {
     place_item: function(config_obj) {
 
