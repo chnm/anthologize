@@ -49,7 +49,20 @@ place_item: function(config_obj) {
                     jQuery(this).remove();
                 });
             } else {
-                jQuery('li#' + config_obj.item_id).insertBefore(jQuery('li#' + config_obj.src_id + 'ul li').eq(config_obj.org_seq_num - 1));
+                if (config_obj.dest_id == config_obj.project_id) {
+                    item_selector = 'li#part-' + config_obj.item_id;
+                    home_selector = 'ul.project-parts';
+                    item_rev = jQuery(item_selector);
+                    item_rev.appendTo(home_selector);
+                    // TODO: put the item in the right sequence
+                } else {
+                    item_selector = 'li#item-' + config_obj.item_id;
+                    home_selector = 'li#part-' + config_obj.src_id + ' .part-items ul';
+                    item_rev = jQuery(item_selector);
+                    item_rev.appendTo(home_selector);
+                    // TODO: put the item in the right sequence
+                    //item_rev.insertBefore(home_selector + ' li').eq(config_obj.org_seq_num-1).not(item_rev);
+                }
             }
         }
     });

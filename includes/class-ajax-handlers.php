@@ -95,6 +95,8 @@ class Anthologize_Ajax_Handlers {
     }
 
     function place_item() {
+            header('HTTP/1.1 500 Internal Server Error');
+            die();
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $dest_part_id = $_POST['dest_id'];
