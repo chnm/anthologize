@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
     <teiHeader>
-        <!-- early on, we can probably not worry about adding in lots of the teiHeader info -->
+        
         <fileDesc>
             <titleStmt>
                 <title></title>
@@ -21,7 +21,7 @@
 
             <sourceDesc>
                 <bibl>
-                    <ident><![CDATA[http://localhost/workspace/wordpress/?post_type=projects&p=877]]></ident>
+                    <ident></ident>
                 </bibl>
             </sourceDesc>
         </fileDesc>
@@ -43,8 +43,8 @@
                         <person xml:id="admin" role="administrator ">
                             <persName><forename xmlns:tei="http://www.tei-c.org/ns/1.0"></forename>
                                 <surname xmlns="http://www.tei-c.org/ns/1.0"></surname>
-                                <ident xmlns="http://www.tei-c.org/ns/1.0" type="url"
-                                    ><![CDATA[http://myurl.not.example.com]]></ident></persName>
+                                <ident xmlns="http://www.tei-c.org/ns/1.0" type="url"></ident>
+                            </persName>
                         </person>
 
                     </listPerson>
