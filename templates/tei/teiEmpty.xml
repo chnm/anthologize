@@ -40,12 +40,7 @@
                 <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
                     <listPerson>
-                        <person xml:id="admin" role="administrator ">
-                            <persName><forename xmlns:tei="http://www.tei-c.org/ns/1.0"></forename>
-                                <surname xmlns="http://www.tei-c.org/ns/1.0"></surname>
-                                <ident xmlns="http://www.tei-c.org/ns/1.0" type="url"></ident>
-                            </persName>
-                        </person>
+                        
 
                     </listPerson>
                 </ab>

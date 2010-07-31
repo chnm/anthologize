@@ -591,7 +591,7 @@ class Anthologize_Project_Organizer {
 				<div class="part-item-buttons">
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 
-					<a href="#" class="append"><?php _e( 'Append', 'anthologize' ) ?> |</a>
+					<a href="#append" class="append"><?php _e( 'Append', 'anthologize' ) ?> |</a>
 					<?
 					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
 					?>
