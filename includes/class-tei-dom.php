@@ -33,14 +33,19 @@ class TeiDom {
 
 	}
 
+
+
   public function processPostArray($postArray) {
     //process all the data and stuff it into the appropriate place in
 
+
     //copyright/license info (availability)
     $this->addLicense($postArray);
+
+
     //"editors" copyright and title page
     $authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
-    $authorsNode->appendChild($this->dom->createTextNode($postArray['authors']));
+    $authorsNode->appendChild($this->dom->createTextNode($postArray['cname'] . ', ' . $postArray['authors']));
 
     $docEditionNode = $this->xpath->query("//tei:docEdition")->item(0);
     $docEditionNode->appendChild($this->dom->createTextNode($postArray['edition']));
@@ -57,17 +62,25 @@ class TeiDom {
 
     //front1
     $f1Node = $this->xpath->query("//tei:div[@xml:id='f1']")->item(0);
+
     $f1TitleNode = $this->xpath->query("tei:head/tei:title", $f1Node )->item(0);
-    $f1TitleNode->appendChild($this->dom->createTextNode($postArray['front1-title']));
-    //$htmlNode = $this->buildHtmlDom($postArray['front1']);
-    //$f1Node->appendChild($htmlNode);
+    //currently, f1 is hardcoded to be Dedication
+    //TODO: change this when UI changes
+    $f1TitleNode->appendChild($this->dom->createTextNode('Dedication'));
+    $f1Html = $this->xpath->query("html:body", $f1Node)->item(0);
+    $frag = $this->dom->createDocumentFragment();
+    $frag->appendXML($postArray['dedication']);
+    $f1Html->appendChild($frag);
 
     //front2
     $f2Node = $this->xpath->query("//tei:div[@xml:id='f2']")->item(0);
     $f2TitleNode = $this->xpath->query("tei:head/tei:title", $f2Node )->item(0);
-    $f2TitleNode->appendChild($this->dom->createTextNode($postArray['front2-title']));
-    //$htmlNode = $this->buildHtmlDom($postArray['front2']);
-
+    //TODO: change when UI changes currently hardcoded as acknowledgements
+    $f2TitleNode->appendChild($this->dom->createTextNode('Acknowledgements'));
+    $f2Html = $this->xpath->query('html:body', $f2Node)->item(0);
+    $frag = $this->dom->createDocumentFragment();
+    $frag->appendXML($postArray['acknowledgements']);
+    $f2Html->appendChild($frag);
 
     $outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
     //font-size
@@ -99,34 +112,14 @@ class TeiDom {
     $fontFamilyNode->appendChild($this->dom->createTextNode($postArray['font-face']));
 
 
-/*
-  Array
-(
-    [post-title] => title
-    [dedication] =>
-    [acknowledgements] =>
-    [filetype] => tei
-    [page-size] => letter
-    [font-size] => 9
-    [font-face] => times
-    [cyear] =>
-    [cname] =>
-    [ctype] =>
-    [edition] =>
-    [authors] =>
-    [project_id] =>
-    [export-step] => 2
-    [submit] => Next
-)
 
- */
 
 
   }
 
   public function addLicense($postArray) {
   	$avlPNode = $this->xpath->query("//tei:availability/tei:p")->item(0);
-    $avlPNode->appendChild($this->dom->createTextNode('Copyright ' . $postArray['cyear']));
+    $avlPNode->appendChild($this->dom->createTextNode('Copyright ' . $postArray['cyear'] . ', ' . $postArray['cname']));
     if($postArray['ctype'] == 'c') {
       return;
     }
