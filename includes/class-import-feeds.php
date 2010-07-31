@@ -1,6 +1,9 @@
 <?php
 
+
 session_start();
+
+
 
 if ( !class_exists( 'Anthologize_Import_Feeds_Panel' ) ) :
 
@@ -21,7 +24,7 @@ class Anthologize_Import_Feeds_Panel {
 
 			<h2><?php _e( 'Import Content', 'anthologize' ) ?></h2>
 
-			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['items'] ) ) : ?>
+			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>
 
 				<div id="export-form">
 
@@ -37,9 +40,15 @@ class Anthologize_Import_Feeds_Panel {
 
 				</form>
 
-			<?php elseif ( isset( $_POST['feedurl'] ) ) : ?>
-
+			<?php elseif ( isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>
 				<?php $items = $this->grab_feed( $_POST['feedurl'] ) ?>
+
+				<?php
+
+				$the_items = serialize( $items );
+				$_SESSION['items'] = $the_items;
+
+				?>
 
 				<div id="export-form">
 
@@ -60,11 +69,12 @@ class Anthologize_Import_Feeds_Panel {
 							}
 						?>
 						<li>
-							<input name="items[]" type="checkbox" checked="checked" value="<?php echo $key ?>"> <strong><?php echo $item['title'] ?></strong>  <?php echo $item['description'] ?>
+							<input name="copyitems[]" type="checkbox" checked="checked" value="<?php echo $key ?>"> <strong><?php echo $item['title'] ?></strong>  <?php echo $item['description'] ?>
 						</li>
 					<?php endforeach; ?>
 					</ul>
 
+					<input type="hidden" name="feedurl" value="<?php echo $_POST['feedurl'] ?>" />
 					<p><input type="submit" name="submit_items" id="submit" value="<?php _e( 'Import', 'anthologize' ) ?>" /></p>
 
 				</form>
@@ -82,21 +92,24 @@ class Anthologize_Import_Feeds_Panel {
 
 				</div>
 
-			<?php elseif ( isset( $_POST['items'] ) ) : ?>
+
+			<?php elseif ( isset( $_POST['copyitems'] ) ) : ?>
 				<?php
 					$items = $this->grab_feed( $_POST['feedurl'] );
 					foreach ( $items as $key => $item ) {
-						if ( !in_array( $key, $_POST['items'] ) )
+						if ( !in_array( $key, $_POST['copyitems'] ) )
 							unset( $items[$key] );
 					}
+					$items = array_values( $items );
+
 				?>
 
 				<?php $imported_items = array(); ?>
 				<?php foreach( $items as $item ) : ?>
-					<?php $imported_items[] = $this->import_item( $items ) ?>
+					<?php $imported_items[] = $this->import_item( $item ) ?>
 				<?php endforeach; ?>
 
-				<?php print_r($imported_items); ?>
+
 
 
 			<?php endif; ?>
@@ -145,20 +158,28 @@ class Anthologize_Import_Feeds_Panel {
 	}
 
 	function import_item( $item ) {
-echo $item; die();
+		global $current_user;
+
 		$tags = array();
 
-		foreach( $item_data['categories'] as $cat ) {
 
+		foreach( $item['categories'] as $cat ) {
+			if ( $cat->term )
+				$tags[] = $cat->term;
 		}
 
 		$args = array(
 			'post_status' => 'publish',
 			'post_type' => 'imported_items',
-			'guid' => $item_data['permalink'],
-			'post_content_filtered' => $item_data['content'],
-			'post_excerpt' => $item_data['description']
+			'post_author' => $current_user->ID,
+			'guid' => $item['permalink'],
+			'post_content_filtered' => $item['content'],
+			'post_excerpt' => $item['description'],
+			'comment_status' => 'closed',
+			'ping_status' => 'closed'
 		);
+
+
 
 		$post_id = wp_insert_post( $args );
 		return $post_id;

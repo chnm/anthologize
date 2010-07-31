@@ -57,12 +57,21 @@ class Anthologize_Admin_Main {
 	}
 
 	function load_scripts() {
-    	wp_enqueue_script("scriptaculous-dragdrop");
     	wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
-
+    	wp_enqueue_script( 'jquery');
+    	wp_enqueue_script( 'jquery-ui-core');
+    	wp_enqueue_script( 'jquery-ui-sortable');
+    	wp_enqueue_script( 'jquery-ui-draggable');
+    	wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
+    	wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
 	}
 
 	function load_styles() {
+    	wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
+
+	}
+
+	function pload_styles() {
     	wp_enqueue_style( 'export-css', WP_PLUGIN_URL . '/anthologize/css2/export-panel.css' );
     }
 
@@ -164,7 +173,10 @@ class Anthologize_Admin_Main {
 
 		<div class="wrap">
 
+
+		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize/includes/class-new-project.php" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
+
 
 		<?php
 
@@ -349,7 +361,12 @@ class Anthologize_Admin_Main {
         	<p>
         		<textarea name="anthologize_meta[author_name]" rows="3" cols="27"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea>
         	</p>
-            <input type="hidden" name="parent_id" value="<?php echo $post->post_parent; ?>">
+
+        	<?php if ( isset( $_GET['project_id'] ) ) : ?>
+        		<input type="hidden" name="parent_id" value="<?php echo $_GET['project_id'] ?>">
+            <?php else : ?>
+                 <input type="hidden" name="parent_id" value="<?php echo $post->post_parent; ?>">
+            <?php endif; ?>
             <input type="hidden" name="menu_order" value="<?php echo $post->menu_order; ?>">
             <input type="hidden" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
         </div>

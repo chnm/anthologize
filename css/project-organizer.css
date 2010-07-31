@@ -1,0 +1,144 @@
+#adminmenu #toplevel_page_anthologize .wp-menu-image a {
+	background-image: url(../images/little-logo.png) !important;
+	background-repeat: no-repeat;
+	background-position: -3px 0px !important;
+	background: transparent;
+}
+
+#icon-anthologize {
+	margin-right: 15px;
+}
+
+
+
+#adminmenu #toplevel_page_anthologize .wp-menu-image a img {
+	display: none !important;
+}
+
+#project-organizer-frame {
+	margin-left: 300px;
+	display: block;
+}
+
+/* Left column ( Items ) */
+#project-organizer-left-column {
+	clear: both;
+	float: left;
+	display: inline;
+	padding-top: 24px;
+	width: 281px;
+	margin-left: -300px;
+
+}
+
+#project-organizer-left-column .inside {
+	padding: 8px;
+}
+
+#project-organizer-left-column p {
+	padding: 5px 10px;
+}
+
+#project-organizer-left-column select {
+	width: 250px;
+}
+
+#posts-scrollbox {
+	height: 400px;
+	max-height: 400px;
+	overflow: scroll;
+	padding-top: 10px;
+	border-left: 2px solid #999;
+	border-bottom: 2px solid #999;
+	border-right: 2px solid #999;
+	padding: 4px;
+}
+
+
+/* Right column (Parts) */
+#partlist {
+	padding: 8px;
+}
+
+.part-header {
+	background: #B38080 !important;
+	color: #3F0D11 !important;
+	text-shadow: none !important;
+	border-top-right-radius: 3px !important;
+	border-top-left-radius: 3px !important;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border: 2px solid #3F0D11;
+}
+
+.part-items {
+	padding: 8px 0px 8px 40px;
+}
+
+/* Individual parts */
+.part-item {
+	background: #84A9CA !important;
+	color: #13395F !important;
+	text-shadow: none !important;
+	border-top-right-radius: 3px !important;
+	border-top-left-radius: 3px !important;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border: 2px solid #13395F;
+}
+
+.part-item-buttons {
+	width: 200px;
+	float: right;
+	text-align: right;
+}
+
+.part-item-buttons a {
+	text-decoration: none;
+	color: #13395F;
+}
+
+#new-part {
+	width: auto;
+	margin-top: -4px;
+	margin-right: -13px;
+	padding: 2px;
+	border-top-right-radius: 1px;
+	border-top-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	border-bottom-left-radius: 1px;
+
+}
+
+/* sortable/draggable styles  */
+.part-items ul {
+	min-height: 50px;
+}
+
+.anthologize-drop-item {
+      border: 1px dashed #000;
+      height: 2em;
+}
+
+a.disabled {
+	color: #ccc;
+}
+a.active-append {
+	color: inherit;
+}
+
+#export-project-button {
+	width: auto;
+	border-top-right-radius: 1px;
+	border-top-left-radius: 1px;
+	border-bottom-right-radius: 1px;
+	border-bottom-left-radius: 1px;
+}
+
+#export-project {
+	padding: 4px 8px;
+	text-decoration: none;
+
+}
+
+

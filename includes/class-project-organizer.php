@@ -10,7 +10,6 @@ class Anthologize_Project_Organizer {
 	 * The project organizer. Git 'er done
 	 */
 	function anthologize_project_organizer ( $project_id ) {
-
 		$this->project_id = $project_id;
 
 		$project = get_post( $project_id );
@@ -18,6 +17,7 @@ class Anthologize_Project_Organizer {
 		$this->project_name = $project->post_title;
 
 	}
+
 
 	function load_scripts() {
 	}
@@ -48,33 +48,142 @@ class Anthologize_Project_Organizer {
 			$this->append_children( $_POST['append_parent'], $_POST['append_children'] );
 		}
 		?>
-		<div class="wrap">
+		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
 
-			<h2><?php echo $this->project_name ?></h2>
 
-			<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
-				<div id="message" class="updated below-h2">
-					<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
+		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
+
+		<h2><?php echo $this->project_name ?></h2>
+
+		<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+			<div id="message" class="updated below-h2">
+				<p><?php _e( 'Select the items you would like to append and click Go.', 'anthologize' ) ?></p>
+			</div>
+		<?php endif; ?>
+
+		<div id="project-organizer-frame">
+			<div id="project-organizer-left-column" class="metabox-holder">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable">
+
+				<div id="add-custom-links" class="postbox ">
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Items', 'Anthologize' ) ?></span></h3>
+				<div class="inside">
+					<div class="customlinkdiv" id="customlinkdiv">
+
+
+							<p id="menu-item-name-wrap">
+								<?php $this->sortby_dropdown() ?>
+							</p>
+
+							<p id="menu-item-name-wrap">
+								<?php $this->filter_dropdown_tags() ?>
+							</p>
+
+
+							<h3 class="part-header"><?php _e( 'Posts', 'anthologize' ) ?></h3>
+							<div id="posts-scrollbox">
+
+								<?php $this->get_sidebar_posts() ?>
+
+							</div>
+
+					</div><!-- /.customlinkdiv -->
+					</div>
+				</div> <!-- /.postbox -->
+
+				</div> <!-- .meta-box-sortables -->
+			</div> <!-- .project-organizer-left-column -->
+
+			<div class="metabox-holder" id="project-organizer-right-column">
+
+				<div class="postbox" id="anthologize-parts-box">
+
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts&project_id=1027"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
+				<?php /* Todo: Add argument to new part button for redirect */ ?>
+
+				<div id="partlist">
+
+				<ul class="project-parts">
+                                    <?php $this->list_existing_parts() ?>
+                                </ul>
+
+				<noscript>
+					<h3>New Parts</h3>
+					<p>Wanna create a new part? You know you do.</p>
+					<form action="" method="post">
+						<input type="text" name="new_part_name" />
+						<input type="submit" name="new_part" value="New Part" />
+					</form>
+				</noscript>
+
+				<!--
+					<br /><br />
+					<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a>. You lucky duck.</p>
+				-->
+
 				</div>
-			<?php endif; ?>
 
-			<?php $this->list_existing_parts() ?>
+				</div> <!-- #anthologize-part-box -->
 
-			<h3>New Parts</h3>
-			<p>Wanna create a new part? You know you do.</p>
-			<form action="" method="post">
-				<input type="text" name="new_part_name" />
-				<input type="submit" name="new_part" value="New Part" />
-			</form>
+			<div class="button" id="export-project-button"><a href="#" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
+
+			</div> <!-- #project-organizer-right-column -->
 
 
-			<br /><br />
-			<p>See the *actual* project at <a href="http://mynameinklingon.org">mynameinklingon.org</a></p>
+		</div> <!-- #project-organizer-frame -->
 
-		</div>
+
+
+
+
+
+		</div> <!-- .wrap -->
 		<?php
 
 	}
+
+	function sortby_dropdown() {
+		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
+
+		?>
+			<select name="sortby" id="sortby-dropdown">
+				<option value=""><?php _e( 'Sort by', 'anthologize' ) ?></option>
+				<?php foreach( $filters as $filter => $name ) : ?>
+					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
+				<?php endforeach; ?>
+			</select>
+		<?php
+	}
+
+	function filter_dropdown_tags() {
+		//$tags = get_tags();
+        $tags = Array();
+
+		?>
+			<select name="filter" id="filter">
+				<option value="" disabled="disabled"> - </option>
+				<?php foreach( $tags as $tag ) : ?>
+					<option value="<?php echo $tag->term_id ?>"><?php echo $tag->name ?></option>
+				<?php endforeach; ?>
+			</select>
+		<?php
+	}
+
+
+	function filter_dropdown_cats() {
+		$cats = get_categories();
+
+		?>
+			<select name="filter" id="filter">
+				<option value="" disabled="disabled"> - </option>
+				<?php foreach( $cats as $cat ) : ?>
+					<option value="<?php echo $cat->term_id ?>"><?php echo $cat->name ?></option>
+				<?php endforeach; ?>
+			</select>
+		<?php
+	}
+
+
 
 	function add_item_to_part( $item_id, $part_id ) {
 		global $wpdb;
@@ -103,7 +212,8 @@ class Anthologize_Project_Organizer {
 		  'to_ping' => $post->to_ping, // todo: tags and categories
 		);
 
-		$imported_item_id = wp_insert_post( $args );
+		if ( !$imported_item_id = wp_insert_post( $args ) )
+			return false;
 
 		// Author data
 		$user = get_userdata( $post->post_author );
@@ -113,8 +223,7 @@ class Anthologize_Project_Organizer {
 		update_post_meta( $imported_item_id, 'author_name', $author_name );
 		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array );
 
-		// Store the menu order of the last item to enable easy moving later on
-		update_post_meta( $part_id, 'last_item', $last_item );
+		return $imported_item_id;
 	}
 
 	function add_new_part( $part_name ) {
@@ -130,17 +239,18 @@ class Anthologize_Project_Organizer {
 		  'post_parent' => $this->project_id
 		);
 
-		$part_id = wp_insert_post( $args );
+		if ( !$part_id = wp_insert_post( $args ) )
+			return false;
 
 		// Store the menu order of the last item to enable easy moving later on
 		update_post_meta( $this->project, 'last_item', $last_item );
+
+		return true;
 	}
 
 	function list_existing_parts() {
 
 		query_posts( 'post_type=parts&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
-
-
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {
@@ -150,23 +260,28 @@ class Anthologize_Project_Organizer {
 
 				?>
 
-				<form action="" method="post">
+				<!--// <form action="" method="post"> //-->
 
 				<?php
 
 				?>
-					<div class="part" id="part-<?php echo $part_id ?>">
-						<h3><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> <?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
+					<li class="part" id="part-<?php echo $part_id ?>">
+						<h3 class="part-header"><noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript><?php the_title() ?> <small><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a></small></h3>
 
-						<?php $this->get_part_items( $part_id ) ?>
+						<div class="part-items">
+                                                    <ul>
+							<?php $this->get_part_items( $part_id ) ?>
+                                                    </ul>
 
-						<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
+						</div>
+
+						<?php /* Noscript solution. Removed at the moment to avoid db queries. Todo: refactor ?>
+							<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
 
 								<input type="submit" name="append_submit" value="Go" />
 								<input type="hidden" name="append_parent" value="<?php echo $_GET['append_parent']  ?>" />
 
-
-						<?php else : ?>
+							<?php else : ?>
 
 								<select name="item_id">
 									<?php $this->get_posts_as_option_list( $part_id ) ?>
@@ -174,12 +289,14 @@ class Anthologize_Project_Organizer {
 								<input type="submit" name="new_item" value="Add Item" />
 								<input type="hidden" name="part_id" value="<?php echo $part_id ?>" />
 
-						<?php endif; ?>
+							<?php endif; ?>
 
-					</div>
+						<?php */ ?>
+
+					</li>
 
 
-				</form>
+				<!--// </form> //-->
 				<?php
 			}
 		} else {
@@ -189,6 +306,27 @@ class Anthologize_Project_Organizer {
 
 
 		wp_reset_query();
+	}
+
+	function get_sidebar_posts() {
+		global $wpdb;
+
+		$args = array(
+			'post_type' => array('post', 'page', 'imported_items' ),
+			'posts_per_page' => -1
+		);
+
+		$big_posts = new WP_Query( $args );
+
+		if ( $big_posts->have_posts() ) {
+		?>
+			<ul id="sidebar-posts">
+				<?php while ( $big_posts->have_posts() ) : $big_posts->the_post(); ?>
+					<li class="item" id="new-<?php the_ID() ?>"><h3 class="part-item"><?php the_title() ?></h3></li>
+				<?php endwhile; ?>
+			</ul>
+		<?php
+		}
 	}
 
 	function get_posts_as_option_list( $part_id ) {
@@ -242,18 +380,13 @@ class Anthologize_Project_Organizer {
 
 		if ( $items_query->have_posts() ) {
 
-			echo "<ol>";
-
 			while ( $items_query->have_posts() ) : $items_query->the_post();
 
 				$this->display_item( $append_parent );
 
 			endwhile;
 
-			echo "</ol>";
-
 		}
-
 	}
 
 	function move_up( $id ) {
@@ -280,6 +413,8 @@ class Anthologize_Project_Organizer {
 
 		// Upgrade self
 		$little_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order-$minus, $id ) );
+
+		return true;
 	}
 
 	function move_down( $id ) {
@@ -306,15 +441,86 @@ class Anthologize_Project_Organizer {
 
 		// Downgrade self
 		$big_brother_q = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d", $my_menu_order+$plus, $id ) );
+
+		return true;
+	}
+
+
+
+	function insert_item( $project_id, $post_id, $new_post, $dest_id, $source_id, $dest_seq, $source_seq ) {
+		global $wpdb;
+		if ( !isset( $project_id ) || !isset( $post_id ) || !isset( $dest_id ) || !isset( $dest_seq ) )
+			return false;
+
+		if ( !$new_post ) {
+			if ( !isset( $source_id ) || !isset( $source_seq ) )
+				return false;
+		}
+
+		/* $dest_seq, $src_seq:
+			array(
+				$item_id => $seq_no
+			);
+		*/
+
+		if ( true === $new_post ) {
+            $add_item_result = $this->add_item_to_part( $post_id, $dest_id );
+			if (false === $add_item_result)
+				return false;
+            $post_id = $add_item_result;
+            $dest_seq[$post_id] = $dest_seq['new_new_new'];
+            unset($dest_seq['new_new_new']);
+        } else {
+            $post_params = Array('ID' => $post_id,
+                                 'post_parent' => $dest_id);
+            $update_item_result = wp_update_post($post_params);
+			if (0 === $update_item_result) {
+				return false;
+            }
+            $post_id = $update_item_result;
+            $this->rearrange_items( $source_seq );
+        }
+
+        // JMC: not really any point in checking for errors at this point
+        // Since the insert succeeded
+        // We should use more detailed Exceptions eventually
+        //
+		// All items require the destination siblings to be reordered
+/*		if ( !$this->rearrange_items( $dest_seq ) )
+    return false;*/
+        $this->rearrange_items( $dest_seq );
+
+
+		// You only need to rearrange the source when moving between parts
+        /*if ( !$new_post ) {
+			if ( !$this->rearrange_items( $src_seq ) )
+				return false;
+        }*/
+
+
+		return $post_id;
+
+	}
+
+	function rearrange_items( $seq ) {
+        global $wpdb;
+		foreach ( $seq as $item_id => $pos ) {
+			$q = "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d";
+			$post_up_query = $wpdb->query( $wpdb->prepare( $q, $pos, $item_id ) );
+		}
+
+		return true;
 	}
 
 	function remove_item( $id ) {
 		// Git ridda the post
-		wp_delete_post( $id );
+		if ( !wp_delete_post( $id ) )
+			return false;
+
+		return true;
 	}
 
 	function append_children( $append_parent, $append_children ) {
-
 
 		$parent_post = get_post( $append_parent );
 		$pp_content = $parent_post->post_content;
@@ -351,11 +557,13 @@ class Anthologize_Project_Organizer {
 			'post_content' => $pp_content,
 		);
 
-		wp_update_post( $args );
+		if ( !wp_update_post( $args ) )
+			return false;
 
 		update_post_meta( $append_parent, 'author_name', $author_name );
 		update_post_meta( $append_parent, 'author_name_array', $author_name_array );
 
+		return true;
 		// todo Jeremy: make sure that the form action goes to the right place after an append
 	}
 
@@ -363,18 +571,28 @@ class Anthologize_Project_Organizer {
 		global $post;
 
 	?>
-		<li>
+
+		<li id="item-<?php the_ID() ?>" class="item">
+
 			<?php if ( $append_parent ) : ?>
 				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo $post->ID . " " . $append_parent ?>
 			<?php endif; ?>
 
-			<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+			<noscript>
+				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+			</noscript>
 
-			<?php the_title() ?> -
-				<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a>
-				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&append_parent=<?php the_ID() ?>"><?php _e( 'Append', 'anthologize' ) ?></a>
-				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
-
+			<h3 class="part-item">
+				<span class="part-title"><?php the_title() ?></span>
+				<div class="part-item-buttons">
+					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+					<a href="#" class="append">Append</a> |
+					<?
+					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
+					?>
+					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
+				</div>
+			</h3>
 		</li>
 	<?php
 	}
