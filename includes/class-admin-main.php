@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 if ( !class_exists( 'Anthologize_Admin_Main' ) ) :
 
 class Anthologize_Admin_Main {
@@ -199,12 +197,12 @@ class Anthologize_Admin_Main {
 			<thead>
 				<tr>
 					<th scope="col" class="check-column"></th>
-            		<th scope="col"><?php _e( 'Project Title') ?></th>
-            		<th scope="col"><?php _e( 'Created By') ?></th>
-            		<th scope="col"><?php _e( 'Number of Parts') ?></th>
-            		<th scope="col"><?php _e( 'Number of Items') ?></th>
-            		<th scope="col"><?php _e( 'Date Created') ?></th>
-            		<th scope="col"><?php _e( 'Date Modified') ?></th>
+            		<th scope="col"><?php _e( 'Project Title', 'anthologize' ) ?></th>
+            		<th scope="col"><?php _e( 'Created By', 'anthologize' ) ?></th>
+            		<th scope="col"><?php _e( 'Number of Parts', 'anthologize' ) ?></th>
+            		<th scope="col"><?php _e( 'Number of Items', 'anthologize' ) ?></th>
+            		<th scope="col"><?php _e( 'Date Created', 'anthologize' ) ?></th>
+            		<th scope="col"><?php _e( 'Date Modified', 'anthologize' ) ?></th>
             	</tr>
             </thead>
 			<tbody>
@@ -216,7 +214,7 @@ class Anthologize_Admin_Main {
 						</th>
 
 						<th scope="row"  class="post-title">
-							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title">#<?php the_ID(); ?> : <?php the_title(); ?></a>
+							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
 
 							<br/>
 									<?php
@@ -274,6 +272,13 @@ class Anthologize_Admin_Main {
 
 
 
+
+		<?php
+		} else {
+		?>
+			<p><?php _e( 'You haven\'t created any projects yet.', 'anthologize' ) ?></p>
+
+			<p><a href="admin.php?page=anthologize/includes/class-new-project.php"><?php _e( 'Start a new project.', 'anthologize' ) ?></a></p>
 
 		<?php
 		} // have_posts()
