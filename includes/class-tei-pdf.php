@@ -1,3 +1,4 @@
+<?php
 // TeiPdf - Generates PDF from internal, hybridized TEI.
 //
 // This file is part of Anthologize
@@ -22,7 +23,6 @@
 // You should have received a copy of the GNU General Public License
 // along with TeiPdf; see the file COPYING.  If not see
 // <http://www.gnu.org/licenses/>.
-<?php
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');

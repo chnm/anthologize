@@ -1,3 +1,4 @@
+<?php
 // base.php - Controller file for PDF generator.
 //
 // This file is part of Anthologize.
@@ -22,7 +23,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Anthologize; see the file COPYING.  If not see
 // <http://www.gnu.org/licenses/>.
-<?php
 
 error_reporting(0);
 
