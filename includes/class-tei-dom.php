@@ -39,7 +39,11 @@ class TeiDom {
     //copyright/license info (availability)
     $this->addLicense($postArray);
     //"editors" copyright and title page
+    $authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
+    $authorsNode->appendChild($this->dom->createTextNode($postArray['authors']));
 
+    $docEditionNode = $this->xpath->query("//tei:docEdition")->item(0);
+    $docEditionNode->appendChild($this->dom->createTextNode($postArray['edition']));
 
 
     //date
@@ -217,6 +221,13 @@ class TeiDom {
 
     //TODO: also slap title into titlePage
 
+    $frontPageNode = $this->xpath->query("//tei:titlePage")->item(0);
+
+    $mainTitle = $this->xpath->query("//tei:titlePart[@type='main']", $frontPageNode)->item(0);
+    $mainTitle->appendChild($this->dom->createTextNode($project->post_title));
+
+    $fpDateNode = $this->xpath->query("tei:docDate", $frontPageNode)->item(0);
+    $fpDateNode->appendChild($this->dom->createTextNode($project->post_date));
 
 
     $identNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident')->item(0);
@@ -261,6 +272,7 @@ class TeiDom {
     //TODO: do_shortcode produces HTML that doesn't work, so shortcodes are coming through as is
     //$content = do_shortcode($libraryItemObject->post_content);
     $content = $libraryItemObject->post_content;
+    $content = utf8_encode($content);
     //using loadHTML because it is more forgiving than loadXML
 
     $tmpHTML->loadHTML($content);
