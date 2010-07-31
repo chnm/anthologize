@@ -141,4 +141,7 @@ a.active-append {
 
 }
 
-
+#blockUISpinner {
+    display:none;
+    padding: 20px 0px 20px 0px;
+}

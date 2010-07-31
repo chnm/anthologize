@@ -50,6 +50,7 @@ class Anthologize_Project_Organizer {
 		?>
 		<div class="wrap" id="project-<?php echo $_GET['project_id'] ?>">
 
+        <div id="blockUISpinner"><img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img></div>
 
 		<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
 
@@ -125,7 +126,7 @@ class Anthologize_Project_Organizer {
 
 				</div> <!-- #anthologize-part-box -->
 
-			<div class="button" id="export-project-button"><a href="#" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
+			<div class="button" id="export-project-button"><a href="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $this->project_id ?>" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
 
 			</div> <!-- #project-organizer-right-column -->
 

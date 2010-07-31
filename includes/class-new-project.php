@@ -50,6 +50,7 @@ class Anthologize_New_Project {
 	?>
 		<div class="wrap">
 
+			<div class="icon32" id="icon-anthologize"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/med-logo.png' ?>" /></div>
             <?php if ( $project ): ?>
 			<h2><?php _e( 'Edit Project', 'anthologize' ) ?></h2>
             <?php else: ?>
