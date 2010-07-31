@@ -13,7 +13,7 @@ var anthologize = {
     var new_item = "false";
     var src_id = anthologize.src_id;
     var item_id = anthologize.cleanPostIds(ui.item.attr("id"));
-    var project_id = this.cleanPostIds(jQuery(".wrap").attr("id"));
+    var project_id = anthologize.getProjectId();
     var org_seq_num = anthologize.org_seq_num;
 
     if (anthologize.fromNew){
@@ -50,6 +50,9 @@ var anthologize = {
     //console.log(ajax_options);
     anth_admin_ajax.place_item(ajax_options);
   },
+  "getProjectId" : function(){
+	  return this.cleanPostIds(jQuery(".wrap").attr("id"));
+  },
   "cleanPostIds" : function(dom_id){
 	  var clean_id = dom_id;
 	  if (clean_id != null){
@@ -57,6 +60,7 @@ var anthologize = {
 	    clean_id = clean_id.replace("part-", "");
 	    clean_id = clean_id.replace("item-", "");
 	    clean_id = clean_id.replace("new-", "");
+	    clean_id = clean_id.replace("append-", "");
     }
 	  return clean_id;
   },
@@ -82,6 +86,15 @@ var anthologize = {
 							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;project_id=4&amp;remove=' + new_item_id + '">Remove</a>' +
 						  '</div>';
 		newItem.children("h3").append(buttons);
+  },
+  "updateAppendedItems" : function(appended_items){
+	  var appendedTo = jQuery(".active-append").closest("li.item");
+	  for (var i in appended_items){
+		  var remove = jQuery("#item-" + appended_items[i]);
+		  remove.fadeOut('slow');
+		  remove.remove();		  
+	  }
+	  appendedTo.find("a.cancelAppend").click();
   }
 };
 
@@ -145,14 +158,14 @@ jQuery(document).ready(function(){
 	  var item = jQuery(this).closest("li.item");
     if (anthologize.appending == false){
 	    jQuery(this).addClass("active-append");
-		  var appendPanel = '<div class="append-panel"><form><div class="append_items"></div>' +
-		                    '<input type="button" name="doAppend" value="Append" /> ' + 
+		  var appendPanel = '<div class="append-panel"><form><div class="append-items"></div>' +
+		                    '<input type="button" class="doAppend" name="doAppend" value="Append" /> ' + 
 		                    '<a href="#" class="cancelAppend">Cancel</a></form></div>';
 		  item.append(appendPanel);
-		  var panel = item.find("div.append_items").first();
+		  var panel = item.find("div.append-items").first();
 		  var appendable = anthologize.getAppendableItems(item.attr("id"));
 		  for (var itemId in appendable){
-			  panel.append('<input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
+			  panel.append('<input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> <label for="append-' + itemId+ '">' + appendable[itemId] + '</label><br />');
 		  }
 		
 		  jQuery(".project-parts").sortable("disable");
@@ -164,7 +177,7 @@ jQuery(document).ready(function(){
  
   jQuery("body").delegate("a.cancelAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
-	  var appendPanel = item.children("div.append-panel").first();
+	  //var appendPanel = item.children("div.append-panel").first();
 	  jQuery(this).parents("li.item").find("a.append").removeClass("active-append");
 	  jQuery("div.append-panel").remove();
 	  jQuery(".project-parts").sortable("enable");
@@ -173,4 +186,34 @@ jQuery(document).ready(function(){
 	  anthologize.appending = false;
   });
 
+  jQuery("body").delegate("input.doAppend", "click", function(){
+	  var item = jQuery(this).closest("li.item");
+	  var append_items = {};
+	  var merg_seq = {};
+	  var i = 0;
+	  jQuery(".append-items input:checkbox:checked").each(function(){
+		  append_items[i] = anthologize.cleanPostIds(this.value);
+		  i++;
+	  });
+	  var j = 1;
+	  item.parent().children().each(function(){
+		  var skip = false;
+		  var id = anthologize.cleanPostIds(jQuery(this). attr("id"));
+		  for (var k in append_items){
+			  if (id == append_items[k]){
+				  skip = true;
+				  break;
+			  }
+			  k++;
+			}
+			if (! skip){
+			  merg_seq[id] = j;
+			  j++;
+			}
+	  });
+	  var project_id = anthologize.getProjectId();
+	  var post_id = anthologize.cleanPostIds(item.attr("id"));
+	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merg_seq});
+    //anthologize.updateAppendedItems(appendThese);
+  });
 });
