@@ -10,11 +10,15 @@ jQuery(document).ready( function() {
         } else if ( filter == 'tag' ) {
 			var theaction = 'get_tags';
         } else {
-			j('#filter').val(0);
-            j('#filter').trigger('change');
+            var theaction = 'default';
 			j('#filter').empty();
 			j('#filter').append('<option value=""> - </option>');
-            // TODO: we want to repopulate the list of posts here
+        }
+
+        j('#filter').val('');
+        j('#filter').trigger('change');
+
+        if (theaction == 'default') {
             return true;
         }
 
@@ -25,7 +29,14 @@ jQuery(document).ready( function() {
 		{
 			var s = response.split(',');
 			j('#filter').empty();
-			j('#filter').append('<option value=""> - </option>');
+
+            if (filter == 'tag') {
+                j('#filter').append('<option value="">All Tags</option>');
+            } else if (filter == 'category') {
+                j('#filter').append('<option value="">All Categories</option>');
+            } else {
+                j('#filter').append('<option value=""> - </option>');
+            }
 			j.each( s, function(index, value) {
 				var v = value.split(':');
 				var h = '<option value="' + v[0] + '">' + v[1] + '</option>';
