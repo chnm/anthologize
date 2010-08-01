@@ -104,6 +104,7 @@ div.anthologize {
 	visibility: hidden;
 }
 
+
 .part-header {
 	background: #e3c1aa !important;
 	color: #5e2600 !important;
@@ -129,17 +130,41 @@ div.anthologize {
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 	border: 2px solid #13395F;
+	position: relative;
+}
+
+.part-header {
+	position: relative;
+}
+
+.part-buttons {
+	width: 200px;
+	text-align: right;
+	position: absolute;
+	right: 8px;
+	top: 6px;
 }
 
 .part-item-buttons {
 	width: 200px;
-	float: right;
 	text-align: right;
+	position: absolute;
+	right: 8px;
+	top: 6px;
 }
 
-/* brown: a40   blue 25589a    paper ffffee		*/
+.part-title {
+	padding-right: 210px;
+	display: block;
+}
 
-.part-item-buttons a, #new-part a {
+.part-title-header {
+	padding-right: 150px;
+	display: block;
+}
+
+
+.part-item-buttons a, #new-part a, .part-buttons a {
 	text-decoration: none;
 	color: #13395F;
 }
@@ -147,12 +172,12 @@ div.anthologize {
 #new-part {
 	width: auto;
 	margin-top: -4px;
-	margin-right: -13px;
 	padding: 2px;
 	border-top-right-radius: 1px;
 	border-top-left-radius: 1px;
 	border-bottom-right-radius: 1px;
 	border-bottom-left-radius: 1px;
+	-moz-border-radius: 1px; /* Browser hacks FTL */
 	background: #e3c1aa !important;
 	color: #5e2600 !important;
 	text-shadow: none !important;
