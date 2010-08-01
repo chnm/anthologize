@@ -100,7 +100,6 @@ class Anthologize_Project_Organizer {
 				<div class="postbox" id="anthologize-parts-box">
 
 				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
-				<?php /* Todo: Add argument to new part button for redirect */ ?>
 
 				<div id="partlist">
 
@@ -312,7 +311,9 @@ class Anthologize_Project_Organizer {
 				<?php
 			}
 		} else {
-
+		?>
+			<p><?php sprintf( _e( 'You haven\'t created any parts yet! Click <a href="post-new.php?post_type=parts&project_id=%s&new_part=1">"New Part"</a> to get started.', 'anthologize' ), $this->project_id ) ?></p>
+		<?php
 		}
 
 
