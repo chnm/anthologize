@@ -5,7 +5,6 @@
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 
 
-
 $tei = new TeiDom($_POST);
 $fileName = TeiDom::getFileName($_POST);
 $ext = "rtf";
@@ -13,24 +12,6 @@ $ext = "rtf";
 $bookTitle = $tei->xpath->query("//tei:titleStmt/tei:title/text()")->item(0)->wholeText;
 $author = $tei->xpath->query("//tei:docAuthor/text()")->item(0)->wholeText;
 $copyright = $tei->xpath->query("//tei:availability/tei:p/text()")->item(0)->wholeText;
-$oneBlogTitle = $tei->xpath->query("//tei:body//tei:title/text()")->item(0)->wholeText;
-$oneBlogText = $tei->xpath->query("//tei:body//html:body")->item(0)->wholeText;
-
-/*
-echo $bookTitle;
-echo "<br />";
-echo $author;
-echo "<br />";
-echo $copyright;
-echo "<br />";
-echo $oneBlogTitle;
-echo "<br />";
-echo $oneBlogText;
-echo "<br />";
-
-die();
-
-*/
 
 
 // get contents of template file
@@ -45,16 +26,22 @@ fclose ($fp);
 $output = str_replace('[[BOOK TITLE]]', $bookTitle, $output);
 $output = str_replace('[[AUTHOR NAME]]', $author, $output);
 $output = str_replace('[[COPYRIGHT]]', $copyright, $output);
-$output = str_replace('[[BLOG TITLE]]', $oneBlogTitle, $output);
-$output = str_replace('[[BLOG CONTENT]]', $oneBlogText, $output);
 
-//what we have to do with this is first remove these four lines from the existing $output
-//\par \page
-//\par [[BLOG TITLE]]
-//\par
-//\par [[BLOG CONTENT]]
+$libraryItems = $tei->xpath->query("//tei:div[@type='libraryItem']");
 
-//then what we need to do is, for each post, add to $output in a loop, as above.
+$subOutput = "";
+for($i=0; $i<$libraryItems->length; $i++) {
+	$title = $tei->xpath->query("tei:head/tei:title/text()", $libraryItems->item($i))->item(0)->wholeText;
+  $htmlContent = $tei->xpath->query("body", $libraryItems->item($i))->item(0)->textContent;
+  $subOutput .= "\par $title";
+  $subOutput .= "\par";
+  $subOutput .= "\par $htmlContent";
+
+}
+
+$replaceChunk = "[[BLOG CONTENT]]";
+
+$output = str_replace($replaceChunk, $subOutput, $output);
 
 
 //generate the headers to help a browser choose the correct application
