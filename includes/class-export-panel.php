@@ -122,7 +122,9 @@ class Anthologize_Export_Panel {
 						<div class="pub-options-title"><?php _e( 'Type', 'anthologize' ) ?></div>
 						<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="pdf" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
-						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?>
+						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?><br />
+
+						<input type="radio" name="filetype" value="rtf" /> <?php _e( 'RTF', 'anthologize' ) ?>
 					</div>
 
 					<div style="width: 150px; float: left; padding: 8px;">
@@ -194,6 +196,9 @@ class Anthologize_Export_Panel {
 				return false;
 			case 'pdf' :
 				load_template( WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
+				return false;
+			case 'rtf' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
 				return false;
 		}
 	}
