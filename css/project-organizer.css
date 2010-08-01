@@ -99,7 +99,7 @@ div.anthologize {
 	padding: 8px;
 }
 
-#project-organizer-frame a.disabled {
+#project-organizer-frame .disabled {
 	display: none;
 	visibility: hidden;
 }

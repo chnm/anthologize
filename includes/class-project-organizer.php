@@ -312,7 +312,7 @@ class Anthologize_Project_Organizer {
 			}
 		} else {
 		?>
-			<p><?php sprintf( _e( 'You haven\'t created any parts yet! Click <a href="post-new.php?post_type=parts&project_id=%s&new_part=1">"New Part"</a> to get started.', 'anthologize' ), $this->project_id ) ?></p>
+			<p><?php echo sprintf( __( 'You haven\'t created any parts yet! Click <a href="%1$s">"New Part"</a> to get started.', 'anthologize' ), 'post-new.php?post_type=parts&project_id=' . $this->project_id . '&new_part=1' ) ?></p>
 		<?php
 		}
 
@@ -584,7 +584,7 @@ class Anthologize_Project_Organizer {
 				<div class="part-item-buttons">
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 
-					<a href="#append" class="append"><?php _e( 'Append', 'anthologize' ) ?> |</a>
+					<a href="#append" class="append"><?php _e( 'Append', 'anthologize' ) ?></a><span class="append-sep"> |</span>
 					<?
 					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
 					?>

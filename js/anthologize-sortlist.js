@@ -70,7 +70,7 @@ var anthologize = {
 			    anthologize.fromNew = true;
 		    }
 	    }
-	  });	
+	  });
   },
   "getProjectId" : function(){
 	  return this.cleanPostIds(jQuery(".wrap").attr("id"));
@@ -101,11 +101,11 @@ var anthologize = {
 	  newItem = anthologize.newItem;
 	  newItem.attr("id", "item-" + new_item_id);
 	  newItem.children("h3").wrapInner('<span class="part-title" />');
-	
+
 	  var buttons = '<div class="part-item-buttons">' +
 							'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
 							'<a class="append" href="#append">Append | </a> ' +
-							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 
+							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
 							'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">Remove</a>' +
 						  '</div>';
 		newItem.children("h3").append(buttons);
@@ -115,24 +115,26 @@ var anthologize = {
 	  for (var i in appended_items){
 		  var remove = jQuery("#item-" + appended_items[i]);
 		  remove.fadeOut('slow');
-		  remove.remove();		  
+		  remove.remove();
 	  }
 	  appendedTo.find("a.cancelAppend").click();
 	  anthologize.setAppendStatus();
   },
   "setAppendStatus" : function(){
 	   jQuery("a.append").removeClass("disabled");
+	   jQuery("span.append-sep").removeClass("disabled");
 	   jQuery(".part-items").each(function(){
 		   var items = jQuery(this).find("li.item");
 		   if (items.length == 1){
 			   items.first().find("a.append").addClass("disabled");
+			   items.first().find("span.append-sep").addClass("disabled");
 		   }
 	   });
   }
 };
 
 jQuery.fn.anthologizeSortList = function (options){
-  
+
   var settings = jQuery.extend({
     placeholder: 'anthologize-drop-item',
     start: function(event, ui){
@@ -161,7 +163,7 @@ jQuery.fn.anthologizeSortList = function (options){
     }
   },
   options);
-  
+
   return this.each(function(){jQuery(this).sortable(settings)});
 }
 
@@ -170,16 +172,16 @@ jQuery(document).ready(function(){
   jQuery(".part-items ul").anthologizeSortList({
     connectWith: ".part-items ul"
   });
-  anthologize.setAppendStatus(); 
-  anthologize.initSidebar();  
+  anthologize.setAppendStatus();
+  anthologize.initSidebar();
 
   jQuery("body").delegate("a.append", "click", function(){
 	  var item = jQuery(this).closest("li.item");
-	
+
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-append");
 		  var appendPanel = '<div class="append-panel" style="display:none;"><form><div class="append-items"></div>' +
-		                    '<input type="button" class="doAppend" name="doAppend" value="Append" /> ' + 
+		                    '<input type="button" class="doAppend" name="doAppend" value="Append" /> ' +
 		                    '<a href="#cancel" class="cancelAppend">Cancel</a></form></div>';
 		  item.append(appendPanel);
 		  var panelItems = item.find("div.append-items").first();
@@ -188,18 +190,20 @@ jQuery(document).ready(function(){
 			  panelItems.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
 			               '<label for="append-' + itemId+ '">' + appendable[itemId] + '</label></div>');
 		  }
-		
+
 		  jQuery(".project-parts").sortable("disable");
 		  jQuery(".part-items ul").sortable("disable");
 		  jQuery("a.append").addClass("disabled");
+		  jQuery("span.append-sep").addClass("disabled");
 		  jQuery(this).removeClass("disabled");
+		  jQuery(this).siblings().removeClass("disabled");
 		  item.find("div.append-panel").first().slideToggle();
 		  anthologize.appending = true;
 	  }else{
 		  item.find("a.cancelAppend").click();
 	  }
   });
- 
+
   jQuery("body").delegate("a.cancelAppend", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 	  jQuery(this).parents("li.item").find("a.append").removeClass("active-append");
