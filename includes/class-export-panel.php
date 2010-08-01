@@ -97,7 +97,7 @@ class Anthologize_Export_Panel {
 			<?php $project_id = $_POST['project_id']; ?>
 			<?php $project = get_post( $project_id ); ?>
 
-			<form action="" method="post">
+			<form action="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $project_id ?>&noheader=true" method="post">
 
 				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 
@@ -187,20 +187,8 @@ class Anthologize_Export_Panel {
 	}
 
 	function load_template() {
-		switch( $_POST['filetype'] ) {
-			case 'tei' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
-				return false;
-			case 'epub' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
-				return false;
-			case 'pdf' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
-				return false;
-			case 'rtf' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
-				return false;
-		}
+		// The goggles! Zey do nossing!
+		// Check anthologize.php for the real handler method load_template, which happens before headers are sent.
 	}
 
 	function get_projects() {

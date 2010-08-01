@@ -211,6 +211,9 @@ function anthologize_loader () {
 			case 'pdf' :
 				load_template( WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
 				return false;
+			case 'rtf' :
+				load_template( WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
+				return false;
 		}
 	}
 
@@ -249,29 +252,29 @@ $anthologize_loader = new Anthologize_Loader();
 /* Soem generic helpers for public display. Not sure where we should put these. */
 
 function anthologize_get_project_parts($projectId) {
-    
+
     $projectParts =  new WP_Query(array('post_parent'=>$projectId, 'post_type'=>'parts'));
-    
+
     return $projectParts->posts;
-    
+
 }
 
 function anthologize_get_part_items($partId) {
     $partItems = new WP_Query(array('post_parent'=>$partId, 'post_type'=>'library_items'));
-    
+
     return $partItems->posts;
-    
+
 }
 
 function anthologize_display_project_content($projectId) {
     $parts = anthologize_get_project_parts($projectId);
-    
+
     foreach ( $parts as $part ) {
         echo '<h2>' . $part->post_title . '</h2>'."\n";
         echo '<div class="anthologize-part-content">'."\n";
         echo $item->post_content . "\n";
         echo '</div>' . "\n";
-        
+
         $items = anthologize_get_part_items($part->ID);
         foreach ( $items as $item ) {
             echo '<h3>'.$item->post_title . '</h3>'."\n";
