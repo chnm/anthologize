@@ -62,6 +62,8 @@ var anthologize = {
 	    connectToSortable: ".part-items ul",
 	    helper: "clone",
 	    revert: "invalid",
+	    zIndex: 2700,
+	    distance: 3,
 	    start: function(event, ui){
 	      anthologize.new_item_org_seq_num = jQuery(this).index() + 1;
 	    },
@@ -137,6 +139,7 @@ jQuery.fn.anthologizeSortList = function (options){
 
   var settings = jQuery.extend({
     placeholder: 'anthologize-drop-item',
+    distance: 3,
     start: function(event, ui){
       anthologize.src_id = null;
       anthologize.org_seq_num = ui.item.index() + 1;
