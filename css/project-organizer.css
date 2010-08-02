@@ -37,11 +37,15 @@ div.anthologize {
     border-bottom:1px solid #ddd;
 }
 
-#adminmenu #toplevel_page_anthologize .wp-menu-image a {
+#adminmenu .toplevel_page_anthologize .wp-menu-image a {
 	background-image: url(../images/little-logo.png) !important;
 	background-repeat: no-repeat;
 	background-position: -3px 0px !important;
 	background: transparent;
+}
+
+#adminmenu .toplevel_page_anthologize .wp-menu-image a img {
+	display: none;
 }
 
 #icon-anthologize {
