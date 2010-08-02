@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: boonebgorges, chnm, digitaleffie, gossettphd, janaremy, jcmeloni, jeremyboggs, knoxdw, oneweekonetool, zmccune
-Donate link: http://anthologize.com/
+Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish
 Requires at least: 3.0
 Tested up to: 3.0.1
