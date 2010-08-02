@@ -40,6 +40,9 @@ class Anthologize_Export_Panel {
 
 		$acknowledgements = $options['acknowledgements'];
 
+		if ( extension_loaded('zip') === true )
+			$zip_is_enabled = true;
+
 		?>
 		<div class="wrap anthologize">
 
@@ -143,7 +146,12 @@ class Anthologize_Export_Panel {
 				<div id="publishing-options">
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Type', 'anthologize' ) ?></div>
-						<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
+
+						<?php if ( $zip_is_enabled ) : ?>
+							<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
+						<?php else : ?>
+							<input type="radio" name="filetype" value="epub" disabled="disabled" /> <span class="not-enabled"><?php _e( 'ePub requires the PHP Zip library to be enabled. Contact your hosting provider to enable Zip.', 'anthologize' ) ?></span><br />
+						<?php endif; ?>
 						<input type="radio" name="filetype" value="pdf" checked="checked" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?><br />
 

@@ -17,6 +17,10 @@
 	color: #333;
 }
 
+.not-enabled {
+	color: #999;
+}
+
 div.anthologize {
 	background: #fff;
 	margin: 25px 15px 25px 15px;
