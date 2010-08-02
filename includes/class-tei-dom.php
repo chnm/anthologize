@@ -25,25 +25,24 @@ class TeiDom {
     $this->dom->preserveWhiteSpace = false;
     $this->setXPath();
 		$this->buildProjectData($postArray['project_id']);
-    if($checkImgSrcs) {
-    	$this->checkImgSrcs();
-    }
 
     $this->processPostArray($postArray);
-
+    $this->sanitizeContent($checkImgSrcs);
 	}
 
 
 
   public function processPostArray($postArray) {
     //process all the data and stuff it into the appropriate place in
-
+//TODO: break out data from concatenated display of data
+//display will be dumped somewhere in <tei:body>, data will go into tei headers
 
     //copyright/license info (availability)
     $this->addLicense($postArray);
 
 
     //"editors" copyright and title page
+
     $authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
     $authorsNode->appendChild($this->dom->createTextNode($postArray['cname'] . ', ' . $postArray['authors']));
 
@@ -69,6 +68,10 @@ class TeiDom {
     $f1TitleNode->appendChild($this->dom->createTextNode('Dedication'));
     $f1Html = $this->xpath->query("html:body", $f1Node)->item(0);
     $frag = $this->dom->createDocumentFragment();
+    if($postArray['dedication'] == '') {
+      $postArray['dedication'] = "<p></p>";
+    }
+
     $frag->appendXML($postArray['dedication']);
     $f1Html->appendChild($frag);
 
@@ -79,6 +82,10 @@ class TeiDom {
     $f2TitleNode->appendChild($this->dom->createTextNode('Acknowledgements'));
     $f2Html = $this->xpath->query('html:body', $f2Node)->item(0);
     $frag = $this->dom->createDocumentFragment();
+    if($postArray['acknowledgements'] == '') {
+    	$postArray['acknowledgements'] = "<p></p>";
+    }
+
     $frag->appendXML($postArray['acknowledgements']);
     $f2Html->appendChild($frag);
 
@@ -262,10 +269,13 @@ class TeiDom {
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
     $tmpHTML = new DOMDocument();
-    //TODO: do_shortcode produces HTML that doesn't work, so shortcodes are coming through as is
+
     //$content = do_shortcode($libraryItemObject->post_content);
     $content = $libraryItemObject->post_content;
+    //TODO: find shortcodes and display pseudo-error text
+    //TODO: only other option is to reliably expand EVERYTHING _AND_ check the HTML for breakage
     $content = utf8_encode($content);
+    $content = $this->sanitizeShortCodes($content);
     //using loadHTML because it is more forgiving than loadXML
 
     $tmpHTML->loadHTML($content);
@@ -296,6 +306,8 @@ class TeiDom {
     //from userID. Otherwise/and, go with info from boones
     // $author_name = get_post_meta( $item_id, 'author_name', true );
 
+    //TODO: above might be old. Check nativeness by looking at whether dissplay name is set for username
+
 		$authorObject = get_userdata($postObject->post_author);
 		//print_r($authorObject);
     $this->addPerson($authorObject);
@@ -321,8 +333,40 @@ class TeiDom {
   }
 
 
+  private function sanitizeContent($checkImgSrcs) {
+    //TODO: check connectivity
+    //TODO: handle shortcodes
+
+
+    if($checkImgSrcs) {
+      $this->checkImgSrcs();
+    }
+  }
+
+  private function sanitizeShortCodes($content) {
+
+    $pattern = get_shortcode_regex();
+
+    return preg_replace_callback('/'.$pattern.'/s', array('TeiDom', 'sanitizeShortCode'), $content);
+    //TODO: go to town
+  }
+
+  private function sanitizeShortCode($m) {
+  	//modified from WP do_shortcode_tag() wp_includes/shorcodes.php
+
+    $tag = $m[2];
+    $html = "<span class='anthologize-shortcode'>***";
+    $html .= "Anthologize warning: This section contains a WordPress 'shortcode', which can result in errors in some output formats.";
+    $html .= "The shortcode [$tag] has been removed to prevent such errors. You can rectify this by editing the library item in the HTML view, ";
+    $html .= "look for the [$tag] in the HTML, and replacing it with the proper HTML. You can find the proper HTML by viewing the item in your browser, ";
+    $html .= "and viewing the source. More help will be posted to the Anthologize forums in the future.";
+    $html .= "***</span>";
+    return $html;
+  }
 
   private function checkImgSrcs() {
+    //TODO: check for net connectivity
+    //TODO: improve pseudo-error message and feedback
     $imgs = $this->dom->getElementsByTagName('img');
     for($i = $imgs->length; $i>0; $i--) {
         $imgNode = $imgs->item(0);
@@ -337,7 +381,7 @@ class TeiDom {
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if($code == 404) {
-          $noImgSpan = $this->dom->createElementNS(HTML, 'span', 'Image not found');
+          $noImgSpan = $this->dom->createElementNS(HTML, 'p', 'Image not found');
           $noImgSpan->setAttribute('class', 'anthologize-error');
           $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
         }
