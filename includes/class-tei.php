@@ -57,7 +57,7 @@ class TeiMaster {
 
 	public function get_parts() {
 
-		return $this->xpath->query("tei:div[@type='part']");
+		return $this->xpath->query("//tei:div[@type='part']");
 
 	}
 
@@ -69,7 +69,21 @@ class TeiMaster {
 
 	public function get_html($context) {
 
-		return $this->xpath->query("html:body/*", $context);
+		$html_nodes   = $this->xpath->query("html:body/*", $context);
+
+		$html = "";
+
+		foreach ($html_nodes as $node) {
+
+			$html_string = $this->node_to_string($node);
+		  $html_string = $this->strip_whitespace($html_string);
+
+			$html = $html . $html_string;
+
+		}
+
+		return $html;
+
 
 	}
 
@@ -88,6 +102,18 @@ class TeiMaster {
 	public function get_font_size() {
 
 		return (int)$this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-size']")->item(0)->textContent;
+
+	}
+
+	private function node_to_string($node) {
+
+		return $this->tei->saveXML($node);
+
+	}
+
+	private function strip_whitespace($target) {
+
+		return preg_replace('/\s+/', ' ', $target);
 
 	}
 
