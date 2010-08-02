@@ -55,7 +55,20 @@ var anthologize = {
 	    "dest_seq":  dest_seq,
 	    "src_seq": anthologize.src_seq
     };
-    anth_admin_ajax.place_item(ajax_options);
+    if (anthologize.didSortChange(ajax_options)){
+      anth_admin_ajax.place_item(ajax_options);
+    }else{
+	    jQuery.unblockUI();
+    }
+  },
+  "didSortChange" : function(ajax_options){
+    if (! (((ajax_options.src_id == ajax_options.dest_id) || 
+           (ajax_options.src_id == null && ajax_options.dest_id == ajax_options.project_id))
+	      && ajax_options.src_seq[ajax_options.item_id] == ajax_options.dest_seq[ajax_options.item_id])){
+      return true;
+    }else{
+	    return false;
+    }	
   },
   "initSidebar" : function(){
 	  jQuery("#sidebar-posts li").draggable({
