@@ -201,6 +201,8 @@ class Anthologize_Loader {
 		if ( is_admin() )
 			require( dirname( __FILE__ ) . '/includes/class-admin-main.php' );
 
+		require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+
 		require( dirname( __FILE__ ) . '/includes/class-ajax-handlers.php' );
 		$ajax_handlers = new Anthologize_Ajax_Handlers();
 
@@ -213,6 +215,13 @@ class Anthologize_Loader {
 
 
 	function load_template() {
+		if ( $_POST['export-step'] != 2 )
+			return;
+
+		$project_id = $_POST['project_id'];
+
+		anthologize_save_project_meta();
+
 //		print_r($_POST); die();
 		switch( $_POST['filetype'] ) {
 			case 'tei' :
@@ -262,49 +271,5 @@ endif; // class exists
 
 $anthologize_loader = new Anthologize_Loader();
 
-/* Soem generic helpers for public display. Not sure where we should put these. */
 
-function anthologize_get_project_parts($projectId) {
-
-    $projectParts =  new WP_Query(array('post_parent'=>$projectId, 'post_type'=>'parts'));
-
-    return $projectParts->posts;
-
-}
-
-function anthologize_get_part_items($partId) {
-    $partItems = new WP_Query(array('post_parent'=>$partId, 'post_type'=>'library_items'));
-
-    return $partItems->posts;
-
-}
-
-function anthologize_display_project_content($projectId) {
-    $parts = anthologize_get_project_parts($projectId);
-
-    foreach ( $parts as $part ) {
-        echo '<h2>' . $part->post_title . '</h2>'."\n";
-        echo '<div class="anthologize-part-content">'."\n";
-        echo $item->post_content . "\n";
-        echo '</div>' . "\n";
-
-        $items = anthologize_get_part_items($part->ID);
-        foreach ( $items as $item ) {
-            echo '<h3>'.$item->post_title . '</h3>'."\n";
-            echo '<div class="anthologize-item-content">';
-            echo $item->post_content;
-            echo '</div>';
-        }
-    }
-}
-
-function anthologize_filter_post_content($content) {
-    global $post;
-    if ($post->post_type == 'projects') {
-        $content .=  anthologize_display_project_content(get_the_ID());
-    }
-    return $content;
-}
-
-add_filter('the_content', 'anthologize_filter_post_content');
 ?>

@@ -12,6 +12,7 @@ class Anthologize_New_Project {
         $post_data['post_status'] = 'publish'; // Should come up with a way to manage drafts vs. publishing.
 
         $new_anthologize_meta = $_POST['anthologize_meta'];
+       // print_r($_POST); die();
 
         // If we're editing an existing project.
         if ( !empty($_POST['project_id'])) {
@@ -32,7 +33,7 @@ class Anthologize_New_Project {
 		} else { // Otherwise, we're creating a new project
 
             $new_post = wp_insert_post($post_data);
-            add_post_meta($new_post->ID,'anthologize_meta',$new_anthologize_meta,TRUE);
+            update_post_meta($new_post, 'anthologize_meta', $new_anthologize_meta );
 
 		}
 
