@@ -40,7 +40,6 @@ var anth_admin_ajax = {
                 }
                 anthologize.setAppendStatus();
                 jQuery.unblockUI();
-                return true;
             },
             error: function(){
                 ajax_error_refresh();
