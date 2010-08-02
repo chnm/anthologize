@@ -51,17 +51,17 @@ class Anthologize_Export_Panel {
 
 				<tr valign="top">
 					<th scope="row"><?php _e( 'Copyright Holder', 'anthologize' ) ?></th>
-					<td><input type="text" id="cname" name="cname" /></td>
+					<td><input type="text" id="cname" name="cname" value="<?php  ?>" /></td>
 				</tr>
 
 				<tr valign="top">
 					<th scope="row"><?php _e( 'Type', 'anthologize' ) ?></th>
 					<td>
 						<input type="radio" id="ctype" name="ctype" value="c" /> <?php _e( 'Copyright', 'anthologize' ) ?><br />
-						<input type="radio" id="ctype" name="ctype" value="cc" /> <?php _e( 'Creative Commons', 'anthologize' ) ?>
+						<input type="radio" id="ctype" name="ctype" value="cc" checked="checked" /> <?php _e( 'Creative Commons', 'anthologize' ) ?>
 							<select id="cctype" name="cctype">
 								<option value=""><?php _e( 'Select One...', 'anthologize' ) ?></option>
-								<option value="by"><?php _e( 'Attribution', 'anthologize' ) ?></option>
+								<option value="by" selected="selected"><?php _e( 'Attribution', 'anthologize' ) ?></option>
 								<option value="by-sa"><?php _e( 'Attribution Share-Alike', 'anthologize' ) ?></option>
 								<option value="by-nd"><?php _e( 'Attribution No Derivatives', 'anthologize' ) ?></option>
 								<option value="by-nc"><?php _e( 'Attribution Non-Commercial', 'anthologize' ) ?></option>
@@ -116,7 +116,7 @@ class Anthologize_Export_Panel {
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Type', 'anthologize' ) ?></div>
 						<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
-						<input type="radio" name="filetype" value="pdf" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
+						<input type="radio" name="filetype" value="pdf" checked="checked" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
 						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?><br />
 
 						<input type="radio" name="filetype" value="rtf" /> <?php _e( 'RTF', 'anthologize' ) ?>
@@ -124,7 +124,7 @@ class Anthologize_Export_Panel {
 
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Page Size', 'anthologize' ) ?></div>
-						<input type="radio" name="page-size" value="letter" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
+						<input type="radio" name="page-size" value="letter" checked="checked" /> <?php _e( 'Letter', 'anthologize' ) ?><br />
 						<input type="radio" name="page-size" value="a4" /> <?php _e( 'A4', 'anthologize' ) ?>
 					</div>
 
@@ -134,7 +134,7 @@ class Anthologize_Export_Panel {
 							<option value="9">9</option>
 							<option value="10">10</option>
 							<option value="11">11</option>
-							<option value="12">12</option>
+							<option value="12" selected="selected">12</option>
 							<option value="13">13</option>
 							<option value="14">14</option>
 						</select>
@@ -146,6 +146,15 @@ class Anthologize_Export_Panel {
 							<option value="times" class="serif">Serif</option>
 							<option value="helvetica" class="sans-serif">Sans-serif</option>
 							<option value="courier" class="fixed-width">Fixed-width</option>
+						</select>
+					</div>
+
+					<div style="width: 150px; float: left; padding: 8px;">
+						<div class="pub-options-title"><?php _e( 'Shortcodes', 'anthologize' ) ?></div>
+						<p><small><?php _e( 'WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose "Disable" to keep Anthologize from processing them.', 'anthologize' ) ?></small></p>
+						<select name="do-shortcodes">
+							<option value="1" checked="checked"><?php _e( 'Enable', 'anthologize' ) ?></option>
+							<option value="0"><?php _e( 'Disable', 'anthologize' ) ?></option>
 						</select>
 					</div>
 
