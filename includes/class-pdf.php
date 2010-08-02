@@ -75,30 +75,25 @@ class TeiPdf {
 		foreach ($parts as $part) {
 			// Grab the main title for each part and render it as
 			// a "chapter" title.
-			$title = get_title($part);
+			$title = $this->tei->get_title($part);
 
 			$html = $html . "<h1>" . $title . "</h1>";
 
 			// Create a nodeList containing all libraryItems
-			$library_items = get_div("libraryItem", $part);
+			$library_items = $this->tei->get_div("libraryItem", $part);
 
 			foreach ($library_items as $item) {
+
 				// Grab the main title for each libraryItem and render it
 				// as a "sub section" title.
-				$sub_title = get_title($item);
+				$sub_title = $this->tei->get_title($item);
 				
 				$html = $html . "<h3>" . $sub_title . "</h3>";
 
-				// Grab all paragraphs
-				$paras = get_html($item);
+				// All content below <html:body>
+				$post_content = $this->tei->get_html($item);
 
-				foreach ($paras as $para) {
-
-					$strip1 = $this->strip_whitespace($this->node_to_string($para));
-
-					$html = $html . $strip1;
-
-				} // foreach para
+				$html = $html . $post_content;
 
 			} // foreach item
 
@@ -110,7 +105,7 @@ class TeiPdf {
 		// This method has several options, check the source code
 		// documentation for more information.
 
-		//echo $html; // DEBUG
+		//echo get_class($html); // DEBUG
 		$filename = $book_title . ".pdf";
 		$this->pdf->Output($filename, 'I');
 
@@ -163,13 +158,6 @@ class TeiPdf {
 
 	}
 
-	private function node_to_string($node) {
-		return $this->tei->saveXML($node);
-	}
-
-	private function strip_whitespace($target) {
-		return preg_replace('/\s+/', ' ', $target);
-	}
 
 
 } // TeiPdf

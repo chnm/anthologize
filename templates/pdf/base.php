@@ -26,14 +26,14 @@
 
 //error_reporting(0);
 
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-pdf.php');
 
-$tei_master = new  TeiMaster();
+$tei_master = new TeiMaster();
 
 $pdf = new TeiPdf($tei_master);
 
-//header('Content-type: application/pdf');
+//header('Content-type: text/html');
 $pdf->write_pdf();
 
 
