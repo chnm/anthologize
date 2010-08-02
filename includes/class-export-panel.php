@@ -122,7 +122,7 @@ class Anthologize_Export_Panel {
 
 			<form action="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $project_id ?>&noheader=true" method="post">
 
-				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" disabled="disabled" size="100"/>
+				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 
 				<div style="clear: both;"> </div><br />
 
