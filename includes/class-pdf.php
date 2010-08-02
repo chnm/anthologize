@@ -26,7 +26,7 @@
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php');
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei.php');
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
@@ -38,20 +38,11 @@ class TeiPdf {
 	public $pdf;
 	public $xpath;
 
-	function __construct($tei_dom) {
+	function __construct($tei_master) {
 
-		// Creates an object of type DOMDocument
-		// and exposes it as the attribute $tei
-		$this->tei = new DOMDocument();
+		$this->tei = $tei_master;
 
-    $this->tei->loadXML($tei_dom->getTeiString());
-
-		$this->xpath = new DOMXpath($this->tei);
-    $this->xpath->registerNamespace('tei', TEI);
-		$this->xpath->registerNamespace('html', HTML);
-		$this->xpath->registerNamespace('anth', ANTH);
-
-		$paper_size = $this->get_paper_size();
+		$paper_size = $this->tei->get_paper_size();
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $paper_size, true, 'UTF-8', false);
 
@@ -76,33 +67,34 @@ class TeiPdf {
 
 		$this->pdf->AddPage();
 
-		$book_title = $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
+		$book_title = $this->tei->get_book_title();
 		
 		// Create a nodeList containing all parts.
-		$parts = $this->xpath->query("//tei:div[@type='part']");
+		$parts = $this->tei->get_parts();
 
 		foreach ($parts as $part) {
 			// Grab the main title for each part and render it as
 			// a "chapter" title.
-			$title = $this->xpath->query("tei:head/tei:title", $part)->item(0);
-			$html = $html . "<h1>" . $title->textContent . "</h1>";
+			$title = get_title($part);
+
+			$html = $html . "<h1>" . $title . "</h1>";
 
 			// Create a nodeList containing all libraryItems
-			$library_items = $this->xpath->query("tei:div[@type='libraryItem']", $part);
+			$library_items = get_div("libraryItem", $part);
 
 			foreach ($library_items as $item) {
 				// Grab the main title for each libraryItem and render it
 				// as a "sub section" title.
-				$sub_title = $this->xpath->query("tei:head/tei:title", $item)->item(0);
-				$html = $html . "<h3>" . $sub_title->textContent . "</h3>";
+				$sub_title = get_title($item);
+				
+				$html = $html . "<h3>" . $sub_title . "</h3>";
 
 				// Grab all paragraphs
-				$paras = $this->xpath->query("html:body/*", $item);
+				$paras = get_html($item);
 
 				foreach ($paras as $para) {
 
 					$strip1 = $this->strip_whitespace($this->node_to_string($para));
-					$strip2 = strip_shortcodes($strip1);
 
 					$html = $html . $strip1;
 
@@ -156,11 +148,8 @@ class TeiPdf {
 		// set default font subsetting mode
 		$this->pdf->setFontSubsetting(true);
 
-		$font_family = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-family']")->item(0);
-		$font_size = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='font-size']")->item(0);
-
-		$font_family = $font_family->textContent;
-		$font_size= (int)$font_size->textContent;
+		$font_family = $this->tei->get_font_family();
+		$font_size   = $this->tei->get_font_size();
 
 		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 
@@ -182,20 +171,6 @@ class TeiPdf {
 		return preg_replace('/\s+/', ' ', $target);
 	}
 
-	private function strip_shortcodes($target) {
-
-		$shortcode = get_shortcode_regex();
-		return preg_replace($shortcode, '', $target);
-
-	}
-
-	private function get_paper_size() {
-		
-		$paper_size = $this->xpath->query("/tei:TEI/tei:teiHeader/anth:outputParams/anth:param[@name='paper-type']")->item(0);
-
-		return $paper_size->textContent;
-
-	}
 
 } // TeiPdf
 
