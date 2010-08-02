@@ -10,7 +10,7 @@ class Anthologize_New_Project {
         $post_data['post_title'] = $_POST['post_title'];
         $post_data['post_type'] = 'projects';
         $post_data['post_status'] = 'publish'; // Should come up with a way to manage drafts vs. publishing.
-        
+
         $new_anthologize_meta = $_POST['anthologize_meta'];
 
         // If we're editing an existing project.
@@ -60,17 +60,17 @@ class Anthologize_New_Project {
             <form action="<?php echo get_bloginfo( 'wpurl' ) ?>/wp-admin/admin.php?page=anthologize/includes/class-new-project.php&noheader=true" method="post">
                 <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><label for="post_title">Project Title</label></th>
+                    <th scope="row"><label for="post_title"><?php _e( 'Project Title', 'anthologize' ) ?></label></th>
                     <td><input type="text" name="post_title" value="<?php echo $project->post_title; ?>"></td>
                 </tr>
 
                 <tr valign="top">
-                    <th scope="row"><label for="anthologize_meta[subtitle]">Subtitle</label>
+                    <th scope="row"><label for="anthologize_meta[subtitle]"><?php _e( 'Subtitle', 'anthologize' ) ?></label>
                     <td><input type="text" name="anthologize_meta[subtitle]" value="<?php if( !empty($meta['subtitle']) ) echo $meta['subtitle']; ?>" /></td>
                 </tr>
 
             	<tr valign="top">
-            	    <th scope="row"><label>Author Name <span>(optional)</span></label></th>
+            	    <th scope="row"><label><?php _e( 'Author Name <span>(optional)</span>', 'anthologize' ) ?></label></th>
             	    <td><textarea name="anthologize_meta[author_name]" rows="5" cols="50"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea></td>
             	</tr>
 

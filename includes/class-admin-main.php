@@ -107,7 +107,7 @@ class Anthologize_Admin_Main {
 		unset( $menu[$position][5] );
 
 		$_registered_pages[$hookname] = true;
-//		echo "<pre>"; print_r($menu); die();
+
 		return $hookname;
 	}
 

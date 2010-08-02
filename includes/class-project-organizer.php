@@ -39,14 +39,11 @@ class Anthologize_Project_Organizer {
 
 		if ( isset( $_GET['remove'] ) )
 			$this->remove_item( $_GET['remove'] );
-//print_r($_POST); die();
-
-
-// You need to make sure that the append_children are actually in the form
 
 		if ( isset( $_POST['append_children'] ) ) {
 			$this->append_children( $_POST['append_parent'], $_POST['append_children'] );
 		}
+
 		?>
 		<div class="wrap anthologize" id="project-<?php echo $_GET['project_id'] ?>">
 
@@ -107,8 +104,8 @@ class Anthologize_Project_Organizer {
 				<div id="partlist">
 
 				<ul class="project-parts">
-                                    <?php $this->list_existing_parts() ?>
-                                </ul>
+                	<?php $this->list_existing_parts() ?>
+                </ul>
 
 				<noscript>
 					<h3><?php _e( 'New Parts', 'anthologize' ) ?></h3>

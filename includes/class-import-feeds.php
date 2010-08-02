@@ -5,7 +5,7 @@ if ( !class_exists( 'Anthologize_Import_Feeds_Panel' ) ) :
 class Anthologize_Import_Feeds_Panel {
 
 	/**
-	 *
+	 *	Creates the Dashboard Panel for importing feed content, and defines the business functions
 	 */
 	function anthologize_import_feeds_panel ( ) {
 		$this->display();
@@ -107,11 +107,9 @@ class Anthologize_Import_Feeds_Panel {
 
 				<?php $howmany = count( $imported_items ) ?>
 
-				<h3>Successfully imported!</h3>
+				<h3><?php _e( 'Successfully imported!', 'anthologize' ) ?></h3>
 
 				<p><a href="admin.php?page=anthologize"><?php _e( 'Back to Anthologize', 'anthologize' ) ?></a></p>
-
-
 
 			<?php endif; ?>
 

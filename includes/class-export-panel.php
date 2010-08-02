@@ -13,11 +13,6 @@ class Anthologize_Export_Panel {
 		$this->project_id = $project_id;
 	}
 
-	function load_styles() {
-		echo "Loaded!"; die();
-	}
-
-
 	function display() {
 	?>
 		<div class="wrap anthologize">
