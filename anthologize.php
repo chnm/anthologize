@@ -302,8 +302,8 @@ function anthologize_filter_post_content($content) {
     global $post;
     if ($post->post_type == 'projects') {
         $content .=  anthologize_display_project_content(get_the_ID());
-        return $content;
     }
+    return $content;
 }
 
 add_filter('the_content', 'anthologize_filter_post_content');
