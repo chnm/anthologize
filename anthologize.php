@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Anthologize
-Plugin URI: http://oneweekonetool.org
+Plugin URI: http://anthologize.org
 Description: Use the power of WordPress to transform your content into a book.
 Version: 0.3-alpha
 Author: One Week | One Tool
-Author URI: http://anthologize.org
+Author URI: http://oneweekonetool.org
 */
 
 /*
