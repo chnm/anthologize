@@ -12,10 +12,13 @@ class TeiDom {
 	public $personMetaDataNode;
 	public $bodyNode;
   public $userNiceNames = array();
+  public $doShortcodes = true;
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
-
+    if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
+    	$this->doShortcodes = false;
+    }
 
 
 		$this->dom = new DOMDocument();
@@ -33,6 +36,8 @@ class TeiDom {
 
 
   public function processPostArray($postArray) {
+
+
     //process all the data and stuff it into the appropriate place in
 //TODO: break out data from concatenated display of data
 //display will be dumped somewhere in <tei:body>, data will go into tei headers
@@ -275,7 +280,11 @@ class TeiDom {
     //TODO: find shortcodes and display pseudo-error text
     //TODO: only other option is to reliably expand EVERYTHING _AND_ check the HTML for breakage
     $content = utf8_encode($content);
-    $content = $this->sanitizeShortCodes($content);
+    if($this->doShortcodes) {
+      $content = do_shortcode($content);
+    } else {
+    	$content = $this->sanitizeShortCodes($content);
+    }
     //using loadHTML because it is more forgiving than loadXML
 
     $tmpHTML->loadHTML($content);
@@ -335,8 +344,6 @@ class TeiDom {
 
   private function sanitizeContent($checkImgSrcs) {
     //TODO: check connectivity
-    //TODO: handle shortcodes
-
 
     if($checkImgSrcs) {
       $this->checkImgSrcs();
