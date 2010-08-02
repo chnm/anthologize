@@ -35,6 +35,14 @@ class Anthologize_Admin_Main {
 	}
 
 	function dashboard_hooks() {
+		global $menu;
+
+		$menu[57] = array(
+			1 => read,
+			2 => 'separator-anthologize',
+			4 => 'wp-menu-separator'
+		);
+
 		$plugin_pages = array();
 
 		// Adds the top-level Anthologize Dashboard menu button
@@ -43,7 +51,7 @@ class Anthologize_Admin_Main {
 			'page_title' => __( 'Anthologize', 'anthologize' ),
 			'access_level' => 10, 'file' => 'anthologize',
 			'function' => array( $this, 'display'),
-			'position' => 2
+			'position' => 56
 		) );
 
 		// Creates the submenu items
