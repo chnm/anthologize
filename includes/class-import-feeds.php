@@ -38,6 +38,11 @@ class Anthologize_Import_Feeds_Panel {
 
 			<?php elseif ( isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>
 				<?php $items = $this->grab_feed( $_POST['feedurl'] ) ?>
+				<?php if ( isset( $items['error'] ) ) : ?>
+
+					<p><?php _e( 'Sorry, no items were found. Please try another feed address.', 'anthologize' ) ?></p>
+
+				<?php else : ?>
 
 				<?php
 
@@ -89,14 +94,21 @@ class Anthologize_Import_Feeds_Panel {
 				</div>
 
 
+				<?php endif; ?>
+
 			<?php elseif ( isset( $_POST['copyitems'] ) ) : ?>
 				<?php
-					$items = $this->grab_feed( $_POST['feedurl'] );
-					foreach ( $items as $key => $item ) {
-						if ( !in_array( $key, $_POST['copyitems'] ) )
-							unset( $items[$key] );
-					}
-					$items = array_values( $items );
+
+				$items = $this->grab_feed( $_POST['feedurl'] );
+
+				if ( !isset( $items['error'] ) ) {
+
+
+				foreach ( $items as $key => $item ) {
+					if ( !in_array( $key, $_POST['copyitems'] ) )
+						unset( $items[$key] );
+				}
+				$items = array_values( $items );
 
 				?>
 
@@ -108,6 +120,13 @@ class Anthologize_Import_Feeds_Panel {
 				<?php $howmany = count( $imported_items ) ?>
 
 				<h3><?php _e( 'Successfully imported!', 'anthologize' ) ?></h3>
+
+				<?php } else { ?>
+
+				<h3><?php _e( 'No items found. Please try another feed address.', 'anthologize' ) ?></h3>
+
+				<?php } ?>
+
 
 				<p><a href="admin.php?page=anthologize"><?php _e( 'Back to Anthologize', 'anthologize' ) ?></a></p>
 
@@ -125,7 +144,11 @@ class Anthologize_Import_Feeds_Panel {
 
 		$rss = fetch_feed( trim( $feedurl ) );
 
-		$maxitems = $rss->get_item_quantity();
+		if ( $rss->errors )
+			return array( 'error' => 'unknown-error' );
+
+		if ( !$maxitems = $rss->get_item_quantity() )
+			return array( 'error' => 'no-items' );
 
 		$feed_title = $rss->get_title();
 		$feed_permalink = $rss->get_permalink();
