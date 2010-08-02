@@ -241,6 +241,9 @@ a.active-append {
     padding: 20px 0px 20px 0px;
 }
 
+#ajaxErrorMsg {
+    display:none;
+}
 
 /* Export screens */
 #project-id-dropdown {

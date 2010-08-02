@@ -7,6 +7,9 @@ var anthologize = {
   "newItem": null,
   "appending": false,
   "callBack" : function(event, ui){
+    jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                    message: jQuery('#blockUISpinner').show() });
+
     var dest_part_id;
     var dest_seq = {};
     var offset = 1;
@@ -15,9 +18,6 @@ var anthologize = {
     var item_id = anthologize.cleanPostIds(ui.item.attr("id"));
     var project_id = anthologize.getProjectId();
     var org_seq_num = anthologize.org_seq_num;
-
-    jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
-                    message: jQuery('#blockUISpinner').show() });
 
     if (anthologize.fromNew){
       new_item = "true";
@@ -218,13 +218,13 @@ jQuery(document).ready(function(){
   });
 
   jQuery("body").delegate("input.doAppend", "click", function(){
+      jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                      message: jQuery('#blockUISpinner').show() });
+
 	  var item = jQuery(this).closest("li.item");
 	  var append_items = {};
 	  var merge_seq = {};
 	  var i = 0;
-
-      jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
-                      message: jQuery('#blockUISpinner').show() });
 
 	  jQuery(".append-items input:checkbox:checked").each(function(){
 		  append_items[i] = anthologize.cleanPostIds(this.value);

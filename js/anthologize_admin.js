@@ -9,12 +9,13 @@ var seq_stringify = function(seq_obj) {
 }
 
 var ajax_error_refresh = function() {
-    jQuery('#blockUISpinner').append('<p>There has been an unexpected error. Please wait while we reload the content</p');
+    jQuery('#ajaxErrorMsg').show();
     location.reload();
 }
 
 jQuery.blockUI.defaults.onUnblock = function() {
     jQuery('#blockUISpinner').hide();
+    jQuery('#ajaxErrorMsg').hide();
 }
 
 var anth_admin_ajax = {
@@ -38,10 +39,8 @@ var anth_admin_ajax = {
                     anthologize.updateAddedItem(data.post_id);
                 }
                 anthologize.setAppendStatus();
-                return true;
-            },
-            complete: function(){
                 jQuery.unblockUI();
+                return true;
             },
             error: function(){
                 ajax_error_refresh();
@@ -61,11 +60,9 @@ var anth_admin_ajax = {
                    new_seq:seq_stringify(config_obj.merge_seq)},
             async:false,
             timeout:20000,
-            complete: function(){
-                jQuery.unblockUI();
-            },
             success: function(data){
                 anthologize.updateAppendedItems(config_obj.child_post_ids);
+                jQuery.unblockUI();
             },
             error: function(){
                 ajax_error_refresh();
