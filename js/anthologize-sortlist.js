@@ -55,13 +55,28 @@ var anthologize = {
 	    "dest_seq":  dest_seq,
 	    "src_seq": anthologize.src_seq
     };
-    anth_admin_ajax.place_item(ajax_options);
+    if (anthologize.didSortChange(ajax_options)){
+      anth_admin_ajax.place_item(ajax_options);
+    }else{
+	    jQuery.unblockUI();
+    }
+  },
+  "didSortChange" : function(ajax_options){
+    if (! (((ajax_options.src_id == ajax_options.dest_id) || 
+           (ajax_options.src_id == null && ajax_options.dest_id == ajax_options.project_id))
+	      && ajax_options.src_seq[ajax_options.item_id] == ajax_options.dest_seq[ajax_options.item_id])){
+      return true;
+    }else{
+	    return false;
+    }	
   },
   "initSidebar" : function(){
 	  jQuery("#sidebar-posts li").draggable({
 	    connectToSortable: ".part-items ul",
 	    helper: "clone",
 	    revert: "invalid",
+	    zIndex: 2700,
+	    distance: 3,
 	    start: function(event, ui){
 	      anthologize.new_item_org_seq_num = jQuery(this).index() + 1;
 	    },
@@ -137,6 +152,7 @@ jQuery.fn.anthologizeSortList = function (options){
 
   var settings = jQuery.extend({
     placeholder: 'anthologize-drop-item',
+    distance: 3,
     start: function(event, ui){
       anthologize.src_id = null;
       anthologize.org_seq_num = ui.item.index() + 1;
