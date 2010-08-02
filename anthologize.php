@@ -32,42 +32,42 @@ if ( !class_exists( 'Anthologize_Loader' ) ) :
 
 class Anthologize_Loader {
 
-/**
-* The main Anthologize loader. Hooks our stuff into WP
-*/
-function anthologize_loader () {
+	/**
+	* The main Anthologize loader. Hooks our stuff into WP
+	*/
+	function anthologize_loader () {
 
-	// Give me something to believe in
-	add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
+		// Give me something to believe in
+		add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
 
-	add_action( 'init', array ( $this, 'init' ) );
+		add_action( 'init', array ( $this, 'init' ) );
 
-	// Load the post types
-	add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
+		// Load the post types
+		add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
-	// Load constants
-	//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
+		// Load constants
+		//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
-	// Load the custom feed
-	add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
+		// Load the custom feed
+		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
 
-	// Include the necessary files
-	add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
+		// Include the necessary files
+		add_action( 'anthologize_loaded', array ( $this, 'includes' ) );
 
-	// Attach textdomain for localization
-	add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
+		// Attach textdomain for localization
+		add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
 
-	add_action( 'anthologize_init', array ( $this, 'load_template' ) );
+		add_action( 'anthologize_init', array ( $this, 'load_template' ) );
 
-	add_filter( 'custom_menu_order', array( $this, 'custom_menu_order_function' ) );
+		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order_function' ) );
 
-	add_filter( 'menu_order', array( $this, 'menu_order_my_function' ) );
+		add_filter( 'menu_order', array( $this, 'menu_order_my_function' ) );
 
-	// activation sequence
-	register_activation_hook( __FILE__, array( $this, 'activation' ) );
+		// activation sequence
+		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 
-	// deactivation sequence
-	register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+		// deactivation sequence
+		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
 	}
 
 	// Let plugins know that we're initializing
