@@ -37,7 +37,17 @@ class Anthologize_Admin_Main {
 	function dashboard_hooks() {
 		$plugin_pages = array();
 
-		$plugin_pages[] = add_menu_page( __( 'Anthologize', 'anthologize' ), __( 'Anthologize', 'anthologize' ), 'manage_options', 'anthologize', array ( $this, 'display' ) );
+		// Adds the top-level Anthologize Dashboard menu button
+		$this->add_admin_menu_page( array(
+			'menu_title' => __( 'Anthologize', 'anthologize' ),
+			'page_title' => __( 'Anthologize', 'anthologize' ),
+			'access_level' => 10, 'file' => 'anthologize',
+			'function' => array( $this, 'display'),
+			'position' => 2
+		) );
+
+		// Creates the submenu items
+		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','anthologize'), __('My Projects','anthologize'), 'manage_options', 'anthologize', array ( $this, 'display' ) );
 
         $plugin_pages[] = add_submenu_page( 'anthologize', __('New Project','anthologize'), __('New Project','anthologize'), 'manage_options', dirname( __FILE__ ) . '/class-new-project.php');
 
@@ -49,6 +59,48 @@ class Anthologize_Admin_Main {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
 		}
+	}
+
+	// Borrowed, with much love, from BuddyPress. Allows us to put Anthologize way up top.
+	function add_admin_menu_page( $args = '' ) {
+		global $menu, $admin_page_hooks, $_registered_pages;
+
+		$defaults = array(
+			'page_title' => '',
+			'menu_title' => '',
+			'access_level' => 2,
+			'file' => false,
+			'function' => false,
+			'icon_url' => false,
+			'position' => 100
+		);
+
+		$r = wp_parse_args( $args, $defaults );
+		extract( $r, EXTR_SKIP );
+
+		$file = plugin_basename( $file );
+
+		$admin_page_hooks[$file] = sanitize_title( $menu_title );
+
+		$hookname = get_plugin_page_hookname( $file, '' );
+		if (!empty ( $function ) && !empty ( $hookname ))
+			add_action( $hookname, $function );
+
+		if ( empty($icon_url) )
+			$icon_url = 'images/generic.png';
+		elseif ( is_ssl() && 0 === strpos($icon_url, 'http://') )
+			$icon_url = 'https://' . substr($icon_url, 7);
+
+		do {
+			$position++;
+		} while ( !empty( $menu[$position] ) );
+
+		$menu[$position] = array ( $menu_title, $access_level, $file, $page_title, 'menu-top ' . $hookname, $hookname, $icon_url );
+		unset( $menu[$position][5] );
+
+		$_registered_pages[$hookname] = true;
+//		echo "<pre>"; print_r($menu); die();
+		return $hookname;
 	}
 
 	function load_scripts() {

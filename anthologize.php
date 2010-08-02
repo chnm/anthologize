@@ -76,8 +76,21 @@ function anthologize_loader () {
 	}
 
 	// Allow this plugin to be translated by specifying text domain
+	// Todo: Make the logic a bit more complex to allow for custom text within a given language
 	function textdomain() {
-	// todo: load the text domain
+		$locale = get_locale();
+
+		// First look in wp-content/anthologize-files/languages, where custom language files will not be overwritten by Anthologize upgrades. Then check the packaged language file directory.
+		$mofile_custom = WP_CONTENT_DIR . "/anthologize-files/languages/anthologize-$locale.mo";
+		$mofile_packaged = WP_PLUGIN_DIR . "/anthologize/languages/anthologize-$locale.mo";
+
+    	if ( file_exists( $mofile_custom ) ) {
+      		load_textdomain( 'anthologize', $mofile_custom );
+      		return;
+      	} else if ( file_exists( $mofile_packaged ) ) {
+      		load_textdomain( 'anthologize', $mofile_packaged );
+      		return;
+      	}
 	}
 
 	// The next two functions are a hack to make WordPress hide the menu items for Parts and Library Items
