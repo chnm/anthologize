@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: oneweekonetool, boonebgorges, digitaleffie, gossettphd, janaremy, jcmeloni, jeremyboggs, knoxdw, patrickmj, sramsay, zmccune, chnm
 Donate link: http://anthologize.org/
-Tags: book, pdf, tei, epub, publish, rtf
+Tags: book, pdf, tei, epub, publish, rtf, ebook
 Requires at least: 3.0
 Tested up to: 3.0.1
 Stable tag: 0.3-alpha
@@ -10,7 +10,7 @@ Use the power of WordPress to transform your content into a book.
 
 == Description ==
 
-Anthologize is a free, open-source, WordPress-based platform for publishing. Grab posts from your WordPress blog, pull in feeds from external sites, or create new content directly in Anthologize. Then outline, order, and edit your work, crafting it into a coherent volume for export in several formats, including PDF, EPUB, and TEI.
+Anthologize is a free, open-source, WordPress-based platform for publishing. Grab posts from your WordPress blog, pull in feeds from external sites, or create new content directly in Anthologize. Then outline, order, and edit your work, crafting it into a coherent volume for export in several ebook formats, including PDF, EPUB, and TEI.
 
 Visit [anthologize.org](http://anthologize.org/ "Anthologize") to learn more about Anthologize.
 
