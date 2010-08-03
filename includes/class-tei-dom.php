@@ -279,10 +279,8 @@ class TeiDom {
     $newPostContent->appendChild($this->newHead($libraryItemObject));
     $tmpHTML = new DOMDocument();
 
-    //$content = do_shortcode($libraryItemObject->post_content);
     $content = $libraryItemObject->post_content;
-    //TODO: find shortcodes and display pseudo-error text
-    //TODO: only other option is to reliably expand EVERYTHING _AND_ check the HTML for breakage
+
     $content = utf8_encode($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
