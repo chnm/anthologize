@@ -192,8 +192,8 @@ echo preg_replace($pattern, $replacement, $string);
   // Delete all contents in temp dir
   // Code derived from http://www.php.net/manual/en/class.recursiveiteratoriterator.php
 
-  // deleteDirectoryWithContents($temp_epub_dir_name);
-  // unlink($temp_zip_filename);
+  deleteDirectoryWithContents($temp_epub_dir_name);
+  unlink($temp_zip_filename);
 
   die();  // END
 
