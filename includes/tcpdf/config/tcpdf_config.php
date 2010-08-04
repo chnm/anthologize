@@ -55,7 +55,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	 * Installation path (/var/www/tcpdf/).
 	 * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
 	 */
-	define('K_PATH_MAIN', $k_path_main);
+	define ('K_PATH_MAIN', $k_path_main);
 
 	// Automatic calculation for the following K_PATH_URL constant
 	$k_path_url = $k_path_main; // default value for console mode
