@@ -1,6 +1,7 @@
 <?php
 
   error_reporting(0);
+  set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . '/pear_ext');
 
   /*
 
@@ -15,7 +16,7 @@
 
   */
 
-  require_once('Zip.php');
+  require_once('Archive.php');
 
   define('TEI',  'http://www.tei-c.org/ns/1.0'  );
   define('HTML', 'http://www.w3.org/1999/xhtml' );
@@ -203,6 +204,7 @@ echo preg_replace($pattern, $replacement, $string);
   function zip_it($source, $destination)
   {
     $source = realpath($source);
+
     if (is_readable($source) === true)
     {
       if (extension_loaded('zip') === true)
@@ -233,39 +235,26 @@ echo preg_replace($pattern, $replacement, $string);
         }
         return $zip->close();
       } 
-      elseif (extension_loaded('zlib') === true) 
-      {
-        $files_to_zip = Array();
-        $zipper = new Archive_Zip($destination);
-
-        $source = realpath($source);
-        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
-
-        // Iterate through files & directories and add to archive object
-        foreach ($files as $file)
-        {
-          $file = realpath($file);
-
-          if (is_dir($file) === true) // Create directories as they are found
-          {
-            $files_to_zip[] = $file . '/';
-          }
-        }
-        if (count($files_to_zip) > 0) {
-          $zipper->create($files_to_zip, Array('remove_path' => $source . '/'));
-        }
-
-        if (false !== $zip_result) {
-          return true;
-        }
-        else
-        {
-          echo "Couldn't create zip file<br />";
-        }
-      }
       else
       {
-        echo "Zip and zlib extensions not installed<br />";
+        $original_dir = getcwd();
+        chdir($source);
+
+        File_Archive::extract(
+          File_Archive::read('.'),
+          File_Archive::toArchive(
+              $destination, 
+              File_Archive::toFiles(),
+              'zip'
+          )
+        );
+
+        chdir($original_dir);
+
+        // TODO: add filesize check?
+        if (is_readable($destination)) {
+            return true;
+        }
       }
     } else {
       echo "Source content does not exist or is not readable<br />";
