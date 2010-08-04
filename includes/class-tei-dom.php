@@ -123,10 +123,6 @@ class TeiDom {
     $fontFamilyNode = $this->xpath->query("anth:param[@name='font-family']", $outParamsNode)->item(0);
     $fontFamilyNode->appendChild($this->dom->createTextNode($postArray['font-face']));
 
-
-
-
-
   }
 
   public function addLicense($postArray) {
@@ -193,8 +189,8 @@ class TeiDom {
     if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
        $newPerson = $this->dom->createElementNS(TEI, 'person');
        $newPerson->setAttribute('xml:id', $userObject->user_nicename );
-
        if(is_array($userObject->wp_capabilities)) {
+           $roleStr = "";
            foreach($userObject->wp_capabilities as $role=>$capabilities) {
             $roleStr .= $role . " ";
            }
@@ -221,8 +217,8 @@ class TeiDom {
 
   public function buildProjectData($projectID) {
 
-  	$projectData = new WP_Query(array('ID'=>$projectID, 'post_type'=>'projects'));
-    $project = $projectData->posts[0];
+  	$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'projects'));
+    $project = $projectData->post;
 
     $titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
     //yes, I tried $titleNode->textContent=$project->post_title. No, it didn't work. No, I don't know why
@@ -289,7 +285,12 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
 
-    $tmpHTML->loadHTML($content);
+    //try {
+      $tmpHTML->loadHTML($content);
+    //} catch (Exception $e) {
+      //do nothing
+    //}
+
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 
