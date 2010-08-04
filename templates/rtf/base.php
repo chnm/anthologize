@@ -59,6 +59,8 @@ for($i=0; $i<$libraryItems->length; $i++) {
   $subOutput .= "\par $title";
   $subOutput .= "\par";
   $subOutput .= "\par $htmlContent";
+  $subOutput .= "\par";
+  $subOutput .= "\par";
 
 }
 
