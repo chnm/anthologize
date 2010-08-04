@@ -33,7 +33,7 @@ $tei_master = new TeiMaster();
 
 $pdf = new TeiPdf($tei_master);
 
-//header('Content-type: text/html');
+//header('Content-type: application/pdf');
 $pdf->write_pdf();
 
 
