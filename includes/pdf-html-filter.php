@@ -28,6 +28,11 @@ function startElemHandler($parser, $name, $attrs) {
 		}
 	}
 
+	if ($name == "img") {
+		$html = "<p>" . $html;
+		$html .= "</p>";
+	}
+
 }
 
 function endElemHandler($parser, $name) {
