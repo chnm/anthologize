@@ -13,12 +13,14 @@ class TeiDom {
 	public $bodyNode;
   public $userNiceNames = array();
   public $doShortcodes = true;
+  public $convertSmartQuotes = true;
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
     if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
     	$this->doShortcodes = false;
     }
+    $this->convertSmartQuotes = $convertSmartQuotes;
 
 
 		$this->dom = new DOMDocument();
@@ -277,9 +279,12 @@ class TeiDom {
 
     $content = $libraryItemObject->post_content;
 
-    //$content = utf8_encode($content);
+
     //$content = mb_convert_encoding($content, 'UTF-8');
+    //$content = utf8_encode($content);
     $content = $this->convertSmartQuotes($content);
+
+
     $content = wpautop($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
@@ -287,7 +292,6 @@ class TeiDom {
     	$content = $this->sanitizeShortCodes($content);
     }
     //using loadHTML because it is more forgiving than loadXML
-
 
     $tmpHTML->loadHTML($content);
 
