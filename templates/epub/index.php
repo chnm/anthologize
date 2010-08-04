@@ -250,10 +250,6 @@ echo preg_replace($pattern, $replacement, $string);
           {
             $files_to_zip[] = $file . '/';
           }
-          else if (is_file($file) === true) // Add files as they are found
-          {
-            $files_to_zip[] = $file;
-          }
         }
         if (count($files_to_zip) > 0) {
           $zipper->create($files_to_zip, Array('remove_path' => $source . '/'));
