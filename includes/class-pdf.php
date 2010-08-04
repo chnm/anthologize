@@ -33,6 +33,8 @@ define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
 define('ANTH', 'http://www.anthologize.org/ns');
 
+define('K_PATH_MAIN', '');
+
 class TeiPdf {
 
 	public $tei;
