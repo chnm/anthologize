@@ -278,6 +278,7 @@ class TeiDom {
     $content = $libraryItemObject->post_content;
 
     $content = utf8_encode($content);
+    $content = wpautop($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
     } else {
@@ -285,11 +286,8 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
 
-    //try {
-      $tmpHTML->loadHTML($content);
-    //} catch (Exception $e) {
-      //do nothing
-    //}
+
+    $tmpHTML->loadHTML($content);
 
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
