@@ -40,7 +40,7 @@ class Anthologize_Export_Panel {
 
 		$acknowledgements = $options['acknowledgements'];
 
-		if ( extension_loaded('zip') === true )
+		if ( (extension_loaded('zip') === true) || (extension_loaded('zlib') === true) )
 			$zip_is_enabled = true;
 
 		?>
