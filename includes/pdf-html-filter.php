@@ -26,13 +26,10 @@ function startElemHandler($parser, $name, $attrs) {
 			}
 			$html = $html . R_BRACKET;
 		}
+		if ($name == "img") {
+			$html = "<p>" . $html;
+		}
 	}
-
-	if ($name == "img") {
-		$html = "<p>" . $html;
-		$html .= "</p>";
-	}
-
 }
 
 function endElemHandler($parser, $name) {
@@ -44,8 +41,10 @@ function endElemHandler($parser, $name) {
 
 		$html = $html . L_BRACKET . B_SLASH . $name . R_BRACKET;
 
+		if ($name == "img") {
+			$html .= "</p>";
+		}
 	}
-
 }
 
 function characterData($parser, $data) {
