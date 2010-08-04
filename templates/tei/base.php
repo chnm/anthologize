@@ -12,8 +12,8 @@ $ext = "xml";
 
 
 
-//header("Content-type: application/xml");
-//header("Content-Disposition: attachment; filename=$fileName.$ext");
+header("Content-type: application/xml");
+header("Content-Disposition: attachment; filename=$fileName.$ext");
 echo $tei->getTeiString();
 
 
