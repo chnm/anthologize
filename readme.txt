@@ -31,6 +31,11 @@ To install Anthologize, follow these steps.
 = 0.3-alpha =
 * Initial public release
 
+== Translation Credits ==
+
+* Japanese - Tai
+* (Lousy) French - Boone
+
 == Who built this? ==
 
 Anthologize was built during [One Week | One Tool](http://oneweekonetool.org/ "One Week | One Tool"), an NEH Summer Institute at George Mason University's [Center for History and New Media](http://chnm.gmu.edu/ "CHNM")

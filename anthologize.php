@@ -271,5 +271,4 @@ endif; // class exists
 
 $anthologize_loader = new Anthologize_Loader();
 
-
 ?>

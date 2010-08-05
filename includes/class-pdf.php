@@ -69,7 +69,7 @@ class TeiPdf {
 		$this->pdf->AddPage();
 
 		$book_title = $this->tei->get_book_title();
-		
+
 		// Create a nodeList containing all parts.
 		$parts = $this->tei->get_parts();
 
@@ -88,7 +88,7 @@ class TeiPdf {
 				// Grab the main title for each libraryItem and render it
 				// as a "sub section" title.
 				$sub_title = $this->tei->get_title($item);
-				
+
 				$html = $html . "<h3>" . $sub_title . "</h3>";
 
 				// All content below <html:body>
@@ -111,7 +111,7 @@ class TeiPdf {
 		$filename = $book_title . ".pdf";
 		$this->pdf->Output($filename, 'I');
 
-	} // writePDF 
+	} // writePDF
 
 	public function set_header() {
 
