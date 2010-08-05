@@ -85,7 +85,7 @@ class TeiMaster {
 			$html_string = $this->node_to_string($node);
 		  $html_string = $this->strip_whitespace($html_string);
 
-			$html = $html . $html_string;
+			$html .= $html_string;
 
 		}
 

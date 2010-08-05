@@ -5,7 +5,7 @@
 //
 // Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com>
 //
-// Last Modified: Sat Jul 31 08:14:13 EDT 2010
+// Last Modified: Wed Aug 04 16:07:36 CDT 2010
 //
 // Copyright (c) 2010 Center for History and New Media, George Mason
 // University.
@@ -117,13 +117,14 @@ class TeiPdf {
 				// as a "sub section" title.
 				$sub_title = $this->tei->get_title($item);
 				
-				$html = $html . "<h3>" . $sub_title . "</h3>";
+				$html .= "<h3>" . $sub_title . "</h3>";
 
 				// All content below <html:body>
 				$post_content = $this->tei->get_html($item);
 				$post_conent  = filter_html($post_content);
 
-				$html = $html . $post_content;
+				$html .= $post_content;
+
 			} // foreach item
 			$this->pdf->Bookmark($title);
 			$this->pdf->WriteHTML($html, true, 0, true, 0);
