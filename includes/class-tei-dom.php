@@ -275,14 +275,14 @@ class TeiDom {
     $newPostContent->setAttribute('type', 'libraryItem');
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
-    $tmpHTML = new DOMDocument();
+
 
     $content = $libraryItemObject->post_content;
 
 
     //$content = mb_convert_encoding($content, 'UTF-8');
     //$content = utf8_encode($content);
-    $content = $this->convertSmartQuotes($content);
+    //$content = $this->convertSmartQuotes($content);
 
 
     $content = wpautop($content);
@@ -292,8 +292,8 @@ class TeiDom {
     	$content = $this->sanitizeShortCodes($content);
     }
     //using loadHTML because it is more forgiving than loadXML
-
-    $tmpHTML->loadHTML($content);
+    $tmpHTML = new DomDocument('1.0', 'UTF-8');
+    $tmpHTML->loadHTML('<?xml encoding="UTF-8">' . $content);
 
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);

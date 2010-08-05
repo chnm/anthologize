@@ -5,6 +5,8 @@
 
 function convertSmartQuotes($string)
 {
+
+
   $search = array(chr(0xe2) . chr(0x80) . chr(0x98),
                   chr(0xe2) . chr(0x80) . chr(0x99),
                   chr(0xe2) . chr(0x80) . chr(0x9c),
