@@ -278,8 +278,6 @@ class TeiDom {
 
 
     $content = $libraryItemObject->post_content;
-
-
     $content = wpautop($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
@@ -288,13 +286,13 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
     $tmpHTML = new DomDocument('1.0', 'UTF-8');
-    $tmpHTML->loadHTML('<?xml encoding="UTF-8">' . $content);
-
+    $tmpHTML->loadHTML('<?xml encoding="UTF-8"><body>' . $content . '</body>' );
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 
     }
     $body = $tmpHTML->getElementsByTagName('body')->item(0);
+
     $body->setAttribute('xmlns', HTML);
 
     $imported = $this->dom->importNode($body, true);
