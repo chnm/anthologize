@@ -30,12 +30,19 @@ class TeiMaster {
 	* 
 	*/
 
-	public function get_book_title() {
+	public function get_book_title($type = 'main') {
 
-		return $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
-
+		//return $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
+		return $this->xpath->query("/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='".$type."']")->item(0)->textContent;
 	}
-
+	
+	public function get_book_author(){
+		return $this->xpath->query("/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor")->item(0)->textContent;
+	}
+	
+	public function get_availability(){
+		return $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability")->item(0)->textContent;
+	}
 
 	/**
 	*
