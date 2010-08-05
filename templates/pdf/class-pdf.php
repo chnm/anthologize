@@ -3,25 +3,26 @@
 //
 // This file is part of Anthologize
 //
-// Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com>
+// Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com> for
+// the Anthologize project <http://www.anthologize.org/>
 //
-// Last Modified: Wed Aug 04 16:07:36 CDT 2010
+// Last Modified: Thu Aug 05 15:06:19 CDT 2010
 //
 // Copyright (c) 2010 Center for History and New Media, George Mason
 // University.
 //
-// TeiPdf is free software; you can redistribute it and/or modify
+// Anthologize is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 3, or (at your option) any
 // later version.
 //
-// TeiPdf is distributed in the hope that it will be useful, but
+// Anthologize is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 // or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 // for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with TeiPdf; see the file COPYING.  If not see
+// along with Anthologize; see the file COPYING.  If not see
 // <http://www.gnu.org/licenses/>.
 
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php');
