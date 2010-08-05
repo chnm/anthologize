@@ -13,12 +13,14 @@ class TeiDom {
 	public $bodyNode;
   public $userNiceNames = array();
   public $doShortcodes = true;
+  public $convertSmartQuotes = true;
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
     if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
     	$this->doShortcodes = false;
     }
+    $this->convertSmartQuotes = $convertSmartQuotes;
 
 
 		$this->dom = new DOMDocument();
@@ -123,10 +125,6 @@ class TeiDom {
     $fontFamilyNode = $this->xpath->query("anth:param[@name='font-family']", $outParamsNode)->item(0);
     $fontFamilyNode->appendChild($this->dom->createTextNode($postArray['font-face']));
 
-
-
-
-
   }
 
   public function addLicense($postArray) {
@@ -193,8 +191,8 @@ class TeiDom {
     if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
        $newPerson = $this->dom->createElementNS(TEI, 'person');
        $newPerson->setAttribute('xml:id', $userObject->user_nicename );
-
        if(is_array($userObject->wp_capabilities)) {
+           $roleStr = "";
            foreach($userObject->wp_capabilities as $role=>$capabilities) {
             $roleStr .= $role . " ";
            }
@@ -221,8 +219,8 @@ class TeiDom {
 
   public function buildProjectData($projectID) {
 
-  	$projectData = new WP_Query(array('ID'=>$projectID, 'post_type'=>'projects'));
-    $project = $projectData->posts[0];
+  	$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'projects'));
+    $project = $projectData->post;
 
     $titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
     //yes, I tried $titleNode->textContent=$project->post_title. No, it didn't work. No, I don't know why
@@ -277,21 +275,21 @@ class TeiDom {
     $newPostContent->setAttribute('type', 'libraryItem');
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
-    $tmpHTML = new DOMDocument();
 
-    //$content = do_shortcode($libraryItemObject->post_content);
+
     $content = $libraryItemObject->post_content;
-    //TODO: find shortcodes and display pseudo-error text
-    //TODO: only other option is to reliably expand EVERYTHING _AND_ check the HTML for breakage
-    $content = utf8_encode($content);
+
+
+    $content = wpautop($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
     } else {
     	$content = $this->sanitizeShortCodes($content);
     }
     //using loadHTML because it is more forgiving than loadXML
+    $tmpHTML = new DomDocument('1.0', 'UTF-8');
+    $tmpHTML->loadHTML('<?xml encoding="UTF-8">' . $content);
 
-    $tmpHTML->loadHTML($content);
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 

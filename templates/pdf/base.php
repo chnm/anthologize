@@ -5,7 +5,7 @@
 //
 // Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com>
 //
-// Last Modified: Sat Jul 31 08:16:10 EDT 2010
+// Last Modified: Wed Aug 04 16:07:32 CDT 2010
 //
 // Copyright (c) 2010 Center for History and New Media, George Mason
 // University.
@@ -24,16 +24,16 @@
 // along with Anthologize; see the file COPYING.  If not see
 // <http://www.gnu.org/licenses/>.
 
-//error_reporting(0);
+error_reporting(0);
 
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei.php');
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-pdf.php');
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-tei.php');
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-pdf.php');
 
 $tei_master = new TeiMaster();
 
 $pdf = new TeiPdf($tei_master);
 
-//header('Content-type: text/html');
+//header('Content-type: application/pdf');
 $pdf->write_pdf();
 
 
