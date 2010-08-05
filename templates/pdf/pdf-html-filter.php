@@ -18,13 +18,13 @@ function startElemHandler($parser, $name, $attrs) {
 
 	if (in_array($name, $legal_tags)) {
 		if (count($attrs) == 0) {
-			$html = $html . L_BRACKET . $name . R_BRACKET;
+			$html .= L_BRACKET . $name . R_BRACKET;
 		} else {
-			$html = $html . L_BRACKET . $name;
+			$html .= L_BRACKET . $name;
 			foreach ($attrs as $key => $value) {
-				$html = $html . SPACE . $key . EQUALS . D_QUOTE . $value . D_QUOTE;
+				$html .= SPACE . $key . EQUALS . D_QUOTE . $value . D_QUOTE;
 			}
-			$html = $html . R_BRACKET;
+			$html .= R_BRACKET;
 		}
 		if ($name == "img") {
 			$html = "<p>" . $html;
@@ -39,7 +39,7 @@ function endElemHandler($parser, $name) {
 
 	if (in_array($name, $legal_tags)) {
 
-		$html = $html . L_BRACKET . B_SLASH . $name . R_BRACKET;
+		$html .= L_BRACKET . B_SLASH . $name . R_BRACKET;
 
 		if ($name == "img") {
 			$html .= "</p>";
@@ -51,7 +51,7 @@ function characterData($parser, $data) {
 
 	global $html;
 
-	$html = $html . $data;
+	$html .= $data;
 
 	return $html;
 

@@ -5,7 +5,7 @@
 //
 // Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com>
 //
-// Last Modified: Sat Jul 31 08:16:10 EDT 2010
+// Last Modified: Wed Aug 04 16:07:32 CDT 2010
 //
 // Copyright (c) 2010 Center for History and New Media, George Mason
 // University.
