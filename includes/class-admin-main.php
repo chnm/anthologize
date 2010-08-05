@@ -117,6 +117,7 @@ class Anthologize_Admin_Main {
     	wp_enqueue_script( 'jquery-ui-core');
     	wp_enqueue_script( 'jquery-ui-sortable');
     	wp_enqueue_script( 'jquery-ui-draggable');
+    	wp_enqueue_script( 'jquery-cookie', WP_PLUGIN_URL . '/anthologize/js/jquery-cookie.js' );
     	wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
     	wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
     	wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );

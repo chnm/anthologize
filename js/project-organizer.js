@@ -2,14 +2,33 @@
 jQuery(document).ready( function() {
 	var j = jQuery;
 
-    j('#sortby-dropdown').val('');
+	// Set filter based on last visit
+	var cfilter = j.cookie('anth-filter');
+	var cterm = j.cookie('anth-term');
+
+	// uses setTimeout in place of a real callback. Hackapotomous?
+	/*if ( cfilter != null && cterm != null ) {
+		j('#sortby-dropdown').val(cfilter);
+		setTimeout( function() {
+			j('#sortby-dropdown').change();
+			setTimeout( function() {
+				j('#filter').val(cterm);
+				j('#filter').change();
+			}, 500 );
+		}, 1 );
+	} else {
+		j('#sortby-dropdown').val('');
+	}*/
+
 
 	j('#sortby-dropdown').change( function() {
 
         jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
                         message: jQuery('#blockUISpinner').show() });
-        
+
 		var filter = j('#sortby-dropdown').val();
+
+		j.cookie('anth-filter', filter);
 
 		if ( filter == 'category' ) {
 			var theaction = 'get_cats';
@@ -63,8 +82,11 @@ jQuery(document).ready( function() {
 
         jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
                         message: jQuery('#blockUISpinner').show() });
-        
+
 		var term = j('#filter').val();
+
+		j.cookie('anth-term', term);
+
 		var tagorcat = j('#sortby-dropdown').val();
         if (tagorcat == '') {
             tagorcat = 'cat';
