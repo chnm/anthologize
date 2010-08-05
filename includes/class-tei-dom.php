@@ -13,12 +13,14 @@ class TeiDom {
 	public $bodyNode;
   public $userNiceNames = array();
   public $doShortcodes = true;
+  public $convertSmartQuotes = true;
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
     if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
     	$this->doShortcodes = false;
     }
+    $this->convertSmartQuotes = $convertSmartQuotes;
 
 
 		$this->dom = new DOMDocument();
@@ -273,13 +275,11 @@ class TeiDom {
     $newPostContent->setAttribute('type', 'libraryItem');
     $newPostContent->setAttribute('subtype', 'html');
     $newPostContent->appendChild($this->newHead($libraryItemObject));
-    $tmpHTML = new DOMDocument();
+
 
     $content = $libraryItemObject->post_content;
 
-    //$content = utf8_encode($content);
-    //$content = mb_convert_encoding($content, 'UTF-8');
-    $content = $this->convertSmartQuotes($content);
+
     $content = wpautop($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
@@ -287,9 +287,8 @@ class TeiDom {
     	$content = $this->sanitizeShortCodes($content);
     }
     //using loadHTML because it is more forgiving than loadXML
-
-
-    $tmpHTML->loadHTML($content);
+    $tmpHTML = new DomDocument('1.0', 'UTF-8');
+    $tmpHTML->loadHTML('<?xml encoding="UTF-8">' . $content);
 
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
@@ -333,27 +332,6 @@ class TeiDom {
 		}
 		return $newHead;
 	}
-
-  // from http://shiflett.org/blog/2005/oct/convert-smart-quotes-with-php
-  private function convertSmartQuotes($content) {
-
-    $search = array(chr(0xe2) . chr(0x80) . chr(0x98),
-                  chr(0xe2) . chr(0x80) . chr(0x99),
-                  chr(0xe2) . chr(0x80) . chr(0x9c),
-                  chr(0xe2) . chr(0x80) . chr(0x9d),
-                  chr(0xe2) . chr(0x80) . chr(0x93),
-                  chr(0xe2) . chr(0x80) . chr(0x94));
-
-    $replace = array('&lsquo;',
-                   '&rsquo;',
-                   '&ldquo;',
-                   '&rdquo;',
-                   '&ndash;',
-                   '&mdash;');
-
-
-    return str_replace($search, $replace, $content);
-  }
 
   private function postSort($a, $b) {
       if($a->menu_order > $b->menu_order) {
