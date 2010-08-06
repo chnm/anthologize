@@ -13,15 +13,15 @@ class TeiDom {
 	public $bodyNode;
   public $userNiceNames = array();
   public $doShortcodes = true;
-  public $convertSmartQuotes = true;
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
+    set_error_handler(array('TeiDom', 'handleErrors'));
+
+
     if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
     	$this->doShortcodes = false;
     }
-    $this->convertSmartQuotes = $convertSmartQuotes;
-
 
 		$this->dom = new DOMDocument();
     $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" .
@@ -30,9 +30,10 @@ class TeiDom {
     $this->dom->preserveWhiteSpace = false;
     $this->setXPath();
 		$this->buildProjectData($postArray['project_id']);
-
     $this->processPostArray($postArray);
     $this->sanitizeContent($checkImgSrcs);
+
+    restore_error_handler();
 	}
 
 
@@ -286,13 +287,14 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
     $tmpHTML = new DomDocument('1.0', 'UTF-8');
+
     $tmpHTML->loadHTML('<?xml encoding="UTF-8"><body>' . $content . '</body>' );
+
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 
     }
     $body = $tmpHTML->getElementsByTagName('body')->item(0);
-
     $body->setAttribute('xmlns', HTML);
 
     $imported = $this->dom->importNode($body, true);
@@ -393,6 +395,14 @@ class TeiDom {
           $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
         }
     }
+  }
+
+/**
+ * handleErrors is here essentially just to conceal Warnings thrown by loadHTML so that they do not interfere with output downstream
+ */
+
+  public function handleErrors($errNo, $errString) {
+    //TODO: maybe this could do something more sophisticated?
   }
 
   public static function getFileName($postArray) {
