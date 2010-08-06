@@ -13,15 +13,15 @@ class TeiDom {
 	public $bodyNode;
   public $userNiceNames = array();
   public $doShortcodes = true;
-  public $convertSmartQuotes = true;
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
+
+
+
     if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
     	$this->doShortcodes = false;
     }
-    $this->convertSmartQuotes = $convertSmartQuotes;
-
 
 		$this->dom = new DOMDocument();
     $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" .
@@ -30,9 +30,10 @@ class TeiDom {
     $this->dom->preserveWhiteSpace = false;
     $this->setXPath();
 		$this->buildProjectData($postArray['project_id']);
-
     $this->processPostArray($postArray);
     $this->sanitizeContent($checkImgSrcs);
+
+
 	}
 
 
@@ -278,8 +279,6 @@ class TeiDom {
 
 
     $content = $libraryItemObject->post_content;
-
-
     $content = wpautop($content);
     if($this->doShortcodes) {
       $content = do_shortcode($content);
@@ -288,8 +287,8 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
     $tmpHTML = new DomDocument('1.0', 'UTF-8');
-    $tmpHTML->loadHTML('<?xml encoding="UTF-8">' . $content);
-
+    //conceal the Warning about bad html with @
+    @$tmpHTML->loadHTML('<?xml encoding="UTF-8"><body>' . $content . '</body>' );
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 
@@ -396,6 +395,8 @@ class TeiDom {
         }
     }
   }
+
+
 
   public static function getFileName($postArray) {
         $text = strtolower($postArray['post-title']);

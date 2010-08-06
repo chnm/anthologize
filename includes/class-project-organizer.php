@@ -77,7 +77,7 @@ class Anthologize_Project_Organizer {
 							</p>
 
 							<p id="menu-item-name-wrap">
-								<?php $this->filter_dropdown_tags() ?>
+								<?php $this->filter_dropdown() ?>
 							</p>
 
 
@@ -144,46 +144,48 @@ class Anthologize_Project_Organizer {
 
 	function sortby_dropdown() {
 		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
-
+		if ( isset( $_COOKIE['anth-filter'] ) )
+			$cfilter = $_COOKIE['anth-filter'];
 		?>
             <span>Filter by</span>
 			<select name="sortby" id="sortby-dropdown">
 				<option value="" selected="selected"><?php _e( 'All posts', 'anthologize' ) ?></option>
 				<?php foreach( $filters as $filter => $name ) : ?>
-					<option value="<?php echo $filter ?>"><?php echo $name ?></option>
+					<option value="<?php echo $filter ?>" <?php if ( $filter == $cfilter ) : ?>selected="selected"<?php endif; ?>><?php echo $name ?></option>
 				<?php endforeach; ?>
 			</select>
 		<?php
 	}
 
-	function filter_dropdown_tags() {
-		//$tags = get_tags();
-        $tags = Array();
+	function filter_dropdown() {
+
+		$cterm = $_COOKIE['anth-term'];
+
+		switch ( $_COOKIE['anth-filter'] ) {
+			case 'tag' :
+				$terms = get_tags();
+				$nulltext = __( 'All tags', 'anthologize' );
+				break;
+			case 'category' :
+				$terms = get_categories();
+				$nulltext = __( 'All categories', 'anthologize' );
+				break;
+			default :
+				$terms = Array();
+				$nulltext = ' - ';
+				break;
+		}
 
 		?>
 			<select name="filter" id="filter">
-				<option value="" disabled="disabled"> - </option>
-				<?php foreach( $tags as $tag ) : ?>
-					<option value="<?php echo $tag->term_id ?>"><?php echo $tag->name ?></option>
+				<option value=""><?php echo $nulltext; ?></option>
+				<?php foreach( $terms as $term ) : ?>
+					<?php $term_value = ( $_COOKIE['anth-filter'] == 'tag' ) ? $term->slug : $term->term_id; ?>
+					<option value="<?php echo $term_value ?>" <?php if ( $cterm == $term_value ) : ?>selected="selected"<?php endif; ?>><?php echo $term->name ?></option>
 				<?php endforeach; ?>
 			</select>
 		<?php
 	}
-
-
-	function filter_dropdown_cats() {
-		$cats = get_categories();
-
-		?>
-			<select name="filter" id="filter">
-				<option value="" disabled="disabled"> - </option>
-				<?php foreach( $cats as $cat ) : ?>
-					<option value="<?php echo $cat->term_id ?>"><?php echo $cat->name ?></option>
-				<?php endforeach; ?>
-			</select>
-		<?php
-	}
-
 
 
 	function add_item_to_part( $item_id, $part_id ) {
@@ -328,6 +330,13 @@ class Anthologize_Project_Organizer {
 			'post_type' => array('post', 'page', 'imported_items' ),
 			'posts_per_page' => -1
 		);
+
+		if ( $cterm = $_COOKIE['anth-term'] ) {
+			if ( $cfilter = $_COOKIE['anth-filter'] ) {
+				$t_or_c = ( $cfilter == 'tag' ) ? 'tag' : 'cat';
+	        	$args[$t_or_c] = $cterm;
+			}
+		}
 
 		$big_posts = new WP_Query( $args );
 
