@@ -27,32 +27,24 @@ class Anthologize_Ajax_Handlers {
     function fetch_tags() {
         $tags = get_tags();
 
-        $the_tags = '';
+        $the_tags = Array();
         foreach( $tags as $tag ) {
-            $the_tags .= $tag->slug . ':' . $tag->name . ',';
+            $the_tags[$tag->slug] = $tag->name;
         }
 
-        if (strlen($the_tags) > 0) {
-            $the_tags = substr($the_tags, 0, strlen($the_tags)-1);
-        }
-
-        print($the_tags);
+        print(json_encode($the_tags));
         die();
     }
 
     function fetch_cats() {
         $cats = get_categories();
 
-        $the_cats = '';
+        $the_cats = Array();
         foreach( $cats as $cat ) {
-            $the_cats .= $cat->term_id . ':' . $cat->name . ',';
+            $the_cats[$cat->term_id] = $cat->name;
         }
 
-        if (strlen($the_cats) > 0) {
-            $the_cats = substr($the_cats, 0, strlen($the_cats)-1);
-        }
-
-        print($the_cats);
+        print(json_encode($the_cats));
         die();
     }
 
@@ -71,19 +63,15 @@ class Anthologize_Ajax_Handlers {
 
         query_posts( $args );
 
-        $response = '';
+
+        $the_posts = Array();
 
         while ( have_posts() ) {
             the_post();
-            $response .= get_the_ID() . ':' . get_the_title() . ',';
+            $the_posts[get_the_ID()] = get_the_title();
         }
 
-
-        if (strlen($response) > 0) {
-            $response = substr($response, 0, strlen($response)-1);
-        }
-
-        print($response);
+        print(json_encode($the_posts));
 
         die();
     }

@@ -34,8 +34,8 @@ jQuery(document).ready( function() {
             type: 'POST',
             timeout: 10000,
             data: {action:theaction},
+            dataType: 'json',
             success: function(response){
-                var s = response.split(',');
                 j('#filter').empty();
 
                 if (filter == 'tag') {
@@ -45,10 +45,8 @@ jQuery(document).ready( function() {
                 } else {
                     j('#filter').append('<option value=""> - </option>');
                 }
-                j.each( s, function(index, value) {
-                    var v = value.split(':');
-                    var h = '<option value="' + v[0] + '">' + v[1] + '</option>';
-                    //alert(h); return false;
+                j.each( response, function(tagcat_index, tagcat) {
+                    var h = '<option value="' + tagcat_index + '">' + tagcat + '</option>';
                     j('#filter').append(h);
                 });
             },
@@ -74,13 +72,12 @@ jQuery(document).ready( function() {
             url: ajaxurl,
             type: 'POST',
             timeout: 10000,
+            dataType:'json',
             data: {action:'get_posts_by',term:term,tagorcat:tagorcat},
             success: function(response){
-                var s = response.split(',');
                 j('#sidebar-posts').empty();
-                j.each( s, function(index, value) {
-                    var v = value.split(':');
-                    var h = '<li class="item" id="new-' + v[0] + '"><h3 class="part-item">' + v[1] + '</h3></li>';
+                j.each( response, function(post_id, post_title) {
+                    var h = '<li class="item" id="new-' + post_id + '"><h3 class="part-item">' + post_title + '</h3></li>';
                     j('#sidebar-posts').append(h);
                 });
                 anthologize.initSidebar();
