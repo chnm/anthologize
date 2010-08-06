@@ -16,7 +16,7 @@ class TeiDom {
 
 
 	function __construct($postArray, $checkImgSrcs = true) {
-    set_error_handler(array('TeiDom', 'handleErrors'));
+
 
 
     if( isset($postArray['do-shortcodes']) && $postArray['do-shortcodes'] == false ) {
@@ -33,7 +33,7 @@ class TeiDom {
     $this->processPostArray($postArray);
     $this->sanitizeContent($checkImgSrcs);
 
-    restore_error_handler();
+
 	}
 
 
@@ -287,9 +287,10 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
     $tmpHTML = new DomDocument('1.0', 'UTF-8');
-
+    //conceal the Warning about bad html
+    set_error_handler(array('TeiDom', 'handleErrors'));
     $tmpHTML->loadHTML('<?xml encoding="UTF-8"><body>' . $content . '</body>' );
-
+    restore_error_handler();
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 
