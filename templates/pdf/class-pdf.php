@@ -1,34 +1,43 @@
 <?php
-// TeiPdf - Generates PDF from internal, hybridized TEI.
-//
-// This file is part of Anthologize
-//
-// Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com> for
-// the Anthologize project <http://www.anthologize.org/>
-//
-// Last Modified: Thu Aug 05 15:06:19 CDT 2010
-//
-// Copyright (c) 2010 Center for History and New Media, George Mason
-// University.
-//
-// Anthologize is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 3, or (at your option) any
-// later version.
-//
-// Anthologize is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Anthologize; see the file COPYING.  If not see
-// <http://www.gnu.org/licenses/>.
+/**
+* TeiPdf - Generates PDF from internal, hybridized TEI.
+*
+* This file is part of Anthologize
+*
+* @author Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com> for
+* the Anthologize project {@link http://www.anthologize.org/}
+*
+* Last Modified: Thu Aug 05 15:06:19 CDT 2010
+*
+* @copyright Copyright (c) 2010 Center for History and New Media, George Mason
+* University.
+*
+* Anthologize is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3, or (at your option) any
+* later version.
+*
+* Anthologize is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+* or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Anthologize; see the file COPYING.  If not see
+* {@link http://www.gnu.org/licenses/}.
+*
+* @package anthologize
+*/
 
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php');
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-tei.php');
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR .  'pdf-html-filter.php');
+$eng = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php';
+$tcpdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php';
+$class_pdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-tei.php';
+$pdf_html_filter = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR .  'pdf-html-filter.php';
+
+require_once($eng);
+require_once($tcpdf);
+require_once($class_pdf);
+require_once($pdf_html_filter);
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
@@ -49,8 +58,6 @@ class TeiPdf {
 		$paper_size = $this->tei->get_paper_size();
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $paper_size, true, 'UTF-8', false);
-
-// -------------------------------------------------------- //
 
 		//set auto page breaks
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -143,11 +150,6 @@ class TeiPdf {
 		// // end of TOC page
 		$this->pdf->endTOCPage();
 
-
-		// Close and output PDF document
-		// This method has several options, check the source code
-		// documentation for more information.
-
 		//echo get_class($html); // DEBUG
 		$filename = $book_title . ".pdf";
 		$this->pdf->Output($filename, 'I');
@@ -204,7 +206,5 @@ class TeiPdf {
 
 
 } // TeiPdf
-
-// -------------------------------------------------------- //
 
 ?>
