@@ -287,10 +287,8 @@ class TeiDom {
     }
     //using loadHTML because it is more forgiving than loadXML
     $tmpHTML = new DomDocument('1.0', 'UTF-8');
-    //conceal the Warning about bad html
-    set_error_handler(array('TeiDom', 'handleErrors'));
-    $tmpHTML->loadHTML('<?xml encoding="UTF-8"><body>' . $content . '</body>' );
-    restore_error_handler();
+    //conceal the Warning about bad html with @
+    @$tmpHTML->loadHTML('<?xml encoding="UTF-8"><body>' . $content . '</body>' );
     if($this->checkImgSrcs) {
       $this->checkImgSrcs($tmpHTML);
 
@@ -398,13 +396,7 @@ class TeiDom {
     }
   }
 
-/**
- * handleErrors is here essentially just to conceal Warnings thrown by loadHTML so that they do not interfere with output downstream
- */
 
-  public function handleErrors($errNo, $errString) {
-    //TODO: maybe this could do something more sophisticated?
-  }
 
   public static function getFileName($postArray) {
         $text = strtolower($postArray['post-title']);

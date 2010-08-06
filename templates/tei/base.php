@@ -1,8 +1,5 @@
 <?php
 
-
-//error_reporting(0);
-
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 
 
@@ -12,8 +9,8 @@ $ext = "xml";
 
 
 
-header("Content-type: application/xml");
-header("Content-Disposition: attachment; filename=$fileName.$ext");
+//header("Content-type: application/xml");
+//header("Content-Disposition: attachment; filename=$fileName.$ext");
 echo $tei->getTeiString();
 
 
