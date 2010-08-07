@@ -11,7 +11,6 @@ class Anthologize_Export_Panel {
 	 */
 	function anthologize_export_panel () {
 
-		$this->register_ajax_handler();
 		$this->projects = $this->get_projects();
 
 		if ( !$project_id ) {
@@ -25,10 +24,6 @@ class Anthologize_Export_Panel {
 
 		$this->project_id = $project_id;
 	}
-
-	function register_ajax_handler() {
-    }
-
 
 	function display() {
 		$project_id = $this->project_id;
@@ -64,9 +59,9 @@ class Anthologize_Export_Panel {
 		<div class="wrap anthologize">
 
 		<div id="blockUISpinner">
-            <img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img>
-            <p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
-        </div>
+			<img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img>
+			<p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
+		</div>
 
 		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 			<h2><?php _e( 'Export Project', 'anthologize' ) ?></h2>
