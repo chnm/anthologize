@@ -4,8 +4,8 @@
 *
 * This file is part of Anthologize
 *
-* @author Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com> for
-* the Anthologize project {@link http://www.anthologize.org/}
+* @author Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com>
+* for the Anthologize project {@link http://www.anthologize.org/}
 *
 * Last Modified: Thu Aug 05 15:06:19 CDT 2010
 *
@@ -202,8 +202,6 @@ class TeiPdf {
 		$this->pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 	}
-
-
 
 } // TeiPdf
 

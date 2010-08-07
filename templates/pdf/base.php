@@ -9,8 +9,8 @@
 *
 * Last Modified: Fri Aug 06 15:54:55 CDT 2010
 *
-* @copyright Copyright (c) 2010 Center for History and New Media, George Mason
-* University.
+* @copyright Copyright (c) 2010 Center for History and New Media,
+* George Mason University.
 *
 * Anthologize is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by

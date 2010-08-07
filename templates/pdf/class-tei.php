@@ -4,8 +4,8 @@
 *
 * This file is part of Anthologize.
 *
-* @author Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com> for
-* the Anthologize project {@link http://www.anthologize.org/}
+* @author Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com>
+* for the Anthologize project {@link http://www.anthologize.org/}
 *
 * Last Modified: Thu Aug 05 15:06:19 CDT 2010
 *
@@ -57,22 +57,33 @@ class TeiMaster {
 
 	/**
 	*
-	* /tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title/text()
+	* /tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='".$type."']/text()
 	* 
 	*/
 
 	public function get_book_title($type = 'main') {
 
-		//return $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title")->item(0)->textContent;
 		return $this->xpath->query("/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='".$type."']")->item(0)->textContent;
+
 	}
+
+	/**
+	*
+	*
+	* /tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor/text()
+	*
+	*/
 	
 	public function get_book_author(){
+
 		return $this->xpath->query("/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor")->item(0)->textContent;
+
 	}
 	
 	public function get_availability(){
+
 		return $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability")->item(0)->textContent;
+
 	}
 
 	/**
