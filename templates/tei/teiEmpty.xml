@@ -7,18 +7,19 @@
                 <title></title>
             </titleStmt>
             <editionStmt>
-
                 <edition></edition>
             </editionStmt>
             <publicationStmt>
-                <availability>
+                <availability rend="literal">
                     <p></p>
                 </availability>
-
-                <date></date>
-
+                <availability rend="structured">
+                    <ab></ab>
+                </availability>
+                <date rend="literal"></date>
+                <date rend="structured"></date>
+                
             </publicationStmt>
-
             <sourceDesc>
                 <bibl>
                     <ident></ident>
@@ -33,15 +34,11 @@
             <param name="font-size"></param>
             <param name="font-family"></param>
         </outputParams>
-
         <encodingDesc>
             <refsDecl>
-
                 <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
                     <listPerson>
-                        
-
                     </listPerson>
                 </ab>
             </refsDecl>
@@ -58,7 +55,6 @@
         </encodingDesc>
     </teiHeader>
     <text>
-
         <front>
             <titlePage>
                 <docTitle>
@@ -66,12 +62,9 @@
                     <titlePart type="sub"></titlePart>
                 </docTitle>
                 <docAuthor></docAuthor>
-
                 <docDate></docDate>
                 <docEdition></docEdition>
-
             </titlePage>
-
             <div xml:id="f1">
                 <head>
                     <title></title>
@@ -88,8 +81,6 @@
             </div>
         </front>
         <body> </body>
-
-
         <back></back>
     </text>
 </TEI>
