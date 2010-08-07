@@ -2,10 +2,9 @@
 /**
 * pdf-html-filter - Preprocessing filter for Wordpress HTML content.
 *
-* This file is part of Anthologize.
+* This file is part of Anthologize {@link http://anthologize.org}.
 *
-* Written and maintained by Stephen Ramsay <sramsay.unl@gmail.com> for
-* the Anthologize project {@link http://www.anthologize.org/}.
+* @author One Week | One Tool {@link http://oneweekonetool.org/people/}
 *
 * Last Modified: Fri Aug 06 15:44:05 CDT 2010
 *
