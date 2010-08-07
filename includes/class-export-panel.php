@@ -9,13 +9,25 @@ class Anthologize_Export_Panel {
 	/**
 	 * The export panel. We are the champions, my friends
 	 */
-	function anthologize_export_panel ( $project_id ) {
+	function anthologize_export_panel () {
+		$this->projects = $this->get_projects();
+
+		if ( !$project_id ) {
+			if ( isset( $_GET['project_id'] ) ) {
+				$project_id = $_GET['project_id'];
+			} else {
+				$keys = array_keys( $this->projects, current( $this->projects ) );
+				$project_id = $keys[0];
+			}
+		}
+
 		$this->project_id = $project_id;
 	}
 
 	function display() {
-		if ( isset( $_GET['project_id'] ) )
-			$options = get_post_meta( $_GET['project_id'], 'anthologize_meta', true );
+		$project_id = $this->project_id;
+
+		$options = get_post_meta( $project_id, 'anthologize_meta', true );
 
 		if ( !$cdate = $options['cdate'] )
 			$cdate = date('Y');
@@ -56,14 +68,12 @@ class Anthologize_Export_Panel {
 
 			<form action="" method="post">
 
-			<?php $projects = $this->get_projects() ?>
-
+			<label for="project_id"><?php _e( 'Select a project...', 'anthologize' ) ?></label>
 			<select name="project_id" id="project-id-dropdown">
-			<option value=""><?php _e( 'Select Project...', 'anthologize' ) ?></option>
-			<?php foreach ( $projects as $project_id => $project_name ) : ?>
-				<option value="<?php echo $project_id ?>"
+			<?php foreach ( $this->projects as $proj_id => $project_name ) : ?>
+				<option value="<?php echo $proj_id ?>"
 
-				<?php if ( $project_id == $this->project_id ) : ?>selected="selected"<?php endif; ?>
+				<?php if ( $proj_id == $project_id ) : ?>selected="selected"<?php endif; ?>
 
 				><?php echo $project_name ?></option>
 			<?php endforeach; ?>
@@ -237,7 +247,7 @@ class Anthologize_Export_Panel {
 	function get_projects() {
 		$projects = array();
 
-		query_posts( 'post_type=projects' );
+		query_posts( 'post_type=projects&orderby=title&order=ASC' );
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {
@@ -252,10 +262,7 @@ class Anthologize_Export_Panel {
 
 endif;
 
-if ( isset( $_GET['project_id'] ) )
-	$project_id = $_GET['project_id'];
-
-$export_panel = new Anthologize_Export_Panel( $project_id );
+$export_panel = new Anthologize_Export_Panel();
 $export_panel->display();
 
 
