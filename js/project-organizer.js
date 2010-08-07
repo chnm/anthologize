@@ -6,21 +6,6 @@ jQuery(document).ready( function() {
 	var cfilter = j.cookie('anth-filter');
 	var cterm = j.cookie('anth-term');
 
-	// uses setTimeout in place of a real callback. Hackapotomous?
-	/*if ( cfilter != null && cterm != null ) {
-		j('#sortby-dropdown').val(cfilter);
-		setTimeout( function() {
-			j('#sortby-dropdown').change();
-			setTimeout( function() {
-				j('#filter').val(cterm);
-				j('#filter').change();
-			}, 500 );
-		}, 1 );
-	} else {
-		j('#sortby-dropdown').val('');
-	}*/
-
-
 	j('#sortby-dropdown').change( function() {
 
         jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
@@ -108,6 +93,56 @@ jQuery(document).ready( function() {
                 j.unblockUI();
             }
         });
+
+
+	});
+
+	j('#project-id-dropdown').change( function() {
+
+    	jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
+                        message: jQuery('#blockUISpinner').show() });
+
+		var proj_id = j('#project-id-dropdown').val();
+		j.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            timeout: 10000,
+            dataType:'json',
+            data: {action:'get_project_meta',proj_id:proj_id},
+            success: function(response){
+            	var meta = j.parseJSON(response);
+
+				 if ( meta['cctype'] )
+                	j('#cctype').val(meta['cctype']);
+                else
+                	j('#cctype').val('by');
+
+				if ( meta['authors'] )
+					j('#authors').val(meta['authors']);
+				else
+					j('#authors').val('');
+
+
+
+            	var inputs = j('#export-form').find('input');
+				j.each(inputs, function( index, input ) {
+					var theid = j(input).attr('id');
+
+					if ( theid == 'export-step' || theid == 'submit' )
+						return true;
+
+					if ( meta[theid] )
+						j(input).val(meta[theid]);
+					else
+						j(input).val('');
+               }
+            )},
+
+            complete: function(){
+                j.unblockUI();
+            }
+        });
+
 
 
 	});

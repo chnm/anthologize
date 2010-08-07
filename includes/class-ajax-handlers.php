@@ -14,6 +14,7 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
+        add_action( 'wp_ajax_get_project_meta', array( $this, 'fetch_project_meta' ) );
     }
 
     function __construct() {
@@ -146,6 +147,21 @@ class Anthologize_Ajax_Handlers {
         }*/
 
         die();
+    }
+
+    function fetch_project_meta() {
+		$result = '';
+		$project_id = $_POST['proj_id'];
+
+		if ( $options = get_post_meta( $project_id, 'anthologize_meta', true ) )
+			$result = json_encode( $options );
+		else
+			$result = json_encode( 'none' );
+
+    	print(json_encode( $result ));
+
+    	die();
+
     }
 
 }

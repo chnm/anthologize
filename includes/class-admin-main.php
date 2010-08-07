@@ -65,7 +65,7 @@ class Anthologize_Admin_Main {
 
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
-			add_action( "admin_print_scripts-$plugin_page", array( $this, 'load_scripts' ) );
+			add_action( "admin_print_scripts", array( $this, 'load_scripts' ) );
 		}
 	}
 
