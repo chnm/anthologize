@@ -56,8 +56,10 @@
 
   mkdir($temp_epub_meta_inf_dir, 0777, true);
   mkdir($temp_epub_oebps_dir,    0777, true);
-  mkdir($temp_epub_images_dir,   0777, true);
 
+  if(! file_exists($temp_epub_images_dir)) {
+    mkdir($temp_epub_images_dir,   0777, true);
+  }
   // Create & populate mimetype file
 
   $mimetype_filename = $temp_epub_dir_name .  DIRECTORY_SEPARATOR . "mimetype";
@@ -103,9 +105,17 @@
     // Get image url & open file
 
     $image_url = $image_url_node->nodeValue;
+
     $image_filename = preg_replace('/^.*\//', '', $image_url); // Erase all but filename from URL
 
+    //PMJ--added break to skip an odd non-image image file
+    //seen first in a gif with this src: http://feeds.wordpress.com/1.0/comments/makinghistorypodcast.wordpress.com/808/
+    if($image_filename == "") {
+      break;
+    }
+
     $ch = curl_init($image_url);
+
     $fp = fopen($temp_epub_images_dir . '/' . $image_filename, "w");
 
     // Fetch image from url & put into file
@@ -234,7 +244,7 @@ echo preg_replace($pattern, $replacement, $string);
           echo "Couldn't create zip file<br />";
         }
         return $zip->close();
-      } 
+      }
       else
       {
         $original_dir = getcwd();
@@ -243,7 +253,7 @@ echo preg_replace($pattern, $replacement, $string);
         File_Archive::extract(
           File_Archive::read('.'),
           File_Archive::toArchive(
-              $destination, 
+              $destination,
               File_Archive::toFiles(),
               'zip'
           )
