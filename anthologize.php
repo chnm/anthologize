@@ -155,8 +155,23 @@ class Anthologize_Loader {
 			'rewrite' => array("slug" => "part"), // Permalinks format
 		));
 
+		 $library_items_labels = array(
+			'name' => _x('Library Items', 'post type general name'),
+			'singular_name' => _x('Library Item', 'post type singular name'),
+			'add_new' => _x('Add New', 'book'),
+			'add_new_item' => __('Add New Library Item'),
+			'edit_item' => __('Edit Anthologize Library Item'),
+			'new_item' => __('New Anthologize Library Item'),
+			'view_item' => __('View Anthologize Library Item'),
+			'search_items' => __('Search Library Items'),
+			'not_found' =>  __('No library items found'),
+			'not_found_in_trash' => __('No library items found in Trash'),
+			'parent_item_colon' => ''
+		  );
+
 		register_post_type( 'library_items', array(
 			'label' => __('Library Items', 'anthologize' ),
+			'labels' => $library_items_labels,
 			'exclude_from_search' => true,
 			'publicly_queryable' => false,
 			'_builtin' => false,
@@ -169,7 +184,7 @@ class Anthologize_Loader {
 
 		 $imported_items_labels = array(
 			'name' => _x('Imported Items', 'post type general name'),
-			'singular_name' => _x('Imported Items', 'post type singular name'),
+			'singular_name' => _x('Imported Item', 'post type singular name'),
 			'add_new' => _x('Add New', 'book'),
 			'add_new_item' => __('Add New Imported Item'),
 			'edit_item' => __('Edit Imported Item'),

@@ -9,7 +9,7 @@ class Anthologize_New_Project {
         $post_data = array();
         $post_data['post_title'] = $_POST['post_title'];
         $post_data['post_type'] = 'projects';
-        $post_data['post_status'] = 'publish'; // Should come up with a way to manage drafts vs. publishing.
+        $post_data['post_status'] = $_POST['post_status'];
 
         $new_anthologize_meta = $_POST['anthologize_meta'];
        // print_r($_POST); die();
@@ -17,17 +17,17 @@ class Anthologize_New_Project {
         // If we're editing an existing project.
         if ( !empty($_POST['project_id'])) {
 
+        	$the_project = get_post( $_POST['project_id'] );
+			if ( $the_project->post_status != $_POST['post_status'] )
+				$this->change_project_status( $_POST['project_id'], $_POST['post_status'] );
+
             $post_data['ID'] = $_POST['project_id'];
 		    wp_update_post($post_data);
 
 		    if ( is_null($new_anthologize_meta) ) {
-
-		        delete_post_meta($post_data['ID'],'anthologize_meta');
-
+		        delete_post_meta( $post_data['ID'] ,'anthologize_meta' );
 		    } else {
-
-		        update_post_meta($post_data['ID'],'anthologize_meta',$new_anthologize_meta);
-
+				update_post_meta( $post_data['ID'], 'anthologize_meta', $new_anthologize_meta );
 		    }
 
 		} else { // Otherwise, we're creating a new project
@@ -38,6 +38,45 @@ class Anthologize_New_Project {
 		}
 
 		wp_redirect( get_bloginfo( 'url' ) . '/wp-admin/admin.php?page=anthologize' );
+	}
+
+	function change_project_status( $project_id, $status ) {
+		if ( $status != 'publish' && $status != 'draft' )
+			return;
+
+		$args = array(
+			'post_status' => array( 'draft', 'publish' ),
+			'post_parent' => $project_id,
+			'nopaging' => true,
+			'post_type' => 'parts'
+		);
+
+		$parts = get_posts( $args);
+
+		foreach ( $parts as $part ) {
+			$update_part = array(
+				'ID' => $part->ID,
+				'post_status' => $status,
+			);
+			wp_update_post( $update_part );
+
+			$args = array(
+				'post_status' => array( 'draft', 'publish' ),
+				'post_parent' => $part->ID,
+				'nopaging' => true,
+				'post_type' => 'library_items'
+			);
+
+			$library_items = get_posts( $args );
+
+			foreach( $library_items as $item ) {
+				$update_item = array(
+					'ID' => $item->ID,
+					'post_status' => $status,
+				);
+				wp_update_post( $update_item );
+			}
+		}
 	}
 
 	function display() {
@@ -74,6 +113,15 @@ class Anthologize_New_Project {
             	    <th scope="row"><label><?php _e( 'Author Name <span>(optional)</span>', 'anthologize' ) ?></label></th>
             	    <td><textarea name="anthologize_meta[author_name]" rows="5" cols="50"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea></td>
             	</tr>
+
+            	<tr valign="top">
+                    <th scope="row"><label for="post_status"><?php _e( 'Project Status', 'anthologize' ) ?></label></th>
+                    <td>
+                    	<input type="radio" name="post_status" value="publish" <?php if ( $project->post_status == 'publish' ) : ?>checked="checked"<?php endif; ?> > Published<br />
+                    	<input type="radio" name="post_status" value="draft" <?php if ( $project->post_status != 'publish' ) : ?>checked="checked"<?php endif; ?>> Draft<br />
+                    	<p><small><?php _e( 'Published projects are available via the web. Remember that you can change the status of your project later.', 'anthologize' ) ?></small></p>
+                    </td>
+                </tr>
 
 
             </table>

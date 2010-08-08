@@ -196,6 +196,7 @@ class Anthologize_Project_Organizer {
 
 		$last_item++;
 		$post = get_post( $item_id );
+		$part = get_post( $part_id );
 
 		$args = array(
 		  'menu_order' => $last_item,
@@ -209,7 +210,7 @@ class Anthologize_Project_Organizer {
 		  'post_excerpt' => $post->post_excerpt,
 		  'post_parent' => $part_id,
 		  'post_password' => $post->post_password,
-		  'post_status' => 'publish',
+		  'post_status' => $part->post_status, // post_status is set to the post_status of the parent part
 		  'post_title' => $post->post_title,
 		  'post_type' => 'library_items',
 		  'to_ping' => $post->to_ping, // todo: tags and categories
@@ -237,10 +238,12 @@ class Anthologize_Project_Organizer {
 
 		$last_item++;
 
+		$project = get_post( $this->project_id );
+
 		$args = array(
 		  'post_title' => $part_name,
 		  'post_type' => 'parts',
-		  'post_status' => 'publish',
+		  'post_status' => $project->post_status,
 		  'post_parent' => $this->project_id
 		);
 

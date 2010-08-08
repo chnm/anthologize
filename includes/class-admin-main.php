@@ -26,7 +26,9 @@ class Anthologize_Admin_Main {
 
 	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
     	{
-            add_meta_box('anthologize', 'Anthologize', array($this,'item_meta_box'), $type, 'side', 'high');
+            add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array($this,'item_meta_box'), $type, 'side', 'high');
+            add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array($this,'meta_save_box'), $type, 'side', 'high');
+            remove_meta_box( 'submitdiv' , $type , 'normal' );
     	}
 
     	add_action('save_post',array( $this, 'item_meta_save' ));
@@ -362,6 +364,36 @@ class Anthologize_Admin_Main {
 
      }
 
+	function meta_save_box( $post_id ) {
+		?>
+	<div class="inside">
+		<div class="submitbox" id="submitpost">
+
+			<div id="minor-publishing">
+
+				<div style="display:none;">
+					<input type="submit" name="save" value="Save">
+				</div>
+
+				<div id="minor-publishing-actions">
+					<div id="save-action">
+					<input type="submit" name="save" id="save-post" value="<?php _e( 'Save Changes', 'anthologize' ) ?>" tabindex="4" class="button button-highlighted">
+					</div>
+
+				</div>
+
+				<div id="major-publishing-actions">
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<?php
+	}
+
+
+
     /**
      * item_meta_save
      *
@@ -422,8 +454,6 @@ class Anthologize_Admin_Main {
     function item_meta_box() {
 
         global $post;
-
-
 
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
         $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
