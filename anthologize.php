@@ -119,6 +119,7 @@ class Anthologize_Loader {
 		register_post_type( 'projects', array(
 			'label' => __( 'Projects', 'anthologize' ),
 			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
 			'show_ui' => false,
 			'capability_type' => 'page',
@@ -145,6 +146,7 @@ class Anthologize_Loader {
 			'label' => __( 'Parts', 'anthologize' ),
 			'labels' => $parts_labels,
 			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
@@ -156,8 +158,9 @@ class Anthologize_Loader {
 		register_post_type( 'library_items', array(
 			'label' => __('Library Items', 'anthologize' ),
 			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
-			'show_ui' => true, // todo: hide
+			'show_ui' => true,
 			'capability_type' => 'page',
 			'hierarchical' => true,
 			'supports' => array('title', 'editor', 'revisions'),
@@ -182,6 +185,7 @@ class Anthologize_Loader {
 			'label' => __('Imported Items', 'anthologize' ),
 			'labels' => $imported_items_labels,
 			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
