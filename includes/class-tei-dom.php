@@ -346,6 +346,34 @@ class TeiDom {
   private function sanitizeContent($checkImgSrcs) {
     //TODO: check connectivity
 
+
+
+    //strip out <a rel="nofollow"> (wordpress feeds)
+    $aNoFollowNodes = $this->xpath->query('//a[@rel="nofollow"]');
+    foreach($aNoFollowNodes as $aNode) {
+      $aNode->parentNode->removeChild($aNode);
+    }
+
+
+
+    //strip out feedburner links
+    $aFeedBurnerLinkNodes = $this->xpath->query('//a[contains(@href, "http://feeds.feedburner.com")]');
+    foreach($aFeedBurnerLinkNodes as $aNode) {
+    	$aNode->parentNode->removeChild($aNode);
+    }
+
+    //strip out feedburner invisible images
+    $imgNodes = $this->xpath->query('//img[contains(@src, "http://feeds.feedburner.com")]');
+    foreach($imgNodes as $imgNode) {
+      $imgNode->parentNode->removeChild($imgNode);
+    }
+
+    //strip out wordpress stats invisible images
+    $imgNodes = $this->xpath->query('//img[contains(@src, "http://stats.wordpress.com")]');
+    foreach($imgNodes as $imgNode) {
+      $imgNode->parentNode->removeChild($imgNode);
+    }
+    //TODO: strip out any empty containers
     if($checkImgSrcs) {
       $this->checkImgSrcs();
     }
@@ -381,6 +409,11 @@ class TeiDom {
         $src =  $imgNode->getAttribute('src');
         //TODO: check to see if the src is http:// or a relative path
         // if relative path, convert it into an http://
+
+        //first clobber any annoying img links to Reddit, delicious, etc.
+        //that might have been inserted.
+
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $src);
         //curl_setopt($ch, CURLOPT_HEADER, true);
@@ -393,6 +426,7 @@ class TeiDom {
           $noImgSpan->setAttribute('class', 'anthologize-error');
           $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
         }
+
     }
   }
 
