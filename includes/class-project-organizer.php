@@ -54,7 +54,14 @@ class Anthologize_Project_Organizer {
 
 		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 
-		<h2><?php echo $this->project_name ?></h2>
+		<h2><?php echo $this->project_name ?>
+
+		<div id="project-actions">
+			<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=<?php echo $this->project_id ?>"><?php _e( 'Project Details', 'anthologize' ) ?></a> |
+			<a href="admin.php?page=anthologize&action=delete&project_id=<?php echo $this->project_id ?>" class="confirm-delete"><?php _e( 'Delete Project', 'anthologize' ) ?></a>
+		</div>
+
+		</h2>
 
 		<?php if ( isset( $_GET['append_parent'] ) && !isset( $_GET['append_children'] ) ) : ?>
 			<div id="message" class="updated below-h2">

@@ -142,9 +142,16 @@ jQuery(document).ready( function() {
                 j.unblockUI();
             }
         });
+	});
 
-
-
+	j('.confirm-delete').click( function() {
+		var answer = confirm("Are you sure you want to delete this project?")
+		if (answer){
+			return true;
+		}
+		else{
+			return false;
+		}
 	});
 
 });

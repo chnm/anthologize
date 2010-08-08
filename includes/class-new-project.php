@@ -37,7 +37,7 @@ class Anthologize_New_Project {
 
 		}
 
-		wp_redirect( get_bloginfo( 'url' ) . '/wp-admin/admin.php?page=anthologize' );
+		wp_redirect( get_bloginfo( 'url' ) . '/wp-admin/admin.php?page=anthologize&project_saved=1' );
 	}
 
 	function change_project_status( $project_id, $status ) {

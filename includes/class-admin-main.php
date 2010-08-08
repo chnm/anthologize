@@ -230,8 +230,16 @@ class Anthologize_Admin_Main {
 		<div class="wrap anthologize">
 
 
+
 		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize/includes/class-new-project.php" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
+
+
+		<?php if ( isset( $_GET['project_saved'] ) ) : ?>
+			<div id="message" class="updated fade">
+				<p><?php _e( 'Project Saved', 'anthologize' ) ?></p>
+			</div>
+		<?php endif; ?>
 
 
 		<?php
@@ -282,9 +290,9 @@ class Anthologize_Admin_Main {
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Edit Project') . '</a>';
-									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts') . '</a>';
-									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'">'.__('Delete Project') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Project Details', 'anthologize') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts', 'anthologize') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'" class="confirm-delete">'.__('Delete Project', 'anthologize') . '</a>';
 
 
 
