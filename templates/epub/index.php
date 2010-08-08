@@ -108,10 +108,10 @@
 
     $image_filename = preg_replace('/^.*\//', '', $image_url); // Erase all but filename from URL
 
-    //PMJ--added break to skip an odd non-image image file
+    //PMJ--added continue to skip an odd non-image image file
     //seen first in a gif with this src: http://feeds.wordpress.com/1.0/comments/makinghistorypodcast.wordpress.com/808/
     if($image_filename == "") {
-      break;
+      continue;
     }
 
     $ch = curl_init($image_url);
