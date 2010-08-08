@@ -1,6 +1,6 @@
 <?php
 /**
-* TeiMaster - Wrapper API for the Antholize TEI DOM.
+* TeiAPI - Wrapper API for the Antholize TEI DOM.
 *
 * This file is part of Anthologize {@link http://anthologize.org}.
 *
@@ -22,7 +22,7 @@
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Anthologize; see the file COPYING.  If not see
+* along with Anthologize; see the file license.txt.  If not see
 * {@link http://www.gnu.org/licenses/}.
 *
 * @package anthologize
@@ -32,7 +32,7 @@ $class_tei_dom = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY
 
 include_once($class_tei_dom);
 
-class TeiMaster {
+class TeiAPI {
 
 	private $tei;
 	private $xpath;
@@ -55,10 +55,11 @@ class TeiMaster {
 	}
 
 	/**
-	*
-	* /tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='".$type."']/text()
-	* 
-	*/
+	 * Return document title/subtitle.
+	 *
+	 * /tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='".$type."']/text()
+	 * 
+	 */
 
 	public function get_book_title($type = 'main') {
 

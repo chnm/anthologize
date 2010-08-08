@@ -22,7 +22,7 @@
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Anthologize; see the file COPYING.  If not see
+* along with Anthologize; see the file license.txt.  If not see
 * {@link http://www.gnu.org/licenses/}.
 *
 * @package anthologize
@@ -41,8 +41,6 @@ require_once($pdf_html_filter);
 define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
 define('ANTH', 'http://www.anthologize.org/ns');
-
-define('K_PATH_MAIN', '');
 
 class TeiPdf {
 
@@ -64,9 +62,6 @@ class TeiPdf {
 		//set image scale factor
 		$this->pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-		//set some language-dependent strings
-		$this->pdf->setLanguageArray($l);
-
 		$this->set_docinfo();
 		$this->set_font();
 		$this->set_margins();
@@ -74,24 +69,25 @@ class TeiPdf {
 	}
 
 	public function write_pdf() {
-		// Title Page
-		$this->pdf->AddPage();
 
 		$book_title = $this->tei->get_book_title();
-		$title_html = '<h1 style="text-align: center">' . $book_title . '</h1>';
-
-		$book_sub_title = $this->tei->get_book_title('sub');
-		$title_html .= '<h2 style="text-align: center">' . $book_sub_title . '</h2>';
-
+		$book_subtitle = $this->tei->get_book_title('sub');
 		$book_author = $this->tei->get_book_author();
-		$title_html .= '<h3 style="text-align: center">' . $book_author . '</h3>';
 
-		$this->pdf->WriteHTML($title_html, true, 0, true, 0);
+
+
+		// Title Page
+		$this->pdf->AddPage();
+		$this->set_title($book_title);
+		if ($book_subtitle != '') { $this->set_sub_title($book_subtitle); }
+		$this->set_title_author($book_author);
+
+
 
 		// Copyright page
 		$this->pdf->AddPage();
 		$rights_html = "<div style=\"text-align: center;\"><p><em>".$book_title;
-		if ($book_sub_title != ''){
+		if ($book_subtitle != ''){
 			$rights_html .= ": ".$book_sub_title;
 		}
 		$rights_html .= "</em><br />";
@@ -150,10 +146,32 @@ class TeiPdf {
 		$this->pdf->endTOCPage();
 
 		//echo get_class($html); // DEBUG
+		$book_title = $this->tei->get_book_title();
 		$filename = $book_title . ".pdf";
 		$this->pdf->Output($filename, 'I');
 
 	} // writePDF
+
+	public function set_title($book_title) {
+
+		$title_html = '<h1 style="text-align: center">' . $book_title . '</h1>';
+		$this->pdf->WriteHTML($title_html, true, 0, true, 0);
+
+	}
+
+	public function set_sub_title($book_subtitle) {	
+
+		$subtitle_html = '<h2 style="text-align: center">' . $book_subtitle . '</h2>';
+		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
+
+	}
+
+	public function set_title_author($book_author) {
+
+		$title_author_html = '<h3 style="text-align: center">' . $book_author . '</h3>';
+		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
+
+	}
 
 	public function set_header() {
 
@@ -172,11 +190,14 @@ class TeiPdf {
 
 	public function set_docinfo() {
 
-		$this->pdf->SetCreator(PDF_CREATOR);
-		$this->pdf->SetAuthor('One Week | One Tool');
-		$this->pdf->SetTitle('An Amazing Example of PDF Generation');
-		$this->pdf->SetSubject('Barbecue');
-		$this->pdf->SetKeywords('Boone, barbecue, oneweek, pants');
+		$book_author = $this->tei->get_book_author();
+		$book_title = $this->tei->get_book_title();
+
+		$this->pdf->SetCreator("Anthologize: A One Week | One Tool Production");
+		$this->pdf->SetAuthor($book_author);
+		$this->pdf->SetTitle($book_title);
+		//$this->pdf->SetSubject('Barbecue');
+		//$this->pdf->SetKeywords('Boone, barbecue, oneweek, pants');
 
 	}
 

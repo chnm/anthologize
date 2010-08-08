@@ -22,7 +22,7 @@
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with Anthologize; see the file COPYING.  If not see
+* along with Anthologize; see the file license.txt.  If not see
 * @link http://www.gnu.org/licenses/.
 *
 * @package anthologize
@@ -38,7 +38,7 @@ require_once($class_pdf);
 
 function main() {
 
-	$tei_master = new TeiMaster();
+	$tei_master = new TeiAPI();
 
 	$pdf = new TeiPdf($tei_master);
 
