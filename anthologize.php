@@ -103,8 +103,8 @@ class Anthologize_Loader {
 
 		foreach ( $menu as $mkey => $m ) {
 
-			$key = array_search( 'edit.php?post_type=parts', $m );
-			$keyb = array_search( 'edit.php?post_type=library_items', $m );
+			$key = array_search( 'edit.php?post_type=anth_part', $m );
+			$keyb = array_search( 'edit.php?post_type=anth_library_item', $m );
 
 			if ( $key || $keyb )
 				unset( $menu[$mkey] );
@@ -116,9 +116,10 @@ class Anthologize_Loader {
 
 	// Custom post types - Oh, Oh, Oh, It's Magic
 	function register_post_types() {
-		register_post_type( 'projects', array(
+		register_post_type( 'anth_project', array(
 			'label' => __( 'Projects', 'anthologize' ),
-			'public' => true,
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
 			'show_ui' => false,
 			'capability_type' => 'page',
@@ -141,10 +142,11 @@ class Anthologize_Loader {
 			'parent_item_colon' => ''
 		  );
 
-		register_post_type( 'parts', array(
+		register_post_type( 'anth_part', array(
 			'label' => __( 'Parts', 'anthologize' ),
 			'labels' => $parts_labels,
-			'public' => true,
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
@@ -153,11 +155,27 @@ class Anthologize_Loader {
 			'rewrite' => array("slug" => "part"), // Permalinks format
 		));
 
-		register_post_type( 'library_items', array(
+		 $library_items_labels = array(
+			'name' => _x('Library Items', 'post type general name'),
+			'singular_name' => _x('Library Item', 'post type singular name'),
+			'add_new' => _x('Add New', 'book'),
+			'add_new_item' => __('Add New Library Item'),
+			'edit_item' => __('Edit Anthologize Library Item'),
+			'new_item' => __('New Anthologize Library Item'),
+			'view_item' => __('View Anthologize Library Item'),
+			'search_items' => __('Search Library Items'),
+			'not_found' =>  __('No library items found'),
+			'not_found_in_trash' => __('No library items found in Trash'),
+			'parent_item_colon' => ''
+		  );
+
+		register_post_type( 'anth_library_item', array(
 			'label' => __('Library Items', 'anthologize' ),
-			'public' => true,
+			'labels' => $library_items_labels,
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
-			'show_ui' => true, // todo: hide
+			'show_ui' => true,
 			'capability_type' => 'page',
 			'hierarchical' => true,
 			'supports' => array('title', 'editor', 'revisions'),
@@ -166,7 +184,7 @@ class Anthologize_Loader {
 
 		 $imported_items_labels = array(
 			'name' => _x('Imported Items', 'post type general name'),
-			'singular_name' => _x('Imported Items', 'post type singular name'),
+			'singular_name' => _x('Imported Item', 'post type singular name'),
 			'add_new' => _x('Add New', 'book'),
 			'add_new_item' => __('Add New Imported Item'),
 			'edit_item' => __('Edit Imported Item'),
@@ -178,10 +196,11 @@ class Anthologize_Loader {
 			'parent_item_colon' => ''
 		  );
 
-		register_post_type( 'imported_items', array(
+		register_post_type( 'anth_imported_item', array(
 			'label' => __('Imported Items', 'anthologize' ),
 			'labels' => $imported_items_labels,
-			'public' => true,
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
 			'_builtin' => false,
 			'show_ui' => true, // todo: hide
 			'capability_type' => 'page',
@@ -262,7 +281,10 @@ class Anthologize_Loader {
 	}
 
 
-	function activation() {}
+	function activation() {
+		require_once( dirname( __FILE__ ) . '/includes/class-activation.php' );
+		$activation = new Anthologize_Activation();
+	}
 
 	function deactivation() {}
 	}

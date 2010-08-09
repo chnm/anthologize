@@ -220,7 +220,7 @@ class TeiDom {
 
   public function buildProjectData($projectID) {
 
-  	$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'projects'));
+  	$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'anth_project'));
     $project = $projectData->post;
 
     $titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
@@ -242,7 +242,7 @@ class TeiDom {
 
     $identNode->appendChild($this->dom->createCDataSection($project->guid));
 
-    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'parts'));
+    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'anth_part'));
 
     $partObjectsArray = $partsData->posts;
 
@@ -251,7 +251,7 @@ class TeiDom {
 
     foreach($partObjectsArray as $partObject) {
     	$newPart = $this->newPart($partObject);
-      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'library_items'));
+      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item'));
       $libraryItemObjectsArray = $libraryItemsData->posts;
       //sort objects, by menu_order, then ID
       usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
@@ -346,6 +346,34 @@ class TeiDom {
   private function sanitizeContent($checkImgSrcs) {
     //TODO: check connectivity
 
+
+
+    //strip out <a rel="nofollow"> (wordpress feeds)
+    $aNoFollowNodes = $this->xpath->query('//a[@rel="nofollow"]');
+    foreach($aNoFollowNodes as $aNode) {
+      $aNode->parentNode->removeChild($aNode);
+    }
+
+
+
+    //strip out feedburner links
+    $aFeedBurnerLinkNodes = $this->xpath->query('//a[contains(@href, "http://feeds.feedburner.com")]');
+    foreach($aFeedBurnerLinkNodes as $aNode) {
+    	$aNode->parentNode->removeChild($aNode);
+    }
+
+    //strip out feedburner invisible images
+    $imgNodes = $this->xpath->query('//img[contains(@src, "http://feeds.feedburner.com")]');
+    foreach($imgNodes as $imgNode) {
+      $imgNode->parentNode->removeChild($imgNode);
+    }
+
+    //strip out wordpress stats invisible images
+    $imgNodes = $this->xpath->query('//img[contains(@src, "http://stats.wordpress.com")]');
+    foreach($imgNodes as $imgNode) {
+      $imgNode->parentNode->removeChild($imgNode);
+    }
+    //TODO: strip out any empty containers
     if($checkImgSrcs) {
       $this->checkImgSrcs();
     }
@@ -381,6 +409,11 @@ class TeiDom {
         $src =  $imgNode->getAttribute('src');
         //TODO: check to see if the src is http:// or a relative path
         // if relative path, convert it into an http://
+
+        //first clobber any annoying img links to Reddit, delicious, etc.
+        //that might have been inserted.
+
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $src);
         //curl_setopt($ch, CURLOPT_HEADER, true);
@@ -393,6 +426,7 @@ class TeiDom {
           $noImgSpan->setAttribute('class', 'anthologize-error');
           $imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
         }
+
     }
   }
 

@@ -19,14 +19,14 @@ function anthologize_save_project_meta() {
 
 function anthologize_get_project_parts($projectId) {
 
-    $projectParts =  new WP_Query(array('post_parent'=>$projectId, 'post_type'=>'parts'));
+    $projectParts =  new WP_Query(array('post_parent'=>$projectId, 'post_type'=>'anth_part'));
 
     return $projectParts->posts;
 
 }
 
 function anthologize_get_part_items($partId) {
-    $partItems = new WP_Query(array('post_parent'=>$partId, 'post_type'=>'library_items'));
+    $partItems = new WP_Query(array('post_parent'=>$partId, 'post_type'=>'anth_library_item'));
 
     return $partItems->posts;
 
@@ -53,7 +53,7 @@ function anthologize_display_project_content($projectId) {
 
 function anthologize_filter_post_content($content) {
     global $post;
-    if ($post->post_type == 'projects') {
+    if ($post->post_type == 'anth_project') {
         $content .=  anthologize_display_project_content(get_the_ID());
     }
     return $content;

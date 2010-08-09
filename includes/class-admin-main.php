@@ -24,9 +24,11 @@ class Anthologize_Admin_Main {
 
 	function init() {
 
-	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
+	    foreach ( array('anth_project', 'anth_part', 'anth_library_item', 'anth_imported_item') as $type )
     	{
-            add_meta_box('anthologize', 'Anthologize', array($this,'item_meta_box'), $type, 'side', 'high');
+            add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array($this,'item_meta_box'), $type, 'side', 'high');
+            add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array($this,'meta_save_box'), $type, 'side', 'high');
+            remove_meta_box( 'submitdiv' , $type , 'normal' );
     	}
 
     	add_action('save_post',array( $this, 'item_meta_save' ));
@@ -153,7 +155,7 @@ class Anthologize_Admin_Main {
 
 		$args = array(
 			'post_parent' => $project_id,
-			'post_type' => 'parts',
+			'post_type' => 'anth_part',
 			'posts_per_page' => -1,
 			'orderby' => 'menu_order',
 			'order' => ASC
@@ -182,7 +184,7 @@ class Anthologize_Admin_Main {
             foreach ($parts as $part) {
                 $args = array(
         			'post_parent' => $part->ID,
-        			'post_type' => 'library_items',
+        			'post_type' => 'anth_library_item',
         			'posts_per_page' => -1,
         			'orderby' => 'menu_order',
         			'order' => ASC
@@ -228,8 +230,16 @@ class Anthologize_Admin_Main {
 		<div class="wrap anthologize">
 
 
+
 		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize/includes/class-new-project.php" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
+
+
+		<?php if ( isset( $_GET['project_saved'] ) ) : ?>
+			<div id="message" class="updated fade">
+				<p><?php _e( 'Project Saved', 'anthologize' ) ?></p>
+			</div>
+		<?php endif; ?>
 
 
 		<?php
@@ -239,7 +249,7 @@ class Anthologize_Admin_Main {
 			$this->display_no_project_id_message();
 		}
 
-		query_posts( 'post_type=projects' );
+		query_posts( 'post_type=anth_project' );
 
 		if ( have_posts() ) {
 		?>
@@ -280,9 +290,9 @@ class Anthologize_Admin_Main {
 							<br/>
 									<?php
 									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Edit Project') . '</a>';
-									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts') . '</a>';
-									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'">'.__('Delete Project') . '</a>';
+									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Project Details', 'anthologize') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts', 'anthologize') . '</a>';
+									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'" class="confirm-delete">'.__('Delete Project', 'anthologize') . '</a>';
 
 
 
@@ -362,6 +372,36 @@ class Anthologize_Admin_Main {
 
      }
 
+	function meta_save_box( $post_id ) {
+		?>
+	<div class="inside">
+		<div class="submitbox" id="submitpost">
+
+			<div id="minor-publishing">
+
+				<div style="display:none;">
+					<input type="submit" name="save" value="Save">
+				</div>
+
+				<div id="minor-publishing-actions">
+					<div id="save-action">
+					<input type="submit" name="save" id="save-post" value="<?php _e( 'Save Changes', 'anthologize' ) ?>" tabindex="4" class="button button-highlighted">
+					</div>
+
+				</div>
+
+				<div id="major-publishing-actions">
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<?php
+	}
+
+
+
     /**
      * item_meta_save
      *
@@ -422,8 +462,6 @@ class Anthologize_Admin_Main {
     function item_meta_box() {
 
         global $post;
-
-
 
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
         $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );

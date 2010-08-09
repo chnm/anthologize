@@ -56,7 +56,11 @@ div.anthologize {
 	margin-right: 15px;
 }
 
-
+#project-actions {
+	font-size: 12pt;
+	font-style: normal;
+	float: right;
+}
 
 #adminmenu #toplevel_page_anthologize .wp-menu-image a img {
 	display: none !important;

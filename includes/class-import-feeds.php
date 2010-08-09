@@ -26,6 +26,7 @@ class Anthologize_Import_Feeds_Panel {
 
 				<p><?php _e( 'Want to populate your Anthologize project with content from another web site? Enter the RSS feed address of the site from which you\'d like to import and click Go.', 'anthologize' ) ?></p>
 
+				<p><?php _e( 'Please respect the rights of copyright holders when using this import tool.', 'anthologize' ) ?></p>
 
 				<form action="" method="post">
 
@@ -193,7 +194,7 @@ class Anthologize_Import_Feeds_Panel {
 
 		$args = array(
 			'post_status' => 'publish',
-			'post_type' => 'imported_items',
+			'post_type' => 'anth_imported_item',
 			'post_author' => $current_user->ID,
 			'guid' => $item['permalink'],
 			'post_content' => $item['content'],

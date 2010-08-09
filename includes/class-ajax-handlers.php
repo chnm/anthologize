@@ -57,7 +57,7 @@ class Anthologize_Ajax_Handlers {
         $t_or_c = ( $tagorcat == 'tag' ) ? 'tag' : 'cat';
 
         $args = array(
-            'post_type' => array('post', 'page', 'imported_items' ),
+            'post_type' => array('post', 'page', 'anth_imported_item' ),
             $t_or_c => $term,
             'posts_per_page' => -1
         );
