@@ -253,7 +253,7 @@ class TeiDom {
 
     foreach($partObjectsArray as $partObject) {
     	$newPart = $this->newPart($partObject);
-      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item'));
+      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item', 'posts_per_page'=>200));
       $libraryItemObjectsArray = $libraryItemsData->posts;
       //sort objects, by menu_order, then ID
       usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
