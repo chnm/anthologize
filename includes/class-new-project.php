@@ -4,6 +4,15 @@ if ( !class_exists( 'Anthologize_New_Project' ) ) :
 
 class Anthologize_New_Project {
 
+	function anthologize_new_project() {
+		$this->__construct();
+	}
+
+	function __construct() {
+		if ( $_GET['page'] == 'anthologize/includes/class-new-project.php' )
+			$this->display();
+	}
+
 	function save_project () {
 
         $post_data = array();
@@ -54,11 +63,13 @@ class Anthologize_New_Project {
 		$parts = get_posts( $args);
 
 		foreach ( $parts as $part ) {
-			$update_part = array(
-				'ID' => $part->ID,
-				'post_status' => $status,
-			);
-			wp_update_post( $update_part );
+			if ( $part->post_status != $status ) {
+				$update_part = array(
+					'ID' => $part->ID,
+					'post_status' => $status,
+				);
+				wp_update_post( $update_part );
+			}
 
 			$args = array(
 				'post_status' => array( 'draft', 'publish' ),
@@ -70,11 +81,13 @@ class Anthologize_New_Project {
 			$library_items = get_posts( $args );
 
 			foreach( $library_items as $item ) {
-				$update_item = array(
-					'ID' => $item->ID,
-					'post_status' => $status,
-				);
-				wp_update_post( $update_item );
+				if ( $item->post_status != $status ) {
+					$update_item = array(
+						'ID' => $item->ID,
+						'post_status' => $status,
+					);
+					wp_update_post( $update_item );
+				}
 			}
 		}
 	}
@@ -150,6 +163,5 @@ function item_meta_redirect($location) {
 add_filter('redirect_post_location', 'item_meta_redirect');
 
 $new_project = new Anthologize_New_Project();
-$new_project->display();
 
 ?>

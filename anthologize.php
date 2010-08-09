@@ -281,7 +281,10 @@ class Anthologize_Loader {
 	}
 
 
-	function activation() {}
+	function activation() {
+		require_once( dirname( __FILE__ ) . '/includes/class-activation.php' );
+		$activation = new Anthologize_Activation();
+	}
 
 	function deactivation() {}
 	}
