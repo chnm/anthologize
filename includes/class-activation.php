@@ -10,8 +10,8 @@ class Anthologize_Activation {
 	var $settings;
 
 	function anthologize_activation () {
-		$this->unpublish_content();
 		$this->namespace_post_types();
+		$this->unpublish_content();
 
 		$this->default_settings(); // Settings should be updated last, so that we can take advantage of old version info
 	}
@@ -24,7 +24,7 @@ class Anthologize_Activation {
 		require_once( dirname(__FILE__) . '/class-new-project.php' );
 		$new_project = new Anthologize_New_Project();
 
-		$projects = get_posts( array( 'post_type' => 'anth_project' ) );
+		$projects = get_posts( array( 'post_type' => 'anth_project', 'nopaging' => true ) );
 
 		foreach( $projects as $project ) {
 			$update_project = array(
@@ -34,6 +34,40 @@ class Anthologize_Activation {
 			wp_update_post( $update_project );
 
 			$new_project::change_project_status( $project_id->ID, 'draft' );
+		}
+	}
+
+	// In version 0.3, Anthologize post types were not namespaced. This function sweeps through content created with 0.3 (with a reasonable degree of certainty that post types like 'projects' and 'parts' are created by Anthologize) and changes them to the new, namespaced versions
+	function namespace_post_types() {
+		if ( isset( $this->settings['version'] ) )
+			return;
+
+		$post_type_array = array(
+			'projects' => 'anth_project',
+			'parts' => 'anth_part',
+			'library_items' => 'anth_library_item',
+			'imported_items' => 'anth_imported_item'
+		);
+
+		foreach( $post_type_array as $old => $new ) {
+
+			$args = array(
+				'post_type' => $old,
+				'post_status' => array( 'publish', 'draft' ),
+				'nopaging' => true
+			);
+			$posts = get_posts( $args );
+
+			foreach( $posts as $post ) {
+				$update_post = array(
+					'ID' => $post->ID,
+					'post_type' => $new,
+				);
+
+				wp_update_post( $update_post );
+			}
+
+			unset( $posts );
 		}
 	}
 
