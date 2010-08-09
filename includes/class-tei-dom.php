@@ -80,7 +80,8 @@ class TeiDom {
       $postArray['dedication'] = "<p></p>";
     }
 
-    $frag->appendXML($postArray['dedication']);
+    $f1Content = htmlentities($postArray['dedication']);
+    $frag->appendXML($f1Content);
     $f1Html->appendChild($frag);
 
     //front2
@@ -94,6 +95,7 @@ class TeiDom {
     	$postArray['acknowledgements'] = "<p></p>";
     }
 
+    $f2Content = htmlentities($postArray['acknowledgements']);
     $frag->appendXML($postArray['acknowledgements']);
     $f2Html->appendChild($frag);
 
