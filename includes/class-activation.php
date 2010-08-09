@@ -10,6 +10,9 @@ class Anthologize_Activation {
 	var $settings;
 
 	function anthologize_activation () {
+		if ( !$this->settings = get_option( 'anthologize_settings' ) )
+			$this->settings = array();
+
 		$this->namespace_post_types();
 		$this->unpublish_content();
 
@@ -18,6 +21,7 @@ class Anthologize_Activation {
 
 	// Unpublishes Anthologize content which was published by default in original release. Required for people updating from version 0.3. In 0.3, there was no version settings, so we have to check for the existence of a version number.
 	function unpublish_content() {
+
 		if ( isset( $this->settings['version'] ) )
 			return;
 
@@ -72,9 +76,6 @@ class Anthologize_Activation {
 	}
 
 	function default_settings() {
-		if ( !$this->settings = get_option( 'anthologize_settings' ) )
-			$this->settings = array();
-
 		$this->settings['version'] = '0.4';
 
 		update_option( 'anthologize_settings', $this->settings );
