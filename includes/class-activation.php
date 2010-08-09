@@ -19,7 +19,10 @@ class Anthologize_Activation {
 		$this->default_settings(); // Settings should be updated last, so that we can take advantage of old version info
 	}
 
-	// Unpublishes Anthologize content which was published by default in original release. Required for people updating from version 0.3. In 0.3, there was no version settings, so we have to check for the existence of a version number.
+	// Unpublishes Anthologize content which was published by default
+	// in original release. Required for people updating from version
+	// 0.3. In 0.3, there was no version settings, so we have to
+	// check for the existence of a version number.
 	function unpublish_content() {
 
 		if ( isset( $this->settings['version'] ) )
@@ -41,7 +44,11 @@ class Anthologize_Activation {
 		}
 	}
 
-	// In version 0.3, Anthologize post types were not namespaced. This function sweeps through content created with 0.3 (with a reasonable degree of certainty that post types like 'projects' and 'parts' are created by Anthologize) and changes them to the new, namespaced versions
+	// In version 0.3, Anthologize post types were not namespaced.
+	// This function sweeps through content created with 0.3 (with
+	// a reasonable degree of certainty that post types like
+	// 'projects' and 'parts' are created by Anthologize) and
+	// changes them to the new, namespaced versions
 	function namespace_post_types() {
 		if ( isset( $this->settings['version'] ) )
 			return;
