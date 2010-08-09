@@ -285,6 +285,8 @@ class TeiDom {
     } else {
     	$content = $this->sanitizeShortCodes($content);
     }
+
+    $content = $this->sanitizeEntities($content);
     //using loadHTML because it is more forgiving than loadXML
     $tmpHTML = new DomDocument('1.0', 'UTF-8');
     //conceal the Warning about bad html with @
@@ -354,8 +356,6 @@ class TeiDom {
       $aNode->parentNode->removeChild($aNode);
     }
 
-
-
     //strip out feedburner links
     $aFeedBurnerLinkNodes = $this->xpath->query('//a[contains(@href, "http://feeds.feedburner.com")]');
     foreach($aFeedBurnerLinkNodes as $aNode) {
@@ -387,6 +387,11 @@ class TeiDom {
     //TODO: go to town
   }
 
+  private function sanitizeEntities($content) {
+    //TODO: sort out the best order to convert characters and sanitizing stuff.
+    //don't want to do html_entity_decode or specialchar_decode in case we need to leave those in place
+    return str_replace("&nbsp;", " ", $content);
+  }
   private function sanitizeShortCode($m) {
   	//modified from WP do_shortcode_tag() wp_includes/shorcodes.php
 
