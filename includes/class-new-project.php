@@ -114,6 +114,8 @@ class Anthologize_New_Project {
             	    <td><textarea name="anthologize_meta[author_name]" rows="5" cols="50"><?php if( !empty($meta['author_name']) ) echo $meta['author_name']; ?></textarea></td>
             	</tr>
 
+				<?php /* Hidden until there is a more straightforward way to display projects on the front end of WP */ ?>
+				<?php /*
             	<tr valign="top">
                     <th scope="row"><label for="post_status"><?php _e( 'Project Status', 'anthologize' ) ?></label></th>
                     <td>
@@ -122,7 +124,7 @@ class Anthologize_New_Project {
                     	<p><small><?php _e( 'Published projects are available via the web. Remember that you can change the status of your project later.', 'anthologize' ) ?></small></p>
                     </td>
                 </tr>
-
+				*/ ?>
 
             </table>
 
