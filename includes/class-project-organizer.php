@@ -106,7 +106,7 @@ class Anthologize_Project_Organizer {
 
 				<div class="postbox" id="anthologize-parts-box">
 
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=parts&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
+				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=anth_part&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
 
 				<div id="partlist">
 
@@ -219,7 +219,7 @@ class Anthologize_Project_Organizer {
 		  'post_password' => $post->post_password,
 		  'post_status' => $part->post_status, // post_status is set to the post_status of the parent part
 		  'post_title' => $post->post_title,
-		  'post_type' => 'library_items',
+		  'post_type' => 'anth_library_item',
 		  'to_ping' => $post->to_ping, // todo: tags and categories
 		);
 
@@ -249,7 +249,7 @@ class Anthologize_Project_Organizer {
 
 		$args = array(
 		  'post_title' => $part_name,
-		  'post_type' => 'parts',
+		  'post_type' => 'anth_part',
 		  'post_status' => $project->post_status,
 		  'post_parent' => $this->project_id
 		);
@@ -265,7 +265,7 @@ class Anthologize_Project_Organizer {
 
 	function list_existing_parts() {
 
-		query_posts( 'post_type=parts&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
+		query_posts( 'post_type=anth_part&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {
@@ -324,7 +324,7 @@ class Anthologize_Project_Organizer {
 			}
 		} else {
 		?>
-			<p><?php echo sprintf( __( 'You haven\'t created any parts yet! Click <a href="%1$s">"New Part"</a> to get started.', 'anthologize' ), 'post-new.php?post_type=parts&project_id=' . $this->project_id . '&new_part=1' ) ?></p>
+			<p><?php echo sprintf( __( 'You haven\'t created any parts yet! Click <a href="%1$s">"New Part"</a> to get started.', 'anthologize' ), 'post-new.php?post_type=anth_part&project_id=' . $this->project_id . '&new_part=1' ) ?></p>
 		<?php
 		}
 
@@ -337,7 +337,7 @@ class Anthologize_Project_Organizer {
 		global $wpdb;
 
 		$args = array(
-			'post_type' => array('post', 'page', 'imported_items' ),
+			'post_type' => array('post', 'page', 'anth_imported_item' ),
 			'posts_per_page' => -1
 		);
 
@@ -370,7 +370,7 @@ class Anthologize_Project_Organizer {
 
 //		print_r($item_query->query());
 
-		$sql = "SELECT id, post_title FROM wp_posts WHERE post_type = 'page' OR post_type = 'post' OR post_type = 'imported_items'";
+		$sql = "SELECT id, post_title FROM wp_posts WHERE post_type = 'page' OR post_type = 'post' OR post_type = 'anth_imported_item'";
 		$ids = $wpdb->get_results($sql);
 
 		$counter = 0;
@@ -402,7 +402,7 @@ class Anthologize_Project_Organizer {
 
 		$args = array(
 			'post_parent' => $part_id,
-			'post_type' => 'library_items',
+			'post_type' => 'anth_library_item',
 			'posts_per_page' => -1,
 			'orderby' => 'menu_order',
 			'order' => ASC

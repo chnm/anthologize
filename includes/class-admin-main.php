@@ -24,7 +24,7 @@ class Anthologize_Admin_Main {
 
 	function init() {
 
-	    foreach ( array('projects', 'parts', 'library_items', 'imported_items') as $type )
+	    foreach ( array('anth_project', 'anth_part', 'anth_library_item', 'anth_imported_item') as $type )
     	{
             add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array($this,'item_meta_box'), $type, 'side', 'high');
             add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array($this,'meta_save_box'), $type, 'side', 'high');
@@ -155,7 +155,7 @@ class Anthologize_Admin_Main {
 
 		$args = array(
 			'post_parent' => $project_id,
-			'post_type' => 'parts',
+			'post_type' => 'anth_part',
 			'posts_per_page' => -1,
 			'orderby' => 'menu_order',
 			'order' => ASC
@@ -184,7 +184,7 @@ class Anthologize_Admin_Main {
             foreach ($parts as $part) {
                 $args = array(
         			'post_parent' => $part->ID,
-        			'post_type' => 'library_items',
+        			'post_type' => 'anth_library_item',
         			'posts_per_page' => -1,
         			'orderby' => 'menu_order',
         			'order' => ASC
@@ -249,7 +249,7 @@ class Anthologize_Admin_Main {
 			$this->display_no_project_id_message();
 		}
 
-		query_posts( 'post_type=projects' );
+		query_posts( 'post_type=anth_project' );
 
 		if ( have_posts() ) {
 		?>

@@ -253,7 +253,7 @@ class Anthologize_Export_Panel {
 	function get_projects() {
 		$projects = array();
 
-		query_posts( 'post_type=projects&orderby=title&order=ASC' );
+		query_posts( 'post_type=anth_project&orderby=title&order=ASC' );
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {

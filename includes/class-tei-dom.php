@@ -220,7 +220,7 @@ class TeiDom {
 
   public function buildProjectData($projectID) {
 
-  	$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'projects'));
+  	$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'anth_project'));
     $project = $projectData->post;
 
     $titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
@@ -242,7 +242,7 @@ class TeiDom {
 
     $identNode->appendChild($this->dom->createCDataSection($project->guid));
 
-    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'parts'));
+    $partsData =  new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'anth_part'));
 
     $partObjectsArray = $partsData->posts;
 
@@ -251,7 +251,7 @@ class TeiDom {
 
     foreach($partObjectsArray as $partObject) {
     	$newPart = $this->newPart($partObject);
-      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'library_items'));
+      $libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item'));
       $libraryItemObjectsArray = $libraryItemsData->posts;
       //sort objects, by menu_order, then ID
       usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));

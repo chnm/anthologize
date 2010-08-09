@@ -17,7 +17,7 @@ class Anthologize_New_Project {
 
         $post_data = array();
         $post_data['post_title'] = $_POST['post_title'];
-        $post_data['post_type'] = 'projects';
+        $post_data['post_type'] = 'anth_project';
         $post_data['post_status'] = $_POST['post_status'];
 
         $new_anthologize_meta = $_POST['anthologize_meta'];
@@ -57,7 +57,7 @@ class Anthologize_New_Project {
 			'post_status' => array( 'draft', 'publish' ),
 			'post_parent' => $project_id,
 			'nopaging' => true,
-			'post_type' => 'parts'
+			'post_type' => 'anth_part'
 		);
 
 		$parts = get_posts( $args);
@@ -75,7 +75,7 @@ class Anthologize_New_Project {
 				'post_status' => array( 'draft', 'publish' ),
 				'post_parent' => $part->ID,
 				'nopaging' => true,
-				'post_type' => 'library_items'
+				'post_type' => 'anth_library_item'
 			);
 
 			$library_items = get_posts( $args );

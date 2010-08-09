@@ -103,8 +103,8 @@ class Anthologize_Loader {
 
 		foreach ( $menu as $mkey => $m ) {
 
-			$key = array_search( 'edit.php?post_type=parts', $m );
-			$keyb = array_search( 'edit.php?post_type=library_items', $m );
+			$key = array_search( 'edit.php?post_type=anth_part', $m );
+			$keyb = array_search( 'edit.php?post_type=anth_library_item', $m );
 
 			if ( $key || $keyb )
 				unset( $menu[$mkey] );
@@ -116,7 +116,7 @@ class Anthologize_Loader {
 
 	// Custom post types - Oh, Oh, Oh, It's Magic
 	function register_post_types() {
-		register_post_type( 'projects', array(
+		register_post_type( 'anth_project', array(
 			'label' => __( 'Projects', 'anthologize' ),
 			'exclude_from_search' => true,
 			'publicly_queryable' => false,
@@ -142,7 +142,7 @@ class Anthologize_Loader {
 			'parent_item_colon' => ''
 		  );
 
-		register_post_type( 'parts', array(
+		register_post_type( 'anth_part', array(
 			'label' => __( 'Parts', 'anthologize' ),
 			'labels' => $parts_labels,
 			'exclude_from_search' => true,
@@ -169,7 +169,7 @@ class Anthologize_Loader {
 			'parent_item_colon' => ''
 		  );
 
-		register_post_type( 'library_items', array(
+		register_post_type( 'anth_library_item', array(
 			'label' => __('Library Items', 'anthologize' ),
 			'labels' => $library_items_labels,
 			'exclude_from_search' => true,
@@ -196,7 +196,7 @@ class Anthologize_Loader {
 			'parent_item_colon' => ''
 		  );
 
-		register_post_type( 'imported_items', array(
+		register_post_type( 'anth_imported_item', array(
 			'label' => __('Imported Items', 'anthologize' ),
 			'labels' => $imported_items_labels,
 			'exclude_from_search' => true,
