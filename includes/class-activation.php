@@ -40,7 +40,7 @@ class Anthologize_Activation {
 			);
 			wp_update_post( $update_project );
 
-			$new_project::change_project_status( $project_id->ID, 'draft' );
+			$new_project->change_project_status( $project_id->ID, 'draft' );
 		}
 	}
 
