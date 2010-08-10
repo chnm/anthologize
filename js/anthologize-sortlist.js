@@ -25,11 +25,10 @@ var anthologize = {
       ui.item.attr("id", "new_new_new");
     }
 
-    offset = ui.item.index() + 1
-    dest_seq[this.cleanPostIds(ui.item.attr("id"))] = offset;
-    ui.item.nextAll().each(function(){
-      offset++;
+    offset = 1;
+    ui.item.siblings().andSelf().each(function(){
       dest_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = offset;
+			offset++;
     });
 
     if (ui.item.hasClass("item")){
@@ -38,11 +37,13 @@ var anthologize = {
       // so keep the parent id
       if (src_id == null){
 	       src_id = dest_id;
+	       anthologize.src_seq = {};
       }
     }else{
-	    //dest and src for for parts is the project id
+	    //dest and src for parts is the project id
       dest_id = project_id;
       anthologize.src_id = project_id;
+      anthologize.src_seq = {};
     }
 
     var ajax_options = {
@@ -156,14 +157,13 @@ jQuery.fn.anthologizeSortList = function (options){
     start: function(event, ui){
       anthologize.src_id = null;
       anthologize.org_seq_num = ui.item.index() + 1;
-	    offset = anthologize.org_seq_num;
 	    anthologize.src_seq = {};
-	    anthologize.src_seq[anthologize.cleanPostIds(ui.item.attr("id"))] = offset;
-	    ui.item.nextAll().each(function(){
-		     if (! jQuery(this).hasClass("anthologize-drop-item")){
-	         offset++;
-	         anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = offset;
-         }
+	    var pos = 1;
+	    ui.item.siblings().each(function(){
+				if (! jQuery(this).hasClass("anthologize-drop-item")){ 
+					anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = pos;
+					pos++;
+				}
 	    });
       anthologize.fromNew = false;
       anthologize.newItem = null;
