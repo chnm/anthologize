@@ -5,6 +5,9 @@
 
 
 
+  if (!class_exists('XSLTProcessor', false))
+    die ('Custom feed export requires XSL support');
+
   $rssUrl = get_bloginfo( 'rss2_url' );
   $rssXml = file_get_contents($rssUrl);
 

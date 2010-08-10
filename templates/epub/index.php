@@ -16,6 +16,9 @@
 
   */
 
+  if (!class_exists('XSLTProcessor', false))
+      die ('ePub export requires XSL support');
+
   require_once('Archive.php');
 
   define('TEI',  'http://www.tei-c.org/ns/1.0'  );
