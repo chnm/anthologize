@@ -34,7 +34,8 @@
 
   // Constants
 
-  $temp_dir_name          = WP_CONTENT_DIR       . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'epub-tmp'; // Temporary area for building ZIP
+  $upload_dir_array = wp_upload_dir();
+  $temp_dir_name = $upload_dir_array['basedir'] . DIRECTORY_SEPARATOR . 'epub-tmp'; // Temporary area for building ZIP
   $temp_epub_dir_name     = $temp_dir_name       . DIRECTORY_SEPARATOR . 'epub_under_construction'; // ePub dir structure temp area
   $temp_epub_meta_inf_dir = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'META-INF';
   $temp_epub_oebps_dir    = $temp_epub_dir_name  . DIRECTORY_SEPARATOR . 'OEBPS';
