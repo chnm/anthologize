@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:html="http://www.w3.org/1999/xhtml">
-    <teiHeader>        
+    <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title></title>                
+                <title></title>
             </titleStmt>
             <editionStmt>
                 <edition></edition>
             </editionStmt>
-            
+
             <publicationStmt>
                 <availability rend="literal">
                     <p></p>
@@ -17,7 +17,7 @@
                     <ab rend="structured"></ab>
                 </availability>
                 <date rend="literal"></date>
-                <date rend="structured"></date>                
+                <date rend="structured"></date>
             </publicationStmt>
             <sourceDesc>
                 <bibl>
@@ -26,21 +26,24 @@
             </sourceDesc>
         </fileDesc>
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
-				
-				
-        <outputParams xmlns="http://www.anthologize.org/ns">
-            <param name="paper-type"></param>
-            <param name="page-width"></param>
-            <param name="page-height"></param>
-            <param name="font-size"></param>
-            <param name="font-family"></param>
-        </outputParams>
+
+        <outputDesc xmlns="http://www.anthologize.org/ns">
+
+            <outputParams xmlns="http://www.anthologize.org/ns">
+                <param name="paper-type"></param>
+                <param name="page-width"></param>
+                <param name="page-height"></param>
+                <param name="font-size"></param>
+                <param name="font-family"></param>
+            </outputParams>
+
+        </outputDesc>
+
         <encodingDesc>
             <refsDecl>
                 <ab type="metadata" subtype="authors">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
-                    <listPerson>
-                    </listPerson>
+                    <listPerson> </listPerson>
                 </ab>
             </refsDecl>
             <appInfo>
@@ -72,15 +75,13 @@
                 <head>
                     <title></title>
                 </head>
-                <body xmlns="http://www.w3.org/1999/xhtml">
-                </body>
+                <body xmlns="http://www.w3.org/1999/xhtml"> </body>
             </div>
             <div xml:id="f2" n="2">
                 <head>
                     <title></title>
                 </head>
-                <body xmlns="http://www.w3.org/1999/xhtml">
-                </body>
+                <body xmlns="http://www.w3.org/1999/xhtml"> </body>
             </div>
         </front>
         <body> </body>
