@@ -727,14 +727,9 @@ class TeiDom2 {
 
 	}
 
-	public function getBodyPartItem($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'body',
-						'partNumber'=>$partNumber,
-						'itemNumber'=>$itemNumber,
-						'isMeta'=>false,
-						'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-
+	public function getBodyPartItemCount($partNumber) {
+		$count = $this->xpath->evaluate("count(//tei:body/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
+		return $count;
 	}
 
 	public function getBodyPartItemMeta($partNumber, $itemNumber, $asNode = false) {
