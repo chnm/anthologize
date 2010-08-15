@@ -31,7 +31,7 @@ class TeiDom2 {
 
 		$this->dom = new DOMDocument('1.0', 'UTF-8');
 	    $templatePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" .
-	      DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'tei' . DIRECTORY_SEPARATOR .'teiEmpty.xml';
+	      DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'tei' . DIRECTORY_SEPARATOR .'teiEmpty2.xml';
 		$this->dom->load($templatePath);
 	    $this->dom->preserveWhiteSpace = false;
 	    $this->setXPath();
@@ -152,9 +152,11 @@ class TeiDom2 {
 	}
 
 	public function addFrontMatter() {
+//TODO: sanitize content and regularize the mode off adding.
+//TODO: reconcile with UX team.
 
 	    //front1
-	    $f1Node = $this->xpath->query("//tei:div[@xml:id='f1']")->item(0);
+	    $f1Node = $this->xpath->query("//tei:front/tei:div[@n='1']")->item(0);
 
 	    $f1TitleNode = $this->xpath->query("tei:head/tei:title", $f1Node )->item(0);
 	    //currently, f1 is hardcoded to be Dedication
@@ -171,7 +173,7 @@ class TeiDom2 {
 	    $f1Html->appendChild($frag);
 
 	    //front2
-	    $f2Node = $this->xpath->query("//tei:div[@xml:id='f2']")->item(0);
+	    $f2Node = $this->xpath->query("//tei:front/tei:div[@xn='2']")->item(0);
 	    $f2TitleNode = $this->xpath->query("tei:head/tei:title", $f2Node )->item(0);
 	    //TODO: change when UI changes currently hardcoded as acknowledgements
 	    $f2TitleNode->appendChild($this->dom->createTextNode('Acknowledgements'));
@@ -403,6 +405,27 @@ class TeiDom2 {
 		}
 	}
 
+	private function sanitizeString($content, $isMultiline = false) {
+		if ($isMultiline) {
+			$content = wpautop($content);
+		}
+
+		$content = $this->sanitizeEntities($content);
+	    //using loadHTML because it is more forgiving than loadXML
+	    $tmpHTML = new DOMDocument('1.0', 'UTF-8');
+	    //conceal the Warning about bad html with @
+	    //loadHTML adds head and body tags silently
+	    @$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><body>$content</body>" );
+	    if($this->checkImgSrcs) {
+	      $this->checkImgSrcs($tmpHTML);
+
+	    }
+
+	    $body = $tmpHTML->getElementsByTagName('body')->item(0);
+	    $body->setAttribute('xmlns', HTML);
+	    $imported = $this->dom->importNode($body, true);
+	    return $imported;
+	}
 
 	private function sanitizeContent() {
 
@@ -469,21 +492,143 @@ class TeiDom2 {
 	    }
 	}
 
+	/**
+	 * nodeToArray gives a 'flattened' array of the node and subnode values.
+	 * E.g. array('elName'=>'value', 'elName2'=>'value')
+	 * @param DOMNode
+	 * @return Array
+	 */
+
 	private function nodeToArray($node) {
 		$retArray = array();
 		$retArray[$node->nodeName] = array();
+		//TODO: stuff additional info into this "top" array?
+		$retArray[$node->nodeName]['childNodes'] = array();
+		$retArray[$node->nodeName]['name'] = $node->nodeName;
 
-		foreach($node->childNodes as $childNode) {
-			//echo $childNode->nodeName;
-			$pluralizedName = $childNode->nodeName . "s";
-			if ($childNode->nodeName == "#text") {
-				$retArray[$node->nodeName]['value'] = $childNode->textContent;
-			} else {
-				$retArray[$node->nodeName][$pluralizedName] = $this->nodeToArray($childNode);
+		if($node->nodeName == 'body') {
+			//value is wrapped in <body> in the TEI, so strip that out for return value
+			$val = $this->dom->saveXML($node);
+			$val = str_replace('<body xmlns="http://www.w3.org/1999/xhtml">' , '' , $val);
+			$val = str_replace('</body>' , '', $val);
+			$retArray['value'] = $val;
+			return $retArray;
+		}
+
+		if($node->nodeName == 'param') {
+			$retArray[$node->getAttribute('name')] = $node->textContent;
+		}
+
+		$allMyChildren = $node->getElementsByTagname('*');
+
+		if($allMyChildren->length == 0) {
+			$retArray[$node->nodeName]['childNodes'] = false;
+			$retArray[$node->nodeName]['value'] = $node->textContent;
+
+			if($node->hasAttribute('ref')) {
+				$ref = $node->getAttribute('ref');
+				$refNode = $this->getNodeListByXPath("//*[@xml:id = '$ref']", true );
+				$retArray[$node->nodeName]['value'] = $this->nodeToArray($refNode);
 			}
 
 		}
+
+		//To handle multiple instances of same nodeName, we'll pluralize everything
+		//in the array
+
+		foreach($allMyChildren as $childNode) {
+			$plName = $childNode->nodeName . "s";
+			if( ! isset($retArray[$plName])) {
+				$retArray[$plName] = array();
+			}
+			if($childNode->childNodes->length == 1
+				&& ($childNode->firstChild->nodeName == "#text" )
+					|| $childNode->firstChild->nodeName == "#cdata-section"  ) {
+				$elArray = array('value'=> $childNode->textContent,
+									'name'=>$childNode->nodeName );
+
+				if($childNode->nodeName == 'param') {
+					$elArray['value'] = $childNode->textContent;
+					$elArray['name'] = $childNode->getAttribute('name');
+				}
+				$retArray[$plName][] = $elArray;
+				$retArray[$node->nodeName]['childNodes'][] = $plName;
+			}
+
+			if($childNode->hasAttribute('ref')) {
+				$ref = $childNode->getAttribute('ref');
+				$refNode = $this->getNodeListByXPath("//*[@xml:id = '$ref']", true );
+				$retArray[$plName][] = $this->nodeToArray($refNode);
+				$retArray[$node->nodeName]['childNodes'][] = $plName;
+			}
+
+			//if empty, get rid of it
+			if ( count($retArray[$plName]) == 0 ) {
+				unset($retArray[$plName]);
+			}
+		}
+
 		return $retArray;
+	}
+
+	private function getNodeDataByParams($params) {
+		switch ($params['section']) {
+			case 'front':
+				$queryString = "//tei:front";
+			break;
+
+			case 'body':
+				$queryString = "//tei:body";
+			break;
+
+			case 'back':
+				$queryString = "//tei:back";
+			break;
+
+			case 'outputDesc':
+				$queryString = "//anth:outputDesc";
+			break;
+		}
+
+		if(isset($params['isHeader']) && $params['isHeader'] === true) {
+			$node = $this->getNodeListByXPath($queryString, true);
+
+			if($params['asNode']) {
+				return $node;
+			}
+			return $this->nodeToArray($node);
+
+		}
+
+		if(isset($params['partNumber'])) {
+			$partNumber = $params['partNumber'];
+			$queryString .= "/tei:div[@n='$partNumber']";
+		}
+
+		if(isset($params['itemNumber'])) {
+			$itemNumber = $params['itemNumber'];
+			$queryString .= "/tei:div[@type='libraryItem'][@n='$itemNumber']";
+		}
+
+		if(isset($params['isMeta']) && $params['isMeta'] === true) {
+			$queryString .= "/tei:head";
+			if(isset($params['elName'])) {
+				$elName = $params['elName'];
+				$queryString .= "//tei:$elName";
+
+			}
+		} else {
+			$queryString .= "/body";
+		}
+
+		$node = $this->getNodeListByXPath($queryString, true);
+
+		if($params['asNode']) {
+			return $node;
+		}
+		return $this->nodeToArray($node);
+
+
 	}
 
 /**** Accessor Methods *****/
@@ -498,18 +643,23 @@ class TeiDom2 {
 	}
 
 	public function getFileName() {
-        $text = strtolower($this->postArray['post-title']);
+
+		$text = strtolower($this->postArray['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
+        $fileName = rawurlencode($fileName); //via Tai for japanese filenames
         $fileName = trim($fileName, "_");
         $fileName = rtrim($fileName, ".");
         return $fileName;
 	}
 
  	public static function getFileNameStatic($postArray) {
-        $text = strtolower($postArray['post-title']);
+
+
+		$text = strtolower($postArray['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
+        $fileName = rawurlencode($fileName); //via Tai for japanese filenames
         $fileName = trim($fileName, "_");
         $fileName = rtrim($fileName, ".");
         return $fileName;
@@ -539,7 +689,12 @@ class TeiDom2 {
 	}
 
 	public function getProjectOutputParams($ops = array(), $asNode = false) {
+		$params = $ops;
+		$params['section']= 'outputDesc';
+		$params['asNode'] = $asNode;
+		$params['isHeader'] = true;
 
+		return $this->getNodeDataByParams($params);
 	}
 
 	public function getErrors() {
@@ -551,38 +706,64 @@ class TeiDom2 {
 		return $count;
 	}
 
-	public function getBodyPartContent($partNumber, $asNode = false) {
-
-	}
-
 	public function getBodyPartMeta($partNumber, $asNode = false) {
-		$node = $this->getNodeListByXPath("//tei:body/tei:div[@n='$partNumber']", true);
+		$params = array('section'=>'body',
+						'partNumber'=>$partNumber,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
 
+		return $this->getNodeDataByParams($params);
 
-		if($asNode) {
-			return $node;
-		}
-		return $this->nodeToArray($node);
 	}
 
 	public function getBodyPartMetaEl($partNumber, $elName, $asNode = false) {
+		$params = array('section'=>'body',
+						'partNumber'=>$partNumber,
+						'elName'=>$elName,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+
+
+		return $this->getNodeDataByParams($params);
 
 	}
 
 	public function getBodyPartItem($partNumber, $itemNumber, $asNode = false) {
-
+		$params = array('section'=>'body',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>false,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
 
 	}
 
 	public function getBodyPartItemMeta($partNumber, $itemNumber, $asNode = false) {
-
+		$params = array('section'=>'body',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
 	}
 
-	public function getBodyPartItemMetaEl($partNumber, $elName, $asNode = false) {
-
+	public function getBodyPartItemMetaEl($partNumber, $itemNumber, $elName, $asNode = false) {
+		$params = array('section'=>'body',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>true,
+						'elName'=>$elName,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
 	}
 
 	public function getBodyPartItemContent($partNumber, $itemNumber, $asNode = false) {
+		$params = array('section'=>'body',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>false,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
 
 	}
 

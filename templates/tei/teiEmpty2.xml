@@ -28,7 +28,6 @@
         <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
 
         <outputDesc xmlns="http://www.anthologize.org/ns">
-
             <outputParams xmlns="http://www.anthologize.org/ns">
                 <param name="paper-type"></param>
                 <param name="page-width"></param>
@@ -41,13 +40,13 @@
 
         <encodingDesc>
             <refsDecl>
-                <ab type="metadata" subtype="authors">
+                <ab type="metadata" subtype="authors" rend="structured">
                     <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
                     <listPerson> </listPerson>
                 </ab>
             </refsDecl>
             <appInfo>
-                <application ident="anthologize" version="0.3">
+                <application ident="anthologize" version="0.4-alpha">
                     <label>Anthologize</label>
                     <desc>Bits to Bookshelf</desc>
                     <p><graphic
@@ -71,13 +70,13 @@
                 <docEdition rend="literal"></docEdition>
                 <docEdition rend="structured"></docEdition>
             </titlePage>
-            <div xml:id="f1" n="1">
+            <div type="part" n="0">
                 <head>
                     <title></title>
                 </head>
                 <body xmlns="http://www.w3.org/1999/xhtml"> </body>
             </div>
-            <div xml:id="f2" n="2">
+            <div type="part" n="1">
                 <head>
                     <title></title>
                 </head>
