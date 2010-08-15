@@ -152,11 +152,11 @@ class TeiDom2 {
 	}
 
 	public function addFrontMatter() {
-//TODO: sanitize content and regularize the mode off adding.
+//TODO: sanitize content and regularize the mode of adding.
 //TODO: reconcile with UX team.
 
 	    //front1
-	    $f1Node = $this->xpath->query("//tei:front/tei:div[@n='1']")->item(0);
+	    $f1Node = $this->xpath->query("//tei:front/tei:div[@n='0']")->item(0);
 
 	    $f1TitleNode = $this->xpath->query("tei:head/tei:title", $f1Node )->item(0);
 	    //currently, f1 is hardcoded to be Dedication
@@ -173,7 +173,7 @@ class TeiDom2 {
 	    $f1Html->appendChild($frag);
 
 	    //front2
-	    $f2Node = $this->xpath->query("//tei:front/tei:div[@xn='2']")->item(0);
+	    $f2Node = $this->xpath->query("//tei:front/tei:div[@n='1']")->item(0);
 	    $f2TitleNode = $this->xpath->query("tei:head/tei:title", $f2Node )->item(0);
 	    //TODO: change when UI changes currently hardcoded as acknowledgements
 	    $f2TitleNode->appendChild($this->dom->createTextNode('Acknowledgements'));
@@ -587,17 +587,17 @@ class TeiDom2 {
 
 			case 'outputDesc':
 				$queryString = "//anth:outputDesc";
+				if(isset($params['paramName'])) {
+					$paramName = $params['paramName'];
+					$queryString .= "//*[@name='$paramName']";
+				}
+				$node = $this->getNodeListByXPath($queryString, true);
+
+				if($params['asNode']) {
+					return $node;
+				}
+				return $this->nodeToArray($node);
 			break;
-		}
-
-		if(isset($params['isHeader']) && $params['isHeader'] === true) {
-			$node = $this->getNodeListByXPath($queryString, true);
-
-			if($params['asNode']) {
-				return $node;
-			}
-			return $this->nodeToArray($node);
-
 		}
 
 		if(isset($params['partNumber'])) {
@@ -692,7 +692,6 @@ class TeiDom2 {
 		$params = $ops;
 		$params['section']= 'outputDesc';
 		$params['asNode'] = $asNode;
-		$params['isHeader'] = true;
 
 		return $this->getNodeDataByParams($params);
 	}

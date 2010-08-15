@@ -21,7 +21,7 @@ $ext = "xml";
 
 //print_r($tei->getBodyPartItem(0, 0));
 
-//print_r($tei->getProjectOutputParams());
+//print_r($tei->getProjectOutputParams(array('paramName'=>'page-width')));
 
 header("Content-type: application/xml");
 header("Content-Disposition: attachment; filename=$fileName.$ext");
