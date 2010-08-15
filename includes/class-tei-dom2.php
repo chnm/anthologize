@@ -557,8 +557,7 @@ class TeiDom2 {
 
 			if($childNode->hasAttribute('ref')) {
 				$ref = $childNode->getAttribute('ref');
-				$refNode = $this->getNodeListByXPath("//*[@xml:id = '$ref']", true );
-				$retArray[$plName][] = $this->nodeToArray($refNode);
+				$retArray[$plName][] = $this->getNodeDataByParams(array('id'=>$ref));
 				$retArray[$node->nodeName]['childNodes'][] = $plName;
 			}
 
@@ -572,6 +571,22 @@ class TeiDom2 {
 	}
 
 	private function getNodeDataByParams($params) {
+
+		if(isset($params['id'])) {
+			$id = $params['id'];
+			$queryString = "//*[@xml:id = '$id']";
+			if(isset($params['elName'])) {
+				$elName = $params['elName'];
+				$queryString = $queryString .= "//tei:$elName";
+			}
+			$node = $this->getNodeListByXPath($queryString, true );
+
+			if($params['asNode']) {
+				return $node;
+			}
+			return $this->nodeToArray($node);
+		}
+
 		switch ($params['section']) {
 			case 'front':
 				$queryString = "//tei:front";
@@ -598,6 +613,7 @@ class TeiDom2 {
 				}
 				return $this->nodeToArray($node);
 			break;
+
 		}
 
 		if(isset($params['partNumber'])) {
@@ -761,12 +777,17 @@ class TeiDom2 {
 
 	}
 
-	public function getAuthorMeta($authorID, $asNode = false) {
-
+	public function getAuthorMeta($authorId, $asNode = false) {
+		$params = array('id'=>$authorId ,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
 	}
 
 	public function getAuthorMetaEl($authorId, $elName, $asNode = false) {
-
+		$params = array('id'=>$authorId ,
+						'asNode'=>$asNode,
+						'elName'=>$elName);
+		return $this->getNodeDataByParams($params);
 	}
 
 }
