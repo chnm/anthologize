@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if ( !class_exists( 'Anthologize_Export_Panel' ) ) :
 
 class Anthologize_Export_Panel {
@@ -27,6 +29,9 @@ class Anthologize_Export_Panel {
 
 	function display() {
 		$project_id = $this->project_id;
+		
+		if ( isset( $_POST['export-step'] ) )
+			$this->save_session();
 
 		$options = get_post_meta( $project_id, 'anthologize_meta', true );
 
@@ -138,7 +143,7 @@ class Anthologize_Export_Panel {
 			<?php $project_id = $_POST['project_id']; ?>
 			<?php $project = get_post( $project_id ); ?>
 
-			<form action="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $project_id ?>&noheader=true" method="post">
+			<form action="" method="post">
 
 				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 
@@ -153,25 +158,46 @@ class Anthologize_Export_Panel {
 					<p><strong><?php _e( 'Acknowledgements', 'anthologize' ) ?></strong></p>
 					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15><?php echo $acknowledgements ?></textarea>
 				</div>
+				
+				<div style="clear: both;"></div>
+				
+				<div id="export-format">
+					<h4><?php _e( 'Export Format', 'anthologize' ) ?></h4>
+					
+					<?php if ( $zip_is_enabled ) : ?>
+						<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
+					<?php else : ?>
+						<input type="radio" name="filetype" value="epub" disabled="disabled" /> <span class="not-enabled"><?php _e( 'ePub requires the PHP Zip library to be enabled. Contact your hosting provider to enable Zip.', 'anthologize' ) ?></span><br />
+					<?php endif; ?>
+					
+					<input type="radio" name="filetype" value="pdf" checked="checked" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
+					
+					<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?><br />
+	
+					<input type="radio" name="filetype" value="rtf" /> <?php _e( 'RTF', 'anthologize' ) ?>
+				
+					<?php do_action( 'anthologize_export_format_list' ) ?>
+				</div>
+				
+				
 
+				<input type="hidden" name="export-step" value="2" />
 
+				<div style="clear: both;"> </div>
+
+				<div class="anthologize-button" id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Export', 'anthologize' ) ?>" /></div>
+
+			</form>
+			
+			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
+								
+				<form action="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $project_id ?>&noheader=true" method="post">
+				
+				
 				<div style="clear: both;"> </div>
 
 				<h3><?php _e( 'Publishing Options', 'anthologize' ) ?></h3>
 				<div id="publishing-options">
-					<div style="width: 150px; float: left; padding: 8px;">
-						<div class="pub-options-title"><?php _e( 'Type', 'anthologize' ) ?></div>
-
-						<?php if ( $zip_is_enabled ) : ?>
-							<input type="radio" name="filetype" value="epub" /> <?php _e( 'ePub', 'anthologize' ) ?><br />
-						<?php else : ?>
-							<input type="radio" name="filetype" value="epub" disabled="disabled" /> <span class="not-enabled"><?php _e( 'ePub requires the PHP Zip library to be enabled. Contact your hosting provider to enable Zip.', 'anthologize' ) ?></span><br />
-						<?php endif; ?>
-						<input type="radio" name="filetype" value="pdf" checked="checked" /> <?php _e( 'PDF', 'anthologize' ) ?><br />
-						<input type="radio" name="filetype" value="tei" /> <?php _e( 'TEI (plus HTML)', 'anthologize' ) ?><br />
-
-						<input type="radio" name="filetype" value="rtf" /> <?php _e( 'RTF', 'anthologize' ) ?>
-					</div>
 
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Page Size', 'anthologize' ) ?></div>
@@ -211,26 +237,16 @@ class Anthologize_Export_Panel {
 
 				</div>
 
-				<input type="hidden" name="cyear" value="<?php echo $_POST['cyear'] ?>" />
-				<input type="hidden" name="cname" value="<?php echo $_POST['cname'] ?>" />
-				<input type="hidden" name="ctype" value="<?php echo $_POST['ctype'] ?>" />
-				<?php if ( $_POST['ctype'] == 'cc' ) : ?>
-					<input type="hidden" name="cctype" value="<?php echo $_POST['cctype'] ?>" />
-				<?php endif; ?>
-				<input type="hidden" name="edition" value="<?php echo $_POST['edition'] ?>" />
-				<input type="hidden" name="authors" value="<?php echo $_POST['authors'] ?>" />
-				<input type="hidden" name="project_id" value="<?php echo $_POST['project_id'] ?>" />
-
-				<input type="hidden" name="export-step" value="2" />
-
-				<div style="clear: both;"> </div>
-
-				<div class="anthologize-button" id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Export', 'anthologize' ) ?>" /></div>
-
-			</form>
+				
+				
+				
+				
+				
+				</form>
+			
 
 
-			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
+			<?php elseif ( $_POST['export-step'] == 3 ) : ?>
 				<!-- Where the magic happens -->
 				<?php /* You should never actually get to this point. Method load_template() in anthologize.php should grab all requests with $_POST['filetype'], send a file to the user, and die. If someone ends up here, it means that something has gone awry. */ ?>
 				<p>
@@ -244,6 +260,16 @@ class Anthologize_Export_Panel {
 
 	}
 
+	function save_session() {
+		foreach ( $_POST as $key => $value ) {
+			if ( $key == 'submit' )
+				continue;
+			
+			$_SESSION[$key] = $value;
+		}
+		
+		print_r($_SESSION);
+	}
 
 	function load_template() {
 		// The goggles! Zey do nossing!

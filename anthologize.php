@@ -234,7 +234,7 @@ class Anthologize_Loader {
 
 
 	function load_template() {
-		if ( $_POST['export-step'] != 2 )
+		if ( $_POST['export-step'] != 3 )
 			return;
 
 		$project_id = $_POST['project_id'];
