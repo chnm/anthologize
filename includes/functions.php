@@ -61,13 +61,44 @@ function anthologize_filter_post_content($content) {
 
 add_filter('the_content', 'anthologize_filter_post_content');
 
+function register_those_types() {
+	global $anthologize_formats;
+		
+	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ) );
+	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ) );
+	
+	
+	echo "<pre>";
+	print_r($anthologize_formats);
+	echo "</pre>";
+}
+add_action( 'anthologize_init', 'register_those_types' );
+
 function anthologize_register_format( $name, $label, $options ) {
 	global $anthologize_formats;
 		
 	if ( !is_array( $anthologize_formats ) )
 		$anthologize_formats = array();
-
 	
+	if ( !isset( $name ) || !isset( $label ) )
+		return false;
+	
+	$counter = 1;
+	$new_name = $name;
+	while ( isset( $anthologize_formats[$new_name] ) ) {
+		$new_name = $name . '-' . $counter;
+	}
+	$name = $new_name;
+	
+	$default_options = array(
+	
+	);
+	
+	$new_format = array(
+		'label' => $label
+	);
+	
+	$anthologize_formats[$name] = $new_format;
 }
 
 
