@@ -432,12 +432,9 @@ class TeiDom {
 
 
  	public static function getFileName($postArray) {
-
         $text = strtolower($postArray['post-title']);
-
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
-        $fileName = rawurlencode($fileName); //via Tai for japanese filenames
         $fileName = trim($fileName, "_");
         $fileName = rtrim($fileName, ".");
         return $fileName;
