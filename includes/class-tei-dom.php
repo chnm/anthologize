@@ -80,6 +80,7 @@ class TeiDom {
 	    }
 
 	    $f1Content = htmlentities($postArray['dedication']);
+
 	    $frag->appendXML($f1Content);
 	    $f1Html->appendChild($frag);
 
@@ -433,11 +434,16 @@ class TeiDom {
 
  	public static function getFileName($postArray) {
         $text = strtolower($postArray['post-title']);
+
+
         $fileName = preg_replace('/\s/', "_", $text);
+
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
-        $fileName = $text = rawurlencode($fileName); // Tai's fix for Japanese file names
+
+        $fileName = rawurlencode($fileName); // Tai's fix for Japanese file names
         $fileName = trim($fileName, "_");
         $fileName = rtrim($fileName, ".");
+
         return $fileName;
   	}
 }
