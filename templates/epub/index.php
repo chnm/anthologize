@@ -41,7 +41,7 @@
   $temp_epub_images_dir   = $temp_epub_oebps_dir . DIRECTORY_SEPARATOR; // . 'images';
   $temp_zip_filename      = $temp_dir_name       . DIRECTORY_SEPARATOR . 'book.epub'; // Temporary ZIP file
 
-  $zip_download_filename  = TeiDom::getFileName($_POST) . '.epub'; // The name of the filename when it downloads
+  $zip_download_filename  = TeiDom::getFileName($_SESSION) . '.epub'; // The name of the filename when it downloads
 
   // Set internal & output text encoding to UTF-16
 
@@ -87,7 +87,7 @@
 
   // Load intermediate TEI file
 
-  $tei_data = new TeiDom($_POST);
+  $tei_data = new TeiDom($_SESSION);
   $teiDom = $tei_data->getTeiDom();
 
   // echo $tei_data->getTeiString(); die();

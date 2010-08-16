@@ -61,18 +61,6 @@ function anthologize_filter_post_content($content) {
 
 add_filter('the_content', 'anthologize_filter_post_content');
 
-function register_those_types() {
-	global $anthologize_formats;
-		
-	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ) );
-	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ) );
-	
-	
-	echo "<pre>";
-	print_r($anthologize_formats);
-	echo "</pre>";
-}
-add_action( 'anthologize_init', 'register_those_types' );
 
 function anthologize_register_format( $name, $label, $options ) {
 	global $anthologize_formats;
@@ -90,16 +78,63 @@ function anthologize_register_format( $name, $label, $options ) {
 	}
 	$name = $new_name;
 	
-	$default_options = array(
-	
+	// Defining the default options for export formats
+	$d_page_size = array(
+		'label' => __( 'Page Size', 'anthologize' ),
+		'values' => array(
+			'letter' => __( 'Letter', 'anthologize' ),
+			'a4' => __( 'A4', 'anthologize' )
+		)
 	);
+	
+	$d_font_size = array(
+		'label' => __( 'Base Font Size', 'anthologize' ),
+		'values' => array(
+			'9' => __( '9 pt', 'anthologize' ),
+			'10' => __( '10 pt', 'anthologize' ),
+			'11' => __( '11 pt', 'anthologize' ),
+			'12' => __( '12 pt', 'anthologize' ),
+			'13' => __( '13 pt', 'anthologize' ),
+			'14' => __( '14 pt', 'anthologize' ),
+		)
+	);
+	
+	$d_font_face = array(
+		'label' => __( 'Font Face', 'anthologize' ),
+		'values' => array(
+			'times' => __( 'Times New Roman', 'anthologize' ),
+			'helvetica' => __( 'Helvetica', 'anthologize' ),
+			'courier' => __( 'Courier', 'anthologize' )
+		)
+	);
+	
+	$default_options = array(
+		'page_size' => $d_page_size,
+		'font_size' => $d_font_size,
+		'font_face' => $d_font_face
+	);
+	
+	// Parse the registered options with the defaults
+	$options = wp_parse_args( $options, $default_options );
+	extract( $options, EXTR_SKIP );
 	
 	$new_format = array(
-		'label' => $label
+		'label' => $label,
+		'page-size' => $page_size,
+		'font-size' => $font_size,
+		'font-face' => $font_face
 	);
 	
+	// Register the format
 	$anthologize_formats[$name] = $new_format;
 }
+
+function test_formats() {
+	global $anthologize_formats;
+	print_r($anthologize_formats);
+}
+//add_action( 'anthologize_init', 'test_formats', 999 );
+
 
 
 ?>
