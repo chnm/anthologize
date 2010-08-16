@@ -435,6 +435,7 @@ class TeiDom {
         $text = strtolower($postArray['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
+        $fileName = $text = rawurlencode($fileName); // Tai's fix for Japanese file names
         $fileName = trim($fileName, "_");
         $fileName = rtrim($fileName, ".");
         return $fileName;
