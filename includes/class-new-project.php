@@ -46,7 +46,7 @@ class Anthologize_New_Project {
 
 		}
 
-		wp_redirect( get_bloginfo( 'url' ) . '/wp-admin/admin.php?page=anthologize&project_saved=1' );
+		wp_redirect( get_admin_url() . 'admin.php?page=anthologize&project_saved=1' );
 	}
 
 	function change_project_status( $project_id, $status ) {
@@ -155,7 +155,7 @@ class Anthologize_New_Project {
 endif;
 
 function item_meta_redirect($location) {
-    $location = 'admin.php?page=anthologize';
+    $location = get_admin_url() . 'admin.php?page=anthologize';
     echo $location; exit;
     return $location;
 }
