@@ -623,7 +623,7 @@ class TeiDom2 {
 
 		if(isset($params['itemNumber'])) {
 			$itemNumber = $params['itemNumber'];
-			$queryString .= "/tei:div[@type='libraryItem'][@n='$itemNumber']";
+			$queryString .= "/tei:div[@n='$itemNumber']";
 		}
 
 		if(isset($params['isMeta']) && $params['isMeta'] === true) {
@@ -776,6 +776,133 @@ class TeiDom2 {
 		return $this->getNodeDataByParams($params);
 
 	}
+
+
+
+	public function getFrontPartCount() {
+		$count = $this->xpath->evaluate("count(//tei:front/tei:div[@type='part'])");
+		return $count;
+	}
+
+	public function getFrontPartMeta($partNumber, $asNode = false) {
+		$params = array('section'=>'front',
+						'partNumber'=>$partNumber,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+
+		return $this->getNodeDataByParams($params);
+
+	}
+
+	public function getFrontPartMetaEl($partNumber, $elName, $asNode = false) {
+		$params = array('section'=>'front',
+						'partNumber'=>$partNumber,
+						'elName'=>$elName,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+
+
+		return $this->getNodeDataByParams($params);
+
+	}
+
+	public function getFrontPartItemCount($partNumber) {
+		$count = $this->xpath->evaluate("count(//tei:front/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
+		return $count;
+	}
+
+	public function getFrontPartItemMeta($partNumber, $itemNumber, $asNode = false) {
+		$params = array('section'=>'front',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
+	}
+
+	public function getFrontPartItemMetaEl($partNumber, $itemNumber, $elName, $asNode = false) {
+		$params = array('section'=>'front',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>true,
+						'elName'=>$elName,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
+	}
+
+	public function getFrontPartItemContent($partNumber, $itemNumber, $asNode = false) {
+		$params = array('section'=>'front',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>false,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
+
+	}
+
+
+	public function getBackPartCount() {
+		$count = $this->xpath->evaluate("count(//tei:back/tei:div[@type='part'])");
+		return $count;
+	}
+
+	public function getBackPartMeta($partNumber, $asNode = false) {
+		$params = array('section'=>'back',
+						'partNumber'=>$partNumber,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+
+		return $this->getNodeDataByParams($params);
+
+	}
+
+	public function getBackPartMetaEl($partNumber, $elName, $asNode = false) {
+		$params = array('section'=>'back',
+						'partNumber'=>$partNumber,
+						'elName'=>$elName,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+
+
+		return $this->getNodeDataByParams($params);
+
+	}
+
+	public function getBackPartItemCount($partNumber) {
+		$count = $this->xpath->evaluate("count(//tei:back/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
+		return $count;
+	}
+
+	public function getBackPartItemMeta($partNumber, $itemNumber, $asNode = false) {
+		$params = array('section'=>'back',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>true,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
+	}
+
+	public function getBackPartItemMetaEl($partNumber, $itemNumber, $elName, $asNode = false) {
+		$params = array('section'=>'back',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>true,
+						'elName'=>$elName,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
+	}
+
+	public function getBackPartItemContent($partNumber, $itemNumber, $asNode = false) {
+		$params = array('section'=>'back',
+						'partNumber'=>$partNumber,
+						'itemNumber'=>$itemNumber,
+						'isMeta'=>false,
+						'asNode'=>$asNode);
+		return $this->getNodeDataByParams($params);
+
+	}
+
+
 
 	public function getAuthorMeta($authorId, $asNode = false) {
 		$params = array('id'=>$authorId ,
