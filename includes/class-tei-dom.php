@@ -433,7 +433,7 @@ class TeiDom {
 
  	public static function getFileName($postArray) {
 
-        $text = strtolower($postArray['post-title']);
+        $text = strtolower(rawurlencode($postArray['post-title']));
 
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
