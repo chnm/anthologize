@@ -13,6 +13,8 @@ class Anthologize_Export_Panel {
 	 */
 	function anthologize_export_panel () {
 
+		$this->formats = $this->get_formats();
+		
 		$this->projects = $this->get_projects();
 
 		if ( !$project_id ) {
@@ -179,8 +181,6 @@ class Anthologize_Export_Panel {
 					<?php do_action( 'anthologize_export_format_list' ) ?>
 				</div>
 				
-				
-
 				<input type="hidden" name="export-step" value="2" />
 
 				<div style="clear: both;"> </div>
@@ -193,11 +193,19 @@ class Anthologize_Export_Panel {
 								
 				<form action="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $project_id ?>&noheader=true" method="post">
 				
+				<?php 	$sizes = array(
+							'letter' => __( 'Letter', 'anthologize' ),
+							'a4' => __( 'A4', 'anthologize' )
+						);
+				$this->build_dropdown( 'page-size', __( 'Page Size', 'anthologize' ), $sizes ); ?>
+				
 				
 				<div style="clear: both;"> </div>
 
 				<h3><?php _e( 'Publishing Options', 'anthologize' ) ?></h3>
 				<div id="publishing-options">
+
+
 
 					<div style="width: 150px; float: left; padding: 8px;">
 						<div class="pub-options-title"><?php _e( 'Page Size', 'anthologize' ) ?></div>
@@ -235,12 +243,7 @@ class Anthologize_Export_Panel {
 						</select>
 					</div>
 
-				</div>
-
-				
-				
-				
-				
+				</div>				
 				
 				</form>
 			
@@ -269,6 +272,34 @@ class Anthologize_Export_Panel {
 		}
 		
 		print_r($_SESSION);
+	}
+
+	function get_formats() {
+		global $anthologize_formats;
+		
+		
+	
+		do_action( 'register_anthologize_formats' );
+	}
+
+	function build_dropdown( $name, $label, $options ) {
+		// $name is the input name (no spaces, eg 'page-size')
+		// $label is the input label (for display, eg 'Page Size'. Should be internationalizable, eg __('Page Size', 'anthologize')
+		// $options is associative array where keys are option values and values are the text displayed in the option field.
+		
+		$html = '<div class="pub-options-title">' . $label . '</div>';
+		
+		$html .= '<select name="' . $name . '">';
+		
+		foreach( $options as $ovalue => $olabel ) {
+			$html .= '<option value="' . $ovalue . '">' . $olabel . '</option>';
+		}	
+		
+		$html .= '</select>';
+		
+		$html = apply_filters( 'anthologize_build_dropdown', $html, $name, $label, $options );
+	
+		echo $html;
 	}
 
 	function load_template() {

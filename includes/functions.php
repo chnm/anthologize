@@ -61,4 +61,14 @@ function anthologize_filter_post_content($content) {
 
 add_filter('the_content', 'anthologize_filter_post_content');
 
+function anthologize_register_format( $name, $label, $options ) {
+	global $anthologize_formats;
+		
+	if ( !is_array( $anthologize_formats ) )
+		$anthologize_formats = array();
+
+	
+}
+
+
 ?>
