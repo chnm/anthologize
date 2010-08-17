@@ -235,7 +235,6 @@ a.active-append {
 
 
 #export-project-button {
-	//width: auto;
 	border-top-right-radius: 1px;
 	border-top-left-radius: 1px;
 	border-bottom-right-radius: 1px;
@@ -246,6 +245,12 @@ a.active-append {
 	padding: 4px 8px;
 	text-decoration: none;
 
+}
+
+.export-options-box {
+	width: 150px;
+	float: left;
+	padding: 8px;
 }
 
 #blockUISpinner {

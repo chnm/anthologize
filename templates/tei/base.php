@@ -4,9 +4,9 @@
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 //include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom2.php');
 
-$tei = new TeiDom($_POST);
+$tei = new TeiDom($_SESSION);
 //$tei = new TeiDom2($_POST);
-$fileName = TeiDom::getFileName($_POST);
+$fileName = TeiDom::getFileName($_SESSION);
 //$fileName = $tei->getFileName();
 $ext = "xml";
 

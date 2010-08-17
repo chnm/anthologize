@@ -43,7 +43,7 @@ class TeiAPI {
 		// and exposes it as the attribute $tei
 		$this->tei = new DOMDocument();
 
-		$tei_dom = new TeiDom($_POST);
+		$tei_dom = new TeiDom($_SESSION);
 
 		$this->tei->loadXML($tei_dom->getTeiString());
 

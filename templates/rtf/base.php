@@ -30,8 +30,8 @@ error_reporting(0);
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
 
 
-$tei = new TeiDom($_POST);
-$fileName = TeiDom::getFileName($_POST);
+$tei = new TeiDom($_SESSION);
+$fileName = TeiDom::getFileName($_SESSION);
 $ext = "rtf";
 
 $bookTitle = convertSmartQuotes($tei->xpath->query("//tei:titleStmt/tei:title/text()")->item(0)->wholeText);

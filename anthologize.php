@@ -36,6 +36,8 @@ class Anthologize_Loader {
 	* The main Anthologize loader. Hooks our stuff into WP
 	*/
 	function anthologize_loader () {
+		
+		session_start();
 
 		// Give me something to believe in
 		add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
@@ -57,7 +59,10 @@ class Anthologize_Loader {
 		// Attach textdomain for localization
 		add_action( 'anthologize_init', array ( $this, 'textdomain' ) );
 
-		add_action( 'anthologize_init', array ( $this, 'load_template' ) );
+		add_action( 'anthologize_init', array ( $this, 'load_template' ), 999 );
+
+		// Register the built-in export formats
+		add_action( 'anthologize_init', array( $this, 'default_export_formats' ) );
 
 		add_filter( 'custom_menu_order', array( $this, 'custom_menu_order_function' ) );
 
@@ -210,8 +215,25 @@ class Anthologize_Loader {
 		));
 	}
 
-	function register_custom_feed() {
-	load_template( dirname( __FILE__ ) . '/templates/customfeed.php');
+	function default_export_formats() {
+	
+		anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
+		
+		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
+
+		$epub_options = array(
+			'page_size' => false,
+			'font_size' => false,
+			'font_face' => false
+		);
+		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php', $epub_options );
+		
+		$tei_options = array(
+			'page_size' => false,
+			'font_size' => false,
+			'font_face' => false
+		);		
+		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php', $tei_options );
 	}
 
 
@@ -234,50 +256,26 @@ class Anthologize_Loader {
 
 
 	function load_template() {
-		if ( $_POST['export-step'] != 2 )
-			return;
-
-		$project_id = $_POST['project_id'];
+		global $anthologize_formats;
+		
+		if ( $_POST['export-step'] != 3 )
+			return;	
 
 		anthologize_save_project_meta();
 
-//		print_r($_POST); die();
-		switch( $_POST['filetype'] ) {
-			case 'tei' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
-				return false;
-			case 'epub' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
-				return false;
-			case 'pdf' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
-				return false;
-			case 'rtf' :
-				load_template( WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
-				return false;
-		}
-	}
+		require_once( dirname(__FILE__) . '/includes/class-export-panel.php' );
+		Anthologize_Export_Panel::save_session();
+				
+		$type = $_SESSION['filetype'];
+		
+		if ( !is_array( $anthologize_formats[$type] ) )
+			return;
 
-	function grab() { // todo: make this make sense
+		$project_id = $_SESSION['project_id'];
 
-		if ( isset( $_POST['save_project']) || ($_GET['action'] == 'delete'))
-				wp_redirect( 'admin.php?page=anthologize');
-
-
-		if ( $_GET['output'] == 'customfeed' ) {
-
-		load_template( dirname( __FILE__ ) . '/templates/customfeed.php' );
+		load_template( $anthologize_formats[$type]['loader-path'] );
+		
 		return false;
-		} else if ($_GET['output'] == 'tei') {
-		load_template( dirname(__FILE__) . '/templates/tei/base.php' );
-		return false;
-		} else if ($_GET['output'] == 'epub') {
-		load_template( dirname(__FILE__) . '/templates/epub/index.php' );
-		return false;
-		} else if ($_GET['output'] == 'pdf') {
-			load_template( dirname(__FILE__) . '/templates/pdf/base.php' );
-		  return false;
-		}
 	}
 
 
