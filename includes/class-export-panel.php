@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 if ( !class_exists( 'Anthologize_Export_Panel' ) ) :
 
 class Anthologize_Export_Panel {
@@ -263,7 +261,7 @@ class Anthologize_Export_Panel {
 		
 		if ( $fdata = $anthologize_formats[$format] ) {
 			foreach( $fdata as $oname => $odata ) {
-				if ( $oname == 'label' )
+				if ( $oname == 'label' || $oname == 'loader-path' )
 					continue;
 				
 				if ( !$odata )

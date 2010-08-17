@@ -62,13 +62,16 @@ function anthologize_filter_post_content($content) {
 add_filter('the_content', 'anthologize_filter_post_content');
 
 
-function anthologize_register_format( $name, $label, $options ) {
+function anthologize_register_format( $name, $label, $loader_path, $options = false ) {
 	global $anthologize_formats;
-		
+	
 	if ( !is_array( $anthologize_formats ) )
 		$anthologize_formats = array();
 	
-	if ( !isset( $name ) || !isset( $label ) )
+	if ( !isset( $name ) || !isset( $label ) || !isset( $loader_path ) )
+		return false;
+	
+	if ( !file_exists( $loader_path ) )
 		return false;
 	
 	$counter = 1;
@@ -122,11 +125,13 @@ function anthologize_register_format( $name, $label, $options ) {
 		'label' => $label,
 		'page-size' => $page_size,
 		'font-size' => $font_size,
-		'font-face' => $font_face
+		'font-face' => $font_face,
+		'loader-path' => $loader_path
 	);
 	
 	// Register the format
 	$anthologize_formats[$name] = $new_format;
+	//print_r($new_format);
 }
 
 function test_formats() {
