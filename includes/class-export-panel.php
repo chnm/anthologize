@@ -256,18 +256,20 @@ class Anthologize_Export_Panel {
 	
 	function render_format_options() {
 		global $anthologize_formats;
-		
 		$format = $_SESSION['filetype'];
 		
 		if ( $fdata = $anthologize_formats[$format] ) {
 			foreach( $fdata as $oname => $odata ) {
+				//echo "<pre>";print_r($odata);echo "</pre>";
 				if ( $oname == 'label' || $oname == 'loader-path' )
 					continue;
 				
 				if ( !$odata )
 					continue;
+				
+				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
 					
-				$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'] );
+				$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
 			}
 		} else {
 			$return = __( 'This appears to be an invalid export format. Please try again.', 'anthologize' );
@@ -276,10 +278,11 @@ class Anthologize_Export_Panel {
 		echo $return;
 	}
 
-	function build_dropdown( $name, $label, $options ) {
+	function build_dropdown( $name, $label, $options, $default ) {
 		// $name is the input name (no spaces, eg 'page-size')
 		// $label is the input label (for display, eg 'Page Size'. Should be internationalizable, eg __('Page Size', 'anthologize')
 		// $options is associative array where keys are option values and values are the text displayed in the option field.
+		// $default is the default option
 		
 		$html = '<div class="export-options-box">'; 
 		
@@ -288,7 +291,12 @@ class Anthologize_Export_Panel {
 		$html .= '<select name="' . $name . '">';
 		
 		foreach( $options as $ovalue => $olabel ) {
-			$html .= '<option value="' . $ovalue . '">' . $olabel . '</option>';
+			$html .= '<option value="' . $ovalue . '"';
+			
+			if ( $default == $ovalue )
+				$html .= ' selected="selected"';
+						
+			$html .= '>' . $olabel . '</option>';
 		}	
 		
 		$html .= '</select>';
