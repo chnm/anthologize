@@ -62,6 +62,20 @@ function anthologize_filter_post_content($content) {
 add_filter('the_content', 'anthologize_filter_post_content');
 
 
+
+/** 
+   * anthologize_register_format() 
+   * 
+   * Use this function to register an export format translator in
+   * Anthologize
+   * 
+   * @author Boone Gorges
+   * @param $name string The name used internally by Anthologize for this format (eg 'pdf')
+   * @param $label string The format name as displayed to the user. Can be localizable.
+   * @param $loader_path string Path to the translator loader file, which will be included with WordPress's load_template()
+   * @param $options array Array of options (page size, font, etc) supported by the export format. Omit to accept the defaults.
+   * @return type bool Returns true on successful registration
+   */
 function anthologize_register_format( $name, $label, $loader_path, $options = false ) {
 	global $anthologize_formats;
 	
@@ -130,16 +144,11 @@ function anthologize_register_format( $name, $label, $loader_path, $options = fa
 	);
 	
 	// Register the format
-	$anthologize_formats[$name] = $new_format;
-	//print_r($new_format);
+	if ( $anthologize_formats[$name] = $new_format )
+		return true;
+	
+	return false;
 }
-
-function test_formats() {
-	global $anthologize_formats;
-	print_r($anthologize_formats);
-}
-//add_action( 'anthologize_init', 'test_formats', 999 );
-
 
 
 ?>
