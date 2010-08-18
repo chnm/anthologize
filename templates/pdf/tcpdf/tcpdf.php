@@ -1,9 +1,9 @@
 <?php
 //============================================================+
 // File name   : tcpdf.php
-// Version     : 5.8.002
+// Version     : 5.8.007
 // Begin       : 2002-08-03
-// Last Update : 2010-08-14
+// Last Update : 2010-08-18
 // Author      : Nicola Asuni - Tecnick.com S.r.l - Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -126,7 +126,7 @@
  * @copyright 2002-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 5.8.002
+ * @version 5.8.007
  */
 
 /**
@@ -150,14 +150,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */
-	define('PDF_PRODUCER', 'TCPDF 5.8.002 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 5.8.007 (http://www.tcpdf.org)');
 
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 5.8.002
+	* @version 5.8.007
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -290,14 +290,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @var cell internal padding
 		 * @access protected
 		 */
-		//protected
 		public $cMargin;
-
-		/**
-		 * @var cell internal padding (previous value)
-		 * @access protected
-		 */
-		protected $oldcMargin;
 
 		/**
 		 * @var current horizontal position in user unit for cell positioning
@@ -972,6 +965,14 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 5.7.000 (2010-08-03)
 		 */
 		protected $bordermrk = array();
+
+		/**
+		 * Array used to store page positions to track empty pages.
+		 * keys are the page numbers
+		 * @access protected
+		 * @since 5.8.007 (2010-08-18)
+		 */
+		protected $emptypagemrk = array();
 
 		/**
 		 * Array used to store content positions inside the pages buffer.
@@ -3408,7 +3409,7 @@ if (!class_exists('TCPDF', false)) {
 					}
 				}
 			} else {
-				$this->Error('Wrong page number on setPage() function.');
+				$this->Error('Wrong page number on setPage() function: '.$pnum);
 			}
 		}
 
@@ -3560,6 +3561,8 @@ if (!class_exists('TCPDF', false)) {
 			$this->setPageMark();
 			// print table header (if any)
 			$this->setTableHeader();
+			// set mark for empty page check
+			$this->emptypagemrk[$this->page]= $this->pagelen[$this->page];
 		}
 
 		/**
@@ -4330,6 +4333,16 @@ if (!class_exists('TCPDF', false)) {
 					$this->Error('Empty font family');
 				}
 			}
+			// move embedded styles on $style
+			if (substr($family, -1) == 'I') {
+				$style .= 'I';
+				$family = substr($family, 0, -1);
+			}
+			if (substr($family, -1) == 'B') {
+				$style .= 'B';
+				$family = substr($family, 0, -1);
+			}
+			// normalize family name
 			$family = strtolower($family);
 			if ((!$this->isunicode) AND ($family == 'arial')) {
 				$family = 'helvetica';
@@ -13162,7 +13175,7 @@ if (!class_exists('TCPDF', false)) {
 		 * Adds a bookmark.
 		 * @param string $txt bookmark description.
 		 * @param int $level bookmark level (minimum value is 0).
-		 * @param float $y Ordinate of the boorkmark position (default = -1 = current position).
+		 * @param float $y Y position in user units of the bookmark on the selected page (default = -1 = current position; 0 = page start;).
 		 * @param int $page target page number (leave empty for current page).
 		 * @access public
 		 * @author Olivier Plathey, Nicola Asuni
@@ -16810,14 +16823,16 @@ if (!class_exists('TCPDF', false)) {
 				$html_a = substr($html, 0, $offset);
 				$html_b = substr($html, $offset, ($pos - $offset + 9));
 				while (preg_match("'<option([^\>]*)>(.*?)</option>'si", $html_b)) {
-					$html_b = preg_replace("'<option([\s]+)value=\"([^\"]*)\"([^\>]*)>(.*?)</option>'si", "\\2\t\\4\r", $html_b);
-					$html_b = preg_replace("'<option([^\>]*)>(.*?)</option>'si", "\\2\r", $html_b);
+					$html_b = preg_replace("'<option([\s]+)value=\"([^\"]*)\"([^\>]*)>(.*?)</option>'si", "\\2#!TaB!#\\4#!NwL!#", $html_b);
+					$html_b = preg_replace("'<option([^\>]*)>(.*?)</option>'si", "\\2#!NwL!#", $html_b);
 				}
 				$html = $html_a.$html_b.substr($html, $pos + 9);
 				$offset = strlen($html_a.$html_b);
 			}
-			$html = preg_replace("'<select([^\>]*)>'si", "<select\\1 opt=\"", $html);
-			$html = preg_replace("'([\s]+)</select>'si", "\" />", $html);
+			if (preg_match("'</select'si", $html)) {
+				$html = preg_replace("'<select([^\>]*)>'si", "<select\\1 opt=\"", $html);
+				$html = preg_replace("'#!NwL!#</select>'si", "\" />", $html);
+			}
 			$html = str_replace("\n", ' ', $html);
 			// restore textarea newlines
 			$html = str_replace('<TBR>', "\n", $html);
@@ -16933,11 +16948,15 @@ if (!class_exists('TCPDF', false)) {
 							$key = $i;
 							$parent_table = $dom[$dom[$dom[($dom[$key]['parent'])]['parent']]['parent']];
 							$parent_padding = 0;
+							$parent_spacing = 0;
 							if (isset($parent_table['attribute']['cellpadding'])) {
 								$parent_padding = $this->getHTMLUnitToUnits($parent_table['attribute']['cellpadding'], 1, 'px');
 							}
+							if (isset($parent_table['attribute']['cellspacing'])) {
+								$parent_spacing = $this->getHTMLUnitToUnits($parent_table['attribute']['cellspacing'], 1, 'px');
+							}
 							// mark nested tables
-							$dom[($dom[$key]['parent'])]['content'] = str_replace('<table', '<table nested="true" pcellpadding="'.$parent_padding.'"', $dom[($dom[$key]['parent'])]['content']);
+							$dom[($dom[$key]['parent'])]['content'] = str_replace('<table', '<table nested="true" pcellpadding="'.$parent_padding.'" pcellspacing="'.$parent_spacing.'"', $dom[($dom[$key]['parent'])]['content']);
 							// remove thead sections from nested tables
 							$dom[($dom[$key]['parent'])]['content'] = str_replace('<thead>', '', $dom[($dom[$key]['parent'])]['content']);
 							$dom[($dom[$key]['parent'])]['content'] = str_replace('</thead>', '', $dom[($dom[$key]['parent'])]['content']);
@@ -17015,14 +17034,7 @@ if (!class_exists('TCPDF', false)) {
 							if (isset($dom[$key]['style']['font-family'])) {
 								// font family
 								if (isset($dom[$key]['style']['font-family'])) {
-									$fontslist = preg_split('/[,]/', strtolower($dom[$key]['style']['font-family']));
-									foreach ($fontslist as $font) {
-										$font = trim(strtolower($font));
-										if (in_array($font, $this->fontlist) OR in_array($font, $this->fontkeys)) {
-											$dom[$key]['fontname'] = $font;
-											break;
-										}
-									}
+									$dom[$key]['fontname'] = $this->getFontFamilyName($dom[$key]['style']['font-family']);
 								}
 							}
 							// list-style-type
@@ -17272,14 +17284,7 @@ if (!class_exists('TCPDF', false)) {
 						if ($dom[$key]['value'] == 'font') {
 							// font family
 							if (isset($dom[$key]['attribute']['face'])) {
-								$fontslist = preg_split('/[,]/', strtolower($dom[$key]['attribute']['face']));
-								foreach ($fontslist as $font) {
-									$font = trim(strtolower($font));
-									if (in_array($font, $this->fontlist) OR in_array($font, $this->fontkeys)) {
-										$dom[$key]['fontname'] = $font;
-										break;
-									}
-								}
+								$dom[$key]['fontname'] = $this->getFontFamilyName($dom[$key]['attribute']['face']);
 							}
 							// font size
 							if (isset($dom[$key]['attribute']['size'])) {
@@ -18276,23 +18281,6 @@ if (!class_exists('TCPDF', false)) {
 								$currentcmargin = 0;
 							}
 							$this->cMargin = $currentcmargin;
-							if (isset($dom[$key]['width'])) {
-								// user specified width
-								$cellw = $this->getHTMLUnitToUnits($dom[$key]['width'], $table_columns_width, 'px');
-								$tmpcw = ($cellw / $colspan);
-								for ($i = 0; $i < $colspan; ++$i) {
-									$table_colwidths[($colid + $i)] = $tmpcw;
-								}
-							} else {
-								// inherit column width
-								$cellw = 0;
-								for ($i = 0; $i < $colspan; ++$i) {
-									$cellw += $table_colwidths[($colid + $i)];
-								}
-							}
-							$cellw += (($colspan - 1) * $cellspacing);
-							// increment column indicator
-							$colid += $colspan;
 							if (isset($dom[$key]['height'])) {
 								// minimum cell height
 								$cellh = $this->getHTMLUnitToUnits($dom[$key]['height'], 0, 'px');
@@ -18364,6 +18352,8 @@ if (!class_exists('TCPDF', false)) {
 										AND (($trwsp['starty'] < ($this->y - $this->feps)) OR ($trwsp['startpage'] < $this->page) OR ($trwsp['startcolumn'] < $this->current_column))) {
 										// set the starting X position of the current cell
 										$this->x = $rsendx + $cellspacingx;
+										// increment column indicator
+										$colid += $trwsp['colspan'];
 										if (($trwsp['rowspan'] == 1)
 											AND (isset($dom[$trid]['endy']))
 											AND (isset($dom[$trid]['endpage']))
@@ -18380,6 +18370,23 @@ if (!class_exists('TCPDF', false)) {
 									}
 								}
 							}
+							if (isset($dom[$parentid]['width'])) {
+								// user specified width
+								$cellw = $this->getHTMLUnitToUnits($dom[$parentid]['width'], $table_columns_width, 'px');
+								$tmpcw = ($cellw / $colspan);
+								for ($i = 0; $i < $colspan; ++$i) {
+									$table_colwidths[($colid + $i)] = $tmpcw;
+								}
+							} else {
+								// inherit column width
+								$cellw = 0;
+								for ($i = 0; $i < $colspan; ++$i) {
+									$cellw += $table_colwidths[($colid + $i)];
+								}
+							}
+							$cellw += (($colspan - 1) * $cellspacing);
+							// increment column indicator
+							$colid += $colspan;
 							// add rowspan information to table element
 							if ($rowspan > 1) {
 								$trsid = array_push($dom[$table_el]['rowspans'], array('trid' => $trid, 'rowspan' => $rowspan, 'mrowspan' => $rowspan, 'colspan' => $colspan, 'startpage' => $this->page, 'startcolumn' => $this->current_column, 'startx' => $this->x, 'starty' => $this->y));
@@ -18473,8 +18480,7 @@ if (!class_exists('TCPDF', false)) {
 							}
 							$this->openHTMLTagHandler($dom, $key, $cell);
 						}
-					} else {
-						// closing tag
+					} else { // closing tag
 						$prev_numpages = $this->numpages;
 						$old_bordermrk = $this->bordermrk[$this->page];
 						$this->closeHTMLTagHandler($dom, $key, $cell, $maxbottomliney);
@@ -18719,7 +18725,9 @@ if (!class_exists('TCPDF', false)) {
 			}
 			// restore previous values
 			$this->setGraphicVars($gvars);
-			if ($this->page > $prevPage) {
+			if ($this->num_columns > 1) {
+				$this->selectColumn();
+			} elseif ($this->page > $prevPage) {
 				$this->lMargin = $this->pagedim[$this->page]['olm'];
 				$this->rMargin = $this->pagedim[$this->page]['orm'];
 			}
@@ -18802,10 +18810,10 @@ if (!class_exists('TCPDF', false)) {
 							}
 						}
 					}
+					// store current margins and page
+					$dom[$key]['oldcmargin'] = $this->cMargin;
 					if (isset($tag['attribute']['cellpadding'])) {
-						$cp = $this->getHTMLUnitToUnits($tag['attribute']['cellpadding'], 1, 'px');
-						$this->oldcMargin = $this->cMargin;
-						$this->cMargin = $cp;
+						$this->cMargin = $this->getHTMLUnitToUnits($tag['attribute']['cellpadding'], 1, 'px');
 					}
 					if (isset($tag['attribute']['cellspacing'])) {
 						$cs = $this->getHTMLUnitToUnits($tag['attribute']['cellspacing'], 1, 'px');
@@ -19271,11 +19279,11 @@ if (!class_exists('TCPDF', false)) {
 					}
 					$w = 0;
 					if (isset($tag['attribute']['opt']) AND !$this->empty_string($tag['attribute']['opt'])) {
-						$options = explode ("\r", $tag['attribute']['opt']);
+						$options = explode('#!NwL!#', $tag['attribute']['opt']);
 						$values = array();
 						foreach ($options as $val) {
-							if (strpos($val, "\t") !== false) {
-								$opts = explode("\t", $val);
+							if (strpos($val, '#!TaB!#') !== false) {
+								$opts = explode('#!TaB!#', $val);
 								$values[] = $opts;
 								$w = max($w, $this->GetStringWidth($opts[1]));
 							} else {
@@ -19431,7 +19439,9 @@ if (!class_exists('TCPDF', false)) {
 						}
 					}
 					$this->setPage($dom[($dom[$key]['parent'])]['endpage']);
-					$this->selectColumn($dom[($dom[$key]['parent'])]['endcolumn']);
+					if ($this->num_columns > 1) {
+						$this->selectColumn($dom[($dom[$key]['parent'])]['endcolumn']);
+					}
 					$this->y = $dom[($dom[$key]['parent'])]['endy'];
 					if (isset($dom[$table_el]['attribute']['cellspacing'])) {
 						$cellspacing = $this->getHTMLUnitToUnits($dom[$table_el]['attribute']['cellspacing'], 1, 'px');
@@ -19692,13 +19702,10 @@ if (!class_exists('TCPDF', false)) {
 							}
 						}
 					}
-					if (!$in_table_head) {
-						// we are not inside a thead section
-						if (isset($parent['cellpadding'])) {
-							$this->cMargin = $this->oldcMargin;
-						}
+					if (!$in_table_head) { // we are not inside a thead section
+						$this->cMargin = $table_el['oldcmargin'];
 						$this->lasth = $this->FontSize * $this->cell_height_ratio;
-						if (($this->page == ($this->numpages - 1)) AND ($this->pageopen[$this->numpages])) {
+						if (($this->page == ($this->numpages - 1)) AND ($this->pageopen[$this->numpages]) AND ($this->emptypagemrk[$this->numpages] == $this->pagelen[$this->numpages])) {
 							// remove last blank page
 							$this->deletePage($this->numpages);
 						}
@@ -20965,7 +20972,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 4.6.004 (2009-04-23)
 		 */
 		public function deletePage($page) {
-			if ($page > $this->numpages) {
+			if (($page < 1) OR ($page > $this->numpages)) {
 				return false;
 			}
 			// delete current page
@@ -21112,7 +21119,7 @@ if (!class_exists('TCPDF', false)) {
 				// default value
 				$page = $this->page;
 			}
-			if ($page > $this->numpages) {
+			if (($page < 1) OR ($page > $this->numpages)) {
 				return false;
 			}
 			if ($page == $this->page) {
@@ -21199,6 +21206,9 @@ if (!class_exists('TCPDF', false)) {
 				$gap = ' ';
 			} else {
 				$gap = '';
+				if ($page < 1) {
+					$page = 1;
+				}
 			}
 			foreach ($this->outlines as $key => $outline) {
 				if ($this->rtl) {
@@ -21618,10 +21628,6 @@ if (!class_exists('TCPDF', false)) {
 					$this->x = $x + $listindent;
 				}
 				$this->columns[$col]['x'] = $x;
-			} else {
-				// restore original margins
-				$this->lMargin = $this->original_lMargin;
-				$this->rMargin = $this->original_rMargin;
 			}
 			$this->current_column = $col;
 			// fix for HTML mode
@@ -22068,6 +22074,43 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		public function isUnicodeFont() {
 			return (($this->CurrentFont['type'] == 'TrueTypeUnicode') OR ($this->CurrentFont['type'] == 'cidfont0'));
+		}
+
+		/**
+		 * Return normalized font name
+		 * @param string $fontfamily property string containing font family names
+		 * @return string normalized font name
+		 * @author Nicola Asuni
+		 * @access public
+		 * @since 5.8.004 (2010-08-17)
+		 */
+		public function getFontFamilyName($fontfamily) {
+			// remove spaces and symbols
+			$fontfamily = preg_replace('/[^a-z0-9\,]/', '', strtolower($fontfamily));
+			// extract all font names
+			$fontslist = preg_split('/[,]/', $fontfamily);
+			// find first valid font name
+			foreach ($fontslist as $font) {
+				// replace font variations
+				$font = preg_replace('/italic$/', 'I', $font);
+				$font = preg_replace('/oblique$/', 'I', $font);
+				$font = preg_replace('/bold([I]?)$/', 'B\\1', $font);
+				// replace common family names and core fonts
+				$pattern = array();
+				$replacement = array();
+				$pattern[] = '/^serif|^cursive|^fantasy|^timesnewroman/';
+				$replacement[] = 'times';
+				$pattern[] = '/^sansserif/';
+				$replacement[] = 'helvetica';
+				$pattern[] = '/^monospace/';
+				$replacement[] = 'courier';
+				$font = preg_replace($pattern, $replacement, $font);
+				if (in_array(strtolower($font), $this->fontlist) OR in_array($font, $this->fontkeys)) {
+					return $font;
+				}
+			}
+			// return current font as default
+			return $this->CurrentFont['fontkey'];
 		}
 
 		// -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
@@ -22690,7 +22733,7 @@ if (!class_exists('TCPDF', false)) {
 			$regs = array();
 			if (!empty($svgstyle['font'])) {
 				if (preg_match('/font-family[\s]*:[\s]*([^\s\;\"]*)/si', $svgstyle['font'], $regs)) {
-					$font_family = trim($regs[1]);
+					$font_family = $this->getFontFamilyName($regs[1]);
 				} else {
 					$font_family = $svgstyle['font-family'];
 				}
@@ -22785,6 +22828,8 @@ if (!class_exists('TCPDF', false)) {
 				return;
 			}
 			$paths = array();
+			$d = str_replace('-', ' -', $d);
+			$d = str_replace('+', ' +', $d);
 			preg_match_all('/([a-zA-Z])[\s]*([^a-zA-Z\"]*)/si', $d, $paths, PREG_SET_ORDER);
 			$x = 0;
 			$y = 0;

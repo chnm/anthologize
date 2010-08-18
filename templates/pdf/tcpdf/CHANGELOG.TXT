@@ -1,3 +1,20 @@
+5.8.007 (2010-08-18)
+	- A bug affecting HTML tables was fixed.
+	- Bug #3047500 "SVG not rendering paths properly" was fixed.
+
+5.8.006 (2010-08-17)
+	- A bug affecting HTML table nesting was fixed.
+
+5.8.005 (2010-08-17)
+	- A bug affecting the HTML 'select' tag in certain conditions was fixed.
+
+5.8.004 (2010-08-17)
+	- Better support for HTML and SVG "font-family" property.
+	- A bug related to HTML multicolumn was fixed.
+
+5.8.003 (2010-08-16)
+	- Better support for HTML "font-family" property.
+
 5.8.002 (2010-08-14)
 	- HTML alignments were improved
 	- IMPORTANT: Default regular expression to find spaces has been changed to exclude the non-breaking-space (160 DEC- A0 HEX). If you are using setSpacesRE() method, please read the new documentation.
