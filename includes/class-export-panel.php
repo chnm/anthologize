@@ -13,7 +13,7 @@ class Anthologize_Export_Panel {
 
 		$this->projects = $this->get_projects();
 
-		if ( !$project_id ) {
+		if ( !isset( $project_id ) ) {
 			if ( isset( $_GET['project_id'] ) ) {
 				$project_id = $_GET['project_id'];
 			} else {
@@ -24,7 +24,9 @@ class Anthologize_Export_Panel {
 
 		$this->project_id = $project_id;
 		
-		if ( $_POST['export-step'] != '3' )
+		$export_step = ( isset( $_POST['export-step'] ) ) ? $_POST['export-step'] : '1';
+		
+		if ( $export_step != '3' )
 			$this->display();
 	}
 

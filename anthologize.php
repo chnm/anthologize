@@ -258,8 +258,15 @@ class Anthologize_Loader {
 	function load_template() {
 		global $anthologize_formats;
 		
-		if ( $_POST['export-step'] != 3 )
-			return;	
+		$return = true;
+		
+		if ( isset( $_POST['export-step'] ) ) {
+			if ( $_POST['export-step'] == 3 )
+				$return = false;	
+		}
+		
+		if ( $return )
+			return;
 
 		anthologize_save_project_meta();
 

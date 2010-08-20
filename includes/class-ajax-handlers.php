@@ -19,8 +19,15 @@ class Anthologize_Ajax_Handlers {
 
     function __construct() {
         $this->anthologize_ajax_handlers();
-        $project_id = $_POST['project_id'];
-        if ($this->project_organizer == null){
+        $project_id = ( isset( $_POST['project_id'] ) ) ? $_POST['project_id'] : 0;
+        
+        if ( isset( $_GET['action'] ) ) {
+        	$is_proj_org = ( $_GET['action'] == 'edit' ) ? true : false;
+        } else {
+        	$is_proj_org = false;
+        }
+        
+        if ($this->project_organizer == null && $is_proj_org){
             $this->project_organizer = new Anthologize_Project_Organizer($project_id);
         }
     }
