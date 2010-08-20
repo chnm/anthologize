@@ -13,9 +13,19 @@ class Anthologize_Activation {
 		if ( !$this->settings = get_option( 'anthologize_settings' ) )
 			$this->settings = array();
 
-		$this->namespace_post_types();
-		$this->unpublish_content();
+		$version = ( isset( $this->settings['version'] ) ) ? $this->settings['version'] : '0.3';			
 
+		// Fixes for those coming from v0.3
+		if ( $version < '0.4' ) {
+			$this->namespace_post_types();
+			$this->unpublish_content();
+		}
+		
+		// Fixes for those coming from v0.4
+		if ( $version < '0.5' ) {
+			$this->unpublish_imported_content();
+		}
+		
 		$this->default_settings(); // Settings should be updated last, so that we can take advantage of old version info
 	}
 
@@ -24,9 +34,6 @@ class Anthologize_Activation {
 	// 0.3. In 0.3, there was no version settings, so we have to
 	// check for the existence of a version number.
 	function unpublish_content() {
-
-		if ( isset( $this->settings['version'] ) )
-			return;
 
 		require_once( dirname(__FILE__) . '/class-new-project.php' );
 		$new_project = new Anthologize_New_Project();
@@ -50,8 +57,6 @@ class Anthologize_Activation {
 	// 'projects' and 'parts' are created by Anthologize) and
 	// changes them to the new, namespaced versions
 	function namespace_post_types() {
-		if ( isset( $this->settings['version'] ) )
-			return;
 
 		$post_type_array = array(
 			'projects' => 'anth_project',
@@ -81,10 +86,26 @@ class Anthologize_Activation {
 			unset( $posts );
 		}
 	}
+	
+	// Unpublishes imported content which was published by default
+	// in original release and v0.4.
+	function unpublish_imported_content() {
+
+		$i_posts = get_posts( array( 'post_type' => 'anth_imported_item', 'nopaging' => true ) );
+
+		foreach( $i_posts as $i_post ) {
+			$update_post = array(
+				'ID' => $i_post->ID,
+				'post_status' => 'draft',
+			);
+			wp_update_post( $update_post );
+		}
+	}
+	
 
 	function default_settings() {
-		$this->settings['version'] = '0.4';
-
+		$this->settings['version'] = ANTHOLOGIZE_VERSION;
+		
 		update_option( 'anthologize_settings', $this->settings );
 	}
 }

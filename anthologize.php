@@ -48,7 +48,7 @@ class Anthologize_Loader {
 		add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
 		// Load constants
-		//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
+		add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
 		// Load the custom feed
 		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
@@ -73,6 +73,12 @@ class Anthologize_Loader {
 
 		// deactivation sequence
 		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+	}
+	
+	// Load constants
+	function load_constants() {
+		if ( !defined( 'ANTHOLOGIZE_VERSION' ) )
+			define( 'ANTHOLOGIZE_VERSION', '0.4' );
 	}
 
 	// Let plugins know that we're initializing

@@ -193,7 +193,7 @@ class Anthologize_Import_Feeds_Panel {
 		}
 
 		$args = array(
-			'post_status' => 'publish',
+			'post_status' => 'draft',
 			'post_type' => 'anth_imported_item',
 			'post_author' => $current_user->ID,
 			'guid' => $item['permalink'],
