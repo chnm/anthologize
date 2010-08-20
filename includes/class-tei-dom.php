@@ -35,7 +35,15 @@ class TeiDom {
 
 	}
 
-
+	public function string2HTML($string) {
+		$tmpHTML = new DOMDocument('1.0' , 'UTF-8');
+		$content = wpautop($string);
+		@$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><body>$content</body>");
+		$body = $tmpHTML->getElementsByTagname('body')->item(0);
+		$body->setAttribute('xmlns', HTML);
+		$importedBody = $this->dom->importNode($body, true);
+		return $importedBody;
+	}
 
  	public function processPostArray($postArray) {
 
@@ -73,16 +81,15 @@ class TeiDom {
 	    //currently, f1 is hardcoded to be Dedication
 	    //TODO: change this when UI changes
 	    $f1TitleNode->appendChild($this->dom->createTextNode('Dedication'));
-	    $f1Html = $this->xpath->query("html:body", $f1Node)->item(0);
-	    $frag = $this->dom->createDocumentFragment();
+	    //$f1Html = $this->xpath->query("html:body", $f1Node)->item(0);
 	    if($postArray['dedication'] == '') {
 	      $postArray['dedication'] = "<p></p>";
 	    }
+       $f1Content = htmlentities($postArray['dedication']);
+       $f1Content = $postArray['dedication'];
 
-	    $f1Content = htmlentities($postArray['dedication']);
-
-	    $frag->appendXML($f1Content);
-	    $f1Html->appendChild($frag);
+		$f1Body = $this->string2HTML($f1Content);
+		$f1Node->appendChild($f1Body);
 
 	    //front2
 	    $f2Node = $this->xpath->query("//tei:div[@xml:id='f2']")->item(0);
@@ -95,9 +102,11 @@ class TeiDom {
 	    	$postArray['acknowledgements'] = "<p></p>";
 	    }
 
-	    $f2Content = htmlentities($postArray['acknowledgements']);
-	    $frag->appendXML($postArray['acknowledgements']);
-	    $f2Html->appendChild($frag);
+	    $f2Content = $postArray['acknowledgements'];
+		$f2Body = $this->string2HTML($f2Content);
+		$f2Node->appendChild($f2Body);
+
+
 
 	    $outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
 	    //font-size
