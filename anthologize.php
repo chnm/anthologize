@@ -79,6 +79,10 @@ class Anthologize_Loader {
 	function load_constants() {
 		if ( !defined( 'ANTHOLOGIZE_VERSION' ) )
 			define( 'ANTHOLOGIZE_VERSION', '0.4' );
+		
+		if ( !defined( 'ANTHOLOGIZE_TEIDOM_PATH' ) )
+			define( 'ANTHOLOGIZE_TEIDOM_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php' );
+	
 	}
 
 	// Let plugins know that we're initializing
