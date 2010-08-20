@@ -228,16 +228,16 @@ class Anthologize_Loader {
 		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
 
 		$epub_options = array(
-			'page_size' => false,
-			'font_size' => false,
-			'font_face' => false
+			'page-size' => false,
+			'font-size' => false,
+			'font-face' => false
 		);
 		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php', $epub_options );
 		
 		$tei_options = array(
-			'page_size' => false,
-			'font_size' => false,
-			'font_face' => false
+			'page-size' => false,
+			'font-size' => false,
+			'font-face' => false
 		);		
 		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php', $tei_options );
 	}
