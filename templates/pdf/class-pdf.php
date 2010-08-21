@@ -70,6 +70,7 @@ class TeiPdf {
 
 	public function write_pdf() {
 
+
 		$book_title = $this->tei->get_book_title();
 		$book_subtitle = $this->tei->get_book_title('sub');
 		$book_author = $this->tei->get_book_author();
@@ -78,9 +79,9 @@ class TeiPdf {
 
 		// Title Page
 		$this->pdf->AddPage();
-		$this->set_title($book_title);
+		$this->set_title("h1", $book_title);
 		if ($book_subtitle != '') { $this->set_sub_title($book_subtitle); }
-		$this->set_title_author($book_author);
+		$this->set_title("h3", $book_author);
 
 
 
@@ -152,23 +153,16 @@ class TeiPdf {
 
 	} // writePDF
 
-	public function set_title($book_title) {
+	public function set_title($h, $book_title) {
 
-		$title_html = '<h1 style="text-align: center">' . $book_title . '</h1>';
+		$title_html = '<' . $h . ' style="text-align: center">' . $book_title . '</h1>';
 		$this->pdf->WriteHTML($title_html, true, 0, true, 0);
 
 	}
 
-	public function set_sub_title($book_subtitle) {	
+	public function set_sub_title($h, $book_subtitle) {	
 
-		$subtitle_html = '<h2 style="text-align: center">' . $book_subtitle . '</h2>';
-		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
-
-	}
-
-	public function set_title_author($book_author) {
-
-		$title_author_html = '<h3 style="text-align: center">' . $book_author . '</h3>';
+		$subtitle_html = '<' . $h . ' style="text-align: center">' . $book_subtitle . '</h2>';
 		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
 
 	}
