@@ -51,7 +51,7 @@
             {
               page-break-after: always;
             }
-            #anthologize-title-page h1 
+            #anthologize-title-page h1
             { 
               border-bottom: 0.3em solid #aaa;  
             }
@@ -87,23 +87,43 @@
               select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='main']"
             />
           </h1>
-          <h2>
-            <xsl:value-of
-              select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']"
-            />
-          </h2>
-          <h3>
-            <xsl:value-of
-              select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor"/>
-          </h3>
+          <xsl:if
+            test="normalize-space(/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']) != ''">
+            <h2>
+              <xsl:value-of
+                select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']"
+              />
+            </h2>
+          </xsl:if>
+          <xsl:if
+            test="normalize-space(/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor) != ''">
+            <h3>
+              <xsl:value-of
+                select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor"
+              />
+            </h3>
+          </xsl:if>
         </div>
 
         <!-- Publication statement page -->
 
         <div id="publication-statement-page">
 
+          <!-- Dedication -->
+
+          <xsl:if
+            test="normalize-space(/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f1']/html:body) != ''">
+            <p xml:id="anthologize-dedication">
+              <em>
+                <xsl:copy-of
+                  select="/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f1']/html:body/node()"
+                />
+              </em>
+            </p>
+          </xsl:if>
+
           <p>
-            <em>
+            <strong>
               <!-- Title  -->
               <xsl:value-of
                 select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='main']"/>
@@ -114,23 +134,45 @@
                   select="/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='sub']"
                 />
               </xsl:if>
-            </em>
-            
-            <br />
+            </strong>
+
+            <br/>
 
             <!-- License statement -->
 
             <xsl:value-of
-              select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability"/>
+              select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability"
+            />
           </p>
-          
+
           <!-- Anthologize statement -->
-          
+
           <p>
             <em>
               <xsl:value-of select="$anthologize-statement"/>
             </em>
           </p>
+        </div>
+
+        <!-- Acknowledgements page -->
+
+        <div class="chapter" id="anthologize-acknowledgements-page">
+          
+          <!-- Heading: "Acknowledgements" in English  -->
+          
+          <h2 class="anthologize-chapter-title">
+            <xsl:value-of
+              select="/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f2']/tei:head/tei:title"/>
+          </h2>
+
+          <xsl:if
+            test="normalize-space(/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f2']/html:body) != ''">
+            <div xml:id="chapter-content">
+                <xsl:copy-of
+                  select="/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f2']/html:body/node()"
+                />
+            </div>
+          </xsl:if>
         </div>
 
         <!-- Main content -->
