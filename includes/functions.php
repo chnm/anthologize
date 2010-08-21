@@ -129,9 +129,9 @@ function anthologize_register_format( $name, $label, $loader_path, $options = fa
 	);
 	
 	$default_options = array(
-		'page_size' => $d_page_size,
-		'font_size' => $d_font_size,
-		'font_face' => $d_font_face
+		'page-size' => $d_page_size,
+		'font-size' => $d_font_size,
+		'font-face' => $d_font_face
 	);
 	
 	// Parse the registered options with the defaults
@@ -146,6 +146,12 @@ function anthologize_register_format( $name, $label, $loader_path, $options = fa
 		'loader-path' => $loader_path
 	);
 	
+	// Add miscellaneous options
+	foreach( $options as $key => $value ) {
+		if ( !isset( $new_format[$key] ) )
+			$new_format[$key] = $value;
+	}
+		
 	// Register the format
 	if ( $anthologize_formats[$name] = $new_format )
 		return true;

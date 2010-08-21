@@ -10,12 +10,6 @@ class Anthologize_Admin_Main {
 	 */
 	function anthologize_admin_main () {
 
-		$this->project_id = $project_id;
-
-		$project = get_post( $project_id );
-
-		$this->project_name = $project->post_title;
-
 		add_action( 'admin_init', array ( $this, 'init' ) );
 
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ) );
@@ -40,7 +34,7 @@ class Anthologize_Admin_Main {
 		global $menu;
 
 		$menu[57] = array(
-			1 => read,
+			1 => 'read',
 			2 => 'separator-anthologize',
 			4 => 'wp-menu-separator'
 		);
@@ -158,7 +152,7 @@ class Anthologize_Admin_Main {
 			'post_type' => 'anth_part',
 			'posts_per_page' => -1,
 			'orderby' => 'menu_order',
-			'order' => ASC
+			'order' => 'ASC'
 		);
 
 		$items_query = new WP_Query( $args );
@@ -187,7 +181,7 @@ class Anthologize_Admin_Main {
         			'post_type' => 'anth_library_item',
         			'posts_per_page' => -1,
         			'orderby' => 'menu_order',
-        			'order' => ASC
+        			'order' => 'ASC'
         		);
 
         		$items_query = new WP_Query( $args );
@@ -207,16 +201,19 @@ class Anthologize_Admin_Main {
 	function display() {
 //		print_r($_GET); die();
 
-		$project = get_post( $_GET['project_id'] );
+		if ( isset( $_GET['project_id'] ) )
+			$project = get_post( $_GET['project_id'] );
 
-        if ( $_GET['action'] == 'delete' && $project ) {
-			wp_delete_post($project->ID);
+		if ( isset( $_GET['action'] ) ) {
+			if ( $_GET['action'] == 'delete' && $project ) {
+				wp_delete_post($project->ID);
+			}
+	
+			if ( $_GET['action'] == 'edit' && $project ) {
+				$this->load_project_organizer( $_GET['project_id'] );
+			}
 		}
-
-		if ( $_GET['action'] == 'edit' && $project ) {
-			$this->load_project_organizer( $_GET['project_id'] );
-		}
-
+		
 		if (
 			!isset( $_GET['action'] ) ||
 			$_GET['action'] == 'list-projects' ||

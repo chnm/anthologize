@@ -193,7 +193,7 @@ class Anthologize_Import_Feeds_Panel {
 		}
 
 		$args = array(
-			'post_status' => 'publish',
+			'post_status' => 'draft',
 			'post_type' => 'anth_imported_item',
 			'post_author' => $current_user->ID,
 			'guid' => $item['permalink'],
@@ -218,9 +218,6 @@ class Anthologize_Import_Feeds_Panel {
 
 endif;
 
-if ( isset( $_GET['project_id'] ) )
-	$project_id = $_GET['project_id'];
-
-$import_feeds_panel = new Anthologize_Import_Feeds_Panel( $project_id );
+$import_feeds_panel = new Anthologize_Import_Feeds_Panel();
 
 ?>

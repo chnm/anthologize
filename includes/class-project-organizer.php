@@ -13,7 +13,7 @@ class Anthologize_Project_Organizer {
 		$this->project_id = $project_id;
 
 		$project = get_post( $project_id );
-
+	
 		$this->project_name = $project->post_title;
 
 	}
@@ -166,9 +166,11 @@ class Anthologize_Project_Organizer {
 
 	function filter_dropdown() {
 
-		$cterm = $_COOKIE['anth-term'];
+		$cterm = ( isset( $_COOKIE['anth-term'] ) ) ? $_COOKIE['anth-term'] : false;
+		
+		$cfilter = ( isset( $_COOKIE['anth-fukter'] ) ) ? $_COOKIE['anth-filter'] : false;
 
-		switch ( $_COOKIE['anth-filter'] ) {
+		switch ( $cfilter ) {
 			case 'tag' :
 				$terms = get_tags();
 				$nulltext = __( 'All tags', 'anthologize' );
@@ -340,9 +342,13 @@ class Anthologize_Project_Organizer {
 			'post_type' => array('post', 'page', 'anth_imported_item' ),
 			'posts_per_page' => -1
 		);
-
-		if ( $cterm = $_COOKIE['anth-term'] ) {
-			if ( $cfilter = $_COOKIE['anth-filter'] ) {
+		
+		$cterm = ( isset( $_COOKIE['anth-term'] ) ) ? $_COOKIE['anth-term'] : false;
+		
+		$cfilter = ( isset( $_COOKIE['anth-filter'] ) ) ? $_COOKIE['anth-filter'] : false;
+		
+		if ( $cterm ) {
+			if ( $cfilter ) {
 				$t_or_c = ( $cfilter == 'tag' ) ? 'tag' : 'cat';
 	        	$args[$t_or_c] = $cterm;
 			}
@@ -405,7 +411,7 @@ class Anthologize_Project_Organizer {
 			'post_type' => 'anth_library_item',
 			'posts_per_page' => -1,
 			'orderby' => 'menu_order',
-			'order' => ASC
+			'order' => 'ASC'
 		);
 
 		$items_query = new WP_Query( $args );

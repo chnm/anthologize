@@ -13,7 +13,7 @@ class Anthologize_Export_Panel {
 
 		$this->projects = $this->get_projects();
 
-		if ( !$project_id ) {
+		if ( !isset( $project_id ) ) {
 			if ( isset( $_GET['project_id'] ) ) {
 				$project_id = $_GET['project_id'];
 			} else {
@@ -24,7 +24,9 @@ class Anthologize_Export_Panel {
 
 		$this->project_id = $project_id;
 		
-		if ( $_POST['export-step'] != '3' )
+		$export_step = ( isset( $_POST['export-step'] ) ) ? $_POST['export-step'] : '1';
+		
+		if ( $export_step != '3' )
 			$this->display();
 	}
 
@@ -259,6 +261,7 @@ class Anthologize_Export_Panel {
 		$format = $_SESSION['filetype'];
 		
 		if ( $fdata = $anthologize_formats[$format] ) {
+			$return = '';
 			foreach( $fdata as $oname => $odata ) {
 				//echo "<pre>";print_r($odata);echo "</pre>";
 				if ( $oname == 'label' || $oname == 'loader-path' )
@@ -268,8 +271,18 @@ class Anthologize_Export_Panel {
 					continue;
 				
 				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
-					
-				$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
+				
+				switch( $odata['type'] ) {
+					case 'textbox':
+						$return .= $this->build_textbox( $oname, $odata['label'] );
+						break;
+						
+					// Default is dropdown menus
+					default:
+						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
+						break;
+				}
+				
 			}
 		} else {
 			$return = __( 'This appears to be an invalid export format. Please try again.', 'anthologize' );
@@ -303,9 +316,21 @@ class Anthologize_Export_Panel {
 		
 		$html .= '</div>';
 		
-		$html = apply_filters( 'anthologize_build_dropdown', $html, $name, $label, $options );
+		return apply_filters( 'anthologize_build_dropdown', $html, $name, $label, $options );
+	}
 	
-		return $html;
+	function build_textbox( $name, $label ) {
+		// Todo: Figure out a more efficient way to share the markup
+		
+		$html = '<div class="export-options-box">'; 
+		
+		$html .= '<div class="pub-options-title">' . $label . '</div>';
+			
+		$html .= '<input name="' . $name . '" id="' . $name . '" type="text">';
+		
+		$html .= '</div>';
+		
+		return apply_filters( 'anthologize_build_textbox', $html, $name, $label );
 	}
 
 	function load_template() {

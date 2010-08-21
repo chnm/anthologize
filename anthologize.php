@@ -48,7 +48,7 @@ class Anthologize_Loader {
 		add_action( 'anthologize_init', array ( $this, 'register_post_types' ) );
 
 		// Load constants
-		//add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
+		add_action( 'anthologize_init',  array ( $this, 'load_constants' ) );
 
 		// Load the custom feed
 		add_action( 'do_feed_customfeed', array ( $this, 'register_custom_feed' ) );
@@ -73,6 +73,16 @@ class Anthologize_Loader {
 
 		// deactivation sequence
 		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+	}
+	
+	// Load constants
+	function load_constants() {
+		if ( !defined( 'ANTHOLOGIZE_VERSION' ) )
+			define( 'ANTHOLOGIZE_VERSION', '0.4' );
+		
+		if ( !defined( 'ANTHOLOGIZE_TEIDOM_PATH' ) )
+			define( 'ANTHOLOGIZE_TEIDOM_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php' );
+	
 	}
 
 	// Let plugins know that we're initializing
@@ -222,16 +232,16 @@ class Anthologize_Loader {
 		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
 
 		$epub_options = array(
-			'page_size' => false,
-			'font_size' => false,
-			'font_face' => false
+			'page-size' => false,
+			'font-size' => false,
+			'font-face' => false
 		);
 		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php', $epub_options );
 		
 		$tei_options = array(
-			'page_size' => false,
-			'font_size' => false,
-			'font_face' => false
+			'page-size' => false,
+			'font-size' => false,
+			'font-face' => false
 		);		
 		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php', $tei_options );
 	}
@@ -258,8 +268,15 @@ class Anthologize_Loader {
 	function load_template() {
 		global $anthologize_formats;
 		
-		if ( $_POST['export-step'] != 3 )
-			return;	
+		$return = true;
+		
+		if ( isset( $_POST['export-step'] ) ) {
+			if ( $_POST['export-step'] == 3 )
+				$return = false;	
+		}
+		
+		if ( $return )
+			return;
 
 		anthologize_save_project_meta();
 
