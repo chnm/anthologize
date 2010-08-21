@@ -74,15 +74,11 @@ class TeiPdf {
 		$book_subtitle = $this->tei->get_book_title('sub');
 		$book_author = $this->tei->get_book_author();
 
-
-
 		// Title Page
 		$this->pdf->AddPage();
 		$this->set_title($book_title);
 		if ($book_subtitle != '') { $this->set_sub_title($book_subtitle); }
 		$this->set_title_author($book_author);
-
-
 
 		// Copyright page
 		$this->pdf->AddPage();
@@ -146,41 +142,40 @@ class TeiPdf {
 		$this->pdf->endTOCPage();
 
 		//echo get_class($html); // DEBUG
-		$book_title = $this->tei->get_book_title();
 		$filename = $book_title . ".pdf";
 		$this->pdf->Output($filename, 'I');
 
 	} // writePDF
 
-	public function set_title($book_title) {
+	private function set_title($book_title) {
 
 		$title_html = '<h1 style="text-align: center">' . $book_title . '</h1>';
 		$this->pdf->WriteHTML($title_html, true, 0, true, 0);
 
 	}
 
-	public function set_sub_title($book_subtitle) {	
+	private function set_sub_title($book_subtitle) {	
 
 		$subtitle_html = '<h2 style="text-align: center">' . $book_subtitle . '</h2>';
 		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
 
 	}
 
-	public function set_title_author($book_author) {
+	private function set_title_author($book_author) {
 
 		$title_author_html = '<h3 style="text-align: center">' . $book_author . '</h3>';
 		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
 
 	}
 
-	public function set_header() {
+	private function set_header() {
 
 		// set default header data
 		$this->pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING);
 
 	}
 
-	public function set_footer() {
+	private function set_footer() {
 
 		// set header and footer fonts
 		$this->pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -188,7 +183,7 @@ class TeiPdf {
 
 	}
 
-	public function set_docinfo() {
+	private function set_docinfo() {
 
 		$book_author = $this->tei->get_book_author();
 		$book_title = $this->tei->get_book_title();
@@ -201,7 +196,7 @@ class TeiPdf {
 
 	}
 
-	public function set_font() {
+	private function set_font() {
 
 		// set default monospaced font
 		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -215,7 +210,7 @@ class TeiPdf {
 
 	}
 
-	public function set_margins() {
+	private function set_margins() {
 
 		$this->pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		$this->pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
