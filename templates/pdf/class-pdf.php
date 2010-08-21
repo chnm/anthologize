@@ -148,14 +148,14 @@ class TeiPdf {
 
 	} // writePDF
 
-	public function set_title($h, $book_title) {
+	private function set_title($h, $book_title) {
 
 		$title_html = '<' . $h . ' style="text-align: center">' . $book_title . '</h1>';
 		$this->pdf->WriteHTML($title_html, true, 0, true, 0);
 
 	}
 
-	public function set_sub_title($h, $book_subtitle) {	
+	private function set_sub_title($h, $book_subtitle) {	
 
 		$subtitle_html = '<h2 style="text-align: center">' . $book_subtitle . '</h2>';
 		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
