@@ -37,11 +37,11 @@
               padding-top: 10em; 
           </xsl:text>
           
-          <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()">          
+          <xsl:if test="normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']) != ''">          
             <xsl:value-of select="concat('&#xa;font-size:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-size']/text()), ';')"/>
           </xsl:if>
           
-          <xsl:if test="/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()">
+          <xsl:if test="normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()) != ''">
             <xsl:value-of select="concat('&#xa;font-family:', normalize-space(/tei:TEI/tei:teiHeader/az:outputParams/az:param[@name='font-family']/text()), ';')"/>
           </xsl:if>
           
@@ -72,6 +72,12 @@
               margin-top: 2em;
               margin-bottom: 2em;
             }
+            
+            /* Wordpress styles */
+            
+            .alignright { float: right }
+            .alignleft { float: left }
+            
           </xsl:text>
         </style>
         <!--<link rel="stylesheet" type="application/vnd.adobe-page-template+xml"
