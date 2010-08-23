@@ -23,17 +23,11 @@ class Anthologize_Format_API {
    * @param $options array Array of options (page size, font, etc) supported by the export format. Omit to accept the defaults.
    * @return type bool Returns true on successful registration
    */
-	function register_format( $name, $label, $loader_path, $options = false ) {
+	public function register_format( $name, $label, $loader_path, $options = false ) {
 		global $anthologize_formats;
 		
 		if ( !is_array( $anthologize_formats ) )
 			$anthologize_formats = array();
-		
-		if ( !isset( $name ) || !isset( $label ) || !isset( $loader_path ) )
-			return false;
-		
-		if ( !file_exists( $loader_path ) )
-			return false;
 		
 		$counter = 1;
 		$new_name = $name;
@@ -42,62 +36,10 @@ class Anthologize_Format_API {
 		}
 		$name = $new_name;
 		
-		// Defining the default options for export formats
-		$d_page_size = array(
-			'label' => __( 'Page Size', 'anthologize' ),
-			'values' => array(
-				'letter' => __( 'Letter', 'anthologize' ),
-				'a4' => __( 'A4', 'anthologize' )
-			),
-			'default' => 'letter'
-		);
-		
-		$d_font_size = array(
-			'label' => __( 'Base Font Size', 'anthologize' ),
-			'values' => array(
-				'9' => __( '9 pt', 'anthologize' ),
-				'10' => __( '10 pt', 'anthologize' ),
-				'11' => __( '11 pt', 'anthologize' ),
-				'12' => __( '12 pt', 'anthologize' ),
-				'13' => __( '13 pt', 'anthologize' ),
-				'14' => __( '14 pt', 'anthologize' ),
-			),
-			'default' => '12'
-		);
-		
-		$d_font_face = array(
-			'label' => __( 'Font Face', 'anthologize' ),
-			'values' => array(
-				'times' => __( 'Times New Roman', 'anthologize' ),
-				'helvetica' => __( 'Helvetica', 'anthologize' ),
-				'courier' => __( 'Courier', 'anthologize' )
-			),
-			'default' => 'times'
-		);
-		
-		$default_options = array(
-			'page-size' => $d_page_size,
-			'font-size' => $d_font_size,
-			'font-face' => $d_font_face
-		);
-		
-		// Parse the registered options with the defaults
-		$options = wp_parse_args( $options, $default_options );
-		extract( $options, EXTR_SKIP );
-		
 		$new_format = array(
 			'label' => $label,
-			'page-size' => $page_size,
-			'font-size' => $font_size,
-			'font-face' => $font_face,
 			'loader-path' => $loader_path
 		);
-		
-		// Add miscellaneous options
-		foreach( $options as $key => $value ) {
-			if ( !isset( $new_format[$key] ) )
-				$new_format[$key] = $value;
-		}
 			
 		// Register the format
 		if ( $anthologize_formats[$name] = $new_format )
@@ -106,6 +48,23 @@ class Anthologize_Format_API {
 		return false;
 	}
 	
+	public function register_format_option( $format_name, $option_name, $label, $type, $values ) {
+		global $anthologize_formats;
+		
+		$option = array(
+			'label' => $label,
+			'type' => $type,
+			'values' => $values,
+		);
+		
+		if ( $already_option = $anthologize_formats[$option_name] ) {
+			// Parse the registered options with the existing ones
+			$options = wp_parse_args( $option, $already_option );
+			extract( $options, EXTR_SKIP );
+		}
+				
+		$anthologize_formats[$format_name][$option_name] = $option;
+	}
 	
 
 }
@@ -114,8 +73,36 @@ endif;
 
 
 function anthologize_register_format( $name, $label, $loader_path, $options = false ) {
-	$anthologize_format_api = new Anthologize_Format_API();
-	$anthologize_format_api->register_format( $name, $label, $loader_path, $options );
+	if ( !isset( $name ) || !isset( $label ) || !isset( $loader_path ) )
+		return false;
+	
+	if ( !file_exists( $loader_path ) )
+		return false;
+
+	Anthologize_Format_API::register_format( $name, $label, $loader_path );
+}
+
+function anthologize_register_format_option( $format_name, $option_name, $label, $type = false, $values = false ) {
+	global $anthologize_formats;
+	
+	if ( !isset( $format_name ) || !isset( $option_name ) || !isset( $label ) )
+		return false;
+	
+	if ( !is_array( $anthologize_formats ) )
+		return false; // Todo: add something to WP_Error to account for these cases
+	
+	if ( !isset( $anthologize_formats[$format_name] ) )
+		return false; // Todo: Ditto
+	
+	// If a type is not provided, it'll be a plain textbox
+	if ( !isset( $type ) )
+		$type = 'textbox';
+	
+	// $values will be an empty array if there are no preselected values to choose from
+	if ( !isset( $values ) || $type == 'textbox' )
+		$values = array();
+	
+	Anthologize_Format_API::register_format_option( $format_name, $option_name, $label, $type, $values );
 }
 
 ?>

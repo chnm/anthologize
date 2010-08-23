@@ -227,6 +227,39 @@ class Anthologize_Loader {
 
 	function default_export_formats() {
 	
+		// Defining the default options for export formats
+		$d_page_size = array(
+			'label' => __( 'Page Size', 'anthologize' ),
+			'values' => array(
+				'letter' => __( 'Letter', 'anthologize' ),
+				'a4' => __( 'A4', 'anthologize' )
+			),
+			'default' => 'letter'
+		);
+		
+		$d_font_size = array(
+			'label' => __( 'Base Font Size', 'anthologize' ),
+			'values' => array(
+				'9' => __( '9 pt', 'anthologize' ),
+				'10' => __( '10 pt', 'anthologize' ),
+				'11' => __( '11 pt', 'anthologize' ),
+				'12' => __( '12 pt', 'anthologize' ),
+				'13' => __( '13 pt', 'anthologize' ),
+				'14' => __( '14 pt', 'anthologize' ),
+			),
+			'default' => '12'
+		);
+		
+		$d_font_face = array(
+			'label' => __( 'Font Face', 'anthologize' ),
+			'values' => array(
+				'times' => __( 'Times New Roman', 'anthologize' ),
+				'helvetica' => __( 'Helvetica', 'anthologize' ),
+				'courier' => __( 'Courier', 'anthologize' )
+			),
+			'default' => 'times'
+		);	
+	
 		anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
 		
 		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
