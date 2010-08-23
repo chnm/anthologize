@@ -268,8 +268,10 @@ class Anthologize_Loader {
 		
 		anthologize_register_format_option( 'rtf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
 
+
 		// Register ePub. No options for this one
 		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
+		
 		
 		// Register TEI. No options for this one
 		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );

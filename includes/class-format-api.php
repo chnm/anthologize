@@ -103,6 +103,10 @@ function anthologize_register_format_option( $format_name, $option_name, $label,
 	if ( !isset( $values ) || $type == 'textbox' )
 		$values = array();
 	
+	// When an option is registered as a dropdown, it must have some options to choose from. Otherwise default to textbox
+	if ( empty( $values ) && $type == 'dropdown' )
+		$type = 'textbox';
+	
 	if ( !isset( $default ) )
 		$default = false;
 	

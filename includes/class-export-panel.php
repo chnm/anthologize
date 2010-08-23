@@ -263,25 +263,31 @@ class Anthologize_Export_Panel {
 		if ( $fdata = $anthologize_formats[$format] ) {
 			$return = '';
 			foreach( $fdata as $oname => $odata ) {
-				//echo "<pre>";print_r($odata);echo "</pre>";
+			
 				if ( $oname == 'label' || $oname == 'loader-path' )
 					continue;
 				
 				if ( !$odata )
 					continue;
-				//print_r($anthologize_formats);
+				
 				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
 				
+				$return .= '<div class="export-options-box">'; 
+		
+				$return .= '<div class="pub-options-title">' . $odata['label'] . '</div>';
+				
 				switch( $odata['type'] ) {
-					case 'textbox':
-						$return .= $this->build_textbox( $oname, $odata['label'] );
-						break;
-						
-					// Default is dropdown menus
-					default:
+					case 'dropdown':
 						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
 						break;
+						
+					// Default is a textbox
+					default:
+						$return .= $this->build_textbox( $oname, $odata['label'] );
+						break;
 				}
+				
+				$return .= '</div>';
 				
 			}
 		} else {
@@ -296,11 +302,7 @@ class Anthologize_Export_Panel {
 		// $label is the input label (for display, eg 'Page Size'. Should be internationalizable, eg __('Page Size', 'anthologize')
 		// $options is associative array where keys are option values and values are the text displayed in the option field.
 		// $default is the default option
-		
-		$html = '<div class="export-options-box">'; 
-		
-		$html .= '<div class="pub-options-title">' . $label . '</div>';
-		
+						
 		$html .= '<select name="' . $name . '">';
 		
 		foreach( $options as $ovalue => $olabel ) {
@@ -314,21 +316,12 @@ class Anthologize_Export_Panel {
 		
 		$html .= '</select>';
 		
-		$html .= '</div>';
-		
 		return apply_filters( 'anthologize_build_dropdown', $html, $name, $label, $options );
 	}
 	
 	function build_textbox( $name, $label ) {
-		// Todo: Figure out a more efficient way to share the markup
-		
-		$html = '<div class="export-options-box">'; 
-		
-		$html .= '<div class="pub-options-title">' . $label . '</div>';
-			
+					
 		$html .= '<input name="' . $name . '" id="' . $name . '" type="text">';
-		
-		$html .= '</div>';
 		
 		return apply_filters( 'anthologize_build_textbox', $html, $name, $label );
 	}
