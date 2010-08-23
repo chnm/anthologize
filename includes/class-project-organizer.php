@@ -267,7 +267,16 @@ class Anthologize_Project_Organizer {
 
 	function list_existing_parts() {
 
-		query_posts( 'post_type=anth_part&order=ASC&orderby=menu_order&post_parent=' . $this->project_id );
+		$args = array(
+			'post_type' => 'anth_part',
+			'order' => 'ASC',
+			'orderby' => 'menu_order',
+			'post_per_page' => -1,
+			'showposts' => -1,
+			'post_parent' => $this->project_id
+		);
+
+		query_posts( $args );
 
 		if ( have_posts() ) {
 			while ( have_posts() ) {
