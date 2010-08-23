@@ -20,7 +20,6 @@ class Anthologize_Format_API {
    * @param $name string The name used internally by Anthologize for this format (eg 'pdf')
    * @param $label string The format name as displayed to the user. Can be localizable.
    * @param $loader_path string Path to the translator loader file, which will be included with WordPress's load_template()
-   * @param $options array Array of options (page size, font, etc) supported by the export format. Omit to accept the defaults.
    * @return type bool Returns true on successful registration
    */
 	public function register_format( $name, $label, $loader_path, $options = false ) {
@@ -48,6 +47,12 @@ class Anthologize_Format_API {
 		return false;
 	}
 	
+	public function deregister_format( $name ) {
+		global $anthologize_formats;
+		
+		unset( $anthologize_formats[$name] );
+	}
+	
 	public function register_format_option( $format_name, $option_name, $label, $type, $values, $default ) {
 		global $anthologize_formats;
 	
@@ -64,9 +69,17 @@ class Anthologize_Format_API {
 			extract( $options, EXTR_SKIP );
 		}
 		
-		$anthologize_formats[$format_name][$option_name] = $option;
+		if ( $anthologize_formats[$format_name][$option_name] = $option )
+			return true;
+		
+		return false;
 	}
-	
+
+	public function deregister_format_option( $format_name, $option_name ) {
+		global $anthologize_formats;
+		
+		unset( $anthologize_formats[$format_name][$option_name] );
+	}	
 
 }
 
@@ -81,6 +94,18 @@ function anthologize_register_format( $name, $label, $loader_path, $options = fa
 		return false;
 
 	Anthologize_Format_API::register_format( $name, $label, $loader_path );
+}
+
+function anthologize_deregister_format( $name ) {
+	global $anthologize_formats;
+	
+	if ( !isset( $name ) )
+		return false;
+	
+	if ( !isset( $anthologize_formats[$name] ) )
+		return false;
+		
+	Anthologize_Format_API::deregister_format( $name );
 }
 
 function anthologize_register_format_option( $format_name, $option_name, $label, $type = false, $values = false, $default = false ) {
@@ -111,6 +136,21 @@ function anthologize_register_format_option( $format_name, $option_name, $label,
 		$default = false;
 	
 	Anthologize_Format_API::register_format_option( $format_name, $option_name, $label, $type, $values, $default );
+}
+
+function anthologize_deregister_format_option( $format_name, $option_name ) {
+	global $anthologize_formats;
+	
+	if ( !isset( $format_name ) || !isset( $option_name ) )
+		return false;
+	
+	if ( !isset( $anthologize_formats[$format_name] ) )
+		return false;
+		
+	if ( !isset( $anthologize_formats[$format_name][$option_name] ) )
+		return false;
+	
+	Anthologize_Format_API::deregister_format_option( $format_name, $option_name );
 }
 
 ?>
