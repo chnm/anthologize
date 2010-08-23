@@ -48,21 +48,22 @@ class Anthologize_Format_API {
 		return false;
 	}
 	
-	public function register_format_option( $format_name, $option_name, $label, $type, $values ) {
+	public function register_format_option( $format_name, $option_name, $label, $type, $values, $default ) {
 		global $anthologize_formats;
-		
+	
 		$option = array(
 			'label' => $label,
 			'type' => $type,
 			'values' => $values,
+			'default' => $default
 		);
 		
-		if ( $already_option = $anthologize_formats[$option_name] ) {
+		if ( $already_option = $anthologize_formats[$format_name][$option_name] ) {
 			// Parse the registered options with the existing ones
-			$options = wp_parse_args( $option, $already_option );
+			$option = wp_parse_args( $option, $already_option );
 			extract( $options, EXTR_SKIP );
 		}
-				
+		
 		$anthologize_formats[$format_name][$option_name] = $option;
 	}
 	
@@ -82,7 +83,7 @@ function anthologize_register_format( $name, $label, $loader_path, $options = fa
 	Anthologize_Format_API::register_format( $name, $label, $loader_path );
 }
 
-function anthologize_register_format_option( $format_name, $option_name, $label, $type = false, $values = false ) {
+function anthologize_register_format_option( $format_name, $option_name, $label, $type = false, $values = false, $default = false ) {
 	global $anthologize_formats;
 	
 	if ( !isset( $format_name ) || !isset( $option_name ) || !isset( $label ) )
@@ -102,7 +103,10 @@ function anthologize_register_format_option( $format_name, $option_name, $label,
 	if ( !isset( $values ) || $type == 'textbox' )
 		$values = array();
 	
-	Anthologize_Format_API::register_format_option( $format_name, $option_name, $label, $type, $values );
+	if ( !isset( $default ) )
+		$default = false;
+	
+	Anthologize_Format_API::register_format_option( $format_name, $option_name, $label, $type, $values, $default );
 }
 
 ?>

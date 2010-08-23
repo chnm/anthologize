@@ -229,54 +229,50 @@ class Anthologize_Loader {
 	
 		// Defining the default options for export formats
 		$d_page_size = array(
-			'label' => __( 'Page Size', 'anthologize' ),
-			'values' => array(
 				'letter' => __( 'Letter', 'anthologize' ),
 				'a4' => __( 'A4', 'anthologize' )
-			),
-			'default' => 'letter'
 		);
 		
 		$d_font_size = array(
-			'label' => __( 'Base Font Size', 'anthologize' ),
-			'values' => array(
-				'9' => __( '9 pt', 'anthologize' ),
-				'10' => __( '10 pt', 'anthologize' ),
-				'11' => __( '11 pt', 'anthologize' ),
-				'12' => __( '12 pt', 'anthologize' ),
-				'13' => __( '13 pt', 'anthologize' ),
-				'14' => __( '14 pt', 'anthologize' ),
-			),
-			'default' => '12'
+			'9' => __( '9 pt', 'anthologize' ),
+			'10' => __( '10 pt', 'anthologize' ),
+			'11' => __( '11 pt', 'anthologize' ),
+			'12' => __( '12 pt', 'anthologize' ),
+			'13' => __( '13 pt', 'anthologize' ),
+			'14' => __( '14 pt', 'anthologize' )
 		);
 		
 		$d_font_face = array(
-			'label' => __( 'Font Face', 'anthologize' ),
-			'values' => array(
-				'times' => __( 'Times New Roman', 'anthologize' ),
-				'helvetica' => __( 'Helvetica', 'anthologize' ),
-				'courier' => __( 'Courier', 'anthologize' )
-			),
-			'default' => 'times'
+			'times' => __( 'Times New Roman', 'anthologize' ),
+			'helvetica' => __( 'Helvetica', 'anthologize' ),
+			'courier' => __( 'Courier', 'anthologize' )
 		);	
 	
+	
+		// Register PDF + options
 		anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
 		
+		anthologize_register_format_option( 'pdf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );
+				
+		anthologize_register_format_option( 'pdf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
+		
+		anthologize_register_format_option( 'pdf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
+		
+		
+		// Register RTF + options
 		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
 
-		$epub_options = array(
-			'page-size' => false,
-			'font-size' => false,
-			'font-face' => false
-		);
-		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php', $epub_options );
+		anthologize_register_format_option( 'rtf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );
+				
+		anthologize_register_format_option( 'rtf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
 		
-		$tei_options = array(
-			'page-size' => false,
-			'font-size' => false,
-			'font-face' => false
-		);		
-		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php', $tei_options );
+		anthologize_register_format_option( 'rtf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
+
+		// Register ePub. No options for this one
+		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
+		
+		// Register TEI. No options for this one
+		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
 	}
 
 

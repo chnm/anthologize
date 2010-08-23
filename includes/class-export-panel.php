@@ -269,7 +269,7 @@ class Anthologize_Export_Panel {
 				
 				if ( !$odata )
 					continue;
-				
+				//print_r($anthologize_formats);
 				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
 				
 				switch( $odata['type'] ) {
