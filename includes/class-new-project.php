@@ -95,10 +95,11 @@ class Anthologize_New_Project {
 	function display() {
 
 	    if ( isset($_POST['save_project']) ) {
-            $project_id = $this->save_project();
+            $this->save_project();
         }
 
-	    $project = get_post(@$_GET['project_id'] );
+        $project_id = $_GET['project_id'];
+	    $project = get_post( $project_id );
 	    $meta = get_post_meta( $project->ID, 'anthologize_meta', TRUE );
 
 	?>
