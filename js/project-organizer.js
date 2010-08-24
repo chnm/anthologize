@@ -144,6 +144,20 @@ jQuery(document).ready( function() {
         });
 	});
 
+	j('.part-expand').click( function() {
+		var c = j('.part-expand').html();
+		var p = j(this).parents();
+		
+		if ( c == ' - ' ) {
+			j(this).html(' + ');
+			j(p).children('.part-items').slideUp();
+		} else {
+			j(this).html(' - ');
+			j(p).children('.part-items').slideDown();
+		}
+		
+	});
+
 	j('.confirm-delete').click( function() {
 		var answer = confirm("Are you sure you want to delete this project?")
 		if (answer){

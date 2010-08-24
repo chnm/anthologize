@@ -233,6 +233,13 @@ a.active-append {
 	text-decoration: underline;
 }
 
+.part-expand {
+	float: left;
+	display: block;
+	width: 20px;
+	cursor: pointer;
+	text-align: left;
+}
 
 #export-project-button {
 	border-top-right-radius: 1px;

@@ -294,7 +294,7 @@ class Anthologize_Project_Organizer {
 					<li class="part" id="part-<?php echo $part_id ?>">
 						<h3 class="part-header"><noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript>
 
-						<span class="part-title-header"><?php the_title() ?></span>
+						<span class="part-title-header"><span class="part-expand"> - </span><?php the_title() ?></span>
 
 						<div class="part-buttons">
 							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
