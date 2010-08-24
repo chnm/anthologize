@@ -282,11 +282,11 @@ class Anthologize_Loader {
 
 		if ( is_admin() ) {
 			require( dirname( __FILE__ ) . '/includes/class-admin-main.php' );
-			require_once( dirname( __FILE__ ) . '/includes/class-format-api.php' );
 			require( dirname( __FILE__ ) . '/includes/class-ajax-handlers.php' );
 			$ajax_handlers = new Anthologize_Ajax_Handlers();
 		}
-	
+		
+		require_once( dirname( __FILE__ ) . '/includes/class-format-api.php' );
 		require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 	
 	}
