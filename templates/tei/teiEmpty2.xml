@@ -10,13 +10,13 @@
             </titleStmt>
 
             <editionStmt>
-                <ab rend="structured"> </ab>
                 <ab rend="literal"></ab>
+                <ab rend="structured"> </ab>
             </editionStmt>
 
             <publicationStmt>
                 <availability rend="literal">
-                    <html:body xmlns="http://www.w3.org/1999/xhtml"></html:body>
+                    
                 </availability>
                 <availability rend="structured">
                     <ab rend="structured"></ab>
@@ -32,7 +32,7 @@
                         <ident type="guid"></ident>
                         <title></title>
                         <!-- author in the bibl @type=project is the creator of the project, not necc. an author in the sense of having written anything. -->
-                        <author type="projectCreator" key="admin"></author>
+                        <author role="projectCreator"></author>
                     </bibl>
                     <listBibl type="parts">
                         <bibl n="1">
@@ -40,22 +40,7 @@
                             <title></title>
                         </bibl>
                         <listBibl type="libraryItems">
-                            <bibl n="1">
-                                <ident></ident>
-                                <author key="admin"> </author>
-                                <note type="subjects">
-                                    <list type="tags">
-                                        <item>
-                                            <rs type="tag" ref="http://tag.url">tag</rs>
-                                        </item>
-                                    </list>
-                                    <list type="categories">
-                                        <item>
-                                            <rs type="category" ref="http://tag.url">category</rs>
-                                        </item>
-                                    </list>
-                                </note>
-                            </bibl>
+                           
                         </listBibl>
                     </listBibl>
                 </listBibl>
@@ -66,27 +51,7 @@
             <creation><date type="literal"></date>
                 <date type="structured"></date>
             </creation>
-            <particDesc>
-                <!-- All info about users within the database goes here. Might also be duplicated within <text> with <ptr target=""> back here. -->
-                <listPerson>
-                    <person xml:id="admin">
-                        <!-- person id is unique username within the system -->
-                        <persName>
-                            <name rend="literal">
-                                <!-- literal name is user-set display name -->
-                            </name>
-                            <forename></forename>
-                            <roleName></roleName>
-                            <surname></surname>
-                            <graphic url=""></graphic>
-                        </persName>
-                        <note type="bio">
-                            <!-- bio is user-supplied bio within the system -->
-                        </note>
-                    </person>
-                </listPerson>
-            </particDesc>
-
+          
             <anth:outputDecl xmlns="http://www.anthologize.org/ns">
                 <outputParams format="" extension="">
                     <param name="paper-type"></param>
@@ -97,22 +62,7 @@
                 </outputParams>
                 <outputParams format="PDF" extension="#extID"></outputParams>
 
-                <errorsDecl xmlns="http://www.anthologize.org/ns" extId="anthologize">
-                    <!-- data from a custom error handler -->
-                    <error>
-                        <errorNo></errorNo>
-                        <errorStr></errorStr>
-                        <errorFile></errorFile>
-                        <errorLine></errorLine>
-                    </error>
-                    <error>
-                        <errorNo></errorNo>
-                        <errorStr></errorStr>
-                        <errorFile></errorFile>
-                        <errorLine></errorLine>
-                    </error>
-                </errorsDecl>
-                <anth:errorsDecl extId="extId"></anth:errorsDecl>
+            
             </anth:outputDecl>
         </profileDesc>
 
@@ -126,14 +76,7 @@
                         <ptr target="http://anthologize.org"></ptr>
                     </ab>
                 </application>
-                <application version="0.1" ident="myExt" xml:id="extID">
-                    <label>My Extension</label>
-                </application>
-                <application xml:id="AnthologizePDF" version="0.4alpha" ident="AnthologizePDF"
-                    type="extension">
-                    <label>Anthologize PDF</label>
-                    <ptr target="http://mycode.ly"></ptr>
-                </application>
+
             </appInfo>
         </encodingDesc>
 
@@ -150,7 +93,7 @@
                 </docAuthor>
                 <docAuthor rend="structured">
                     <persName>
-                        <rs key="admin">admin</rs>
+                        
                         <forename></forename>
                     </persName>
                 </docAuthor>
@@ -162,13 +105,13 @@
                 <docEdition rend="literal"></docEdition>
                 <docEdition rend="structured"></docEdition>
             </titlePage>
-            <div n="1">
+            <div n="0">
                 <head>
                     <title></title>
                 </head>
                 <html:body xmlns="http://www.w3.org/1999/xhtml"> </html:body>
             </div>
-            <div n="2">
+            <div n="1">
                 <head>
                     <title></title>
                 </head>
@@ -176,35 +119,24 @@
             </div>
         </front>
         <body>
-            <div n="1">
-                <head><title></title>
-                    <bibl>
-                        <author rend="literal">
-                            <html:body xmlns="http://www.w3.org/1999/xhtml"></html:body>
-                        </author>
-                        <author rend="structured">
-                            <ptr target="#admin"></ptr>
-                            <!-- structured duplicates a limited set of what's in the ptr for what is most commonly used-->
-                            <persName>
-                                <forename></forename>
-                                <surname></surname>
-                                <ident type="guid"></ident>
-                            </persName>
-                        </author>
-                        <author></author>
-                    </bibl>
-                    <note type="subjects">
-                        <list type="tags">
-                            <item>
-                                <rs type="tag" ref="http://tag.url">tag</rs>
-                            </item>
-                        </list>
-                        <list type="categories">
-                            <item>
-                                <rs type="category" ref="http://category.url">category</rs>
-                            </item>
-                        </list>
-                    </note>
+            <div n="0">
+                <head><title></title></head>
+                <bibl>
+                    <author rend="literal">
+                        <html:body xmlns="http://www.w3.org/1999/xhtml"></html:body>
+                    </author>
+                    <author rend="structured">
+                        
+                        <!-- structured duplicates a limited set of what's in the ptr for what is most commonly used-->
+                        <persName>
+                            <forename></forename>
+                            <surname></surname>
+                            <ident type="guid"></ident>
+                        </persName>
+                    </author>
+                    <author></author>
+                </bibl>
+                <note type="subjects">
                     <list type="tags">
                         <item>
                             <rs type="tag" ref="http://tag.url">tag</rs>
@@ -212,10 +144,11 @@
                     </list>
                     <list type="categories">
                         <item>
-                            <rs type="category" ref="http://tag.url">category</rs>
+                            <rs type="category" ref="http://category.url">category</rs>
                         </item>
                     </list>
-                </head>
+                </note>
+
             </div>
         </body>
         <back> </back>

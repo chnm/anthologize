@@ -4,12 +4,11 @@ define('TEI', 'http://www.tei-c.org/ns/1.0');
 define('HTML', 'http://www.w3.org/1999/xhtml');
 define('ANTH', "http://www.anthologize.org/ns");
 
-class TeiDom2 {
+class TeiDom {
 
 	public $dom;
 	public $xpath;
-	public $knownPersonArray = array();
-	public $personMetaDataNode;
+
 	public $bodyNode;
 	public $postArray;
 	public $userNiceNames = array();
@@ -23,7 +22,7 @@ class TeiDom2 {
 		$this->checkImgSrcs = $checkImgSrcs;
 
 		if( isset($this->postArray['do-shortcodes']) && $this->postArray['do-shortcodes'] == false ) {
-		$this->doShortcodes = false;
+			$this->doShortcodes = false;
 		}
 
 		$this->dom = new DOMDocument('1.0', 'UTF-8');
@@ -32,7 +31,9 @@ class TeiDom2 {
 		$this->dom->load($templatePath);
 		$this->dom->preserveWhiteSpace = false;
 		$this->setXPath();
+
 		$this->buildProjectData($this->postArray['project_id']);
+
 		$this->addOutputDesc();
 		$this->addPublicationStmt();
 		$this->addFileDesc();
@@ -54,6 +55,7 @@ class TeiDom2 {
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
 	}
 
+
 	public function buildProjectData($projectID) {
 
 		$projectData = new WP_Query(array('post__in'=>array($projectID), 'post_type'=>'anth_project'));
@@ -61,7 +63,7 @@ class TeiDom2 {
 
 		$partsData = new WP_Query(array('post_parent'=>$projectID, 'post_type'=>'anth_part'));
 		$partObjectsArray = $partsData->posts;
-		usort($partObjectsArray, array('TeiDom2', 'postSort'));
+		usort($partObjectsArray, array('TeiDom', 'postSort'));
 
 		$partNumber = 0;
 		foreach($partObjectsArray as $partObject) {
@@ -71,7 +73,7 @@ class TeiDom2 {
 			$libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item', 'posts_per_page'=>200));
 			$libraryItemObjectsArray = $libraryItemsData->posts;
 			//sort objects, by menu_order, then ID
-			usort($libraryItemObjectsArray, array('TeiDom2', 'postSort'));
+			usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
 			$itemNumber = 0;
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
 				$newItemContent = $this->newItemContent($libraryItemObject);
@@ -84,6 +86,8 @@ class TeiDom2 {
 		}
 	}
 
+
+//TODO: refactor this to new xml structure
 	public function addOutputDesc() {
 		//TODO: add outputDesc element to teiEmpty.xml
 		$outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
@@ -119,6 +123,18 @@ class TeiDom2 {
 
 	public function addPublicationStmt() {
 
+		//cr
+		$litAvailNode = $this->xpath->query("//tei:publicationStmt/tei:availability[@rend='literal']")->item(0);
+		$litAvailHTMLNode = $this->dom->createElementNS(HTML, 'body');
+		$litAvailHTMLNode->setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+		$litAvailHTMLNode->appendChild($this->dom->createTextNode("Creative Commons " . $this->postArray['cctype']));
+		$litAvailNode->appendChild($litAvailHTMLNode);
+
+		$strAvailNode = $this->xpath->query("//tei:publicationStmt//tei:ab[@rend='structured']")->item(0);
+		$strAvailNode->appendChild($this->dom->createTextNode("cc-" . $this->postArray['cctype']) );
+
+
+
 		//date
 		$pubDateNode = $this->xpath->query("//tei:publicationStmt/tei:date")->item(0);
 		$pubDateNode->appendChild($this->dom->createTextNode($this->postArray['cyear']));
@@ -128,14 +144,13 @@ class TeiDom2 {
 	public function addFileDesc() {
 
 		$titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
-		//yes, I tried $titleNode->textContent=$project->post_title. No, it didn't work. No, I don't know why
 		$titleNode->appendChild($this->dom->createTextNode($project->post_title));
 
 		//edition
-		$edNode = $this->xpath->query("//tei:editionStmt/tei:edition")->item(0);
+		$edNode = $this->xpath->query("//tei:editionStmt/tei:ab[@rend='literal']")->item(0);
 		$edNode->appendChild($this->dom->createTextNode($this->postArray['edition']));
 
-		$identNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident')->item(0);
+		$identNode = $this->xpath->query('//tei:sourceDesc//tei:ident')->item(0);
 
 		$identNode->appendChild($this->dom->createCDataSection($project->guid));
 
@@ -262,27 +277,27 @@ class TeiDom2 {
 
 		switch($this->postArray['cctype']) {
 			case 'by':
-				$ccNode->appendChild($this->dom->createTextNode('Creative Commons By'));
+				$ccNode->appendChild($this->dom->createTextNode('cc-by'));
 			break;
 
 			case 'by-sa':
-				$ccNode->appendChild($this->dom->createTextNode('Creative Commons By ShareAlike'));
+				$ccNode->appendChild($this->dom->createTextNode('cc-by-sa'));
 			break;
 
 			case 'by-nd':
-				$ccNode->appendChild($this->dom->createTextNode('Creative Commons By No Derivatives'));
+				$ccNode->appendChild($this->dom->createTextNode('cc-by-nd'));
 			break;
 
 			case 'by-nc':
-				$ccNode->appendChild($this->dom->createTextNode('Creative Commons By Non-Commercial'));
+				$ccNode->appendChild($this->dom->createTextNode('cc-by-nc'));
 			break;
 
 			case 'by-nc-sa':
-				$ccNode->appendChild($this->dom->createTextNode('Creative Commons By Non-Commercial ShareAlike'));
+				$ccNode->appendChild($this->dom->createTextNode('cc-by-nc-sa'));
 			break;
 
 			case 'by-nc-nd':
-				$ccNode->appendChild($this->dom->createTextNode('Creative Commons By Non-Commercial No Derivatives'));
+				$ccNode->appendChild($this->dom->createTextNode('cc-by-nc-nd'));
 			break;
 
 			default:
@@ -292,6 +307,21 @@ class TeiDom2 {
 		$avlPNode->parentNode->appendChild($ccNode);
 	}
 
+	public function newAuthor($userObject) {
+		$newAuthor = $this->dom->createElementNS(TEI, 'author');
+		$newAuthor->setAttribute('rend', 'structured');
+		$newPersName = $this->dom->createElementNS(TEI, 'persName');
+		$newPersName->appendChild($this->dom->createElementNS(TEI, 'forename', $userObject->first_name));
+		$newPersName->appendChild($this->dom->createElementNS(TEI, 'surname', $userObject->last_name) );
+		$ident = $this->dom->createElementNS(TEI, 'ident');
+		$ident->appendChild($this->dom->createCDataSection($userObject->user_url));
+		$ident->setAttribute('type', 'url');
+		$newPersName->appendChild($ident);
+		$this->userNiceNames[] = $userObject->user_nicename;
+	}
+
+
+//TODO: blow this up into newAuthor
 	public function addPerson($userObject) {
 
 		if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
@@ -306,7 +336,7 @@ class TeiDom2 {
 
 			$newPerson->setAttribute('role', $roleStr);
 			$newPersName = $this->dom->createElement('persName');
-			$newPersName->appendChild($this->dom->createElementNS(TEI, 'tei:forename', $userObject->first_name));
+			$newPersName->appendChild($this->dom->createElementNS(TEI, 'forename', $userObject->first_name));
 			$newPersName->appendChild($this->dom->createElementNS(TEI, 'surname', $userObject->last_name) );
 			$ident = $this->dom->createElementNS(TEI, 'ident');
 			$ident->appendChild($this->dom->createCDataSection($userObject->user_url));
@@ -344,8 +374,14 @@ class TeiDom2 {
 			$content = $this->sanitizeShortCodes($content);
 		}
 
-		$content = $this->sanitizeEntities($content);
 
+$meta = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
+echo $libraryItemObject->ID;
+print_r($meta);
+//print_r(get_object_taxonomies('library_item'));
+//print_r(wp_get_object_terms($libraryItemObject->ID) );
+die();
+		$content = $this->sanitizeEntities($content);
 
 		//using loadHTML because it is more forgiving than loadXML
 		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
@@ -373,7 +409,7 @@ class TeiDom2 {
 		$guid->setAttribute('type', 'guid');
 		$newHead->appendChild($title);
 		$newHead->appendChild($guid);
-
+		$bibl = $this->dom->createElementNS(TEI, 'bibl');
 		//TODO: check if content is native, based on the GUID. if content native, dig up author info
 		//from userID. Otherwise/and, go with info from boones
 		// $author_name = get_post_meta( $item_id, 'author_name', true );
@@ -381,10 +417,10 @@ class TeiDom2 {
 		//TODO: above might be old. Check nativeness by looking at whether dissplay name is set for username
 
 		$authorObject = get_userdata($postObject->post_author);
-		$this->addPerson($authorObject);
+		//$this->addPerson($authorObject);
 
 		if($authorObject) {
-			$bibl = $this->dom->createElementNS(TEI, 'bibl');
+
 			$author = $this->dom->createElementNS(TEI, 'author');
 			$author->setAttribute('ref', $authorObject->user_nicename);
 			$bibl->appendChild($author);
@@ -426,8 +462,6 @@ class TeiDom2 {
 	}
 
 	private function sanitizeContent() {
-
-
 		$this->sanitizeMedia();
 
 		//TODO: strip out any empty containers
@@ -490,84 +524,6 @@ class TeiDom2 {
 		}
 	}
 
-	/**
-	* nodeToArray gives a 'flattened' array of the node and subnode values.
-	* E.g. array('elName'=>'value', 'elName2'=>'value')
-	* @param DOMNode
-	* @return Array
-	*/
-
-	private function nodeToArray($node) {
-		$retArray = array();
-		$retArray[$node->nodeName] = array();
-		//TODO: stuff additional info into this "top" array?
-		$retArray[$node->nodeName]['childNodes'] = array();
-		$retArray[$node->nodeName]['name'] = $node->nodeName;
-
-		if($node->nodeName == 'body') {
-			//value is wrapped in <body> in the TEI, so strip that out for return value
-			$val = $this->dom->saveXML($node);
-			$val = str_replace('<body xmlns="http://www.w3.org/1999/xhtml">' , '' , $val);
-			$val = str_replace('</body>' , '', $val);
-			$retArray['value'] = $val;
-			return $retArray;
-		}
-
-		if($node->nodeName == 'param') {
-			$retArray[$node->getAttribute('name')] = $node->textContent;
-		}
-
-		$allMyChildren = $node->getElementsByTagname('*');
-
-		if($allMyChildren->length == 0) {
-			$retArray[$node->nodeName]['childNodes'] = false;
-			$retArray[$node->nodeName]['value'] = $node->textContent;
-
-			if($node->hasAttribute('ref')) {
-				$ref = $node->getAttribute('ref');
-				$refNode = $this->getNodeListByXPath("//*[@xml:id = '$ref']", true );
-				$retArray[$node->nodeName]['value'] = $this->nodeToArray($refNode);
-			}
-
-		}
-
-		//To handle multiple instances of same nodeName, we'll pluralize everything
-		//in the array
-
-		foreach($allMyChildren as $childNode) {
-			$plName = $childNode->nodeName . "s";
-			if( ! isset($retArray[$plName])) {
-				$retArray[$plName] = array();
-			}
-			if($childNode->childNodes->length == 1
-					&& ($childNode->firstChild->nodeName == "#text" )
-					|| $childNode->firstChild->nodeName == "#cdata-section" ) {
-				$elArray = array('value'=> $childNode->textContent,
-				'name'=>$childNode->nodeName );
-
-				if($childNode->nodeName == 'param') {
-					$elArray['value'] = $childNode->textContent;
-					$elArray['name'] = $childNode->getAttribute('name');
-				}
-					$retArray[$plName][] = $elArray;
-					$retArray[$node->nodeName]['childNodes'][] = $plName;
-			}
-
-			if($childNode->hasAttribute('ref')) {
-				$ref = $childNode->getAttribute('ref');
-				$retArray[$plName][] = $this->getNodeDataByParams(array('id'=>$ref));
-				$retArray[$node->nodeName]['childNodes'][] = $plName;
-			}
-
-			//if empty, get rid of it
-			if ( count($retArray[$plName]) == 0 ) {
-				unset($retArray[$plName]);
-			}
-		}
-
-		return $retArray;
-	}
-
 	/* Accessor Methods */
 
 
@@ -592,7 +548,6 @@ class TeiDom2 {
 
 	public static function getFileNameStatic($postArray) {
 
-
 		$text = strtolower($postArray['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = preg_replace('/[^\w\-]/', '', $fileName);
@@ -603,327 +558,6 @@ class TeiDom2 {
 	}
 
 
-	public function getErrors() {
-
-	}
-
-
-	/* Accessors for building documents */
-
-
-	/**
-	 * Retrive data in the node
-	 * Returns either the node itself or a flat array containing data in the node and its children.
-	 * Use $params['asNode'] = true; to retrieve the node itself
-	 *
-	 * @param array $params
-	 * @return mixed DOMNode or array
-	 */
-
-	public function getNodeDataByParams($params) {
-
-		if(isset($params['id'])) {
-			$id = $params['id'];
-			$queryString = "//*[@xml:id = '$id']";
-			if(isset($params['elName'])) {
-				$elName = $params['elName'];
-				$queryString = $queryString .= "//tei:$elName";
-			}
-			$node = $this->getNodeListByXPath($queryString, true );
-
-			if($params['asNode']) {
-				return $node;
-			}
-			return $this->nodeToArray($node);
-		}
-
-		switch ($params['section']) {
-			case 'front':
-				$queryString = "//tei:front";
-			break;
-
-			case 'body':
-				$queryString = "//tei:body";
-			break;
-
-			case 'back':
-				$queryString = "//tei:back";
-			break;
-
-			case 'outputDesc':
-				$queryString = "//anth:outputDesc";
-				if(isset($params['paramName'])) {
-					$paramName = $params['paramName'];
-					$queryString .= "//*[@name='$paramName']";
-				}
-				$node = $this->getNodeListByXPath($queryString, true);
-
-				if($params['asNode']) {
-					return $node;
-				}
-				return $this->nodeToArray($node);
-			break;
-		}
-
-		if(isset($params['partNumber'])) {
-			$partNumber = $params['partNumber'];
-			$queryString .= "/tei:div[@n='$partNumber']";
-		}
-
-		if(isset($params['itemNumber'])) {
-			$itemNumber = $params['itemNumber'];
-			$queryString .= "/tei:div[@n='$itemNumber']";
-		}
-
-		if(isset($params['isMeta']) && $params['isMeta'] === true) {
-			$queryString .= "/tei:head";
-			if(isset($params['elName'])) {
-				$elName = $params['elName'];
-				$queryString .= "//tei:$elName";
-			}
-		} else {
-			$queryString .= "/body";
-		}
-
-		$node = $this->getNodeListByXPath($queryString, true);
-
-		if($params['asNode']) {
-			return $node;
-		}
-		return $this->nodeToArray($node);
-
-
-	}
-
-
-
-	public function getNodeListByXPath($xpath, $firstOnly = false) {
-		$nodeList = $this->xpath->query($xpath);
-		if($firstOnly) {
-			return $nodeList->item(0);
-		}
-		return $nodeList;
-	}
-
-	public function getProjectTitle() {
-
-	}
-
-	public function getProjectCopyRight() {
-
-
-	}
-
-	public function getProjectEdition() {
-
-	}
-
-	public function getProjectOutputParams($ops = array(), $asNode = false) {
-		$params = $ops;
-		$params['section']= 'outputDesc';
-		$params['asNode'] = $asNode;
-
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getBodyPartCount() {
-		$count = $this->xpath->evaluate("count(//tei:body/tei:div[@type='part'])");
-		return $count;
-	}
-
-	public function getBodyPartMeta($partNumber, $asNode = false) {
-		$params = array('section'=>'body',
-		'partNumber'=>$partNumber,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-
-		return $this->getNodeDataByParams($params);
-
-	}
-
-	public function getBodyPartMetaEl($partNumber, $elName, $asNode = false) {
-		$params = array('section'=>'body',
-		'partNumber'=>$partNumber,
-		'elName'=>$elName,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-
-
-		return $this->getNodeDataByParams($params);
-
-	}
-
-	public function getBodyPartItemCount($partNumber) {
-		$count = $this->xpath->evaluate("count(//tei:body/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
-		return $count;
-	}
-
-	public function getBodyPartItemMeta($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'body',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getBodyPartItemMetaEl($partNumber, $itemNumber, $elName, $asNode = false) {
-		$params = array('section'=>'body',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>true,
-		'elName'=>$elName,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getBodyPartItemContent($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'body',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>false,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-
-
-	public function getFrontPartCount() {
-		$count = $this->xpath->evaluate("count(//tei:front/tei:div[@type='part'])");
-		return $count;
-	}
-
-	public function getFrontPartMeta($partNumber, $asNode = false) {
-		$params = array('section'=>'front',
-		'partNumber'=>$partNumber,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-
-		return $this->getNodeDataByParams($params);
-
-	}
-
-	public function getFrontPartMetaEl($partNumber, $elName, $asNode = false) {
-		$params = array('section'=>'front',
-		'partNumber'=>$partNumber,
-		'elName'=>$elName,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-
-		return $this->getNodeDataByParams($params);
-
-	}
-
-	public function getFrontPartItemCount($partNumber) {
-		$count = $this->xpath->evaluate("count(//tei:front/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
-		return $count;
-	}
-
-	public function getFrontPartItemMeta($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'front',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getFrontPartItemMetaEl($partNumber, $itemNumber, $elName, $asNode = false) {
-		$params = array('section'=>'front',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>true,
-		'elName'=>$elName,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getFrontPartItemContent($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'front',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>false,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-
-	}
-
-
-	public function getBackPartCount() {
-		$count = $this->xpath->evaluate("count(//tei:back/tei:div[@type='part'])");
-		return $count;
-	}
-
-	public function getBackPartMeta($partNumber, $asNode = false) {
-		$params = array('section'=>'back',
-		'partNumber'=>$partNumber,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-
-		return $this->getNodeDataByParams($params);
-
-	}
-
-	public function getBackPartMetaEl($partNumber, $elName, $asNode = false) {
-		$params = array('section'=>'back',
-		'partNumber'=>$partNumber,
-		'elName'=>$elName,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-
-
-		return $this->getNodeDataByParams($params);
-
-	}
-
-	public function getBackPartItemCount($partNumber) {
-		$count = $this->xpath->evaluate("count(//tei:back/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
-		return $count;
-	}
-
-	public function getBackPartItemMeta($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'back',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>true,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getBackPartItemMetaEl($partNumber, $itemNumber, $elName, $asNode = false) {
-		$params = array('section'=>'back',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>true,
-		'elName'=>$elName,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getBackPartItemContent($partNumber, $itemNumber, $asNode = false) {
-		$params = array('section'=>'back',
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'isMeta'=>false,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-
-	}
-
-
-
-	public function getAuthorMeta($authorId, $asNode = false) {
-		$params = array('id'=>$authorId ,
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
-	}
-
-	public function getAuthorMetaEl($authorId, $elName, $asNode = false) {
-		$params = array('id'=>$authorId ,
-		'asNode'=>$asNode,
-		'elName'=>$elName);
-		return $this->getNodeDataByParams($params);
-	}
 
 }
 
