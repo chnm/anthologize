@@ -235,6 +235,12 @@ class Anthologize_Project_Organizer {
 			$author_name = $user->display_name;
 		$author_name_array = array( $author_name );
 
+		$anthologize_meta = array(
+			'author_name' => $author_name,
+			'author_name_array' => $author_name_array,
+			'original_post_id' => $item_id
+		);
+		update_post_meta( $imported_item_id, 'anthologize_meta', $anthologize_meta );
 		update_post_meta( $imported_item_id, 'author_name', $author_name );
 		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array );
 
