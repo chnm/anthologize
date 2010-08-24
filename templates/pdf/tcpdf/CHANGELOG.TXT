@@ -1,3 +1,36 @@
+5.8.016 (2010-08-24)
+	- Alignment problem on write2DBarcode was fixed.
+
+5.8.015 (2010-08-24)
+	- A problem arised with the latest bugfix was fixed.
+
+5.8.014 (2010-08-23)
+	- Method _getxobjectdict() was added for better compatibility with external extensions.
+	- A bug related to radiobuttons was fixed.
+	- Bug #3051509 "new line after punctuation marks" was fixed (partially).
+
+5.8.013 (2010-08-23)
+	- SVG support for 'direction' property was added.
+	- A problem on default width calculation for linear barcodes was fixed.
+	- New option was added to write1DBarcode() method to improve alignments (see example n. 27).
+	- Bug #3050896 "Nested HTML tables: styles are not applied" was fixed.
+	- Method _putresourcedict() was improved to include external XObject templates.
+
+5.8.012 (2010-08-22)
+	- Support for SVG 'text-anchor' property was added.
+
+5.8.011 (2010-08-21)
+	- Method write1DBarcode() was improved to be backward compatible (check the new example n. 27).
+	- Support for CSS width and height properties on images were added.
+
+5.8.010 (2010-08-20)
+	- Documentation of unhtmlentities() was fixed.
+	- The 'fitwidth' option was added and border color problem was fixed on write1DBarcode() method (check the example n. 27).
+
+5.8.009 (2010-08-20)
+	- Internal object numbering was improved.
+	- Some errors in object encryption were fixed.
+
 5.8.008 (2010-08-19)
 	- Method write1DBarcode() was changed, check the example n. 27.
 	- Method Footer() was changed to account for barcode changes.
