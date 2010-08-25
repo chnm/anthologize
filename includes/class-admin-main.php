@@ -32,6 +32,9 @@ class Anthologize_Admin_Main {
 
 	function dashboard_hooks() {
 		global $menu;
+		
+		if ( !current_user_can( 'manage_options' ) )
+			return;
 
 		$menu[57] = array(
 			1 => 'read',
