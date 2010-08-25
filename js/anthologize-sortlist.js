@@ -146,6 +146,28 @@ var anthologize = {
 			   items.first().find("span.append-sep").addClass("disabled");
 		   }
 	   });
+  },
+  "toggleCollapseCookie": function(id){
+	  var cp = jQuery.cookie('collapsedparts');
+	  var parts = new Array();
+		if (cp){
+			parts = cp.split(',');
+  	}
+	  var partsWithoutId = new Array();
+	  var idFound = false;
+	  for (var i = 0; i < parts.length; i++){
+		  if (parts[i] != id){
+			  partsWithoutId.push(parts[i]);
+		  }else{
+			  idFound = true;
+		  }
+	  }
+	  if (idFound){
+		  jQuery.cookie('collapsedparts', partsWithoutId.join(','));
+	  }else{
+			parts.push(id);
+			jQuery.cookie('collapsedparts', parts.join(','));
+		}
   }
 };
 
@@ -272,9 +294,23 @@ jQuery(document).ready(function(){
 			var collapseButton = jQuery(this).parent().find("a.collapsepart");
 			if (collapseButton.text() == ' - '){
 			  collapseButton.text(' + ');
+			  var cp = jQuery.cookie('collapsedparts');
 		  }else{
 				collapseButton.text(' - ');
 			}
 		});
+		anthologize.toggleCollapseCookie(jQuery(this).attr('id'));
 	});
+	
+  var cp = jQuery.cookie('collapsedparts');
+  if (cp){
+		var parts = cp.split(',');
+		for (var i = 0; i < parts.length; i++){
+	  	var p = jQuery('#' + parts[i]);
+	  	if (p.length > 0){
+		  	p.children("div.part-items").toggle();
+				p.find("a.collapsepart").text(' + ');
+	  	}
+		}
+	}	
 });
