@@ -70,7 +70,6 @@ class TeiPdf {
 
 	public function write_pdf() {
 
-
 		$book_title = $this->tei->get_book_title();
 		$book_subtitle = $this->tei->get_book_title('sub');
 		$book_author = $this->tei->get_book_author();
@@ -127,8 +126,8 @@ class TeiPdf {
 
 			} // foreach item
 			$this->pdf->Bookmark($title);
-			$this->pdf->AddPage();
 			$this->pdf->WriteHTML($html, true, 0, true, 0);
+			$this->pdf->AddPage();
 		} // foreach part
 
 		// add a new page for TOC
