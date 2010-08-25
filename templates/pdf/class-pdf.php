@@ -230,7 +230,9 @@ class TeiPdf {
 
 		$logo  = WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif';
 
-		$colophon = "<div style=\"text-align: center;\"><em>This Document was Generated on<br/>" . $date . "<br/>using<br/><br/><a href=\"http://www.anthologize.org/\"><img src=\"" . $logo . "\"\></a></em><br/>Utile Dulci</div>";
+		$horace_quote = "Omne tulit punctum qui miscuit utile dulci -- Horace";
+
+		$colophon = "<div style=\"text-align: center;\"><em>This Document was Generated on<br/>" . $date . "<br/>using<br/><br/><a href=\"http://www.anthologize.org/\"><img src=\"" . $logo . "\"\></a></em><br/><br/>" . $horace_quote . "</div>";
 
 		return $colophon;
 
