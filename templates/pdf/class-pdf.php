@@ -127,6 +127,7 @@ class TeiPdf {
 
 			} // foreach item
 			$this->pdf->Bookmark($title);
+			$this->pdf->AddPage();
 			$this->pdf->WriteHTML($html, true, 0, true, 0);
 		} // foreach part
 
