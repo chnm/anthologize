@@ -289,21 +289,21 @@ jQuery(document).ready(function(){
 	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merge_seq});
   });
 
-	jQuery("body").delegate("ul.project-parts li.part", "click", function(){
-		jQuery(this).children("div.part-items").slideToggle('slow', function(){
+	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){
+		var part = jQuery(this).parents('li.part');
+		part.children("div.part-items").slideToggle('slow', function(){
 			var collapseButton = jQuery(this).parent().find("a.collapsepart");
 			if (collapseButton.text() == ' - '){
 			  collapseButton.text(' + ');
-			  var cp = jQuery.cookie('collapsedparts');
 		  }else{
 				collapseButton.text(' - ');
 			}
 		});
-		anthologize.toggleCollapseCookie(jQuery(this).attr('id'));
+		anthologize.toggleCollapseCookie(part.attr('id'));
 	});
 	
-  var cp = jQuery.cookie('collapsedparts');
-  if (cp){
+	var cp = jQuery.cookie('collapsedparts');
+	if (cp){
 		var parts = cp.split(',');
 		for (var i = 0; i < parts.length; i++){
 	  	var p = jQuery('#' + parts[i]);
