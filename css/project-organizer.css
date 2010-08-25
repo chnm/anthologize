@@ -233,6 +233,11 @@ a.active-append {
 	text-decoration: underline;
 }
 
+a.collapsepart {
+	text-decoration: none;
+	font-weight: bold;
+	padding-right: 5px;
+}
 
 #export-project-button {
 	border-top-right-radius: 1px;

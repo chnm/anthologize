@@ -266,4 +266,15 @@ jQuery(document).ready(function(){
 	  var post_id = anthologize.cleanPostIds(item.attr("id"));
 	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merge_seq});
   });
+
+	jQuery("body").delegate("ul.project-parts li.part", "click", function(){
+		jQuery(this).children("div.part-items").slideToggle('slow', function(){
+			var collapseButton = jQuery(this).parent().find("a.collapsepart");
+			if (collapseButton.text() == ' - '){
+			  collapseButton.text(' + ');
+		  }else{
+				collapseButton.text(' - ');
+			}
+		});
+	});
 });
