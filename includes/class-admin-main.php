@@ -48,7 +48,7 @@ class Anthologize_Admin_Main {
 		$this->add_admin_menu_page( array(
 			'menu_title' => __( 'Anthologize', 'anthologize' ),
 			'page_title' => __( 'Anthologize', 'anthologize' ),
-			'access_level' => 10, 'file' => 'anthologize',
+			'access_level' => 'update_options', 'file' => 'anthologize',
 			'function' => array( $this, 'display'),
 			'position' => 56
 		) );
@@ -66,12 +66,14 @@ class Anthologize_Admin_Main {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts", array( $this, 'load_scripts' ) );
 		}
+		
+
 	}
 
 	// Borrowed, with much love, from BuddyPress. Allows us to put Anthologize way up top.
 	function add_admin_menu_page( $args = '' ) {
 		global $menu, $admin_page_hooks, $_registered_pages;
-
+		
 		$defaults = array(
 			'page_title' => '',
 			'menu_title' => '',
