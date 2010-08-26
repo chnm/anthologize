@@ -334,7 +334,7 @@ class Anthologize_Loader {
 	}
 
 	function deactivation() {}
-	}
+}
 
 endif; // class exists
 
