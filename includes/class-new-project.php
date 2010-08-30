@@ -27,11 +27,18 @@ class Anthologize_New_Project {
         if (!empty($_POST['post_status']))
             $post_data['post_status'] = $_POST['post_status'];
 
-        $new_anthologize_meta = $_POST['anthologize_meta'];
        // print_r($_POST); die();
 
         // If we're editing an existing project.
         if ( !empty($_POST['project_id'])) {
+			
+			if ( !$new_anthologize_meta = get_post_meta( 'anthologize_meta' ) ) {
+				$new_anthologize_meta = $_POST['anthologize_meta'];
+			} else {
+				foreach ( $_POST['anthologize_meta'] as $key => $value ) {
+					$new_anthologize_meta[$key] = $value;
+				}
+			}
 
         	$the_project = get_post( $_POST['project_id'] );
 			if ( !empty ($_POST['post_status']) && ($the_project->post_status != $_POST['post_status'] ))
@@ -108,6 +115,7 @@ class Anthologize_New_Project {
 
         if (!empty($_GET['project_id'])) {
             // We are editing a project
+            
             $project_id = $_GET['project_id'];
             $project = get_post( $project_id );
             if (empty($project)) {
