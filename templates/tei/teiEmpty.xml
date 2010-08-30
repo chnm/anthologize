@@ -1,58 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:html="http://www.w3.org/1999/xhtml">
-    <teiHeader>        
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:anth="http://www.anthologize.org/ns">
+    <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title></title>                
+                <!-- move human readable file name to the <sourceDesc> -->
+              
+                <title type="fileNameBase"></title>
             </titleStmt>
+
             <editionStmt>
-                <edition></edition>
+                <ab rend="literal"></ab>
+                <ab rend="structured"> </ab>
             </editionStmt>
-            
+
             <publicationStmt>
                 <availability rend="literal">
-                    <p></p>
+                    
                 </availability>
                 <availability rend="structured">
                     <ab rend="structured"></ab>
                 </availability>
                 <date rend="literal"></date>
-                <date rend="structured"></date>                
+                <date rend="structured"></date>
             </publicationStmt>
+
+            <!-- info about the source Anthologize Project -->
             <sourceDesc>
-                <bibl>
-                    <ident></ident>
-                </bibl>
+                <listBibl>
+                    <bibl type="project">
+                        <ident type="guid"></ident>
+                        <title type="main"></title>
+                        <title type="sub"></title>
+                        <!-- author in the bibl @type=project is the creator of the project, not necc. an author in the sense of having written anything. -->
+                        <author role="projectCreator" ref="admin"></author>
+                        <date type="created" rend="structured"></date>
+                        <date type="modified" rend="structured"></date>
+                    </bibl>
+                    <listBibl type="parts">
+                        <bibl n="1">
+                            <ident type="guid"></ident>
+                            <title></title>
+                        </bibl>
+                        <listBibl type="libraryItems">
+                           <bibl>
+                               <author ref="admin">
+                                   
+                               </author>
+                              
+                           </bibl>
+                        </listBibl>
+                    </listBibl>
+                </listBibl>
             </sourceDesc>
         </fileDesc>
-        <!-- I think the right place to gather metadata will be in the encodingDesc. Would appreciate it if others with TEI skill commented about that. -->
-				
-				
-        <outputParams xmlns="http://www.anthologize.org/ns">
-            <param name="paper-type"></param>
-            <param name="page-width"></param>
-            <param name="page-height"></param>
-            <param name="font-size"></param>
-            <param name="font-family"></param>
-        </outputParams>
+
+        <profileDesc>
+            <creation>
+                <date rend="structured"></date>
+            </creation>
+
+            
+            <anth:outputDecl xmlns="http://www.anthologize.org/ns">
+                <outputParams format="" extension="">
+                    <param name="paper-type"></param>
+                    <param name="page-width"></param>
+                    <param name="page-height"></param>
+                    <param name="font-size"></param>
+                    <param name="font-family"></param>
+                </outputParams>
+                <outputParams format="PDF" extension="#extID"></outputParams>
+
+            
+            </anth:outputDecl>
+        </profileDesc>
+
         <encodingDesc>
-            <refsDecl>
-                <ab type="metadata" subtype="authors">
-                    <!-- the anonymous block might be the best way hold metadata about people (and more?) without making TEI mad -->
-                    <listPerson>
-                    </listPerson>
-                </ab>
-            </refsDecl>
             <appInfo>
-                <application ident="anthologize" version="0.3">
+                <application xml:id="anthologize" ident="anthologize" version="0.3">
                     <label>Anthologize</label>
                     <desc>Bits to Bookshelf</desc>
-                    <p><graphic
-                            url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"
-                        ></graphic></p>
+                    <ab><graphic
+                            url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"></graphic>
+                        <ptr target="http://anthologize.org"></ptr>
+                    </ab>
                 </application>
+
             </appInfo>
         </encodingDesc>
+
     </teiHeader>
     <text>
         <front>
@@ -61,29 +97,70 @@
                     <titlePart type="main"></titlePart>
                     <titlePart type="sub"></titlePart>
                 </docTitle>
-                <docAuthor rend="literal"></docAuthor>
-                <docAuthor rend="structured"></docAuthor>
-                <docDate rend="literal"></docDate>
-                <docDate rend="structured"></docDate>
+                <docAuthor rend="literal">
+                    
+                </docAuthor>
+                <docAuthor rend="structured">
+                    <persName>
+                        
+                        <forename></forename>
+                    </persName>
+                </docAuthor>
+                <docDate rend="literal">
+                    <date rend="literal"></date>
+                    <date rend="structured"></date>
+                </docDate>
+
                 <docEdition rend="literal"></docEdition>
                 <docEdition rend="structured"></docEdition>
             </titlePage>
-            <div xml:id="f1" n="1">
+            <div n="0">
                 <head>
                     <title></title>
                 </head>
-                <body xmlns="http://www.w3.org/1999/xhtml">
-                </body>
+               
             </div>
-            <div xml:id="f2" n="2">
+            <div n="1">
                 <head>
                     <title></title>
                 </head>
-                <body xmlns="http://www.w3.org/1999/xhtml">
-                </body>
+               
             </div>
         </front>
-        <body> </body>
-        <back></back>
+        <body>
+            <div n="0">
+                <head></head>
+                <bibl>
+                    <author rend="literal">
+                        <html:body xmlns="http://www.w3.org/1999/xhtml"></html:body>
+                    </author>
+                    <author rend="structured">
+                        
+                        <!-- structured duplicates a limited set of what's in the ptr for what is most commonly used-->
+                        <persName>
+                            <forename></forename>
+                            <surname></surname>
+                            <ident type="guid"></ident>
+                        </persName>
+                    </author>
+                    <author></author>
+                </bibl>
+                <note type="subjects">
+                    <list type="tags">
+                        <item>
+                            <rs type="tag" ref="http://tag.url">tag</rs>
+                        </item>
+                    </list>
+                    <list type="categories">
+                        <item>
+                            <rs type="category" ref="http://category.url">category</rs>
+                        </item>
+                    </list>
+                </note>
+
+            </div>
+        </body>
+        <back> </back>
     </text>
+
 </TEI>

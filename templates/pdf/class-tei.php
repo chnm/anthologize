@@ -44,7 +44,6 @@ class TeiAPI {
 		$this->tei = new DOMDocument();
 
 		$tei_dom = new TeiDom($_SESSION);
-
 		$this->tei->loadXML($tei_dom->getTeiString());
 
 		$this->xpath = new DOMXpath($this->tei);
@@ -58,7 +57,7 @@ class TeiAPI {
 	 * Return document title/subtitle.
 	 *
 	 * /tei:TEI/tei:text/tei:front/tei:titlePage/tei:docTitle/tei:titlePart[@type='".$type."']/text()
-	 * 
+	 *
 	 */
 
 	public function get_book_title($type = 'main') {
@@ -73,13 +72,13 @@ class TeiAPI {
 	* /tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor/text()
 	*
 	*/
-	
+
 	public function get_book_author(){
 
 		return $this->xpath->query("/tei:TEI/tei:text/tei:front/tei:titlePage/tei:docAuthor")->item(0)->textContent;
 
 	}
-	
+
 	public function get_availability(){
 
 		return $this->xpath->query("/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability")->item(0)->textContent;

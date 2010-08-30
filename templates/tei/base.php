@@ -1,28 +1,18 @@
 <?php
 
 
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php');
-//include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom2.php');
+
+
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php'); //this will eventually drop the 2 at the end
+include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php');
 
 $tei = new TeiDom($_SESSION);
-//$tei = new TeiDom2($_POST);
-$fileName = TeiDom::getFileName($_SESSION);
-//$fileName = $tei->getFileName();
-$ext = "xml";
+$api = new TeiApi($tei);
 
-//echo $tei->getBodyPartCount();
-//print_r($tei->getBodyPartMeta(0));
+//if you want to make it a download.
+$fileName = $api->getFileName();
+$ext = ".html";
 
-
-//print_r($tei->getBodyPartMetaEl(0, 'author'));
-//print_r($tei->getBodyPartItemMeta(0, 0));
-
-
-//print_r($tei->getBodyPartItemMetaEl(0, 0, 'title'));
-
-//print_r($tei->getBodyPartItem(0, 0));
-
-//print_r($tei->getProjectOutputParams(array('paramName'=>'page-width')));
 
 header("Content-type: application/xml");
 header("Content-Disposition: attachment; filename=$fileName.$ext");
