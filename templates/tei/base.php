@@ -11,7 +11,7 @@ $api = new TeiApi($tei);
 
 //if you want to make it a download.
 $fileName = $api->getFileName();
-$ext = ".html";
+$ext = ".xml";
 
 
 header("Content-type: application/xml");
