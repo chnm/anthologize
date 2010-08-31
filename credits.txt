@@ -32,4 +32,5 @@ chance on a weird project!
 Translation credits:
 - Japanese: Tai
 - French: Boone Gorges
+- Russian: LeVaTi Team
 ====
