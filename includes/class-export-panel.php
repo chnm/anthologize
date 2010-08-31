@@ -232,14 +232,27 @@ class Anthologize_Export_Panel {
 	}
 
 	function save_session() {
-		foreach ( $_POST as $key => $value ) {
-			if ( $key == 'submit' )
-				continue;
-			
-			$_SESSION[$key] = $value;
-		}
 		
-		//print_r($_SESSION);
+		foreach ( $_POST as $key => $value ) {
+			if ( $key == 'submit' || $key == 'export-step' )
+				continue;
+		
+			if ( $key == '' )
+				echo "OK";
+						
+			if ( isset( $_SESSION['filetype'] ) )
+				$export_format = $_SESSION['filetype'];
+			
+			if ( $_POST['export-step'] == '3' )
+				$_SESSION[$export_format][$key] = $value;
+			else
+				$_SESSION[$key] = $value;
+		
+			if ( $key == 'filetype' ) {
+				$_SESSION[$export_format] = array();
+			}
+		}
+	
 	}
 	
 	function export_format_list() { 
@@ -258,6 +271,7 @@ class Anthologize_Export_Panel {
 	
 	function render_format_options() {
 		global $anthologize_formats;
+		
 		$format = $_SESSION['filetype'];
 		
 		if ( $fdata = $anthologize_formats[$format] ) {
