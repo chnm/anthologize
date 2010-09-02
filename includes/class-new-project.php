@@ -169,7 +169,7 @@ class Anthologize_New_Project {
             </table>
 
 
-       	   <div class="anthologize-button"><input type="submit" name="save_project" value="Save Project"></div>
+       	   <div class="anthologize-button"><input type="submit" name="save_project" value="<?php _e( 'Save Project', 'anthologize' ) ?>"></div>
             <input type="hidden" name="project_id" value="<?php if ($project) echo $project->ID ?>">
             </form>
 
