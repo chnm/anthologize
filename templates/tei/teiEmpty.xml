@@ -5,7 +5,7 @@
         <fileDesc>
             <titleStmt>
                 <!-- move human readable file name to the <sourceDesc> -->
-              
+
                 <title type="fileNameBase"></title>
             </titleStmt>
 
@@ -15,9 +15,7 @@
             </editionStmt>
 
             <publicationStmt>
-                <availability rend="literal">
-                    
-                </availability>
+                <availability rend="literal"> </availability>
                 <availability rend="structured">
                     <ab rend="structured"></ab>
                 </availability>
@@ -27,38 +25,9 @@
 
             <!-- info about the source Anthologize Project -->
             <sourceDesc>
-                <listPerson>
-
-                </listPerson>
-                <listBibl>
-                    <bibl type="project">
-                        <ident type="guid"></ident>
-                        <title type="main"></title>
-                        <title type="sub"></title>
-                        <!-- author in the bibl @type=project is the creator of the project, not necc. an author in the sense of having written anything. -->
-                        <author role="projectCreator"    ref="admin"></author>
-                        <date type="created" rend="structured"></date>
-                        <date type="modified" rend="structured"></date>
-                    </bibl>
-                    <listBibl type="parts">
-                        <bibl n="1">
-                            <ident type="guid"></ident>
-                            <title></title>
-                        </bibl>
-                        <listBibl type="libraryItems">
-                           <bibl>
-                               <author ref="admin">
-                                  
-                               </author>
-                              
-                           </bibl>
-                        </listBibl>
-                    </listBibl>
-                </listBibl>
-                
-                <list xml:id="subjects">
-
-                </list>
+                <listPerson> </listPerson>
+   
+                <list xml:id="subjects"> </list>
             </sourceDesc>
         </fileDesc>
 
@@ -67,7 +36,7 @@
                 <date rend="structured"></date>
             </creation>
 
-            
+
             <anth:outputDecl xmlns="http://www.anthologize.org/ns">
                 <outputParams format="" extension="">
                     <param name="paper-type"></param>
@@ -78,9 +47,9 @@
                 </outputParams>
                 <outputParams format="PDF" extension="#extID"></outputParams>
 
-            
+
             </anth:outputDecl>
-            
+
         </profileDesc>
 
         <encodingDesc>
@@ -95,29 +64,35 @@
                 </application>
 
             </appInfo>
-            
+
         </encodingDesc>
 
     </teiHeader>
     <text>
-        <front>
 
+        <front>
+            <head type="titlePage">
+                <bibl>
+                    <title type="main"></title>
+                    <title type="sub"></title>
+
+                    <ident type="guid"></ident>
+                </bibl>                
+            </head>
             <div n="0">
                 <head>
                     <title></title>
                 </head>
-               
+
             </div>
             <div n="1">
                 <head>
                     <title></title>
                 </head>
-               
+
             </div>
         </front>
-        <body>
-  
-        </body>
+        <body> </body>
         <back> </back>
     </text>
 

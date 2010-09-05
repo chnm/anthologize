@@ -234,7 +234,7 @@ class TeiApi {
 	 */
 
 	public function getProjectTitle() {
-		$queryString = "//tei:listBibl/tei:bibl[@type='project']/tei:title[@type='main']";
+		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='main']";
 		$titleNode = $this->getNodeListByXPath($queryString, true);
 
 		return $this->getNodeXML($titleNode->firstChild);
@@ -246,7 +246,7 @@ class TeiApi {
 	 */
 	public function getProjectSubTitle() {
 
-		$queryString = "//tei:listBibl/tei:bibl[@type='project']/tei:title[@type='sub']";
+		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='sub']";
 		$subTitleNode = $this->getNodeListByXPath($queryString, true);
 		return $this->getNodeXML($subTitleNode->firstChild);
 	}

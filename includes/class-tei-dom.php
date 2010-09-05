@@ -11,6 +11,7 @@ class TeiDom {
 	public $includeCreatorData = true;
 	public $includeStructuredCreatorData = true;
 	public $includeOriginalPostData = true;
+	public $includeDeepDocumentData = true;
 	public $avatarSize = '96';
 	public $avatarDefault = "http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536";
 	public $doShortcodes = true;
@@ -25,8 +26,8 @@ class TeiDom {
 
 	public $bodyNode;
 	public $projectData;
-	public $userNiceNames = array();
-	public $subjectIds = array();
+	public $knownPersons = array();
+	public $knownSubjects = array();
 
 
 	function __construct($sessionArray, $ops = array()) {
@@ -66,10 +67,9 @@ class TeiDom {
 		$this->addOutputDesc();
 		$this->addPublicationStmt();
 		$this->addFileDesc();
-		$this->addSourceDesc();
+		$this->addTitlePageBibl();
 		$this->addEncodingDesc();
 		$this->addFrontMatter();
-		//$this->addTitlePage();
 
 		$this->sanitizeContent();
 
@@ -98,7 +98,10 @@ class TeiDom {
 		foreach($partObjectsArray as $partObject) {
 			$newPart = $this->newPart($partObject);
 			$newPart->setAttribute('n', $partNumber);
-			//TODO: find a way to set no limit to post_per_page
+			if($this->includeDeepDocumentData) {
+
+			}
+			//TODO: find a way to set no limit to post_per_page without the magic big number
 			$libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item', 'posts_per_page'=>200));
 			$libraryItemObjectsArray = $libraryItemsData->posts;
 			//sort objects, by menu_order, then ID
@@ -111,7 +114,7 @@ class TeiDom {
 
 				$newItem = $this->newItem($libraryItemObject);
 
-				if($this->includeStructuredSubject) {
+				if($this->includeStructuredSubjects) {
 					$this->addStructuredSubjects($libraryItemObject->original_post_id);
 				}
 
@@ -161,12 +164,10 @@ class TeiDom {
 
 		//cr
 		$litAvailNode = $this->xpath->query("//tei:publicationStmt/tei:availability[@rend='literal']")->item(0);
-		$litAvailNode->appendChild($this->sanitizeString("Creative Commons " . $this->projectData['cctype']));
+		$litAvailNode->appendChild($this->sanitizeString("Creative Commons - " . strtoupper( $this->projectData['cctype'] )));
 
 		$strAvailNode = $this->xpath->query("//tei:publicationStmt//tei:ab[@rend='structured']")->item(0);
 		$strAvailNode->appendChild($this->dom->createTextNode("cc-" . $this->projectData['cctype']) );
-
-
 
 		//date
 		$pubDateNode = $this->xpath->query("//tei:publicationStmt/tei:date")->item(0);
@@ -185,20 +186,30 @@ class TeiDom {
 
 	}
 
-	public function addSourceDesc() {
+	public function addTitlePageBibl() {
 
-		$projectBibl = $this->xpath->query("//tei:sourceDesc/tei:listBibl/tei:bibl[@type='project']")->item(0);
+		$projectBibl = $this->xpath->query("//tei:head[@type='titlePage']/tei:bibl")->item(0);
 
 		$identNode = $this->xpath->query("tei:ident", $projectBibl)->item(0);
-		$identNode->appendChild($this->dom->createCDATASection($this->projectData->guid) );
+		$identNode->appendChild($this->dom->createCDATASection($this->projectData['guid']) );
 		$titleNode = $this->xpath->query("tei:title[@type='main']", $projectBibl)->item(0);
 		$titleNode->appendChild($this->sanitizeString($this->projectData['post-title']));
 
 		$subTitleNode = $this->xpath->query("tei:title[@type='sub']", $projectBibl)->item(0);
 		$subTitleNode->appendChild($this->sanitizeString($this->projectData['subtitle']));
 
-		$createdNode = $this->xpath->query("tei:date[@type='created']", $projectBibl)->item(0);
-		$createdNode->appendChild($this->dom->createTextNode($this->projectData->post_date));
+		if($this->includeDeepDocumentData) {
+			$projectPostData = $this->fetchPostData($this->projectData['project_id']);
+			$userData = get_userdata($projectPostData->post_author);
+
+			$projectBibl->appendChild($this->newAuthor($userData, 'projectCreator'));
+
+			$createdNode = $this->dom->createElementNS(TEI, 'date');
+			$createdNode->setAttribute('type', 'created');
+			$projectBibl->appendChild($createdNode);
+			$createdNode->appendChild($this->dom->createTextNode($this->projectData['post_date']));
+		}
+
 
 	}
 
@@ -229,36 +240,7 @@ class TeiDom {
 		$f2Node->appendChild($this->sanitizeString(htmlspecialchars($this->projectData['acknowledgements']), true));
 	}
 
-	public function addTitlePage() {
 
-		//"editors" copyright and title page
-//TODO redo author stuff
-		//$authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
-		//$authorsNode->appendChild($this->sanitizeString($this->projectData['cname'] . ', ' . $this->projectData['authors']));
-
-		$docEditionNode = $this->xpath->query("//tei:docEdition")->item(0);
-		$docEditionNode->appendChild($this->sanitizeString($this->projectData['edition']));
-
-
-		//TODO: also slap title into titlePage
-
-		$frontPageNode = $this->xpath->query("//tei:titlePage")->item(0);
-
-		$mainTitle = $this->xpath->query("//tei:titlePart[@type='main']", $frontPageNode)->item(0);
-		$mainTitle->appendChild($this->sanitizeString($this->projectData['post-title']));
-
-		$subTitle = $this->xpath->query("//tei:titlePart[@type='sub']", $frontPageNode)->item(0);
-		$subTitle->appendChild($this->sanitizeString($this->projectMeta['subtitle']));
-
-
-
-
-
-		$fpDateNode = $this->xpath->query("tei:docDate", $frontPageNode)->item(0);
-		$fpDateNode->appendChild($this->dom->createTextNode($project->post_date));
-
-
-	}
 	public function sanitizeMedia() {
 		$this->sanitizeImages();
 		$this->sanitizeEmbeds(); //TODO
@@ -300,12 +282,28 @@ class TeiDom {
 	}
 
 	public function addStructuredPerson($wpUserObj) {
-		$this->structuredPersonList->appendChild($this->newStructuredPerson($wpUserObj));
+
+		$newPerson = $this->newStructuredPerson($wpUserObj);
+		if($newPerson) {
+			$this->structuredPersonList->appendChild($newPerson);
+		}
+
 	}
 
 	public function newStructuredPerson($wpUserObj) {
+
+		$id = $wpUserObj->user_login;
+
+		if( array_key_exists($id, $this->knownPersons)) {
+			$this->knownPersons[$id] = $this->knownPersons[$id] + 1;
+			$personCountNode = $this->xpath->query("//tei:person[@xml:id = '$id']/tei:persName/tei:num")->item(0);
+			$personCountNode->nodeValue = $this->knownPersons[$id];
+			return false;
+		}
+		$this->knownPersons[$id] = 1;
+
 		$person = $this->dom->createElementNS(TEI, 'person');
-		$person->setAttribute('xml:id', $wpUserObj->user_login);
+		$person->setAttribute('xml:id', $id );
 		$persName = $this->dom->createElementNS(TEI, 'persName');
 		$name = $this->dom->createElementNS(TEI, 'name');
 		$name->appendChild($this->sanitizeString($wpUserObj->display_name));
@@ -313,6 +311,10 @@ class TeiDom {
 		$firstname->appendChild($this->sanitizeString($wpUserObj->first_name));
 		$surname = $this->dom->createElementNS(TEI, 'surname');
 		$surname->appendChild($this->sanitizeString($wpUserObj->last_name));
+		$count = $this->dom->createElementNS(TEI, 'num');
+		$count->setAttribute('type', 'count');
+		$count->appendChild($this->dom->createTextNode('1'));
+
 
 		$desc = $this->dom->createElementNS(TEI, 'note');
 		$desc->setAttribute('type', 'description');
@@ -337,6 +339,7 @@ class TeiDom {
 		$persName->appendChild($surname);
 		$persName->appendChild($firstname);
 		$persName->appendChild($email);
+		$persName->appendChild($count);
 
 		$person->appendChild($persName);
 
@@ -362,10 +365,13 @@ class TeiDom {
 
 		//if a tag and category have same slug, differentiate in id
 		$id = $subject->taxonomy . '-' . $subject->slug;
-		if( in_array($id, $this->subjectIds)) {
-			return;
+		if( array_key_exists($id, $this->knownSubjects) ) {
+			$this->knownSubjects[$id] = $this->knownSubjects[$id] + 1;
+			$subjectCountNode = $this->xpath->query("//tei:item[@xml:id = '$id']/tei:num")->item(0);
+			$subjectCountNode->nodeValue = $this->knownSubjects[$id];
+			return false;
 		}
-		$this->subjectIds[] = $id;
+		$this->knownSubjects[$id] = 1;
 		$item = $this->dom->createElementNS(TEI, 'item');
 		$item->setAttribute('xml:id', $id );
 		$item->setAttribute('type', $subject->taxonomy);
@@ -379,7 +385,7 @@ class TeiDom {
 
 		$num = $this->dom->createElementNS(TEI, 'num');
 		$num->setAttribute('type', 'count');
-		$num->appendChild($this->dom->createTextNode($subject->count));
+		$num->appendChild($this->dom->createTextNode('1'));
 
 		$item->appendChild($ident);
 		$item->appendChild($desc);
@@ -401,7 +407,11 @@ class TeiDom {
 
 		$subjects = $this->fetchPostSubjects($postID);
 		foreach($subjects as $subject) {
-			$this->structuredSubjectList->appendChild($this->newSubjectStructuredItem($subject));
+			$newSubject = $this->newSubjectStructuredItem($subject);
+			if($newSubject) {
+				$this->structuredSubjectList->appendChild($newSubject);
+			}
+
 		}
 	}
 
@@ -417,7 +427,7 @@ class TeiDom {
 		$node->appendChild($list);
 	}
 
-	public function fetchOriginalPostData($postID) {
+	public function fetchPostData($postID) {
 		$postData = get_post($postID);
 		return $postData;
 	}
@@ -457,47 +467,6 @@ class TeiDom {
 
 	public function sanitizeHTML5() {
 
-	}
-
-	public function addAvailability() {
-		$avlPNode = $this->xpath->query("//tei:availability/tei:p")->item(0);
-		$avlPNode->appendChild($this->dom->createTextNode('Copyright ' . $this->projectData['cyear'] . ', ' . $this->projectData['cname']));
-		if($this->projectData['ctype'] == 'c') {
-			return;
-		}
-
-		$ccNode = $this->dom->createElementNS(TEI, 'p');
-
-		switch($this->projectData['cctype']) {
-			case 'by':
-				$ccNode->appendChild($this->dom->createTextNode('cc-by'));
-			break;
-
-			case 'by-sa':
-				$ccNode->appendChild($this->dom->createTextNode('cc-by-sa'));
-			break;
-
-			case 'by-nd':
-				$ccNode->appendChild($this->dom->createTextNode('cc-by-nd'));
-			break;
-
-			case 'by-nc':
-				$ccNode->appendChild($this->dom->createTextNode('cc-by-nc'));
-			break;
-
-			case 'by-nc-sa':
-				$ccNode->appendChild($this->dom->createTextNode('cc-by-nc-sa'));
-			break;
-
-			case 'by-nc-nd':
-				$ccNode->appendChild($this->dom->createTextNode('cc-by-nc-nd'));
-			break;
-
-			default:
-
-			break;
-		}
-		$avlPNode->parentNode->appendChild($ccNode);
 	}
 
 	public function newPart($partObject) {
@@ -576,7 +545,7 @@ print_r(get_userdata(1));
 				}
 
 				if($this->includeOriginalPostData) {
-					$origPostData = $this->fetchOriginalPostData($postObject->original_post_id);
+					$origPostData = $this->fetchPostData($postObject->original_post_id);
 					$origCreator = get_userdata($origPostData->post_author);
 					$bibl->appendChild($this->newAuthor($origCreator, 'originalCreator') );
 					if($this->includeStructuredCreatorData) {
