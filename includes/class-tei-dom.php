@@ -13,6 +13,9 @@ class TeiDom {
 	public $includeOriginalPostData = true;
 	public $avatarSize = '96';
 	public $avatarDefault = "http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536";
+	public $doShortcodes = true;
+	public $checkImgSrcs = true;
+
 
 	public $front1Title = "Dedication";
 	public $front2Title = "Acknowledgements";
@@ -24,11 +27,13 @@ class TeiDom {
 	public $projectData;
 	public $userNiceNames = array();
 	public $subjectIds = array();
-	public $doShortcodes = true;
-	public $checkImgSrcs;
 
 
-	function __construct($sessionArray, $checkImgSrcs = true) {
+	function __construct($sessionArray, $ops = array()) {
+
+		foreach($ops as $op=>$value) {
+			$this->$op = $value;
+		}
 
 		$this->projectData = $sessionArray;
 
