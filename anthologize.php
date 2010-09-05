@@ -36,7 +36,7 @@ class Anthologize_Loader {
 	* The main Anthologize loader. Hooks our stuff into WP
 	*/
 	function anthologize_loader () {
-		
+
 		session_start();
 
 		// Give me something to believe in
@@ -74,15 +74,18 @@ class Anthologize_Loader {
 		// deactivation sequence
 		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
 	}
-	
+
 	// Load constants
 	function load_constants() {
 		if ( !defined( 'ANTHOLOGIZE_VERSION' ) )
 			define( 'ANTHOLOGIZE_VERSION', '0.4' );
-		
+
 		if ( !defined( 'ANTHOLOGIZE_TEIDOM_PATH' ) )
 			define( 'ANTHOLOGIZE_TEIDOM_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php' );
-	
+
+		if ( !defined( 'ANTHOLOGIZE_TEIDOMAPI_PATH' ) )
+			define( 'ANTHOLOGIZE_TEIDOMAPI_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php' );
+
 	}
 
 	// Let plugins know that we're initializing
@@ -226,13 +229,13 @@ class Anthologize_Loader {
 	}
 
 	function default_export_formats() {
-	
+
 		// Defining the default options for export formats
 		$d_page_size = array(
 				'letter' => __( 'Letter', 'anthologize' ),
 				'a4' => __( 'A4', 'anthologize' )
 		);
-		
+
 		$d_font_size = array(
 			'9' => __( '9 pt', 'anthologize' ),
 			'10' => __( '10 pt', 'anthologize' ),
@@ -241,38 +244,38 @@ class Anthologize_Loader {
 			'13' => __( '13 pt', 'anthologize' ),
 			'14' => __( '14 pt', 'anthologize' )
 		);
-		
+
 		$d_font_face = array(
 			'times' => __( 'Times New Roman', 'anthologize' ),
 			'helvetica' => __( 'Helvetica', 'anthologize' ),
 			'courier' => __( 'Courier', 'anthologize' )
-		);	
-	
-	
+		);
+
+
 		// Register PDF + options
 		anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
-		
+
 		anthologize_register_format_option( 'pdf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );
-				
+
 		anthologize_register_format_option( 'pdf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
-		
+
 		anthologize_register_format_option( 'pdf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
-		
-		
+
+
 		// Register RTF + options
 		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
 
 		anthologize_register_format_option( 'rtf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );
-				
+
 		anthologize_register_format_option( 'rtf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
-		
+
 		anthologize_register_format_option( 'rtf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
 
 
 		// Register ePub. No options for this one
 		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
-		
-		
+
+
 		// Register TEI. No options for this one
 		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
 	}
@@ -285,10 +288,10 @@ class Anthologize_Loader {
 			require( dirname( __FILE__ ) . '/includes/class-ajax-handlers.php' );
 			$ajax_handlers = new Anthologize_Ajax_Handlers();
 		}
-		
+
 		require_once( dirname( __FILE__ ) . '/includes/class-format-api.php' );
 		require_once( dirname( __FILE__ ) . '/includes/functions.php' );
-	
+
 	}
 
 	// Let plugins know that we're done loading
@@ -299,14 +302,14 @@ class Anthologize_Loader {
 
 	function load_template() {
 		global $anthologize_formats;
-		
+
 		$return = true;
-		
+
 		if ( isset( $_POST['export-step'] ) ) {
 			if ( $_POST['export-step'] == 3 )
-				$return = false;	
+				$return = false;
 		}
-		
+
 		if ( $return )
 			return;
 
@@ -314,16 +317,16 @@ class Anthologize_Loader {
 
 		require_once( dirname(__FILE__) . '/includes/class-export-panel.php' );
 		Anthologize_Export_Panel::save_session();
-				
+
 		$type = $_SESSION['filetype'];
-		
+
 		if ( !is_array( $anthologize_formats[$type] ) )
 			return;
 
 		$project_id = $_SESSION['project_id'];
 
 		load_template( $anthologize_formats[$type]['loader-path'] );
-		
+
 		return false;
 	}
 

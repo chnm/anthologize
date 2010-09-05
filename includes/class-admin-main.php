@@ -421,21 +421,21 @@ class Anthologize_Admin_Main {
         // check user permissions
         if ( !current_user_can('edit_post', $post_id) ) return $post_id;
 
-        $current_data = get_post_meta($post_id, 'anthologize_meta', TRUE);
+		if ( !$item_id = $_POST['item_id'] )
+			return false;
 
-        $new_data = $_POST['anthologize_meta'];
+        if ( !$new_data = $_POST['anthologize_meta'] )
+        	$new_data = array();
+	
+		if ( !$anthologize_meta = get_post_meta( $item_id, 'anthologize_meta', true ) )
+			$anthologize_meta = array();
+				
+		foreach( $new_data as $key => $value ) {
+			$anthologize_meta[$key] = maybe_unserialize( $value );
+		}
 
-        if ( $current_data )
-    	{
-    		if ( is_null($new_data) ) delete_post_meta($post_id,'anthologize_meta');
-    		else update_post_meta($post_id,'anthologize_meta',$new_data);
-			update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
-    	}
-    	elseif ( !is_null($new_data) )
-    	{
-    		add_post_meta($post_id,'anthologize_meta',$new_data,TRUE);
-			update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
-    	}
+		update_post_meta($post_id,'anthologize_meta', $anthologize_meta);
+		update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
 
         add_filter('redirect_post_location', array($this , 'item_meta_redirect'));
     	return $post_id;
@@ -468,6 +468,7 @@ class Anthologize_Admin_Main {
         global $post;
 
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
+        print_r($meta);
         $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
        	$author_name = get_post_meta( $post->ID, 'author_name', true );
         ?>
@@ -532,6 +533,10 @@ class Anthologize_Admin_Main {
 
             <?php if ( isset( $_GET['new_part'] ) ) : ?>
             	<input type="hidden" name="new_part" value="1" />
+            <?php endif; ?>
+            
+            <?php if ( isset( $post->ID ) ) : ?>
+            	<input type="hidden" name="item_id" value="<?php echo $post->ID ?>" />
             <?php endif; ?>
 
             <input type="hidden" name="menu_order" value="<?php echo $post->menu_order; ?>">

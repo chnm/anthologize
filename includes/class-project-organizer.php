@@ -74,7 +74,7 @@ class Anthologize_Project_Organizer {
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 
 				<div id="add-custom-links" class="postbox ">
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Items', 'Anthologize' ) ?></span></h3>
+				<div class="handlediv" title="<?php _e( 'Click to toggle', 'anthologize' ) ?>"><br></div><h3 class="hndle"><span><?php _e( 'Items', 'anthologize' ) ?></span></h3>
 				<div class="inside">
 					<div class="customlinkdiv" id="customlinkdiv">
 
@@ -106,7 +106,7 @@ class Anthologize_Project_Organizer {
 
 				<div class="postbox" id="anthologize-parts-box">
 
-				<div class="handlediv" title="Click to toggle"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'Anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=anth_part&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
+				<div class="handlediv" title="<?php _e( 'Click to toggle', 'anthologize' ) ?>"><br></div><h3 class="hndle"><span><?php _e( 'Parts', 'anthologize' ) ?></span><div class="part-item-buttons button" id="new-part"><a href="post-new.php?post_type=anth_part&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a></div></h3>
 
 				<div id="partlist">
 
@@ -154,7 +154,7 @@ class Anthologize_Project_Organizer {
 		if ( isset( $_COOKIE['anth-filter'] ) )
 			$cfilter = $_COOKIE['anth-filter'];
 		?>
-            <span>Filter by</span>
+            <span><?php _e( 'Filter by', 'anthologize' ) ?></span>
 			<select name="sortby" id="sortby-dropdown">
 				<option value="" selected="selected"><?php _e( 'All posts', 'anthologize' ) ?></option>
 				<?php foreach( $filters as $filter => $name ) : ?>

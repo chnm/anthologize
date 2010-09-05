@@ -46,7 +46,7 @@
 
   $mimetype_filename = $temp_epub_dir_name .  DIRECTORY_SEPARATOR . "mimetype";
   $container_filename = $temp_epub_dir_name .  DIRECTORY_SEPARATOR . "META-INF" .  DIRECTORY_SEPARATOR . "container.xml";
-  
+
   $xsl_html_file = $epub_dir . DIRECTORY_SEPARATOR . 'tei2html.xsl';
   $xsl_ncx_file  = $epub_dir . DIRECTORY_SEPARATOR . 'tei2ncx.xsl';
   $xsl_opf_file  = $epub_dir . DIRECTORY_SEPARATOR . 'tei2opf.xsl';
@@ -72,9 +72,9 @@
   {
     mkdir($temp_epub_images_dir,   0777, true);
   }
-  
+
   // TODO: store images to OEBPS/images subdirectory
-  
+
   // Create & populate mimetype file
 
   $fp = fopen($mimetype_filename, "w") or die("Couldn't open temporary file for epub archive (mimetype)");
@@ -118,7 +118,7 @@
 
     $image_url = $image_url_node->nodeValue;
     $image_filename = preg_replace('/^.*\//', '', $image_url); // Erase all but filename from URL (no directories)
-    
+
     // TODO: check mimetype of image and assign generated name to file rather than derive from URL as above
 
     $ch = curl_init($image_url);
@@ -210,7 +210,7 @@
     if (is_readable($source) === true)
     {
       // ZIP extension code
-      
+
       if (extension_loaded('zip') === true)
       {
         $zip = new ZipArchive();
@@ -239,10 +239,10 @@
         }
         return $zip->close();
       }
-      
+
       // ZLib extension code
-     
-      elseif (extension_loaded('zlib') === true)     
+
+      elseif (extension_loaded('zlib') === true)
       {
         $original_dir = getcwd(); // Remember CWD for later reset
         chdir($source);           // Set CWD to temp area
@@ -266,11 +266,11 @@
           return true;
         }
       }
-      
+
       // No ZIP compression available
-      
+
       else
-      { 
+      {
         die("ePub requires a ZIP compression library");
       }
     }

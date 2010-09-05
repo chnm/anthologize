@@ -45,7 +45,7 @@ function main() {
 	//header('Content-type: application/pdf');
 	$pdf->write_pdf();
 
-}	
+}
 
 main();
 die();
