@@ -1,3 +1,31 @@
+5.8.023 (2010-08-31)
+	- Forms bug added on version 5.8.019 was fixed.
+
+5.8.022 (2010-08-31)
+	- Bug #3056632 "SVG rendered vertically flipped" was fixed.
+
+5.8.021 (2010-08-30)
+	- A new CID-0 'chinese' font was added for traditional Chinese.
+	- Bug #3054287 'Inner tags are ignored due to "align" attribute' was fixed.
+
+5.8.020 (2010-08-26)
+	- CSS "catch-all" class selector is now supported.
+
+5.8.019 (2010-08-26)
+	- XObject Templates now includes support for links and annotations.
+	- A problem related to link alignment on cell was fixed.
+	- A problem related to SVG styles was fixed.
+
+5.8.018 (2010-08-25)
+	- Method getNumberOfColumns() was added.
+	- A problem related to table header was fixed.
+	- Method getSVGTransformMatrix() was fixed to apply SVG transformations in the correct order.
+	- SVG support was improved and several bugs were fixed.
+
+5.8.017 (2010-08-25)
+	- This version includes support for XObject Templates (see the new example n. 62).
+	- Methods starttemplate(), endTemplate() and printTemplate() were added (see the new example n. 62).
+
 5.8.016 (2010-08-24)
 	- Alignment problem on write2DBarcode was fixed.
 
