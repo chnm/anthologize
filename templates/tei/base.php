@@ -1,10 +1,8 @@
 <?php
 
 
-
-
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php'); //this will eventually drop the 2 at the end
-include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php');
+include_once(ANTHOLOGIZE_TEIDOM_PATH);
+include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 
 $ops = array(	'includeStructuredSubjects' => true, //Include structured data about tags and categories
 		'includeItemSubjects' => true, // Include basic data about tags and categories
@@ -14,13 +12,11 @@ $ops = array(	'includeStructuredSubjects' => true, //Include structured data abo
 		'avatarSize' => '96', //avatar size
 		'avatarDefault' => 'http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536', //defaul (gr)avatar image
 		'checkImgSrcs' => true, //whether to check availability of image sources
-
 		);
 
-$tei = new TeiDom($_SESSION);
+
+$tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
-
-
 
 
 //if you want to make it a download.
