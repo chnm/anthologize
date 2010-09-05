@@ -316,13 +316,16 @@ class TeiDom {
 		$email = $this->dom->createElementNS(TEI, 'email');
 		$email->appendChild($this->sanitizeString($wpUserObj->user_email));
 
+		//adding the nodes to the TEI as I build them because otherwise funky and wrong xmlns:defaults are added
+		//don't get why, just that this works!
+
 		$figure = $this->dom->createElementNS(TEI, 'figure');
+		$person->appendChild($figure);
 		$graphic = $this->dom->createElementNS(TEI, 'graphic');
 		$graphic->setAttribute('type', 'gravatar');
 		$graphic->setAttribute('url', $this->newGravatar($wpUserObj->user_email, $this->avatarSize, true));
-		$graphic->appendChild($this->newGravatar($wpUserObj->user_email, $this->avatarSize));
 		$figure->appendChild($graphic);
-
+		$graphic->appendChild($this->newGravatar($wpUserObj->user_email, $this->avatarSize));
 
 		$persName->appendChild($name);
 		$persName->appendChild($firstname);
@@ -331,7 +334,7 @@ class TeiDom {
 		$persName->appendChild($email);
 
 		$person->appendChild($persName);
-		$person->appendChild($figure);
+
 		$person->appendChild($desc);
 		return $person;
 
@@ -700,7 +703,6 @@ print_r(get_userdata(1));
 		if($urlOnly) {
 			return $grav_url;
 		}
-		$tmpHTML = new DOMDocument();
 		//building it myself rather using WP's function so I build a node in the right document
 		$grav = $this->dom->createElementNS(HTML, 'img');
 		$src = $grav->setAttribute('src', $grav_url);

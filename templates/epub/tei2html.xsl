@@ -184,7 +184,7 @@
                     </h3>
                   </xsl:if>
                   <div class="library-item-content">
-                    <xsl:apply-templates select="body" mode="html-content"/>
+                    <xsl:apply-templates select="div" mode="html-content"/>
                   </div>
                   <!--
               <p class="post-description">&#8594; Source: <span
