@@ -15,6 +15,7 @@ class TeiApi {
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = mb_ereg_replace('/[^\w\-]/', '', $fileName);
         $fileName = trim($fileName, "_");
+
         $fileName = rtrim($fileName, ".");
 
         return $fileName;

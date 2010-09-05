@@ -27,13 +27,16 @@
 
             <!-- info about the source Anthologize Project -->
             <sourceDesc>
+                <listPerson>
+
+                </listPerson>
                 <listBibl>
                     <bibl type="project">
                         <ident type="guid"></ident>
                         <title type="main"></title>
                         <title type="sub"></title>
                         <!-- author in the bibl @type=project is the creator of the project, not necc. an author in the sense of having written anything. -->
-                        <author role="projectCreator" ref="admin"></author>
+                        <author role="projectCreator"    ref="admin"></author>
                         <date type="created" rend="structured"></date>
                         <date type="modified" rend="structured"></date>
                     </bibl>
@@ -45,13 +48,17 @@
                         <listBibl type="libraryItems">
                            <bibl>
                                <author ref="admin">
-                                   
+                                  
                                </author>
                               
                            </bibl>
                         </listBibl>
                     </listBibl>
                 </listBibl>
+                
+                <list xml:id="subjects">
+
+                </list>
             </sourceDesc>
         </fileDesc>
 
@@ -73,6 +80,7 @@
 
             
             </anth:outputDecl>
+            
         </profileDesc>
 
         <encodingDesc>
@@ -87,33 +95,13 @@
                 </application>
 
             </appInfo>
+            
         </encodingDesc>
 
     </teiHeader>
     <text>
         <front>
-            <titlePage>
-                <docTitle>
-                    <titlePart type="main"></titlePart>
-                    <titlePart type="sub"></titlePart>
-                </docTitle>
-                <docAuthor rend="literal">
-                    
-                </docAuthor>
-                <docAuthor rend="structured">
-                    <persName>
-                        
-                        <forename></forename>
-                    </persName>
-                </docAuthor>
-                <docDate rend="literal">
-                    <date rend="literal"></date>
-                    <date rend="structured"></date>
-                </docDate>
 
-                <docEdition rend="literal"></docEdition>
-                <docEdition rend="structured"></docEdition>
-            </titlePage>
             <div n="0">
                 <head>
                     <title></title>
@@ -128,37 +116,7 @@
             </div>
         </front>
         <body>
-            <div n="0">
-                <head></head>
-                <bibl>
-                    <author rend="literal">
-                        <html:body xmlns="http://www.w3.org/1999/xhtml"></html:body>
-                    </author>
-                    <author rend="structured">
-                        
-                        <!-- structured duplicates a limited set of what's in the ptr for what is most commonly used-->
-                        <persName>
-                            <forename></forename>
-                            <surname></surname>
-                            <ident type="guid"></ident>
-                        </persName>
-                    </author>
-                    <author></author>
-                </bibl>
-                <note type="subjects">
-                    <list type="tags">
-                        <item>
-                            <rs type="tag" ref="http://tag.url">tag</rs>
-                        </item>
-                    </list>
-                    <list type="categories">
-                        <item>
-                            <rs type="category" ref="http://category.url">category</rs>
-                        </item>
-                    </list>
-                </note>
-
-            </div>
+  
         </body>
         <back> </back>
     </text>

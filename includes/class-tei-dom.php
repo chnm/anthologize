@@ -6,17 +6,27 @@ define('ANTH', 'http://www.anthologize.org/ns');
 
 class TeiDom {
 
+	public $includeStructuredSubjects = true;
+	public $includeItemSubjects = true;
+	public $includeCreatorData = true;
+	public $includeStructuredCreatorData = true;
+	public $includeOriginalPostData = true;
+	public $avatarSize = '96';
+	public $avatarDefault = "http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536";
+
+	public $front1Title = "Dedication";
+	public $front2Title = "Acknowledgements";
+
 	public $dom;
 	public $xpath;
 
 	public $bodyNode;
 	public $projectData;
 	public $userNiceNames = array();
+	public $subjectIds = array();
 	public $doShortcodes = true;
 	public $checkImgSrcs;
 
-	public $front1Title = "Dedication";
-	public $front2Title = "Acknowledgements";
 
 	function __construct($sessionArray, $checkImgSrcs = true) {
 
@@ -54,7 +64,7 @@ class TeiDom {
 		$this->addSourceDesc();
 		$this->addEncodingDesc();
 		$this->addFrontMatter();
-		$this->addTitlePage();
+		//$this->addTitlePage();
 
 		$this->sanitizeContent();
 
@@ -67,6 +77,8 @@ class TeiDom {
 		$authorAB = $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
 		$this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
+		$this->structuredSubjectList = $this->xpath->query("//tei:list[@xml:id='subjects']")->item(0);
+		$this->structuredPersonList = $this->xpath->query("//tei:sourceDesc/tei:listPerson")->item(0);
 	}
 
 
@@ -88,9 +100,18 @@ class TeiDom {
 			usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
 			$itemNumber = 0;
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
-				$newItemContent = $this->newItemContent($libraryItemObject);
-				$newItemContent->setAttribute('n', $itemNumber);
-				$newPart->appendChild($newItemContent);
+
+				$origPostData = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
+				$libraryItemObject->original_post_id = $origPostData['original_post_id'];
+
+				$newItem = $this->newItem($libraryItemObject);
+
+				if($this->includeStructuredSubject) {
+					$this->addStructuredSubjects($libraryItemObject->original_post_id);
+				}
+
+				$newItem->setAttribute('n', $itemNumber);
+				$newPart->appendChild($newItem);
 				$itemNumber++;
 			}
 			$this->bodyNode->appendChild($newPart);
@@ -206,9 +227,9 @@ class TeiDom {
 	public function addTitlePage() {
 
 		//"editors" copyright and title page
-
-		$authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
-		$authorsNode->appendChild($this->sanitizeString($this->projectData['cname'] . ', ' . $this->projectData['authors']));
+//TODO redo author stuff
+		//$authorsNode = $this->xpath->query("//tei:docAuthor")->item(0);
+		//$authorsNode->appendChild($this->sanitizeString($this->projectData['cname'] . ', ' . $this->projectData['authors']));
 
 		$docEditionNode = $this->xpath->query("//tei:docEdition")->item(0);
 		$docEditionNode->appendChild($this->sanitizeString($this->projectData['edition']));
@@ -273,6 +294,155 @@ class TeiDom {
 
 	}
 
+	public function addStructuredPerson($wpUserObj) {
+		$this->structuredPersonList->appendChild($this->newStructuredPerson($wpUserObj));
+	}
+
+	public function newStructuredPerson($wpUserObj) {
+		$person = $this->dom->createElementNS(TEI, 'person');
+		$person->setAttribute('xml:id', $wpUserObj->user_login);
+		$persName = $this->dom->createElementNS(TEI, 'persName');
+		$name = $this->dom->createElementNS(TEI, 'name');
+		$name->appendChild($this->sanitizeString($wpUserObj->display_name));
+		$firstname = $this->dom->createElementNS(TEI, 'firstname');
+		$firstname->appendChild($this->sanitizeString($wpUserObj->first_name));
+		$surname = $this->dom->createElementNS(TEI, 'surname');
+		$surname->appendChild($this->sanitizeString($wpUserObj->last_name));
+
+		$desc = $this->dom->createElementNS(TEI, 'note');
+		$desc->setAttribute('type', 'description');
+		$desc->appendChild($this->sanitizeString($wpUserObj->description, true));
+
+		$email = $this->dom->createElementNS(TEI, 'email');
+		$email->appendChild($this->sanitizeString($wpUserObj->user_email));
+
+		$figure = $this->dom->createElementNS(TEI, 'figure');
+		$graphic = $this->dom->createElementNS(TEI, 'graphic');
+		$graphic->setAttribute('type', 'gravatar');
+		$graphic->setAttribute('url', $this->newGravatar($wpUserObj->user_email, $this->avatarSize, true));
+		$graphic->appendChild($this->newGravatar($wpUserObj->user_email, $this->avatarSize));
+		$figure->appendChild($graphic);
+
+
+		$persName->appendChild($name);
+		$persName->appendChild($firstname);
+		$persName->appendChild($surname);
+		$persName->appendChild($firstname);
+		$persName->appendChild($email);
+
+		$person->appendChild($persName);
+		$person->appendChild($figure);
+		$person->appendChild($desc);
+		return $person;
+
+	}
+
+	public function newAuthor($userData, $role='') {
+		$author = $this->dom->createElementNS(TEI, 'author');
+		$author->setAttribute('role', $role);
+
+		if(is_string($userData)) {
+			$author->appendChild($this->sanitizeString($userData));
+			return $author;
+		}
+		$author->appendChild($this->sanitizeString($userData->display_name));
+		$author->setAttribute('ref', $userData->user_login);
+		return $author;
+	}
+
+	public function newSubjectStructuredItem($subject) {
+
+		//if a tag and category have same slug, differentiate in id
+		$id = $subject->taxonomy . '-' . $subject->slug;
+		if( in_array($id, $this->subjectIds)) {
+			return;
+		}
+		$this->subjectIds[] = $id;
+		$item = $this->dom->createElementNS(TEI, 'item');
+		$item->setAttribute('xml:id', $id );
+		$item->setAttribute('type', $subject->taxonomy);
+
+		$ident = $this->dom->createElementNS(TEI, 'ident');
+		$ident->setAttribute('type', 'guid');
+		$ident->appendChild($this->dom->createCDATASection($subject->guid));
+
+		$desc = $this->dom->createElementNS(TEI, 'desc');
+		$desc->appendChild($this->sanitizeString($subject->description, true));
+
+		$num = $this->dom->createElementNS(TEI, 'num');
+		$num->setAttribute('type', 'count');
+		$num->appendChild($this->dom->createTextNode($subject->count));
+
+		$item->appendChild($ident);
+		$item->appendChild($desc);
+		$item->appendChild($num);
+		$item->appendChild($this->sanitizeString($subject->name));
+
+		return $item;
+	}
+
+	public function newSubjectRefString($subject) {
+		$rs = $this->dom->createElementNS(TEI, 'rs');
+		$rs->setAttribute('ref', $subject->taxonomy . '-' . $subject->slug);
+		$rs->setAttribute('type', $subject->taxonomy);
+		$rs->appendChild($this->sanitizeString($subject->name));
+		return $rs;
+	}
+
+	public function addStructuredSubjects($postID) {
+
+		$subjects = $this->fetchPostSubjects($postID);
+		foreach($subjects as $subject) {
+			$this->structuredSubjectList->appendChild($this->newSubjectStructuredItem($subject));
+		}
+	}
+
+	public function addItemSubjects($postID, $node) {
+		$subjects = $this->fetchPostSubjects($postID);
+		$list = $this->dom->createElementNS(TEI, 'list');
+		$list->setAttribute('type', 'subjects');
+		foreach($subjects as $subject) {
+			$item = $this->dom->createElementNS(TEI, 'item');
+			$item->appendChild($this->newSubjectRefString($subject));
+			$list->appendChild($item);
+		}
+		$node->appendChild($list);
+	}
+
+	public function fetchOriginalPostData($postID) {
+		$postData = get_post($postID);
+		return $postData;
+	}
+
+	public function fetchPostSubjects($postID) {
+		$subjects = wp_get_post_tags($postID);
+
+		$catIds = wp_get_post_categories($postID); //srsly, WordPress?
+		foreach($catIds as $catId) {
+			$cat = get_category($catId); //srsly?
+			//category and term data structures don't align, so duplicate category data so I can use same code later
+			$cat->description = $cat->category_description;
+			$subjects[] = $cat;
+		}
+
+		//add in the links here to keep this sort of processing in one place
+		foreach($subjects as $subject) {
+			switch ($subject->taxonomy) {
+
+				case 'post_tag':
+					$subject->guid = get_tag_link($subject->term_id);
+					$subject->taxonomy = "tag";
+				break;
+
+				case 'category':
+					$subject->guid = get_category_link($subject->term_id);
+				break;
+			}
+		}
+
+		return $subjects;
+	}
+
 	public function sanitizeEmbeds() {
 
 	}
@@ -322,58 +492,6 @@ class TeiDom {
 		$avlPNode->parentNode->appendChild($ccNode);
 	}
 
-	public function newAuthor($user) {
-
-		if(is_integer($user)) {
-			$user = get_userdata($user);
-		}
-
-		$newAuthor = $this->dom->createElementNS(TEI, 'author');
-		$newAuthor->setAttribute('rend', 'structured');
-		$newPersName = $this->dom->createElementNS(TEI, 'persName');
-		$newPersName->appendChild($this->dom->createElementNS(TEI, 'forename', $user->first_name));
-		$newPersName->appendChild($this->dom->createElementNS(TEI, 'surname', $user->last_name) );
-		$ident = $this->dom->createElementNS(TEI, 'ident');
-		$ident->appendChild($this->dom->createCDataSection($user->user_url));
-		$ident->setAttribute('type', 'url');
-		$newPersName->appendChild($ident);
-		$this->userNiceNames[] = $user->user_nicename;
-	}
-
-
-//TODO: blow this up into newAuthor
-	public function addPerson($userObject) {
-
-		if(! in_array($userObject->user_nicename, $this->userNiceNames)) {
-			$newPerson = $this->dom->createElementNS(TEI, 'person');
-			$newPerson->setAttribute('xml:id', $userObject->user_nicename );
-			if(is_array($userObject->wp_capabilities)) {
-				$roleStr = "";
-				foreach($userObject->wp_capabilities as $role=>$capabilities) {
-					$roleStr .= $role . " ";
-				}
-			}
-
-			$newPerson->setAttribute('role', $roleStr);
-			$newPersName = $this->dom->createElement('persName');
-			$newPersName->appendChild($this->dom->createElementNS(TEI, 'forename', $userObject->first_name));
-			$newPersName->appendChild($this->dom->createElementNS(TEI, 'surname', $userObject->last_name) );
-			$ident = $this->dom->createElementNS(TEI, 'ident');
-			$ident->appendChild($this->dom->createCDataSection($userObject->user_url));
-			$ident->setAttribute('type', 'url');
-			$newPersName->appendChild($ident);
-			//boones fancy thing
-			//$author_name_array = get_post_meta( $item_id, 'author_name_array' )
-			//$outputNames = $this->dom->createElement('addName', $userObject->user_first_name) );
-
-			$newPerson->appendChild($newPersName);
-			$this->personMetaDataNode->appendChild($newPerson);
-			$this->userNiceNames[] = $userObject->user_nicename;
-		}
-	}
-
-
-
 	public function newPart($partObject) {
 		$newPart = $this->dom->createElementNS(TEI, 'div');
 		$newPart->setAttribute('type', 'part');
@@ -381,11 +499,11 @@ class TeiDom {
 		return $newPart;
 	}
 
-	public function newItemContent($libraryItemObject) {
-		$newPostContent = $this->dom->createElementNS(TEI, 'div');
-		$newPostContent->setAttribute('type', 'libraryItem');
-		$newPostContent->setAttribute('subtype', 'html');
-		$newPostContent->appendChild($this->newHead($libraryItemObject));
+	public function newItem($libraryItemObject) {
+		$newItem = $this->dom->createElementNS(TEI, 'div');
+		$newItem->setAttribute('type', 'libraryItem');
+		$newItem->setAttribute('subtype', 'html');
+		$newItem->appendChild($this->newHead($libraryItemObject));
 
 		$content = $libraryItemObject->post_content;
 
@@ -395,13 +513,8 @@ class TeiDom {
 			$content = $this->sanitizeShortCodes($content);
 		}
 
-		$newPostContent->appendChild($this->sanitizeString($libraryItemObject->post_content, true));
-/*
+		$newItem->appendChild($this->sanitizeString($libraryItemObject->post_content, true));
 
-		$content = wpautop($content);
-
-
-*/
 
 /*
 
@@ -411,31 +524,15 @@ print_r($meta);
 print_r(wp_get_post_terms($meta['original_post_id']));
 print_r(get_post($meta['original_post_id']));
 print_r(get_userdata(1));
-die();
+
 */
 
-/*
-		$content = $this->sanitizeEntities($content);
 
-		//using loadHTML because it is more forgiving than loadXML
-		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
-		//conceal the Warning about bad html with @
-		//loadHTML adds head and body tags silently
-		@$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><body>$content</body>" );
-		if($this->checkImgSrcs) {
-			$this->checkImgSrcs($tmpHTML);
-
-		}
-
-		$body = $tmpHTML->getElementsByTagName('body')->item(0);
-		$body->setAttribute('xmlns', HTML);
-		$imported = $this->dom->importNode($body, true);
-		$newPostContent->appendChild($imported);
-*/
-		return $newPostContent;
+		return $newItem;
 	}
 
 	public function newHead($postObject) {
+
 		$newHead = $this->dom->createElementNS(TEI, 'head');
 		$title = $this->dom->createElementNS(TEI, 'title');
 		$title->appendChild($this->sanitizeString($postObject->post_title));
@@ -445,23 +542,55 @@ die();
 		$guid->setAttribute('type', 'guid');
 		$newHead->appendChild($title);
 		$newHead->appendChild($guid);
-		$bibl = $this->dom->createElementNS(TEI, 'bibl');
+
 		//TODO: check if content is native, based on the GUID. if content native, dig up author info
 		//from userID. Otherwise/and, go with info from boones
 		// $author_name = get_post_meta( $item_id, 'author_name', true );
 
 		//TODO: above might be old. Check nativeness by looking at whether dissplay name is set for username
 
-		$authorObject = get_userdata($postObject->post_author);
+		switch($postObject->post_type) {
+			case 'anth_part':
+
+			break;
+
+			case 'anth_library_item':
+				$itemCreatorObject = get_userdata($postObject->post_author);
+
+
+				if($itemCreatorObject) {
+					$bibl = $this->dom->createElementNS(TEI, 'bibl');
+					$bibl->appendChild($this->newAuthor($itemCreatorObject, 'itemCreator'));
+					$newHead->appendChild($bibl);
+				}
+				if($this->includeItemSubjects) {
+					$this->addItemSubjects($postObject->original_post_id, $newHead);
+				}
+
+				if($this->includeOriginalPostData) {
+					$origPostData = $this->fetchOriginalPostData($postObject->original_post_id);
+					$origCreator = get_userdata($origPostData->post_author);
+					$bibl->appendChild($this->newAuthor($origCreator, 'originalCreator') );
+					if($this->includeStructuredCreatorData) {
+						$this->addStructuredPerson($origCreator);
+					}
+				}
+
+
+
+			break;
+
+
+		}
+
+
 		//$this->addPerson($authorObject);
 
-		if($authorObject) {
 
-			$author = $this->dom->createElementNS(TEI, 'author');
-			$author->setAttribute('ref', $authorObject->user_nicename);
-			$bibl->appendChild($author);
-			$newHead->appendChild($bibl);
-		}
+
+
+
+
 		return $newHead;
 	}
 
@@ -566,6 +695,17 @@ die();
 		}
 	}
 
+	public function newGravatar($email, $size = '96', $urlOnly = false) {
+		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $this->avatarDefault ) . "%26s=" . $size;
+		if($urlOnly) {
+			return $grav_url;
+		}
+		$tmpHTML = new DOMDocument();
+		//building it myself rather using WP's function so I build a node in the right document
+		$grav = $this->dom->createElementNS(HTML, 'img');
+		$src = $grav->setAttribute('src', $grav_url);
+		return $grav;
+	}
 	/* Accessor Methods */
 
 

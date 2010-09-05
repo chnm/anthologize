@@ -6,12 +6,17 @@
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php'); //this will eventually drop the 2 at the end
 include_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php');
 
+
 $tei = new TeiDom($_SESSION);
 $api = new TeiApi($tei);
 
+
+
+
 //if you want to make it a download.
 $fileName = $api->getFileName();
-$ext = ".xml";
+$ext = "xml";
+
 
 
 header("Content-type: application/xml");
