@@ -120,6 +120,7 @@ class Anthologize_Admin_Main {
     	wp_enqueue_script( 'jquery-ui-core');
     	wp_enqueue_script( 'jquery-ui-sortable');
     	wp_enqueue_script( 'jquery-ui-draggable');
+			wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/anthologize/js/jquery-ui-datepicker.js');
     	wp_enqueue_script( 'jquery-cookie', WP_PLUGIN_URL . '/anthologize/js/jquery-cookie.js' );
     	wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
     	wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
@@ -128,7 +129,7 @@ class Anthologize_Admin_Main {
 
 	function load_styles() {
     	wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
-
+			wp_enqueue_style( 'jquery-ui-datepicker-css', WP_PLUGIN_URL . '/anthologize/css/jquery-ui-1.7.3.custom.css');
 	}
 
 	function load_project_organizer( $project_id ) {

@@ -94,6 +94,14 @@ div.anthologize {
 	width: 250px;
 }
 
+#project-organizer-left-column #datefilter {
+	display: none;
+}
+
+#datefilter label{
+	display: block;
+}
+
 #posts-scrollbox {
 	height: 400px;
 	max-height: 400px;

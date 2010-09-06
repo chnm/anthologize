@@ -78,15 +78,16 @@ class Anthologize_Project_Organizer {
 				<div class="inside">
 					<div class="customlinkdiv" id="customlinkdiv">
 
-
 							<p id="menu-item-name-wrap">
 								<?php $this->sortby_dropdown() ?>
 							</p>
 
-							<p id="menu-item-name-wrap">
+							<p id="termfilter">
 								<?php $this->filter_dropdown() ?>
 							</p>
-
+							<p id="datefilter">
+								<?php $this->filter_date(); ?>
+							</p>
 
 							<h3 class="part-header"><?php _e( 'Posts', 'anthologize' ) ?></h3>
 							<div id="posts-scrollbox">
@@ -150,7 +151,11 @@ class Anthologize_Project_Organizer {
 	}
 
 	function sortby_dropdown() {
-		$filters = array( 'tag' => __( 'Tag', 'anthologize' ), 'category' => __( 'Category', 'anthologize' ) );
+		$filters = array( 
+			'tag' => __( 'Tag', 'anthologize' ), 
+			'category' => __( 'Category', 'anthologize' ),
+			'date' => __( 'Date Range', 'anthologize' )
+		);
 		if ( isset( $_COOKIE['anth-filter'] ) )
 			$cfilter = $_COOKIE['anth-filter'];
 		?>
@@ -168,7 +173,7 @@ class Anthologize_Project_Organizer {
 
 		$cterm = ( isset( $_COOKIE['anth-term'] ) ) ? $_COOKIE['anth-term'] : false;
 		
-		$cfilter = ( isset( $_COOKIE['anth-fukter'] ) ) ? $_COOKIE['anth-filter'] : false;
+		$cfilter = ( isset( $_COOKIE['anth-filter'] ) ) ? $_COOKIE['anth-filter'] : false;
 
 		switch ( $cfilter ) {
 			case 'tag' :
@@ -196,6 +201,16 @@ class Anthologize_Project_Organizer {
 		<?php
 	}
 
+	function filter_date(){
+		?>
+		
+		<label for="startdate">Start</label> <input name="starddate" id="startdate" type="text"/>
+		<br />
+		<label for="enddate">End</label> <input name="enddate" id="enddate" type="text" />
+		<br />
+		<input type="button" id="launch_date_filter" value="Filter" /> 
+		<?php
+	}
 
 	function add_item_to_part( $item_id, $part_id ) {
 		global $wpdb;

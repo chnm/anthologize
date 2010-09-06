@@ -50,32 +50,47 @@ class Anthologize_Ajax_Handlers {
     }
 
     function get_posts_by() {
-        $term = $_POST['term'];
-        $tagorcat = $_POST['tagorcat'];
+			$filterby = $_POST['filterby'];
 
-        // Blech
-        $t_or_c = ( $tagorcat == 'tag' ) ? 'tag' : 'cat';
+			$args = array(
+				'post_type' => array('post', 'page', 'anth_imported_item' ),
+				'posts_per_page' => -1
+			);
 
-        $args = array(
-            'post_type' => array('post', 'page', 'anth_imported_item' ),
-            $t_or_c => $term,
-            'posts_per_page' => -1
-        );
+			// Blech (still...)
+			if ($filterby == 'date'){
+				$startdate = mysql_real_escape_string($_POST['startdate']);
+				$enddate = mysql_real_escape_string($_POST['enddate']);				
+				$date_range_where = '';
+				if (strlen($startdate) > 0){
+  				$date_range_where = " AND post_date >= '".$startdate."'";
+ 				}
+				if (strlen($enddate) > 0){
+  				$date_range_where .= " AND post_date <= '".$enddate."'";
+ 				}
 
-        query_posts( $args );
+				$where_func = '$where .= "'.$date_range_where.'"; return $where;'; 
+				$filter_where = create_function('$where', $where_func);
+				add_filter('posts_where', $filter_where);
+			}else{
+				$t_or_c = ( $tagorcat == 'tag' ) ? 'tag' : 'cat';
+				$term = $_POST['term'];
+				$args[$t_or_c] = $term;					
+			}
 
+			query_posts( $args );
+			$the_posts = Array();
+			while ( have_posts() ) {
+				the_post();
+				$the_posts[get_the_ID()] = get_the_title();
+			}
+			if ($filterby == 'date'){
+				remove_filter('posts_where', $filter_where);
+			}
+			print(json_encode($the_posts));
 
-        $the_posts = Array();
-
-        while ( have_posts() ) {
-            the_post();
-            $the_posts[get_the_ID()] = get_the_title();
-        }
-
-        print(json_encode($the_posts));
-
-        die();
-    }
+			die();
+		}
 
     function place_item() {
         $project_id = $_POST['project_id'];
