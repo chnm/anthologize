@@ -38,6 +38,10 @@ class TeiDom {
 
 		$this->projectData = $sessionArray;
 
+		if(isset($this->outputParams['gravatar-default'])) {
+			$this->avatarDefault = $this->outputParams['gravatar-default'];
+		}
+
 		//projectMeta has subtitle
 		$projectMeta = get_post_meta($this->projectData['project_id'], 'anthologize_meta', true );
 		$this->projectData['subtitle'] = $projectMeta['subtitle'];
@@ -133,7 +137,7 @@ class TeiDom {
 		foreach($this->outputParams as $name=>$value) {
 			$newParam = $this->dom->createElementNS(ANTH, 'param', $value);
 			$newParam->setAttribute('name', $name);
-
+			$outParamsNode->appendChild($newParam);
 			if($name == 'page-size') {
 				$widthParam = $this->dom->createElementNS(ANTH, 'param');
 				$widthParam->setAttribute('name', 'page-width');
@@ -150,6 +154,8 @@ class TeiDom {
 						$heightParam->nodeValue = '11in';
 					break;
 				}
+				$outParamsNode->appendChild($widthParam);
+				$outParamsNode->appendChild($heightParam);
 			}
 		}
 	}
@@ -324,9 +330,9 @@ class TeiDom {
 		$person->appendChild($figure);
 		$graphic = $this->dom->createElementNS(TEI, 'graphic');
 		$graphic->setAttribute('type', 'gravatar');
-		$graphic->setAttribute('url', $this->newGravatar($wpUserObj->user_email, $this->avatarSize, true));
+		$graphic->setAttribute('url', $this->newGravatar($wpUserObj->user_email, true));
 		$figure->appendChild($graphic);
-		$graphic->appendChild($this->newGravatar($wpUserObj->user_email, $this->avatarSize));
+		$graphic->appendChild($this->newGravatar($wpUserObj->user_email));
 
 		$persName->appendChild($name);
 		$persName->appendChild($firstname);
@@ -666,11 +672,10 @@ print_r(get_userdata(1));
 		}
 	}
 
-	public function newGravatar($email, $size = false, $urlOnly = false) {
+	public function newGravatar($email, $urlOnly = false, $size = false) {
 		if( ! $size) {
 			$size = isset($this->outputParams['avatar-size']) ? $this->outputParams['avatar-size'] : $this->avatarSize;
 		}
-
 
 		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $this->avatarDefault );
 		if($urlOnly) {
