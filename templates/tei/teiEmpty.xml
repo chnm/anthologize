@@ -38,16 +38,10 @@
 
 
             <anth:outputDecl xmlns="http://www.anthologize.org/ns">
-                <outputParams format="" extension="">
-                    <param name="paper-type"></param>
-                    <param name="page-width"></param>
-                    <param name="page-height"></param>
-                    <param name="font-size"></param>
-                    <param name="font-family"></param>
+                <outputParams>
+
                 </outputParams>
-                <outputParams format="PDF" extension="#extID"></outputParams>
-
-
+               
             </anth:outputDecl>
 
         </profileDesc>

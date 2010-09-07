@@ -390,5 +390,13 @@ class TeiApi {
 		'elName'=>$elName);
 		return $this->getNodeDataByParams($params);
 	}
+
+	public function getGravatar($user_login, $asNode = false ) {
+
+	}
+
+	public function getGravatarURL($user_login, $size = false) {
+
+	}
 }
 ?>

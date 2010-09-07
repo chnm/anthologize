@@ -49,9 +49,8 @@ class TeiDom {
 		$this->projectData['post_modified_gmt'] = $projectWPData->post_modified_gmt;
 		$this->projectData['guid'] = $projectWPData->guid;
 
-		$this->checkImgSrcs = $checkImgSrcs;
 
-		if( isset($this->projectData['do-shortcodes']) && $this->projectData['do-shortcodes'] == false ) {
+		if( isset($this->projectData['outputParams']['do-shortcodes']) && $this->projectData['outputParams']['do-shortcodes'] == false ) {
 			$this->doShortcodes = false;
 		}
 
@@ -63,7 +62,6 @@ class TeiDom {
 		$this->setXPath();
 
 		$this->buildProjectData();
-
 		$this->addOutputDesc();
 		$this->addPublicationStmt();
 		$this->addFileDesc();
@@ -130,34 +128,30 @@ class TeiDom {
 	public function addOutputDesc() {
 
 		$outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
-		//font-size
-		$fontSizeNode = $this->xpath->query("anth:param[@name='font-size']", $outParamsNode)->item(0);
-		$fontSizeNode->appendChild($this->dom->createTextNode($this->projectData['font-size']));
-
-		//paper-type
-		$paperTypeNode = $this->xpath->query("anth:param[@name='paper-type']", $outParamsNode)->item(0);
-		$paperTypeNode->appendChild($this->dom->createTextNode($this->projectData['page-size']));
-		//paper-size
-		$pageHNode = $this->xpath->query("anth:param[@name='page-height']", $outParamsNode)->item(0);
-		$pageWNode = $this->xpath->query("anth:param[@name='page-width']", $outParamsNode)->item(0);
 
 
-		switch($this->projectData['page-size']) {
-			case 'A4':
-			$pageHNode->appendChild($this->dom->createTextNode('297mm'));
-			$pageWNode->appendChild($this->dom->createTextNode('210mm'));
-			break;
+		foreach($this->outputParams as $name=>$value) {
+			$newParam = $this->dom->createElementNS(ANTH, 'param', $value);
+			$newParam->setAttribute('name', $name);
 
-			case 'letter':
-			$pageHNode->appendChild($this->dom->createTextNode('11in'));
-			$pageWNode->appendChild($this->dom->createTextNode('8.5in'));
-			break;
+			if($name == 'page-size') {
+				$widthParam = $this->dom->createElementNS(ANTH, 'param');
+				$widthParam->setAttribute('name', 'page-width');
+				$heightParam = $this->dom->createElementNS(ANTH, 'param');
+				$heightParam->setAttribute('name', 'page-height');
+				switch($value) {
+					case 'A4':
+						$widthParam->nodeValue = '210mm';
+						$heightParam->nodeValue = '297mm';
+					break;
 
+					case 'letter':
+						$widthParam->nodeValue = '8.5in';
+						$heightParam->nodeValue = '11in';
+					break;
+				}
+			}
 		}
-		//font-family
-		$fontFamilyNode = $this->xpath->query("anth:param[@name='font-family']", $outParamsNode)->item(0);
-		$fontFamilyNode->appendChild($this->dom->createTextNode($this->projectData['font-face']));
-
 	}
 
 	public function addPublicationStmt() {
@@ -672,14 +666,19 @@ print_r(get_userdata(1));
 		}
 	}
 
-	public function newGravatar($email, $size = '96', $urlOnly = false) {
-		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $this->avatarDefault ) . "%26s=" . $size;
+	public function newGravatar($email, $size = false, $urlOnly = false) {
+		if( ! $size) {
+			$size = isset($this->outputParams['avatar-size']) ? $this->outputParams['avatar-size'] : $this->avatarSize;
+		}
+
+
+		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $this->avatarDefault );
 		if($urlOnly) {
 			return $grav_url;
 		}
 		//building it myself rather using WP's function so I build a node in the right document
 		$grav = $this->dom->createElementNS(HTML, 'img');
-		$src = $grav->setAttribute('src', $grav_url);
+		$src = $grav->setAttribute('src', $grav_url . "%26s=" . $size);
 		return $grav;
 	}
 	/* Accessor Methods */
@@ -696,7 +695,6 @@ print_r(get_userdata(1));
 
 
 	public static function getFileName($sessionArray) {
-
 
         $text = strtolower($sessionArray['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
