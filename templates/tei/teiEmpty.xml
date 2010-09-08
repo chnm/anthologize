@@ -48,7 +48,7 @@
 
         <encodingDesc>
             <appInfo>
-                <application xml:id="anthologize" ident="anthologize" version="0.3">
+                <application xml:id="anthologize" ident="anthologize" >
                     <label>Anthologize</label>
                     <desc>Bits to Bookshelf</desc>
                     <ab><graphic

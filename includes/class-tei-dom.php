@@ -35,7 +35,6 @@ class TeiDom {
 		foreach($ops as $op=>$value) {
 			$this->$op = $value;
 		}
-
 		$this->projectData = $sessionArray;
 
 		if(isset($this->outputParams['gravatar-default'])) {
@@ -86,6 +85,7 @@ class TeiDom {
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
 		$this->structuredSubjectList = $this->xpath->query("//tei:list[@xml:id='subjects']")->item(0);
 		$this->structuredPersonList = $this->xpath->query("//tei:sourceDesc/tei:listPerson")->item(0);
+
 	}
 
 
@@ -100,6 +100,7 @@ class TeiDom {
 		foreach($partObjectsArray as $partObject) {
 			$newPart = $this->newPart($partObject);
 			$newPart->setAttribute('n', $partNumber);
+			$newPart->setAttribute('xml:id', "body-$partNumber");
 			if($this->includeDeepDocumentData) {
 
 			}
@@ -115,7 +116,7 @@ class TeiDom {
 				$libraryItemObject->original_post_id = $origPostData['original_post_id'];
 
 				$newItem = $this->newItem($libraryItemObject);
-
+				$newItem->setAttribute('xml:id', "body-$partNumber-$itemNumber");
 				if($this->includeStructuredSubjects) {
 					$this->addStructuredSubjects($libraryItemObject->original_post_id);
 				}

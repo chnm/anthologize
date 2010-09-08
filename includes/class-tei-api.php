@@ -35,7 +35,7 @@ class TeiApi {
 	* @return Array
 	*/
 
-	public function nodeToArray($node) {
+	public function nodeToArray($node, $deep = true) {
 
 		$retArray = array();
 
@@ -43,66 +43,51 @@ class TeiApi {
 			return $retArray;
 		}
 
-		$retArray[$node->nodeName] = array();
-		//TODO: stuff additional info into this "top" array?
-		$retArray[$node->nodeName]['childNodes'] = array();
-		$retArray[$node->nodeName]['name'] = $node->nodeName;
-
-		if($node->nodeName == 'body') {
-			//value is wrapped in <body> in the TEI, so strip that out for return value
-			$val = $this->getNodeXML($node);
-			$val = str_replace('<body xmlns="http://www.w3.org/1999/xhtml">' , '' , $val);
-			$val = str_replace('</body>' , '', $val);
-			$retArray['value'] = $val;
+		if($node->nodeType == XML_ATTRIBUTE_NODE) {
+			$retArray = array('attrName'=>$node->nodeName, 'value'=>$node->nodeValue);
 			return $retArray;
 		}
+
+		$retArray['elName'] = $node->nodeName;
+
+		$attNodes = $this->xpath->query("@*", $node);
+		$retArray['atts'] = array();
+		foreach($attNodes as $att) {
+			$retArray['atts'][$att->nodeName] = $att->nodeValue;
+		}
+
 
 		if($node->nodeName == 'param') {
 			$retArray[$node->getAttribute('name')] = $node->textContent;
 		}
 
-		$allMyChildren = $node->getElementsByTagname('*');
 
-		if($allMyChildren->length == 0) {
-			$retArray[$node->nodeName]['childNodes'] = false;
-			$retArray[$node->nodeName]['value'] = $node->textContent;
 
-			if($node->hasAttribute('ref')) {
-				$ref = $node->getAttribute('ref');
-				$refNode = $this->getNodeListByXPath("//*[@xml:id = '$ref']", true );
-				$retArray[$node->nodeName]['value'] = $this->nodeToArray($refNode);
-			}
+		if($node->firstChild->nodeType == XML_TEXT_NODE || $node->firstChild->nodeType == XML_CDATA_SECTION_NODE) {
+			$retArray['value'] = $node->textContent;
+			return $retArray;
 		}
 
-		//To handle multiple instances of same nodeName, we'll pluralize everything
-		//in the array
+		if( ! $deep ) {
+			return $retArray;
+		}
 
-		foreach($allMyChildren as $childNode) {
+		foreach($node->childNodes as $childNode) {
+
+			if( ! $childNode->nodeType == XML_ELEMENT_NODE ){
+				continue;
+			}
+
 			$plName = $childNode->nodeName . "s";
 			if( ! isset($retArray[$plName])) {
 				$retArray[$plName] = array();
 			}
-			if($childNode->childNodes->length == 1
-					&& ($childNode->firstChild->nodeName == "#text" )
-					|| $childNode->firstChild->nodeName == "#cdata-section" ) {
-				$elArray = array('value'=> $childNode->textContent,
-				'name'=>$childNode->nodeName );
-
-				if($childNode->nodeName == 'param') {
-					$elArray['value'] = $childNode->textContent;
-					$elArray['name'] = $childNode->getAttribute('name');
-				}
-					$retArray[$plName][] = $elArray;
-					$retArray[$node->nodeName]['childNodes'][] = $plName;
-			}
+			$retArray[$plName][] = $this->nodeToArray($childNode, $deep);
 
 			if($childNode->hasAttribute('ref')) {
 				$ref = $childNode->getAttribute('ref');
-
 				$nd = $this->getNodeDataByParams(array('id'=>$ref));
-
 				$retArray[$plName][] = $nd;
-				$retArray[$node->nodeName]['childNodes'][] = $plName;
 			}
 
 			//if empty, get rid of it
@@ -139,7 +124,7 @@ class TeiApi {
 		extract($params);
 
 		if( isset($id) ) {
-			$queryString = "//*[@id = '$id']";
+			$queryString = "//*[@xml:id = '$id']";
 
 		} else if ( isset($section)) {
 			$queryString = "//tei:$section";
@@ -194,6 +179,14 @@ class TeiApi {
 		return $this->nodeToArray($node);
 	}
 
+	public function getNodeTargetData($node) {
+		//get id and a label/title
+		$id = $node->getAttribute('xml:id');
+		$titleNode = $this->getNodeListByXPath(array('xpath'=>"tei:head/tei:title", 'contextNode'=>$node), true);
+		$title = $titleNode->firstChild->nodeValue;
+		return array('id'=>$id, 'title'=>$title);
+	}
+
 	/**
 	 * dump the node to a string
 	 * @pararm DOMNode $node a node
@@ -202,6 +195,25 @@ class TeiApi {
 
 	public function getNodeXML($node) {
 		return $this->tei->dom->saveXML($node);
+	}
+
+
+	public function getParentItem($node, $asNode = false) {
+		while( $node->getAttribute('type') != 'libraryItem') {
+			$node = $node->parentNode;
+
+		}
+		if($asNode) {
+			return $node;
+		}
+		return $this->nodeToArray($node, false);
+	}
+
+	public function getIdForParentItem($node) {
+		while( $node->getAttribute('type') != 'libraryItem') {
+			$node = $node->parentNode;
+		}
+		return $node->getAttribute('xml:id');
 	}
 
 	/**
@@ -223,6 +235,9 @@ class TeiApi {
 			return false;
 		}
 		if($firstOnly) {
+
+			echo $this->tei->dom->saveXML($nodeList->item(0));
+
 			return $nodeList->item(0);
 		}
 		return $nodeList;
@@ -282,12 +297,28 @@ class TeiApi {
 		$params = array('subPath'=>$xpath,
 		'asNode'=>$asNode
 		);
-		return $this->getNodeDataByParams($params);
+		$data = $this->getNodeDataByParams($params);
+
+		if($param) {
+			return $data[$param];
+		}
+
+		return $data;
 	}
 
 	public function getSectionPartCount($section = 'body') {
 		$count = $this->xpath->evaluate("count(//tei:$section/tei:div[@type='part'])");
 		return $count;
+	}
+
+	public function getSectionPartId($section, $partNumber) {
+		$params = array('section'=> $section,
+						'partNumber' => $partNumber,
+						'subPath' => "@xml:id",
+						'asNode'=>false
+						);
+		$data = $this->getNodeDataByParams($params);
+		return $data['value'];
 	}
 
 	public function getSectionPartHead($section, $partNumber, $asNode = false) {
@@ -353,13 +384,65 @@ class TeiApi {
 		}
 	}
 
-	public function getSectionPartItemMetaEl($section, $partNumber, $itemNumber, $elName, $asNode = false) {
+	public function getSectionPartItemId($section, $partNumber, $itemNumber) {
 		$params = array('section'=> $section,
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'subPath'=>"tei:$elName",
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
+						'partNumber' => $partNumber,
+						'itemNumber' => $itemNumber,
+						'subPath' => "@xml:id",
+						'asNode'=>false
+						);
+		$data = $this->getNodeDataByParams($params);
+		return $data['value'];
+	}
+
+	public function getSectionPartItemOriginalCreator($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+		$params = array('section'=> $section,
+						'partNumber' => $partNumber,
+						'itemNumber' => $itemNumber,
+						'subPath' => "tei:head/tei:bibl/tei:author[@role='originalCreator']",
+						'asNode'=>$asNode
+						);
+
+		$data = $this->getNodeDataByParams($params);
+
+		if($valueOnly) {
+			return $data['spans'][0]['value'];
+		}
+		return $data;
+
+	}
+
+	public function getSectionPartItemCreator($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+		$params = array('section'=> $section,
+						'partNumber' => $partNumber,
+						'itemNumber' => $itemNumber,
+						'subPath' => "tei:head/tei:bibl/tei:author[@role='itemCreator']",
+						'asNode'=>$asNode
+						);
+
+		$data = $this->getNodeDataByParams($params);
+		if($valueOnly) {
+			return $data['spans'][0]['value'];
+		}
+		return $data;
+
+	}
+
+	public function getSectionPartItemMetaEl($section, $partNumber, $itemNumber, $elName, $asNode = false) {
+
+		$xpath = "//tei:body/tei:div[@n='$partNumber']/tei:div[@n='$itemNumber']/tei:head/$elName";
+
+		echo $xpath;
+		$nl = $this->getNodeListByXPath($xpath);
+
+		$retArray = array();
+		foreach($nl as $node) {
+			$retArray[] = $this->nodeToArray($node);
+		}
+
+		return $retArray;
+
+
 	}
 
 	public function getSectionPartItemContent($section, $partNumber, $itemNumber, $asNode = false) {
@@ -378,7 +461,7 @@ class TeiApi {
 		}
 	}
 
-	public function getAuthorHead($authorId, $asNode = false) {
+	public function getAuthor($authorId, $asNode = false) {
 		$params = array('id'=>$authorId ,
 		'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);
@@ -391,12 +474,57 @@ class TeiApi {
 		return $this->getNodeDataByParams($params);
 	}
 
-	public function getGravatar($user_login, $asNode = false ) {
+	public function getGravatar($authorId, $urlOnly = false ) {
 
 	}
 
-	public function getGravatarURL($user_login, $size = false) {
+//this should be in a theming function
 
+	public function indexAuthorsSimple() {
+		$authorNodes = $this->getNodeListByXPath("//tei:body//tei:author[@role='originalCreator']");
+		$authorsArray = array();
+
+		foreach($authorNodes as $author) {
+			$itemNode = $this->getParentItem($author, true);
+			$itemData = $this->getNodeTargetData($itemNode);
+
+			$authorArray = $this->nodeToArray($author);
+			if(array_key_exists($authorArray['spans'][0]['value'], $authorsArray )  ) {
+				$authorsArray[$authorArray['spans'][0]['value']]['items'][] = $itemData;
+			} else {
+				$authorArray['items'][] = $itemData;
+				$authorsArray[$authorArray['spans'][0]['value']] = $authorArray;
+			}
+
+		}
+
+		ksort($authorsArray);
+
+		$html = "<ul class='anth-index authors'>";
+		foreach($authorsArray as $author) {
+
+			$html .= "<li>" . $author['spans'][0]['value'] ;
+			$html .= "<ul class='anth-index links'>";
+			foreach($author['items'] as $item) {
+				print_r($item);
+
+
+				$id = $item['id'];
+				$title = $item['title'];
+				$html .= "<li><a href='#$id'>$title</a></li>";
+
+			}
+			$html .= "</ul>";
+			$html .= "</li>";
+		}
+		$html .= "</ul>";
+
+
+
+		return $html;
 	}
+
+
+
 }
 ?>
