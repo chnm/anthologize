@@ -206,6 +206,10 @@ div.anthologize {
 }
 
 /* sortable/draggable styles  */
+#anthologize-parts-box .ui-state-disabled {
+	opacity: inherit;
+}
+
 .part-items ul {
 	min-height: 50px;
 }
