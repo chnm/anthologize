@@ -165,5 +165,4 @@ jQuery(document).ready( function() {
 		}
 	});
 
-  j('#sortby-dropdown').change();
 });
