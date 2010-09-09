@@ -170,7 +170,11 @@ class Anthologize_Project_Organizer {
 		$cterm = ( isset( $_COOKIE['anth-term'] ) ) ? $_COOKIE['anth-term'] : false;
 		
 		$cfilter = ( isset( $_COOKIE['anth-filter'] ) ) ? $_COOKIE['anth-filter'] : false;
-
+		
+		$cstartdate = ( isset( $_COOKIE['anth-startdate'] ) ) ? $_COOKIE['anth-startdate'] : false;
+				
+		$cenddate = ( isset( $_COOKIE['anth-enddate'] ) ) ? $_COOKIE['anth-enddate'] : false;		
+	
 		switch ( $cfilter ) {
 			case 'tag' :
 				$terms = get_tags();
@@ -179,6 +183,9 @@ class Anthologize_Project_Organizer {
 			case 'category' :
 				$terms = get_categories();
 				$nulltext = __( 'All categories', 'anthologize' );
+				break;
+			case 'date' :
+				$hide_termfilter = true;
 				break;
 			case 'post_type' :
 				$types = $this->available_post_types();
@@ -198,6 +205,7 @@ class Anthologize_Project_Organizer {
 		}
 
 		?>
+			<?php if ( !$hide_termfilter ) : ?>
 			<select name="filter" id="filter">
 				<option value=""><?php echo $nulltext; ?></option>
 				<?php foreach( $terms as $term ) : ?>
@@ -205,6 +213,7 @@ class Anthologize_Project_Organizer {
 					<option value="<?php echo $term_value ?>" <?php if ( $cterm == $term_value ) : ?>selected="selected"<?php endif; ?>><?php echo $term->name ?></option>
 				<?php endforeach; ?>
 			</select>
+			<?php endif; ?>
 		<?php
 	}
 
@@ -391,16 +400,35 @@ class Anthologize_Project_Organizer {
 			'post_type' => array('post', 'page', 'anth_imported_item' ),
 			'posts_per_page' => -1
 		);
-		
-		$cterm = ( isset( $_COOKIE['anth-term'] ) ) ? $_COOKIE['anth-term'] : false;
-		
+				
 		$cfilter = ( isset( $_COOKIE['anth-filter'] ) ) ? $_COOKIE['anth-filter'] : false;
 		
-		if ( $cterm ) {
-			if ( $cfilter ) {
-				$t_or_c = ( $cfilter == 'tag' ) ? 'tag' : 'cat';
-	        	$args[$t_or_c] = $cterm;
+		if ( $cfilter == 'date' ) {
+			$startdate = mysql_real_escape_string($_COOKIE['anth-startdate']);
+			$enddate = mysql_real_escape_string($_COOKIE['anth-enddate']);				
+							
+			$date_range_where = '';
+			if (strlen($startdate) > 0){
+			$date_range_where = " AND post_date >= '".$startdate."'";
 			}
+			if (strlen($enddate) > 0){
+			$date_range_where .= " AND post_date <= '".$enddate."'";
+			}
+
+			$where_func = '$where .= "'.$date_range_where.'"; return $where;'; 
+			$filter_where = create_function('$where', $where_func);
+			add_filter('posts_where', $filter_where);
+		} else {
+		
+			$cterm = ( isset( $_COOKIE['anth-term'] ) ) ? $_COOKIE['anth-term'] : false;
+					
+			if ( $cterm ) {
+				if ( $cfilter ) {
+					$t_or_c = ( $cfilter == 'tag' ) ? 'tag' : 'cat';
+					$args[$t_or_c] = $cterm;
+				}
+			}
+
 		}
 
 		$big_posts = new WP_Query( $args );

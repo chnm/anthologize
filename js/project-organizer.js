@@ -1,5 +1,6 @@
 function do_filter(){
 	var j = jQuery;
+	
 	j.blockUI({css:{width: '12%',top:'40%',left:'45%'},
                         message: jQuery('#blockUISpinner').show() });
 	var filterby = j('#sortby-dropdown').val();
@@ -12,6 +13,8 @@ function do_filter(){
 	if (filterby == 'date'){	
 		data['startdate'] = j("#startdate").val();
   		data['enddate'] = j("#enddate").val();
+		j.cookie( 'anth-startdate', j("#startdate").val() );
+		j.cookie( 'anth-enddate', j("#enddate").val() );
 	}else{
 		var term = j('#filter').val();
 		data['term'] = term;
@@ -43,7 +46,17 @@ jQuery(document).ready( function() {
 
 	// Set filter based on last visit
 	var cfilter = j.cookie('anth-filter');
-	var cterm = j.cookie('anth-term');
+	
+	if ( cfilter == 'date' ) {
+		j("#termfilter").hide();
+		j("#datefilter").show();
+		var cstartdate = j.cookie('anth-startdate');
+		var cenddate = j.cookie('anth-enddate');
+		j("#startdate").val(cstartdate);
+		j("#enddate").val(cenddate);
+	} else {
+		var cterm = j.cookie('anth-term');
+	}
 
 	j('#sortby-dropdown').change( function() {
 
@@ -110,6 +123,7 @@ jQuery(document).ready( function() {
 
 	j("#startdate").datepicker({dateFormat: 'yy-mm-dd'});
 	j("#enddate").datepicker({dateFormat: 'yy-mm-dd'});
+	
 	j('#project-id-dropdown').change( function() {
 
 		jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},

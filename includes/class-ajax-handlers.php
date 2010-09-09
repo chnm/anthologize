@@ -91,6 +91,7 @@ class Anthologize_Ajax_Handlers {
 			case 'date' :
 				$startdate = mysql_real_escape_string($_POST['startdate']);
 				$enddate = mysql_real_escape_string($_POST['enddate']);				
+								
 				$date_range_where = '';
 				if (strlen($startdate) > 0){
 				$date_range_where = " AND post_date >= '".$startdate."'";
@@ -102,6 +103,7 @@ class Anthologize_Ajax_Handlers {
 				$where_func = '$where .= "'.$date_range_where.'"; return $where;'; 
 				$filter_where = create_function('$where', $where_func);
 				add_filter('posts_where', $filter_where);
+
 				break;
 			
 			case 'tag' :
