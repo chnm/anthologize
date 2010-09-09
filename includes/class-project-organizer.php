@@ -181,7 +181,14 @@ class Anthologize_Project_Organizer {
 				$nulltext = __( 'All categories', 'anthologize' );
 				break;
 			case 'post_type' :
-				$terms = $this->available_post_types();
+				$types = $this->available_post_types();
+				$terms = array();
+				foreach ( $types as $type_id => $type_label ) {
+					$type_object = null;
+					$type_object->term_id = $type_id;
+					$type_object->name = $type_label;
+					$terms[] = $type_object;
+				}
 				$nulltext = __( 'All post types', 'anthologize' );
 				break;
 			default :
