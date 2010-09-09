@@ -11,7 +11,7 @@ function do_filter(){
 	
 	if (filterby == 'date'){	
 		data['startdate'] = j("#startdate").val();
-  	data['enddate'] = j("#enddate").val();
+  		data['enddate'] = j("#enddate").val();
 	}else{
 		var term = j('#filter').val();
 		data['term'] = term;
@@ -54,28 +54,31 @@ jQuery(document).ready( function() {
 
 		j.cookie('anth-filter', filter);
 
-		if (filter == 'date'){
+		if (filter == 'date') {
 			j("#termfilter").hide();
 			j("#datefilter").show();
-		}else{
+		} else {
 			j("#datefilter").hide();
 			j("#startdate").val('');
 			j("#enddate").val('');
 			j("#termfilter").show();
-			if ( filter == 'category' ) {
-				var theaction = 'get_cats';
-			} else if ( filter == 'tag' ) {
-				var theaction = 'get_tags';
-			} else {
-				var theaction = 'default';
-				j('#filter').empty();
-				j('#filter').append('<option value=""> - </option>');
-			}
 		}
-		j('#filter').val('');
+		
+		/*
+		if ( filter == 'category' ) {
+			var theaction = 'get_cats';
+		} else if ( filter == 'tag' ) {
+			var theaction = 'get_tags';
+		} else {
+			var theaction = 'default';
+			j('#filter').empty();
+			j('#filter').append('<option value=""> - </option>');
+		}
+		
+		j('#filter').val('');*/
 		j('#filter').trigger('change');
 
-		if (theaction == 'default') {
+		if (filter == '') {
 			j.unblockUI();
 			return true;
 		}
@@ -84,7 +87,7 @@ jQuery(document).ready( function() {
 			url: ajaxurl,
 			type: 'POST',
 			timeout: 10000,
-			data: {action:theaction},
+			data: { action:'get_filterby_terms', filtertype:filter },
 			dataType: 'json',
 			success: function(response){
 				j('#filter').empty();
@@ -93,6 +96,8 @@ jQuery(document).ready( function() {
 					j('#filter').append('<option value="">All Tags</option>');
 				} else if (filter == 'category') {
 					j('#filter').append('<option value="">All Categories</option>');
+				} else if (filter == 'post_type') {
+					j('#filter').append('<option value="">All Post Types</option>');				
 				} else {
 					j('#filter').append('<option value=""> - </option>');
 				}

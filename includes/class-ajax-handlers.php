@@ -9,8 +9,7 @@ class Anthologize_Ajax_Handlers {
     var $project_organizer = null;
 
     function anthologize_ajax_handlers() {
-        add_action( 'wp_ajax_get_tags', array( $this, 'fetch_tags' ) );
-        add_action( 'wp_ajax_get_cats', array( $this, 'fetch_cats' ) );
+        add_action( 'wp_ajax_get_filterby_terms', array( $this, 'get_filterby_terms' ) );
         add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
@@ -49,48 +48,93 @@ class Anthologize_Ajax_Handlers {
         die();
     }
 
+	function get_filterby_terms() {
+		$filtertype = $_POST['filtertype'];
+		
+		$terms = array();
+		
+		switch ( $filtertype ) {
+			case 'category' :
+				$cats = get_categories();
+				foreach( $cats as $cat ) {
+					$terms[$cat->term_id] = $cat->name;
+				}
+				break;
+			
+			case 'tag' :
+				$tags = get_tags();
+				foreach( $tags as $tag ) {
+					$terms[$tag->slug] = $tag->name;
+				}
+				break;
+			
+			case 'post_type' :
+				$terms = $this->project_organizer->available_post_types();
+				break;
+		}
+				
+		$terms = apply_filters( 'anth_get_posts_by', $terms, $filtertype );
+		
+		print( json_encode( $terms ) );
+		die();
+	}
+
     function get_posts_by() {
-			$filterby = $_POST['filterby'];
+		$filterby = $_POST['filterby'];
 
-			$args = array(
-				'post_type' => array('post', 'page', 'anth_imported_item' ),
-				'posts_per_page' => -1
-			);
+		$args = array(
+			'post_type' => array('post', 'page', 'anth_imported_item' ),
+			'posts_per_page' => -1
+		);
 
-			// Blech (still...)
-			if ($filterby == 'date'){
+		switch ( $filterby ) {
+			case 'date' :
 				$startdate = mysql_real_escape_string($_POST['startdate']);
 				$enddate = mysql_real_escape_string($_POST['enddate']);				
 				$date_range_where = '';
 				if (strlen($startdate) > 0){
-  				$date_range_where = " AND post_date >= '".$startdate."'";
- 				}
+				$date_range_where = " AND post_date >= '".$startdate."'";
+				}
 				if (strlen($enddate) > 0){
-  				$date_range_where .= " AND post_date <= '".$enddate."'";
- 				}
+				$date_range_where .= " AND post_date <= '".$enddate."'";
+				}
 
 				$where_func = '$where .= "'.$date_range_where.'"; return $where;'; 
 				$filter_where = create_function('$where', $where_func);
 				add_filter('posts_where', $filter_where);
-			}else{
-				$t_or_c = ( $tagorcat == 'tag' ) ? 'tag' : 'cat';
-				$term = $_POST['term'];
-				$args[$t_or_c] = $term;					
-			}
-
-			query_posts( $args );
-			$the_posts = Array();
-			while ( have_posts() ) {
-				the_post();
-				$the_posts[get_the_ID()] = get_the_title();
-			}
-			if ($filterby == 'date'){
-				remove_filter('posts_where', $filter_where);
-			}
-			print(json_encode($the_posts));
-
-			die();
+				break;
+			
+			case 'tag' :
+				$args['tag'] = $_POST['term'];
+				break;
+			
+			case 'category' :
+				$args['cat'] = $_POST['term'];
+				break;
+			
+			case 'post_type' :
+				$args['post_type'] = $_POST['term'];
+				break;
 		}
+
+		// Allow plugins to modify the query_post arguments
+		query_posts( apply_filters( 'anth_get_posts_by_query', $args, $filterby ) );
+		
+		$the_posts = Array();
+		while ( have_posts() ) {
+			the_post();
+			$the_posts[get_the_ID()] = get_the_title();
+		}
+		if ($filterby == 'date'){
+			remove_filter('posts_where', $filter_where);
+		}
+		
+		$the_posts = apply_filters( 'anth_get_posts_by', $the_posts, $filterby );
+		
+		print(json_encode($the_posts));
+
+		die();
+	}
 
     function place_item() {
         $project_id = $_POST['project_id'];

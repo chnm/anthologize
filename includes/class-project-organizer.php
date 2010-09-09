@@ -140,11 +140,6 @@ class Anthologize_Project_Organizer {
 
 		</div> <!-- #project-organizer-frame -->
 
-
-
-
-
-
 		</div> <!-- .wrap -->
 		<?php
 
@@ -154,7 +149,8 @@ class Anthologize_Project_Organizer {
 		$filters = array( 
 			'tag' => __( 'Tag', 'anthologize' ), 
 			'category' => __( 'Category', 'anthologize' ),
-			'date' => __( 'Date Range', 'anthologize' )
+			'date' => __( 'Date Range', 'anthologize' ),
+			'post_type' => __( 'Post Type', 'anthologize' )
 		);
 		if ( isset( $_COOKIE['anth-filter'] ) )
 			$cfilter = $_COOKIE['anth-filter'];
@@ -184,6 +180,10 @@ class Anthologize_Project_Organizer {
 				$terms = get_categories();
 				$nulltext = __( 'All categories', 'anthologize' );
 				break;
+			case 'post_type' :
+				$terms = $this->available_post_types();
+				$nulltext = __( 'All post types', 'anthologize' );
+				break;
 			default :
 				$terms = Array();
 				$nulltext = ' - ';
@@ -210,6 +210,18 @@ class Anthologize_Project_Organizer {
 		<br />
 		<input type="button" id="launch_date_filter" value="Filter" /> 
 		<?php
+	}
+	
+	// A filterable list of post types that can
+	// serve as a filter for the project organizer
+	function available_post_types() {
+		$types = array(
+			'post' => __( 'Posts' ),
+			'page' => __( 'Pages' ),
+			'anth_imported_item' => __( 'Imported Items', 'anthologize' )
+		);
+		
+		return apply_filters( 'anth_available_post_types', $types );		
 	}
 
 	function add_item_to_part( $item_id, $part_id ) {
