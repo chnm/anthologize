@@ -184,9 +184,6 @@ class Anthologize_Project_Organizer {
 				$terms = get_categories();
 				$nulltext = __( 'All categories', 'anthologize' );
 				break;
-			case 'date' :
-				$hide_termfilter = true;
-				break;
 			case 'post_type' :
 				$types = $this->available_post_types();
 				$terms = array();
@@ -205,7 +202,7 @@ class Anthologize_Project_Organizer {
 		}
 
 		?>
-			<?php if ( !$hide_termfilter ) : ?>
+			
 			<select name="filter" id="filter">
 				<option value=""><?php echo $nulltext; ?></option>
 				<?php foreach( $terms as $term ) : ?>
@@ -213,7 +210,7 @@ class Anthologize_Project_Organizer {
 					<option value="<?php echo $term_value ?>" <?php if ( $cterm == $term_value ) : ?>selected="selected"<?php endif; ?>><?php echo $term->name ?></option>
 				<?php endforeach; ?>
 			</select>
-			<?php endif; ?>
+			
 		<?php
 	}
 
