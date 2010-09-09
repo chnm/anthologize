@@ -63,19 +63,7 @@ jQuery(document).ready( function() {
 			j("#enddate").val('');
 			j("#termfilter").show();
 		}
-		
-		/*
-		if ( filter == 'category' ) {
-			var theaction = 'get_cats';
-		} else if ( filter == 'tag' ) {
-			var theaction = 'get_tags';
-		} else {
-			var theaction = 'default';
-			j('#filter').empty();
-			j('#filter').append('<option value=""> - </option>');
-		}
-		
-		j('#filter').val('');*/
+	
 		j('#filter').trigger('change');
 
 		if (filter == '') {
