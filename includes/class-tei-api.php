@@ -153,23 +153,6 @@ class TeiApi {
 			return false;
 		}
 
-		if( $asList ) {
-			$retArray = array();
-			foreach($nodeList as $node) {
-				if(! isset($retArray[$node->nodeName . 's'])) {
-					$retArray[$node->nodeName . 's'] = array();
-				}
-
-				if($asNode) {
-					$retArray[$node->nodeName . 's'][] = $node;
-				} else {
-					$retArray[$node->nodeName . 's'][] = $this->nodeToArray($node);
-				}
-			}
-
-			return $retArray;
-		}
-
 		$node = $nodeList->item(0);
 
 		if($asNode) {
@@ -193,7 +176,12 @@ class TeiApi {
 	 * @return string
 	 */
 
-	public function getNodeXML($node) {
+	public function getNodeXML($node, $atts = false) {
+		if($atts) {
+			foreach($atts as $att=>$val) {
+				$node->setAttribute($att, $val);
+			}
+		}
 		return $this->tei->dom->saveXML($node);
 	}
 
@@ -248,10 +236,14 @@ class TeiApi {
 	 * @return string <html:span>
 	 */
 
-	public function getProjectTitle() {
+	public function getProjectTitle($valueOnly = false) {
+
 		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='main']";
 		$titleNode = $this->getNodeListByXPath($queryString, true);
+		if($valueOnly) {
 
+
+		}
 		return $this->getNodeXML($titleNode->firstChild);
 	}
 
@@ -290,9 +282,9 @@ class TeiApi {
 	}
 
 	public function getProjectOutputParams($param = false, $asNode = false) {
-		$xpath = "//anth:outputDecl";
+		$xpath = "//anth:outputDecl/anth:outputParams";
 		if($param) {
-			$xpath .= "/anth:outputParams/anth:param[@name='$param']";
+			$xpath .= "/anth:param[@name='$param']";
 		}
 		$params = array('subPath'=>$xpath,
 		'asNode'=>$asNode
@@ -417,6 +409,22 @@ class TeiApi {
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
 						'subPath' => "tei:head/tei:bibl/tei:author[@role='itemCreator']",
+						'asNode'=>$asNode
+						);
+
+		$data = $this->getNodeDataByParams($params);
+		if($valueOnly) {
+			return $data['spans'][0]['value'];
+		}
+		return $data;
+
+	}
+
+	public function getSectionPartItemAnthAuthor($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+		$params = array('section'=> $section,
+						'partNumber' => $partNumber,
+						'itemNumber' => $itemNumber,
+						'subPath' => "tei:head/tei:bibl/tei:author[@role='anthologizeMeta']",
 						'asNode'=>$asNode
 						);
 

@@ -134,7 +134,6 @@ class TeiDom {
 
 		$outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
 
-
 		foreach($this->outputParams as $name=>$value) {
 			$newParam = $this->dom->createElementNS(ANTH, 'param', $value);
 			$newParam->setAttribute('name', $name);
@@ -533,21 +532,34 @@ print_r(get_userdata(1));
 			break;
 
 			case 'anth_library_item':
+
+				//gets the wordpress author info
 				$itemCreatorObject = get_userdata($postObject->post_author);
-
-
+				$bibl = $this->dom->createElementNS(TEI, 'bibl');
+				$newHead->appendChild($bibl);
 				if($itemCreatorObject) {
-					$bibl = $this->dom->createElementNS(TEI, 'bibl');
 					$bibl->appendChild($this->newAuthor($itemCreatorObject, 'itemCreator'));
-					$newHead->appendChild($bibl);
 				}
+
+
+				//work with the anthologize data
+				$meta = get_post_meta($postObject->ID, 'anthologize_meta', true );
+				if($meta) {
+					foreach ($meta['author_name_array'] as $authorName) {
+						//originalCreator might not be correct, but until more data comes from the UI, it's the best guess
+						$bibl->appendChild($this->newAuthor($authorName, 'anthologizeMeta'));
+					}
+				}
+
 				if($this->includeItemSubjects) {
 					$this->addItemSubjects($postObject->original_post_id, $newHead);
 				}
 
 				if($this->includeOriginalPostData) {
+
 					$origPostData = $this->fetchPostData($postObject->original_post_id);
 					$origCreator = get_userdata($origPostData->post_author);
+
 					$bibl->appendChild($this->newAuthor($origCreator, 'originalCreator') );
 					if($this->includeStructuredCreatorData) {
 						$this->addStructuredPerson($origCreator);

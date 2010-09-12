@@ -37,12 +37,7 @@
             </creation>
 
 
-            <anth:outputDecl xmlns="http://www.anthologize.org/ns">
-                <outputParams>
-
-                </outputParams>
-               
-            </anth:outputDecl>
+            <anth:outputDecl xmlns="http://www.anthologize.org/ns"><outputParams></outputParams></anth:outputDecl>
 
         </profileDesc>
 

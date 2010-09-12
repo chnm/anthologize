@@ -15,6 +15,8 @@ $ops = array(	'includeStructuredSubjects' => true, //Include structured data abo
 		);
 
 
+$ops['outputParams'] = $_SESSION['tei'];
+
 $tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
 
