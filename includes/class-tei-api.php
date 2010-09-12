@@ -223,9 +223,6 @@ class TeiApi {
 			return false;
 		}
 		if($firstOnly) {
-
-			echo $this->tei->dom->saveXML($nodeList->item(0));
-
 			return $nodeList->item(0);
 		}
 		return $nodeList;
@@ -241,8 +238,7 @@ class TeiApi {
 		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='main']";
 		$titleNode = $this->getNodeListByXPath($queryString, true);
 		if($valueOnly) {
-
-
+			return $titleNode->firstChild->nodeValue;
 		}
 		return $this->getNodeXML($titleNode->firstChild);
 	}
@@ -287,8 +283,8 @@ class TeiApi {
 			$xpath .= "/anth:param[@name='$param']";
 		}
 		$params = array('subPath'=>$xpath,
-		'asNode'=>$asNode
-		);
+						'asNode'=>$asNode
+						);
 		$data = $this->getNodeDataByParams($params);
 
 		if($param) {
@@ -486,19 +482,23 @@ class TeiApi {
 
 	}
 
-//this should be in a theming function
+//below should be in a theming function, or some other place, maybe an Indexing extension?
 
 	public function indexAuthorsSimple() {
-		$authorNodes = $this->getNodeListByXPath("//tei:body//tei:author[@role='originalCreator']");
+		$authorNodes = $this->getNodeListByXPath("//tei:body//tei:author");
 		$authorsArray = array();
 
 		foreach($authorNodes as $author) {
+
 			$itemNode = $this->getParentItem($author, true);
 			$itemData = $this->getNodeTargetData($itemNode);
-
 			$authorArray = $this->nodeToArray($author);
+
+			$itemData['authorRole'] = $authorArray['atts']['role'];
+
 			if(array_key_exists($authorArray['spans'][0]['value'], $authorsArray )  ) {
 				$authorsArray[$authorArray['spans'][0]['value']]['items'][] = $itemData;
+
 			} else {
 				$authorArray['items'][] = $itemData;
 				$authorsArray[$authorArray['spans'][0]['value']] = $authorArray;
@@ -514,12 +514,23 @@ class TeiApi {
 			$html .= "<li>" . $author['spans'][0]['value'] ;
 			$html .= "<ul class='anth-index links'>";
 			foreach($author['items'] as $item) {
-				print_r($item);
+				switch($item['authorRole']) {
+					case 'itemCreator':
+						$roleText = "Anthologizer";
+					break;
 
+					case 'originalCreator':
+						$roleText = "Original Author";
+					break;
+
+					case 'anthologizeMeta':
+						$roleText = "Attributed Author";
+					break;
+				}
 
 				$id = $item['id'];
 				$title = $item['title'];
-				$html .= "<li><a href='#$id'>$title</a></li>";
+				$html .= "<li><a href='#$id'>$title</a> ($roleText)</li>";
 
 			}
 			$html .= "</ul>";
@@ -527,12 +538,47 @@ class TeiApi {
 		}
 		$html .= "</ul>";
 
-
-
 		return $html;
 	}
 
+	public function indexImages() {
+		$imgNodes = $this->getNodeListByXPath("//tei:body//img");
+		$html = "<ul id='anth-image-index' class='anth-index>'";
+		foreach($imgNodes as $imgNode) {
+			//add 'src' to id to differentiate ids from index and body/src
+			$imgIdBase = $this->mintId($imgNode);
+			$imgId = $imgIdBase . '-src';
 
 
+			$imgNode->setAttribute('id', $imgId);
+			$parentItem = $this->getParentItem($imgNode, true);
+			$itemTargetData = $this->getNodeTargetData($parentItem);
+			$targetId = $itemTargetData['id'];
+			$title = $itemTargetData['title'];
+			$html .= "<li class='anth-index-item'><div>";
+			$imgNodeClone = $imgNode->cloneNode(true);
+			$imgNodeClone->setAttribute('id', $imgIdBase . '-img-index');
+			$html .= $this->getNodeXML($imgNodeClone);
+			$html .= "<p>Item: <a href='#$targetId'>$title</a></p>";
+			$html .= "<p><a href='#$imgId'>Direct link</a></p>";
+			$html .= "</li></div>";
+		}
+
+		return $html;
+
+	}
+
+	private function mintID($node) {
+		$parentItem = $this->getParentItem($node, true);
+		$itemId = $parentItem->getAttribute('xml:id');
+		$nameMatches = $parentItem->getElementsByTagname($node->nodeName);
+		$index = 0;
+		foreach($nameMatches as $nameMatch) {
+			if ($node === $nameMatch) {
+				return $itemId . "-$node->nodeName-$index";
+			}
+			$index ++;
+		}
+	}
 }
 ?>

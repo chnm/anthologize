@@ -544,7 +544,7 @@ print_r(get_userdata(1));
 
 				//work with the anthologize data
 				$meta = get_post_meta($postObject->ID, 'anthologize_meta', true );
-				if($meta) {
+				if($meta && isset($meta['author_name_array'])) {
 					foreach ($meta['author_name_array'] as $authorName) {
 						//originalCreator might not be correct, but until more data comes from the UI, it's the best guess
 						$bibl->appendChild($this->newAuthor($authorName, 'anthologizeMeta'));
@@ -556,18 +556,13 @@ print_r(get_userdata(1));
 				}
 
 				if($this->includeOriginalPostData) {
-
 					$origPostData = $this->fetchPostData($postObject->original_post_id);
 					$origCreator = get_userdata($origPostData->post_author);
-
 					$bibl->appendChild($this->newAuthor($origCreator, 'originalCreator') );
 					if($this->includeStructuredCreatorData) {
 						$this->addStructuredPerson($origCreator);
 					}
 				}
-
-
-
 			break;
 
 
