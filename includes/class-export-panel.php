@@ -291,6 +291,10 @@ class Anthologize_Export_Panel {
 				$return .= '<div class="pub-options-title">' . $odata['label'] . '</div>';
 				
 				switch( $odata['type'] ) {
+					case 'checkbox':
+						$return .= $this->build_checkbox( $oname, $odata['label'] );
+						break;
+					
 					case 'dropdown':
 						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
 						break;
@@ -311,13 +315,20 @@ class Anthologize_Export_Panel {
 		echo $return;
 	}
 
+	function build_checkbox( $name, $label ) {
+		
+		$html = '<input name="' . $name . '" id="' . $name .'" type="checkbox">';
+		
+		return apply_filters( 'anthologize_build_checkbox', $html, $name, $label );
+	}
+
 	function build_dropdown( $name, $label, $options, $default ) {
 		// $name is the input name (no spaces, eg 'page-size')
 		// $label is the input label (for display, eg 'Page Size'. Should be internationalizable, eg __('Page Size', 'anthologize')
 		// $options is associative array where keys are option values and values are the text displayed in the option field.
 		// $default is the default option
 						
-		$html .= '<select name="' . $name . '">';
+		$html = '<select name="' . $name . '">';
 		
 		foreach( $options as $ovalue => $olabel ) {
 			$html .= '<option value="' . $ovalue . '"';
@@ -335,7 +346,7 @@ class Anthologize_Export_Panel {
 	
 	function build_textbox( $name, $label ) {
 					
-		$html .= '<input name="' . $name . '" id="' . $name . '" type="text">';
+		$html = '<input name="' . $name . '" id="' . $name . '" type="text">';
 		
 		return apply_filters( 'anthologize_build_textbox', $html, $name, $label );
 	}
