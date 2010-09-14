@@ -292,11 +292,11 @@ class Anthologize_Export_Panel {
 				
 				switch( $odata['type'] ) {
 					case 'checkbox':
-						$return .= $this->build_checkbox( $oname, $odata['label'], $default );
+						$return .= $this->build_checkbox( $oname, $odata['label'] );
 						break;
 					
 					case 'dropdown':
-						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'] );
+						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
 						break;
 						
 					// Default is a textbox
