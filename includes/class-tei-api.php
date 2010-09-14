@@ -68,13 +68,17 @@ class TeiApi {
 			return $retArray;
 		}
 
+		if( ($node->nodeName == 'div') && ( in_array(HTML, $retArray['atts']) )  ) {
+			$retArray['value'] = $this->getNodeXML($node);
+		}
+
 		if( ! $deep ) {
 			return $retArray;
 		}
 
 		foreach($node->childNodes as $childNode) {
 
-			if( ! $childNode->nodeType == XML_ELEMENT_NODE ){
+			if( $childNode->nodeType != XML_ELEMENT_NODE ){
 				continue;
 			}
 
@@ -95,6 +99,8 @@ class TeiApi {
 				unset($retArray[$plName]);
 			}
 		}
+
+
 		return $retArray;
 	}
 
@@ -269,7 +275,21 @@ class TeiApi {
 		return $this->getNodeXML($subTitleNode->firstChild);
 	}
 
-	public function getProjectCopyRight($asStructured = false) {
+	public function getProjectCreator($asStructured = false) {
+		$queryString = "//tei:author[@role = 'projectCreator']";
+		$creator = $this->getNodeListByXPath($queryString, true);
+
+		if($asStructured) {
+			$ref = $creator->getAttribute('ref');
+			$structuredCreator = $this->tei->dom->getElementById($ref);
+			return $this->nodeToArray($structuredCreator);
+		}
+
+		return $this->getNodeXML($creator->firstChild);
+	}
+
+
+	public function getProjectCopyright($asStructured = false) {
 
 		if($asStructured) {
 			$rend = 'structured';
@@ -347,6 +367,7 @@ class TeiApi {
 			return $this->getNodeXML($data->firstChild);
 		}
 	}
+
 
 	public function getSectionPartMetaEl($section, $partNumber, $elName, $asNode = false) {
 		$params = array('section'=> $section,
@@ -492,17 +513,51 @@ class TeiApi {
 		}
 	}
 
-	public function getAuthor($authorId, $asNode = false) {
-		$params = array('id'=>$authorId ,
+	public function getPersonByRef($ref, $asNode = false) {
+		$params = array('id'=>$ref ,
 		'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);
 	}
 
-	public function getAuthorMetaEl($authorId, $elName, $asNode = false) {
+	public function getPersonMetaEl($authorId, $elName, $asNode = false) {
 		$params = array('id'=>$authorId ,
 		'asNode'=>$asNode,
 		'elName'=>$elName);
 		return $this->getNodeDataByParams($params);
+	}
+
+	public function getPersonDetail($personArray, $element) {
+		switch ($element) {
+			case 'name':
+				return $personArray['persNames'][0]['names'][0]['spans'][0]['value'];
+			break;
+
+			case 'firstname':
+				return $personArray['persNames'][0]['firstnames'][0]['spans'][0]['value'];
+			break;
+
+			case 'surname':
+				return $personArray['persNames'][0]['surnames'][0]['spans'][0]['value'];
+			break;
+
+			case 'bio':
+				return $personArray['notes'][0]['divs'][0]['value'];
+			break;
+
+			case 'email':
+				return $personArray['persNames'][0]['emails'][0]['spans'][0]['value'];
+			break;
+
+			case 'count':
+				return $personArray['persNames'][0]['nums'][0]['value'];
+			break;
+
+			case 'gravatarUrl':
+				return $personArray['figures'][0]['graphics'][0]['html:imgs'][0]['atts']['src'];
+			break;
+
+		}
+
 	}
 
 	public function getGravatar($authorId, $urlOnly = false ) {
