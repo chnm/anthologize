@@ -120,7 +120,7 @@ class TeiApi {
 	 * @return mixed DOMNode or array
 	 */
 
-	public function getNodeDataByParams($params, $asNode = false) {
+	public function getNodeDataByParams($params, $firstOnly = true) {
 		extract($params);
 
 		if( isset($id) ) {
@@ -153,13 +153,28 @@ class TeiApi {
 			return false;
 		}
 
-		$node = $nodeList->item(0);
+		if($firstOnly) {
+			$node = $nodeList->item(0);
 
-		if($asNode) {
-			return $node;
+			if($asNode) {
+				return $node;
+			}
+
+			return $this->nodeToArray($node);
+
 		}
 
-		return $this->nodeToArray($node);
+		if($asNode) {
+			return $nodeList;
+		}
+
+		$returnArray = array();
+		foreach($nodeList as $node) {
+			$returnArray[] = $this->nodeToArray($node);
+		}
+
+		return $returnArray;
+
 	}
 
 	public function getNodeTargetData($node) {
@@ -197,7 +212,7 @@ class TeiApi {
 		return $this->nodeToArray($node, false);
 	}
 
-	public function getIdForParentItem($node) {
+	public function getParentItemId($node) {
 		while( $node->getAttribute('type') != 'libraryItem') {
 			$node = $node->parentNode;
 		}
@@ -449,17 +464,29 @@ class TeiApi {
 
 	}
 
-	public function getSectionPartItemContent($section, $partNumber, $itemNumber, $asNode = false) {
+	public function getSectionPartItemSubjects($section, $partNumber, $itemNumber, $asNode = false ) {
+		$params = array('section'=> $section,
+		'partNumber'=>$partNumber,
+		'itemNumber'=>$itemNumber,
+		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs",
+		'asNode'=> $asNode);
+
+		$data = $this->getNodeDataByParams($params, false);
+		return $data;
+	}
+
+	public function getSectionPartItemContent($section, $partNumber, $itemNumber) {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
 		'subPath'=>'div',
-		'asNode'=>true);
+		'asNode'=> true);
 		$data = $this->getNodeDataByParams($params);
 
 		if($asNode) {
 			return $data;
 		}
+
 		if($data) {
 			return $this->getNodeXML($data);
 		}
@@ -506,7 +533,7 @@ class TeiApi {
 
 		}
 
-		ksort($authorsArray);
+		ksort($authorsArray, SORT_STRING);
 
 		$html = "<ul class='anth-index authors'>";
 		foreach($authorsArray as $author) {
@@ -541,6 +568,42 @@ class TeiApi {
 		return $html;
 	}
 
+	public function indexSubjects() {
+		$subjects = $this->getNodeListByXPath("//tei:list[@type='subjects']/tei:item/tei:rs/span");
+		$subjectsArray = array();
+		foreach($subjects as $subject) {
+
+			$subjectLabel = $subject->nodeValue;
+			$lowerLabel = strtolower($subjectLabel);
+			$parentItem = $this->getParentItem($subject, true);
+			if( array_key_exists($lowerLabel, $subjectsArray) ) {
+				$subjectsArray[$lowerLabel]['items'][] = $this->getNodeTargetData($parentItem);
+			} else {
+				$subjectsArray[$lowerLabel] = array();
+				$subjectsArray[$lowerLabel]['label'] = $subjectLabel;
+				$subjectsArray[$lowerLabel]['items'] = array();
+				$subjectsArray[$lowerLabel]['items'][] = $this->getNodeTargetData($parentItem);
+			}
+		}
+		ksort($subjectsArray, SORT_STRING);
+		$html = "<ul class='anth-index subjects'>";
+		foreach($subjectsArray as $subject) {
+			$subjectLabel = $subject['label'];
+			$html .= "<li>$subjectLabel";
+			$html .= "<ul>";
+			foreach($subject['items'] as $item) {
+				$id = $item['id'];
+				$title = $item['title'];
+				$html .= "<li><a href='#$id'>$title</a></li>";
+			}
+			$html .= "</ul>";
+
+		}
+		$html .= "</ul>";
+		return $html;
+
+	}
+
 	public function indexImages() {
 		$imgNodes = $this->getNodeListByXPath("//tei:body//img");
 		$html = "<ul id='anth-image-index' class='anth-index>'";
@@ -561,9 +624,9 @@ class TeiApi {
 			$html .= $this->getNodeXML($imgNodeClone);
 			$html .= "<p>Item: <a href='#$targetId'>$title</a></p>";
 			$html .= "<p><a href='#$imgId'>Direct link</a></p>";
-			$html .= "</li></div>";
+			$html .= "</div></li>";
 		}
-
+		$html .= "</ul>";
 		return $html;
 
 	}
