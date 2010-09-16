@@ -234,7 +234,7 @@ class Anthologize_Export_Panel {
 	function save_session() {
 		
 		if ( $_POST['export-step'] == '2' )
-			$_SESSION['outputParams']['format'] = $_POST['filetype'];
+			$_SESSION['outputParams'] = array( 'format' => $_POST['filetype'] );
 				
 		foreach ( $_POST as $key => $value ) {
 			if ( $key == 'submit' || $key == 'export-step' )
