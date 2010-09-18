@@ -292,24 +292,17 @@ class TeiApi {
 	public function getProjectCopyright($asStructured = false) {
 
 		if($asStructured) {
-			$rend = 'structured';
-			$cr = $this->xpath->query("//tei:publicationStmt/tei:availability[@rend='$rend']/tei:ab/text()")->item(0)->textContent;
+			$cr = $this->getNodeListByXPath("//tei:publicationStmt/tei:availability[@rend='structured']/tei:ab", true);
+
 		} else {
-			$rend = 'literal';
-			$cr = $this->xpath->query("//tei:publicationStmt/tei:availability[@rend='$rend']/html:body")->item(0)->nodeValue;
+			$cr = $this->getNodeListByXPath("//tei:publicationStmt/tei:availability[@rend='literal']/span", true);
 		}
-		return $cr->nodeValue;
+		return $this->getNodeXML($cr);
 	}
 
 	public function getProjectEdition($asStructured = false) {
-		if($asStructured) {
-			$rend = 'structured';
-			$edition = $this->xpath->query("//tei:editionStmt/tei:ab[@rend='$rend']/text()")->item(0);
-		} else {
-			$rend = 'literal';
-			$edition = $this->xpath->query("//tei:editionStmt/tei:ab[@rend='$rend']/body/text()")->item(0);
-		}
-		return $edition;
+		$edition = $this->getNodeListByXPath("//tei:editionStmt/tei:ab[@rend='literal']/span", true);
+		return $this->getNodeXML($edition);
 	}
 
 	public function getProjectOutputParams($param = false, $asNode = false) {
@@ -328,6 +321,19 @@ class TeiApi {
 
 		return $data;
 	}
+
+
+
+	public function getProjectPublicationDate() {
+		$query = "//tei:front/tei:head/tei:bibl/tei:data[@type = 'created']";
+		$params = array('section'=>'front',
+						'subPath'=>"tei:head/tei:bibl/tei:date[@type = 'created']",
+						'asNode'=>false
+					);
+		$data = $this->getNodeDataByParams($params);
+		return $data['value'];
+	}
+
 
 	public function getSectionPartCount($section = 'body') {
 		$count = $this->xpath->evaluate("count(//tei:$section/tei:div[@type='part'])");

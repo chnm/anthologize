@@ -13,7 +13,7 @@ class Anthologize_Admin_Main {
 		add_action( 'admin_init', array ( $this, 'init' ) );
 
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ) );
-		
+
 		add_action( 'admin_notices', array( $this, 'version_nag' ) );
 
 	}
@@ -34,7 +34,7 @@ class Anthologize_Admin_Main {
 
 	function dashboard_hooks() {
 		global $menu;
-		
+
 		if ( !current_user_can( 'manage_options' ) )
 			return;
 
@@ -68,14 +68,14 @@ class Anthologize_Admin_Main {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts", array( $this, 'load_scripts' ) );
 		}
-		
+
 
 	}
 
 	// Borrowed, with much love, from BuddyPress. Allows us to put Anthologize way up top.
 	function add_admin_menu_page( $args = '' ) {
 		global $menu, $admin_page_hooks, $_registered_pages;
-		
+
 		$defaults = array(
 			'page_title' => '',
 			'menu_title' => '',
@@ -216,12 +216,12 @@ class Anthologize_Admin_Main {
 			if ( $_GET['action'] == 'delete' && $project ) {
 				wp_delete_post($project->ID);
 			}
-	
+
 			if ( $_GET['action'] == 'edit' && $project ) {
 				$this->load_project_organizer( $_GET['project_id'] );
 			}
 		}
-		
+
 		if (
 			!isset( $_GET['action'] ) ||
 			$_GET['action'] == 'list-projects' ||
@@ -427,10 +427,10 @@ class Anthologize_Admin_Main {
 
         if ( !$new_data = $_POST['anthologize_meta'] )
         	$new_data = array();
-	
+
 		if ( !$anthologize_meta = get_post_meta( $item_id, 'anthologize_meta', true ) )
 			$anthologize_meta = array();
-				
+
 		foreach( $new_data as $key => $value ) {
 			$anthologize_meta[$key] = maybe_unserialize( $value );
 		}
@@ -535,7 +535,7 @@ class Anthologize_Admin_Main {
             <?php if ( isset( $_GET['new_part'] ) ) : ?>
             	<input type="hidden" name="new_part" value="1" />
             <?php endif; ?>
-            
+
             <?php if ( isset( $post->ID ) ) : ?>
             	<input type="hidden" name="item_id" value="<?php echo $post->ID ?>" />
             <?php endif; ?>
@@ -545,23 +545,23 @@ class Anthologize_Admin_Main {
         </div>
     <?php
     }
-    
-    
-	
+
+
+
 	function version_nag() {
 		global $wp_version;
-		
+
 		?>
-		
+
 		<?php if ( version_compare( $wp_version, '3.0', '<' ) ) : ?>
 		<div id="message" class="updated fade">
 			<p style="line-height: 150%"><?php printf( __( "<strong>Anthologize will not work with your version of WordPress</strong>. You are currently running version WordPress v%s, and Anthologize requires version 3.0 or greater. Please upgrade WordPress if you'd like to use Anthologize. ", 'buddypress' ), $wp_version ) ?></p>
 		</div>
 		<?php endif; ?>
-		
+
 		<?php
 	}
-    
+
 }
 
 endif;
