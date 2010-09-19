@@ -73,6 +73,7 @@ class TeiDom {
 		$this->addFrontMatter();
 
 		$this->sanitizeContent();
+		$this->addBackMatter();
 
 	}
 	public function setXPath() {
@@ -83,6 +84,8 @@ class TeiDom {
 		$authorAB = $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
 		$this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
+		$this->frontNode = $this->xpath->query("//tei:front")->item(0);
+		$this->backNode = $this->xpath->query("//tei:back")->item(0);
 		$this->structuredSubjectList = $this->xpath->query("//tei:list[@xml:id='subjects']")->item(0);
 		$this->structuredPersonList = $this->xpath->query("//tei:sourceDesc/tei:listPerson")->item(0);
 
@@ -240,7 +243,9 @@ class TeiDom {
 		$f2Node->appendChild($this->sanitizeString(htmlspecialchars($this->projectData['acknowledgements']), true));
 	}
 
-
+	public function addBackMatter() {
+		$this->doIndexing();
+	}
 	public function sanitizeMedia() {
 		$this->sanitizeImages();
 		$this->sanitizeEmbeds(); //TODO
@@ -494,19 +499,6 @@ class TeiDom {
 
 		$newItem->appendChild($this->sanitizeString($libraryItemObject->post_content, true));
 
-
-/*
-
-$meta = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
-
-print_r($meta);
-print_r(wp_get_post_terms($meta['original_post_id']));
-print_r(get_post($meta['original_post_id']));
-print_r(get_userdata(1));
-
-*/
-
-
 		return $newItem;
 	}
 
@@ -682,6 +674,29 @@ print_r(get_userdata(1));
 		}
 	}
 
+	private function getID($node) {
+		//if its in the HTML, check if it already has an id
+		$existingID = $node->getAttribute('id');
+		if($node->getAttribute('id')) {
+			return $node->getAttribute('id');
+		}
+		if($node->getAttribute('xml:id')) {
+			return $node->getAttribute('xml:id');
+		}
+		$parentItem = $this->getParentItem($node);
+		$itemId = $parentItem->getAttribute('xml:id');
+		$nameMatches = $parentItem->getElementsByTagname($node->nodeName);
+		$index = 0;
+		foreach($nameMatches as $nameMatch) {
+			if ($node === $nameMatch) {
+				$id =  $itemId . "-$node->nodeName-$index";
+				$node->setAttribute('xml:id', $id);
+				return $id;
+			}
+			$index ++;
+		}
+	}
+
 	public function newGravatar($email, $urlOnly = false, $size = false) {
 		if( ! $size) {
 			$size = isset($this->outputParams['avatar-size']) ? $this->outputParams['avatar-size'] : $this->avatarSize;
@@ -698,7 +713,25 @@ print_r(get_userdata(1));
 	}
 
 	public function doIndexing() {
+		if($this->indexSubjects) {
+			$this->backNode->appendChild($this->indexSubjects());
+		}
 
+		if($this->indexCategories) {
+			$this->backNode->appendChild($this->indexCategories());
+		}
+
+		if($this->indexTags) {
+			$this->backNode->appendChild($this->indexTags());
+		}
+
+		if($this->indexAuthors) {
+			$this->backNode->appendChild($this->indexAuthors());
+		}
+
+		if($this->indexImages) {
+			$this->backNode->appendChild($this->indexImages());
+		}
 	}
 
 	public function newIndex($type, $ops = false) {
@@ -711,16 +744,18 @@ print_r(get_userdata(1));
 
 	}
 
-	public function newIndexListItem($label, $targetNodeData) {
+	public function newIndexListItem($labelNode, $targetNodeData) {
+
 		$item = $this->dom->createElement('item');
-		$labelNode = $this->dom->createElement('label');
-		$item->appendChild($labelNode);
-		$labelNode->appendChild($this->sanitizeString($label));
+		$teiLabelNode = $this->dom->createElement('label');
+		$item->appendChild($teiLabelNode);
+		$teiLabelNode->appendChild($labelNode);
 
 		foreach($targetNodeData as $type=>$targetNodes) {
 			if( ($type == 'node') || ($type == 'label') ) {
 				continue;
 			}
+
 			$listRef = $this->dom->createElement('listRef');
 			$item->appendChild($listRef);
 			$listRef->setAttribute('type', $type);
@@ -738,52 +773,87 @@ print_r(get_userdata(1));
 		return $item;
 	}
 
-	public function indexXPath($xpath, $indexType) {
+	public function indexNodeList($nodes, $indexTypes) {
 		$nodesArray = array();
-		$nodes = $this->xpath->query($xpath);
+
+
+
 		foreach($nodes as $node) {
-			$targetItem = $this->getParentItem($node);
-			$key = strtolower($node->firstChild->nodeValue);
-			$label = $node->firstChild->nodeValue;
-			if(array_key_exists($key, $nodesArray)) {
-				$nodesArray[$key]['items'][] = $targetItem;
-			} else {
-				$nodesArray[$key] = array('label'=>$label, 'node'=>$node, $indexType=>array($targetItem));
+
+			$key = $this->getNodeKeyForIndex($node);
+			$labelNode = $this->getNodeLabelForIndex($node);
+			foreach($indexTypes as $indexType) {
+				switch($indexType) {
+					case 'items':
+						$targetItem = $this->getParentItem($node);
+					break;
+
+					case 'direct':
+
+
+						$targetItem = $node;
+					break;
+				}
+
+				if(array_key_exists($key, $nodesArray)) {
+					$nodesArray[$key][$indexType][] = $targetItem;
+				} else {
+					$nodesArray[$key] = array('label'=>$labelNode, 'node'=>$node, $indexType=>array($targetItem));
+				}
 			}
+
 		}
 
 
 		ksort($nodesArray, SORT_STRING);
-
-		$index = $this->newIndex($indexType);
 		$list = $this->dom->createElement('list');
-		$index->appendChild($list);
-		foreach($nodesArray as $key=>$data) {
 
+		foreach($nodesArray as $key=>$data) {
 			$list->appendChild($this->newIndexListItem($data['label'], $data));
 		}
 
-		return $index;
+		return $list;
 	}
 
 	public function indexAuthors() {
-		return $this->indexXPath("//tei:body//tei:author", 'authors');
+		$nodes = $this->xpath->query("//tei:body//tei:author");
+		$list = $this->indexNodeList($nodes, array('items'));
+		$index = $this->newIndex('authors');
+		$index->appendChild($list);
+		return $index;
+
 	}
 
 	public function indexCategories() {
-
+		$nodes = $this->xpath->query("//tei:list[@type='subjects']/tei:item/tei:rs[@type='category']/span");
+		$list = $this->indexNodeList($nodes, array('items'));
+		$index = $this->newIndex('categories');
+		$index->appendChild($list);
+		return $index;
 	}
 
 	public function indexTags() {
-
+		$nodes = $this->xpath->query("//tei:list[@type='subjects']/tei:item/tei:rs[@type='tag']/span");
+		$list = $this->indexNodeList($nodes, array('items'));
+		$index = $this->newIndex('tags');
+		$index->appendChild($list);
+		return $index;
 	}
 
 	public function indexSubjects() {
-		return $this->indexXPath("//tei:list[@type='subjects']/tei:item/tei:rs/span", 'subjects');
+		$nodes = $this->xpath->query("//tei:list[@type='subjects']/tei:item/tei:rs/span");
+		$list = $this->indexNodeList($nodes, array('items'));
+		$index = $this->newIndex('subjects');
+		$index->appendChild($list);
+		return $index;
 	}
 
 	public function indexImages() {
-
+		$nodes = $this->xpath->query("//tei:body//img");
+		$list = $this->indexNodeList($nodes, array('items', 'direct') );
+		$index = $this->newIndex('images');
+		$index->appendChild($list);
+		return $index;
 	}
 
 
@@ -813,9 +883,18 @@ print_r(get_userdata(1));
 
 	public function getNodeTargetData($node) {
 		//get id and a label/title
-		$id = $node->getAttribute('xml:id');
-		$titleNode = $this->xpath->query("tei:head/tei:title", $node)->item(0);
-		$title = $titleNode->firstChild->nodeValue;
+
+		//make sure that HTML targets have an ID
+		$id = $this->getID($node);
+
+		//TODO: switch approach to finding labels based on node type
+		$titleNodes = $this->xpath->query("tei:head/tei:title", $node);
+		if($titleNodes->length == 0) {
+			$title = $node->nodeName;
+		} else {
+			$title = $titleNodes->item(0)->firstChild->nodeValue;
+		}
+
 		return array('id'=>$id, 'title'=>$title);
 	}
 
@@ -825,6 +904,38 @@ print_r(get_userdata(1));
 
 		}
 		return $node;
+	}
+
+	public function getNodeLabelForIndex($node) {
+
+		if ($node->firstChild->nodeName == 'span') {
+			return $node->firstChild;
+		}
+
+		return $node->cloneNode();
+
+	}
+
+	public function getNodeKeyForIndex($node, $keyBy = false) {
+
+		switch($node->nodeName) {
+			case 'img':
+				$keyBy = 'titleAtt';
+			break;
+		}
+
+		switch ($keyBy) {
+			case 'titleAtt':
+				return $node->getAttribute('title');
+			break;
+
+
+			default:
+				return strtolower($node->firstChild->nodeValue);
+			break;
+		}
+
+
 	}
 
 
