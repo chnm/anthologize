@@ -81,8 +81,6 @@ class TeiDom {
 		$this->xpath->registerNamespace('tei', TEI);
 		$this->xpath->registerNamespace('html', HTML);
 		$this->xpath->registerNamespace('anth', ANTH);
-		$authorAB = $this->xpath->query("//tei:ab[@type = 'metadata']")->item(0);
-		$this->personMetaDataNode = $this->xpath->query("tei:listPerson", $authorAB)->item(0);
 		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
 		$this->frontNode = $this->xpath->query("//tei:front")->item(0);
 		$this->backNode = $this->xpath->query("//tei:back")->item(0);
