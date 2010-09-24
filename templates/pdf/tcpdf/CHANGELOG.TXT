@@ -1,3 +1,24 @@
+5.8.032 (2010-09-22)
+	- Bug #3073165 "Issues with changes to addHTMLVertSpace()" was fixed.
+
+5.8.031 (2010-09-20)
+	- Bug #3071961 "Spaces in HTML" was fixed.
+
+5.8.030 (2010-09-17)
+	- SVG support was improved and some bugs were fixed.
+
+5.8.029 (2010-09-16)
+	- A problem with HTML borders was fixed.
+
+5.8.028 (2010-09-13)
+	- Bug #3065224 "mcrypt_create_iv error on TCPDF 5.8.027 on PHP 5.3.2" was fixed.
+
+5.8.027 (2010-09-13)
+	- Bug #3065118 "mcrypt_decrypt error on TCPDF 5.8.026 on PHP 5.3.2" was fixed.
+
+5.8.026 (2010-09-13)
+	- A bug on addHTMLTOC() method was fixed. Note: be sure that the #TOC_PAGE_NUMBER# template has enough width to be printed correctly.
+
 5.8.025 (2010-09-09)
 	- Bug #3062692 "Textarea inside a table" was fixed.
 

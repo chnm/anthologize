@@ -30,15 +30,26 @@
 
 //error_reporting(0);
 
-$class_tei = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-tei.php';
+$class_tei_api = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php';
 $class_pdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-pdf.php';
 
-require_once($class_tei);
+require_once($class_tei_api);
 require_once($class_pdf);
 
 function main() {
 
-	$tei_master = new TeiAPI();
+
+	$ops = array( 'includeStructuredSubjects' => true, //Include structured data about tags and categories
+		'includeItemSubjects' => true, // Include basic data about tags and categories
+		'includeCreatorData' => true, // Include basic data about creators
+		'includeStructuredCreatorData' => true, //include structured data about creators
+		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
+		'avatarSize' => '96', //avatar size
+		'avatarDefault' => 'http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536', //defaul (gr)avatar image
+		'checkImgSrcs' => true, //whether to check availability of image sources
+	);
+
+	$tei_master = new TeiApi($_SESSION, $ops);
 
 	$pdf = new TeiPdf($tei_master);
 

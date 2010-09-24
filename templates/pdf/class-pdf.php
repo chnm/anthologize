@@ -6,7 +6,7 @@
 *
 * @author One Week | One Tool {@link http://oneweekonetool.org/people/}
 *
-* Last Modified: Thu Aug 05 15:06:19 CDT 2010
+* Last Modified: Thu Sep 09 11:25:41 CDT 2010
 *
 * @copyright Copyright (c) 2010 Center for History and New Media, George Mason
 * University.
@@ -30,12 +30,12 @@
 
 $eng = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php';
 $tcpdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php';
-$class_pdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-tei.php';
+$class_tei_api = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php';
 $pdf_html_filter = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR .  'pdf-html-filter.php';
 
 require_once($eng);
 require_once($tcpdf);
-require_once($class_pdf);
+require_once($class_tei_api);
 require_once($pdf_html_filter);
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
@@ -52,7 +52,7 @@ class TeiPdf {
 
 		$this->tei = $tei_master;
 
-		$paper_size = $this->tei->get_paper_size();
+		$paper_size = $this->tei->getProjectOutputParams("paper-type");
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $paper_size, true, 'UTF-8', false);
 
