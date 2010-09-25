@@ -21,11 +21,6 @@ class TeiApi {
         return $fileName;
 	}
 
-	public function getErrors() {
-
-	}
-
-
 	/* Accessors for building output formats */
 
 	/**
@@ -250,7 +245,8 @@ class TeiApi {
 
 	/**
 	 * get the project title
-	 * @return string <html:span>
+	 * @param $valueOnly = false whether to return the value only or wrap in a span
+	 * @return string
 	 */
 
 	public function getProjectTitle($valueOnly = false) {
@@ -265,14 +261,25 @@ class TeiApi {
 
 	/**
 	 * get the project subtitle
-	 * @return string <html:span>
+	 * @param $valueOnly = false whether to return the value only or wrap in a span
+	 * @return string
 	 */
-	public function getProjectSubTitle() {
+
+	public function getProjectSubTitle($valueOnly = false) {
 
 		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='sub']";
 		$subTitleNode = $this->getNodeListByXPath($queryString, true);
+		if($valueOnly) {
+			return $subTitleNode->firstChild->nodeValue;
+		}
 		return $this->getNodeXML($subTitleNode->firstChild);
 	}
+
+	/**
+	 * get info about the project creator, or just the display name
+	 * @param $asStructured = false whether to return an array with complete data. requires option includeCreatorData = true when construction TeiDOM
+	 * @return mixed array of data or string
+	 */
 
 	public function getProjectCreator($asStructured = false) {
 		$queryString = "//tei:author[@role = 'projectCreator']";
@@ -287,6 +294,11 @@ class TeiApi {
 		return $this->getNodeXML($creator->firstChild);
 	}
 
+	/**
+	 * get copyright/license information about the project
+	 * @param $asStructured = false return as structured data or human-readable
+	 * return string
+	 */
 
 	public function getProjectCopyright($asStructured = false) {
 
@@ -299,10 +311,23 @@ class TeiApi {
 		return $this->getNodeXML($cr);
 	}
 
+	/**
+	 * get edition information about the project
+	 * @param $asStructured = false return as structured data or human-readable
+	 * return string
+	 */
+
 	public function getProjectEdition($asStructured = false) {
 		$edition = $this->getNodeListByXPath("//tei:editionStmt/tei:ab[@rend='literal']/span", true);
 		return $this->getNodeXML($edition);
 	}
+
+	/**
+	 * get an output param set on the export screen
+	 * @param $param = false a single param value to return
+	 * @param $asNode = false whether to return as a node or a string
+	 * @return mixed DOMNode or string or array
+	 */
 
 	public function getProjectOutputParams($param = false, $asNode = false) {
 		$xpath = "/anth:outputDecl/anth:outputParams";
@@ -321,7 +346,10 @@ class TeiApi {
 		return $data;
 	}
 
-
+	/**
+	 * return the publication date
+	 * @return string
+	 */
 
 	public function getProjectPublicationDate() {
 		$query = "//tei:front/tei:head/tei:bibl/tei:data[@type = 'created']";
@@ -333,11 +361,23 @@ class TeiApi {
 		return $data['value'];
 	}
 
+	/**
+	 * get the number of parts in a section
+	 * @param $section = 'body' the section, front, body, or back
+	 * @return int
+	 */
 
 	public function getSectionPartCount($section = 'body') {
 		$count = $this->xpath->evaluate("count(//tei:$section/tei:div[@type='part'])");
 		return $count;
 	}
+
+	/**
+	 * get the id set for a part within a section
+	 * @param $section the section. front, body, or back
+	 * @param $partNumber the number of the part within the section
+	 * @return string
+	 */
 
 	public function getSectionPartId($section, $partNumber) {
 		$params = array('section'=> $section,
@@ -349,6 +389,8 @@ class TeiApi {
 		return $data['value'];
 	}
 
+
+
 	public function getSectionPartHead($section, $partNumber, $asNode = false) {
 		$params = array('section' => $section,
 		'partNumber'=>$partNumber,
@@ -356,6 +398,14 @@ class TeiApi {
 		'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);
 	}
+
+	/**
+	 * get the title for a part within a section
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed string or DOMNode
+	 */
 
 	public function getSectionPartTitle($section, $partNumber, $asNode = false) {
 		$params = array('section'=> $section,
@@ -383,6 +433,13 @@ class TeiApi {
 
 	}
 
+	/**
+	 * get the number of items in a part in a section
+	 * @param $section = 'body' the section, front, body, or back
+	 * @param $partNumber the number of the part within the section
+	 * @return int
+	 */
+
 	public function getSectionPartItemCount($section, $partNumber) {
 		$count = $this->xpath->evaluate("count(//tei:$section/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
 		return $count;
@@ -395,6 +452,16 @@ class TeiApi {
 		'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);
 	}
+
+	/**
+	 * get the title for an item within a part within a section
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed string or DOMNode
+	 */
+
 
 	public function getSectionPartItemTitle($section, $partNumber, $itemNumber, $asNode = false) {
 		$params = array('section'=> $section,
@@ -413,6 +480,14 @@ class TeiApi {
 		}
 	}
 
+	/**
+	 * get the id set for an item within a part within a section
+	 * @param $section the section. front, body, or back
+	 * @param $partNumber the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @return string
+	 */
+
 	public function getSectionPartItemId($section, $partNumber, $itemNumber) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
@@ -423,6 +498,16 @@ class TeiApi {
 		$data = $this->getNodeDataByParams($params);
 		return $data['value'];
 	}
+
+	/**
+	 * get info about the original author of the content anthologized. (that is the author of the post or page, not necessarily the creator of the item within the project)
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @param $valueOnly = true give just the display name
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed string or array
+	 */
 
 	public function getSectionPartItemOriginalCreator($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
@@ -441,6 +526,16 @@ class TeiApi {
 
 	}
 
+	/**
+	 * get info about anthologizer of the content. that is, who added it to the project
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @param $valueOnly = true give just the display name
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed string or array
+	 */
+
 	public function getSectionPartItemCreator($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
@@ -456,7 +551,15 @@ class TeiApi {
 		return $data;
 
 	}
-
+	/**
+	 * get info about the author, as set in the Anthologize project administration pages
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @param $valueOnly = true give just the display name
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed string or array
+	 */
 	public function getSectionPartItemAnthAuthor($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
@@ -487,6 +590,15 @@ class TeiApi {
 
 
 	}
+	/**
+	 * get the tags and categories for the item
+	 * Opinionated comment: the distinction is usually irrelevant across more than one user and blog, so the output gets to sort it out.
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed array or DOMNode
+	 */
 
 	public function getSectionPartItemSubjects($section, $partNumber, $itemNumber, $asNode = false ) {
 		$params = array('section'=> $section,
@@ -494,10 +606,19 @@ class TeiApi {
 		'itemNumber'=>$itemNumber,
 		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs",
 		'asNode'=> $asNode);
-
 		$data = $this->getNodeDataByParams($params, false);
 		return $data;
 	}
+
+	/**
+	 * get the content for an item within a part within a section
+	 * @param $section the section. front, body, or back
+	 * @param $partNumer the number of the part within the section
+	 * @param $itemNumber the number of the item within the part
+	 * @param $asNode whether to return the DOMNode
+	 * @return mixed string or DOMNode
+	 */
+
 
 	public function getSectionPartItemContent($section, $partNumber, $itemNumber, $asNode = false) {
 		$params = array('section'=> $section,
@@ -516,6 +637,13 @@ class TeiApi {
 		}
 	}
 
+	/**
+	 * get the structured data about a person based on their id/username
+	 * @param $ref the id/username of the person. (it's a ref attribute in the TEI)
+	 * @param $asNode whether to return the DOMNode
+	 * @return array
+	 */
+
 	public function getPersonByRef($ref, $asNode = false) {
 		$params = array('id'=>$ref ,
 		'asNode'=>$asNode);
@@ -528,6 +656,13 @@ class TeiApi {
 		'elName'=>$elName);
 		return $this->getNodeDataByParams($params);
 	}
+
+	/**
+	 * dig up a particular piece of data out of the structured array for a user. Basically a helper to sort through the array
+	 * @param array $personArray the structured array representing the person
+	 * @param string $element the name of the data you want
+	 * @return string
+	 */
 
 	public function getPersonDetail($personArray, $element) {
 		switch ($element) {

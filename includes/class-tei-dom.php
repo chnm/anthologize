@@ -246,8 +246,10 @@ class TeiDom {
 	}
 	public function sanitizeMedia() {
 		$this->sanitizeImages();
-		$this->sanitizeEmbeds(); //TODO
-		$this->sanitizeHTML5(); //TODO
+
+		if($this->linkToEmbeddedObjects) {
+			$this->sanitizeEmbeds();
+		}
 	}
 
 	public function sanitizeImages() {
@@ -470,9 +472,6 @@ class TeiDom {
 		}
 	}
 
-	public function sanitizeHTML5() {
-
-	}
 
 	public function newPart($partObject) {
 		$newPart = $this->dom->createElementNS(TEI, 'div');
@@ -866,9 +865,7 @@ class TeiDom {
 		return $this->dom;
 	}
 
-
-
-	public static function getFileName($sessionArray) {
+	public function getFileName($sessionArray) {
 
         $text = strtolower($sessionArray['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
