@@ -940,6 +940,3 @@ class TeiDom {
 }
 
 
-
-?>
-

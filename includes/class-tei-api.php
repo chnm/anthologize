@@ -233,7 +233,6 @@ class TeiApi {
 	 */
 
 	public function getNodeListByXPath($xpath, $firstOnly = false) {
-
 		if(is_array($xpath)) {
 			$nodeList = $this->xpath->query($xpath['xpath'], $xpath['contextNode']);
 		} else {
@@ -306,7 +305,7 @@ class TeiApi {
 	}
 
 	public function getProjectOutputParams($param = false, $asNode = false) {
-		$xpath = "//anth:outputDecl/anth:outputParams";
+		$xpath = "/anth:outputDecl/anth:outputParams";
 		if($param) {
 			$xpath .= "/anth:param[@name='$param']";
 		}
@@ -477,8 +476,6 @@ class TeiApi {
 	public function getSectionPartItemMetaEl($section, $partNumber, $itemNumber, $elName, $asNode = false) {
 
 		$xpath = "//tei:body/tei:div[@n='$partNumber']/tei:div[@n='$itemNumber']/tei:head/$elName";
-
-		echo $xpath;
 		$nl = $this->getNodeListByXPath($xpath);
 
 		$retArray = array();
@@ -502,7 +499,7 @@ class TeiApi {
 		return $data;
 	}
 
-	public function getSectionPartItemContent($section, $partNumber, $itemNumber) {
+	public function getSectionPartItemContent($section, $partNumber, $itemNumber, $asNode = false) {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
@@ -572,4 +569,3 @@ class TeiApi {
 
 
 }
-?>

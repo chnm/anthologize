@@ -6,7 +6,7 @@
 *
 * @author One Week | One Tool {@link http://oneweekonetool.org/people/}
 *
-* Last Modified: Thu Sep 09 11:25:41 CDT 2010
+* Last Modified: Thu Aug 05 15:06:19 CDT 2010
 *
 * @copyright Copyright (c) 2010 Center for History and New Media, George Mason
 * University.
@@ -30,12 +30,12 @@
 
 $eng = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'eng.php';
 $tcpdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php';
-$class_tei_api = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php';
+$class_pdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-tei.php';
 $pdf_html_filter = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR .  'pdf-html-filter.php';
 
 require_once($eng);
 require_once($tcpdf);
-require_once($class_tei_api);
+//require_once($class_pdf);
 require_once($pdf_html_filter);
 
 define('TEI', 'http://www.tei-c.org/ns/1.0');
@@ -52,7 +52,7 @@ class TeiPdf {
 
 		$this->tei = $tei_master;
 
-		$paper_size = $this->tei->getProjectOutputParams("paper-type");
+		$paper_size = $this->tei->getProjectOutputParams('paper-size');
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $paper_size, true, 'UTF-8', false);
 
@@ -70,25 +70,25 @@ class TeiPdf {
 
 	public function write_pdf() {
 
-		$book_title = $this->tei->get_book_title();
-		$book_subtitle = $this->tei->get_book_title('sub');
-		$book_author = $this->tei->get_book_author();
+		$book_title = $this->tei->getProjectTitle();
+		$book_subtitle = $this->tei->getProjectSubTitle();
+		$book_author = $this->tei->getProjectCreator();
 
 		// Title Page
 		$this->pdf->AddPage();
 		$this->set_title("h1", $book_title);
-		if ($book_subtitle != '') { $this->set_sub_title($book_subtitle); }
+		if ($book_subtitle != '') { $this->set_sub_title("h2", $book_subtitle); }
 		$this->set_title("h3", $book_author);
 
 		// Copyright page
 		$this->pdf->AddPage();
 		$rights_html = "<div style=\"text-align: center;\"><p><em>".$book_title;
 		if ($book_subtitle != ''){
-			$rights_html .= ": ".$book_sub_title;
+			$rights_html .= ": ".$book_subtitle;
 		}
 		$rights_html .= "</em><br />";
 
-		$book_availability = $this->tei->get_availability();
+		$book_availability = $this->tei->getProjectCopyright();
 		$rights_html .= $book_availability."</p>";
 
 
@@ -96,30 +96,35 @@ class TeiPdf {
 
 		// Main content
 		$this->pdf->AddPage();
-		// Create a nodeList containing all parts.
-		$parts = $this->tei->get_parts();
 
-		foreach ($parts as $part) {
+		$partCount = $this->tei->getSectionPartCount('body');
+
+		for ($part = 0; $part < $partCount; $part++) {
 			// Grab the main title for each part and render it as
 			// a "chapter" title.
-			$title = $this->tei->get_title($part);
+
+			//getSectionPartTitle returns the title wrapped in a span, which pdf->Bookmark seems not to like.
+			//c'mon, what's not to like?
+			$titleSpan = $this->tei->getSectionPartTitle('body', $part, true);
+
+
+			$title = $titleSpan->nodeValue;
 
 			$html = "<h1>" . $title . "</h1>";
 
 			// Create a nodeList containing all libraryItems
-			$library_items = $this->tei->get_div("libraryItem", $part);
 
-			foreach ($library_items as $item) {
+			$libraryItemCount = $this->tei->getSectionPartItemCount('body', $part);
+			for ($libraryItem = 0; $libraryItem < $libraryItemCount; $libraryItem++) {
 
 				// Grab the main title for each libraryItem and render it
 				// as a "sub section" title.
-				$sub_title = $this->tei->get_title($item);
+				$sub_title = $this->tei->getSectionPartItemTitle('body', $part, $libraryItem);
 
 				$html = $html . "<h3>" . $sub_title . "</h3>";
 
 				// All content below <html:body>
-				$post_content = $this->tei->get_html($item);
-				$post_conent  = filter_html($post_content);
+				$post_content = $this->tei->getSectionPartItemContent('body', $part, $libraryItem);
 
 				$html .= $post_content;
 
@@ -145,7 +150,7 @@ class TeiPdf {
 		$this->pdf->WriteHTML($colophon);
 
 		//echo get_class($html); // DEBUG
-		$filename = $book_title . ".pdf";
+		$filename = $this->tei->getFileName() . ".pdf";
 		$this->pdf->Output($filename, 'I');
 
 	} // writePDF
@@ -157,8 +162,7 @@ class TeiPdf {
 
 	}
 
-	private function set_sub_title($h, $book_subtitle) {	
-
+	private function set_sub_title($h, $book_subtitle) {
 		$subtitle_html = '<h2 style="text-align: center">' . $book_subtitle . '</h2>';
 		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
 
@@ -166,7 +170,7 @@ class TeiPdf {
 
 	private function set_title_author($book_author) {
 
-		$subtitle_html = '<' . $h . ' style="text-align: center">' . $book_subtitle . '</h2>';
+		$subtitle_html = '<' . $h . ' style="text-align: center">' . $book_author . '</h2>';
 		$this->pdf->WriteHTML($subtitle_html, true, 0, true, 0);
 
 	}
@@ -188,14 +192,12 @@ class TeiPdf {
 
 	private function set_docinfo() {
 
-		$book_author = $this->tei->get_book_author();
-		$book_title = $this->tei->get_book_title();
+		$book_author = $this->tei->getProjectCreator();
+		$book_title = $this->tei->getProjectTitle();
 
 		$this->pdf->SetCreator("Anthologize: A One Week | One Tool Production");
 		$this->pdf->SetAuthor($book_author);
 		$this->pdf->SetTitle($book_title);
-		//$this->pdf->SetSubject('Barbecue');
-		//$this->pdf->SetKeywords('Boone, barbecue, oneweek, pants');
 
 	}
 
@@ -206,8 +208,8 @@ class TeiPdf {
 		// set default font subsetting mode
 		$this->pdf->setFontSubsetting(true);
 
-		$font_family = $this->tei->get_font_family();
-		$font_size   = $this->tei->get_font_size();
+		$font_family = $this->tei->getProjectOutputParams('font-family');
+		$font_size   = $this->tei->getProjectOutputParams('font-size');
 
 		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 
@@ -225,7 +227,7 @@ class TeiPdf {
 
 		$day   = date(jS);
 		$month = date(F);
-	 	$year  = date(Y);	
+	 	$year  = date(Y);
 		$date  = "the " . $day . " of " . $month . ", " . $year;
 
 		$logo  = WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif';
