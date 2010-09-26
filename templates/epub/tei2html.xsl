@@ -32,6 +32,8 @@
         </title>
         <style type="text/css">
           <xsl:text>
+            p { clear: both; }
+            
             @page { margin: 3cm }
             body {
               padding-top: 10em; 
