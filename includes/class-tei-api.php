@@ -188,7 +188,7 @@ class TeiApi {
 
 	/**
 	 * dump the node to a string
-	 * @pararm DOMNode $node a node
+	 * @param DOMNode $node a node
 	 * @return string
 	 */
 

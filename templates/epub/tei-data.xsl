@@ -15,33 +15,34 @@
     </xd:desc>
   </xd:doc>
 
-  <xsl:variable name="book.title"
-    select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/>
 
   <xsl:variable name="book.title-page"
-    select="/tei:TEI/tei:text/tei:front/tei:titlePage"/>
+    select="/tei:TEI/tei:text/tei:front/tei:head[@type='titlePage']"/>
   <xsl:variable name="book.title-page.main-title"
-    select="$book.title-page/tei:docTitle/tei:titlePart[@type='main']"/>
+    select="$book.title-page/tei:bibl/tei:title[@type='main']"/>
+  <xsl:variable name="book.title"
+    select="$book.title-page/tei:bibl/tei:title[@type='main']"/>
   <xsl:variable name="book.title-page.sub-title"
-    select="$book.title-page/tei:docTitle/tei:titlePart[@type='sub']"/>
+    select="$book.title-page/tei:bibl/tei:title[@type='sub']"/>
+		
   <xsl:variable name="book.title-page.doc-author"
-    select="$book.title-page/tei:docAuthor"/>
+    select="$book.title-page/tei:bibl/tei:author[@role='projectCreator']"/>
 
   <!-- Dedication -->
 
   <xsl:variable name="book.dedication">
     <xsl:copy-of
-      select="/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f1']/html:body/node()"
+      select="/tei:TEI/tei:text/tei:front/tei:div[@tei:n = '0']/html:div/node()"
     />
   </xsl:variable>
 
   <!-- Acknowledgements-->
 
   <xsl:variable name="book.acknowledgements"
-    select="/tei:TEI/tei:text/tei:front/tei:*[@xml:id='f2']" /> 
+    select="/tei:TEI/tei:text/tei:front/tei:div[@tei:n = '1']" /> 
 
   <xsl:variable name="book.acknowledgements.text">
-    <xsl:copy-of select="$book.acknowledgements/html:body/node()"/>
+    <xsl:copy-of select="$book.acknowledgements/html:div/node()"/>
   </xsl:variable>
 
   <xsl:variable name="book.acknowledgements.title"
