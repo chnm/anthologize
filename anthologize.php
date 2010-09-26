@@ -246,9 +246,9 @@ class Anthologize_Loader {
 		);
 
 		$d_font_face = array(
-			'times' => __( 'Times New Roman', 'anthologize' ),
-			'helvetica' => __( 'Helvetica', 'anthologize' ),
-			'courier' => __( 'Courier', 'anthologize' )
+			'Times New Roman' => __( 'Times New Roman', 'anthologize' ),
+			'Helvetica' => __( 'Helvetica', 'anthologize' ),
+			'Courier' => __( 'Courier', 'anthologize' )
 		);
 
 
@@ -259,7 +259,7 @@ class Anthologize_Loader {
 
 		anthologize_register_format_option( 'pdf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
 
-		anthologize_register_format_option( 'pdf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
+		anthologize_register_format_option( 'pdf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'Times New Roman' );
 
 
 		// Register RTF + options
@@ -269,11 +269,16 @@ class Anthologize_Loader {
 
 		anthologize_register_format_option( 'rtf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
 
-		anthologize_register_format_option( 'rtf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'times' );
+		anthologize_register_format_option( 'rtf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face, 'Times New Roman' );
 
 
-		// Register ePub. No options for this one
+		// Register ePub.
 		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
+
+		anthologize_register_format_option( 'epub', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
+
+		anthologize_register_format_option( 'epub', 'font-family', __( 'Font Family', 'anthologize' ), 'dropdown', $d_font_face, 'Times New Roman' );
+
 
 
 		// Register TEI. No options for this one

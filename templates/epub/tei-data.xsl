@@ -61,7 +61,7 @@
   <!-- Output parameters -->
 
   <xsl:variable name="parameters.root"
-    select="/tei:TEI/tei:teiHeader/az:outputParams"/>
+    select="/tei:TEI/tei:teiHeader/tei:profileDesc/az:outputDecl/az:outputParams"/>
   <xsl:variable name="parameters.font-size"
     select="normalize-space($parameters.root/*[@name='font-size']/text())"/>
   <xsl:variable name="parameters.font-family"
@@ -72,5 +72,7 @@
     select="normalize-space($parameters.root/*[@name='page-width']/text())"/>
   <xsl:variable name="parameters.page-height"
     select="normalize-space($parameters.root/*[@name='page-height']/text())"/>
+
+
 
 </xsl:stylesheet>
