@@ -56,6 +56,12 @@ class TeiPdf {
 
 		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $paper_size, true, 'UTF-8', false);
 
+$lg = Array();
+$lg['a_meta_charset'] = 'UTF-8';
+
+
+//set some language-dependent strings
+$this->pdf->setLanguageArray($lg);
 
 		//set auto page breaks
 		$this->pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -209,9 +215,8 @@ class TeiPdf {
 		// set default font subsetting mode
 		$this->pdf->setFontSubsetting(true);
 
-		$font_family = $this->tei->getProjectOutputParams('font-family');
+		$font_family = $this->tei->getProjectOutputParams('font-face');
 		$font_size   = $this->tei->getProjectOutputParams('font-size');
-
 		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 
 	}
