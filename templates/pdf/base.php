@@ -32,7 +32,7 @@
 //error_reporting(0);
 
 
-$class_pdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR .  'pdf' . DIRECTORY_SEPARATOR . 'class-pdf.php';
+$class_pdf = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR .  'pdf' . DIRECTORY_SEPARATOR . 'class-pdf.php';
 
 include_once(ANTHOLOGIZE_TEIDOM_PATH);
 include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
@@ -68,7 +68,7 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 	$pdf = new TeiPdf($tei_master);
 
 	//header('Content-type: application/pdf');
-	//$pdf->write_pdf();
+	$pdf->write_pdf();
 
 }
 
