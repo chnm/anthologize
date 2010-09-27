@@ -217,8 +217,8 @@ $this->pdf->setLanguageArray($lg);
 
 		$font_family = $this->tei->getProjectOutputParams('font-face');
 		$font_size   = $this->tei->getProjectOutputParams('font-size');
-		$this->pdf->SetFont($font_family, '', $font_size, '', true);
-
+//		$this->pdf->SetFont($font_family, '', $font_size, '', true);
+		$this->pdf->SetFont('arialunicid0', '', $font_size, '', true);
 	}
 
 	private function set_margins() {
