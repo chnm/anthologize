@@ -84,7 +84,9 @@ class Anthologize_Ajax_Handlers {
 
 		$args = array(
 			'post_type' => array('post', 'page', 'anth_imported_item' ),
-			'posts_per_page' => -1
+			'posts_per_page' => -1,
+			'orderby' => 'post_date',
+			'order' => 'DESC'
 		);
 
 		switch ( $filterby ) {
@@ -120,11 +122,11 @@ class Anthologize_Ajax_Handlers {
 		}
 
 		// Allow plugins to modify the query_post arguments
-		query_posts( apply_filters( 'anth_get_posts_by_query', $args, $filterby ) );
+		$posts = new WP_Query( apply_filters( 'anth_get_posts_by_query', $args, $filterby ) );
 		
 		$the_posts = Array();
-		while ( have_posts() ) {
-			the_post();
+		while ( $posts->have_posts() ) {
+			$posts->the_post();
 			$the_posts[get_the_ID()] = get_the_title();
 		}
 		if ($filterby == 'date'){

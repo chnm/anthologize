@@ -395,7 +395,9 @@ class Anthologize_Project_Organizer {
 
 		$args = array(
 			'post_type' => array('post', 'page', 'anth_imported_item' ),
-			'posts_per_page' => -1
+			'posts_per_page' => -1,
+			'orderby' => 'post_title',
+			'order' => 'DESC'
 		);
 				
 		$cfilter = ( isset( $_COOKIE['anth-filter'] ) ) ? $_COOKIE['anth-filter'] : false;
@@ -421,8 +423,19 @@ class Anthologize_Project_Organizer {
 					
 			if ( $cterm ) {
 				if ( $cfilter ) {
-					$t_or_c = ( $cfilter == 'tag' ) ? 'tag' : 'cat';
-					$args[$t_or_c] = $cterm;
+					switch( $cfilter ) {
+						case 'tag' :
+							$filtertype = 'tag';
+							break;
+						case 'category' :
+							$filtertype = 'cat';
+							break;
+						case 'post_type' :
+							$filtertype = 'post_type';
+							break;
+					}
+					
+					$args[$filtertype] = $cterm;
 				}
 			}
 
@@ -447,8 +460,6 @@ class Anthologize_Project_Organizer {
 		$items = get_post_meta( $part_id, 'items', true );
 
 		$item_query = new WP_Query( 'post_type=items&post_parent=' . $part_id );
-
-//		print_r($item_query->query());
 
 		$sql = "SELECT id, post_title FROM wp_posts WHERE post_type = 'page' OR post_type = 'post' OR post_type = 'anth_imported_item'";
 		$ids = $wpdb->get_results($sql);
