@@ -153,8 +153,10 @@ $this->pdf->setLanguageArray($lg);
 		// // end of TOC page
 		$this->pdf->endTOCPage();
 
-		$colophon = $this->get_colophon();
-		$this->pdf->WriteHTML($colophon);
+		if ( $this->tei->getProjectOutputParams('colophon') == 'on' ) {
+			$colophon = $this->get_colophon();
+			$this->pdf->WriteHTML($colophon);
+		}
 
 		//echo get_class($html); // DEBUG
 		$filename = $this->tei->getFileName() . ".pdf";

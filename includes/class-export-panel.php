@@ -235,7 +235,13 @@ class Anthologize_Export_Panel {
 		
 		if ( $_POST['export-step'] == '2' )
 			$_SESSION['outputParams'] = array( 'format' => $_POST['filetype'] );
+		
+		// outputParams need to be reset at step 3 so that
+		// on a refresh null values will overwrite
+		if ( $_POST['export-step'] == '3' )
+			$_SESSION['outputParams'] = array( 'format' => $_SESSION['outputParams']['filetype'] );
 				
+		
 		foreach ( $_POST as $key => $value ) {
 			if ( $key == 'submit' || $key == 'export-step' )
 				continue;
@@ -243,9 +249,6 @@ class Anthologize_Export_Panel {
 			if ( $key == '' )
 				echo "OK";
 			
-			if ( !is_array( $_SESSION['outputParams'] ) )
-				$_SESSION['outputParams'] = array();
-				
 			if ( $_POST['export-step'] == '3' )
 				$_SESSION['outputParams'][$key] = $value;
 			else
