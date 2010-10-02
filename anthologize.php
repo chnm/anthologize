@@ -255,7 +255,8 @@ class Anthologize_Loader {
 			'times' => __( 'Times New Roman', 'anthologize' ),
 			'helvetica' => __( 'Helvetica', 'anthologize' ),
 			'courier' => __( 'Courier', 'anthologize' ),
-			'dejavusans' => __( 'Deja Vu Sans', 'anthologize' )
+			'dejavusans' => __( 'Deja Vu Sans', 'anthologize' ),
+			'arialunicid0' => __( 'ArialUniCid (Best for Eastern scripts)', 'anthologize' )
 		);
 
 		$d_font_face_epub = array(

@@ -250,4 +250,4 @@ $this->pdf->setLanguageArray($lg);
 
 } // TeiPdf
 
-?>
+
