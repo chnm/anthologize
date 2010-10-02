@@ -219,6 +219,9 @@ $this->pdf->setLanguageArray($lg);
 
 		$font_family = $this->tei->getProjectOutputParams('font-face');
 		$font_size   = $this->tei->getProjectOutputParams('font-size');
+		if(strpos($font_family, 'arialunicid0') !== false) {
+			$font_family = 'arialunicid0';
+		}
 		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 //		$this->pdf->SetFont('arialunicid0', '', $font_size, '', true);
 	}
