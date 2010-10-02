@@ -202,7 +202,7 @@ $this->pdf->setLanguageArray($lg);
 	private function set_docinfo() {
 
 		$book_author = $this->tei->getProjectCreator();
-		$book_title = $this->tei->getProjectTitle();
+		$book_title = $this->tei->getProjectTitle(true);
 
 		$this->pdf->SetCreator("Anthologize: A One Week | One Tool Production");
 		$this->pdf->SetAuthor($book_author);
