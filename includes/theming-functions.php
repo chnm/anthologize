@@ -104,12 +104,12 @@ function anth_the_author() {
 	global $itemN;
 
 	if(false !== $itemCount) {
-		echo $api->getSectionPartItemCreator($section, $partN, $itemN);
+		echo $api->getSectionPartItemOriginalCreator($section, $partN, $itemN);
 		return;
 	}
 
 	if(false !== $partCount) {
-		echo $api->getSectionPartCreator($section, $partN);
+		echo $api->getSectionPartOriginalCreator($section, $partN);
 		return;
 	}
 
@@ -145,13 +145,14 @@ function anth_author_gravatar() {
 	global $itemCount;
 	global $itemN;
 
-	if(false !== $itemCount) {
-		$author =  $api->getSectionPartItemCreator($section, $partN, $itemN, false);
-	}
-
 	if(false !== $partCount) {
 		//$author = $api->getSectionPartCreator($section, $partN, false); TODO
 	}
+
+	if(false !== $itemCount) {
+		$author =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
+	}
+
 
 	$details = $api->getPersonByRef($author['atts']['ref']);
 
