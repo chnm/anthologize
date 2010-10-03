@@ -14,6 +14,16 @@ $itemN = -1;
 $itemCount = false;
 
 
+function anth_project_title($valueOnly = false) {
+	global $api;
+	echo $api->getProjectTitle($valueOnly);
+}
+
+function anth_project_subtitle() {
+	global $api;
+	echo $api->getProjectSubTitle();
+}
+
 function anth_the_section($section_name) {
 	global $api;
 	global $section;
@@ -121,4 +131,43 @@ function anth_item_content() {
 	return false;
 
 }
+
+
+
+
+/* Functions requiring structured author information */
+
+function anth_author_gravatar() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+
+	if(false !== $itemCount) {
+		$author =  $api->getSectionPartItemCreator($section, $partN, $itemN, false);
+	}
+
+	if(false !== $partCount) {
+		//$author = $api->getSectionPartCreator($section, $partN, false); TODO
+	}
+
+	$details = $api->getPersonByRef($author['atts']['ref']);
+
+	echo $api->getPersonDetail($details, 'gravatarUrl');
+
+}
+
+
+
+/* Funcitons requiring structured content information */
+
+
+
+
+/* Functions requiring subject data */
+
+
+
 

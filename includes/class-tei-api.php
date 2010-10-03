@@ -698,9 +698,5 @@ class TeiApi {
 
 	}
 
-	public function getGravatar($authorId, $urlOnly = false ) {
-
-	}
-
 
 }
