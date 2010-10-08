@@ -42,12 +42,27 @@ function anth_get_the_project_subtitle($valueOnly = false) {
  * set the section to loop through ('front', 'body', or 'back') and prepare to loop through parts
  */
 
+//TODO: handle front and back sections
+
 function anth_section($section_name) {
 	global $api;
 	global $section;
 	global $partCount;
 	$section = $section_name;
-	$partCount = $api->getSectionPartCount($section);
+	switch($section_name) {
+		case 'front':
+			$partCount = 1;
+		break;
+
+		case 'body':
+			$partCount = $api->getSectionPartCount($section);
+		break;
+
+		case 'back':
+			$partCount = 1;
+		break;
+	}
+
 }
 
 /**

@@ -441,7 +441,22 @@ class TeiApi {
 	 */
 
 	public function getSectionPartItemCount($section, $partNumber) {
-		$count = $this->xpath->evaluate("count(//tei:$section/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
+		switch($section) {
+			case 'front':
+				$count = $this->xpath->evaluate("count(//tei:$section/tei:div)");
+			break;
+
+			case 'body':
+				$count = $this->xpath->evaluate("count(//tei:$section/tei:div[@type='part'][@n='$partNumber']/tei:div[@type='libraryItem'])");
+			break;
+
+			case 'back':
+
+			break;
+
+		}
+
+
 		return $count;
 	}
 

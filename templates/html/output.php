@@ -48,6 +48,21 @@ if( isset($ops['outputParams']['download']) ) {
 	<body>
 	<h1><?php anth_the_project_title(); ?></h1>
 
+	<?php anth_section('front'); ?>
+
+	<?php while ( anth_parts() ): ?>
+
+		<?php anth_part(); ?>
+
+		<?php while ( anth_part_items() ): ?>
+
+			<?php anth_item(); ?>
+			<h2><?php anth_the_title(); ?></h2>
+			<?php anth_the_item_content(); ?>
+		<?php endwhile; ?>
+	<?php endwhile; ?>
+
+
 	<?php
 
 	anth_section('body');
