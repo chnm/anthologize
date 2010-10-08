@@ -1,6 +1,6 @@
 <?php
 
-  //error_reporting(0);
+  error_reporting(0);
   set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . '/pear_ext');
 
   /*
@@ -178,7 +178,9 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
   $proc->importStylesheet($tei2html_xsl);
   $fp = fopen($html_filename, "w") or die("Couldn't open temporary file for epub archive (main_content.html)");
+  // die(preg_replace('/</u','&lt;', $teiDom->saveXML()));
   $html = $proc->transformToXML($teiDom);
+  //die(preg_replace('/</u','&lt;', $html));
   $empty_namespace_pattern = '/\sxmlns=""\s/i';
   $html_no_empty_namespaces = preg_replace('/xmlns=""/u', '', $html);
   fwrite($fp, $html_no_empty_namespaces);

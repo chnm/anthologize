@@ -33,7 +33,7 @@
         <style type="text/css">
           <xsl:text>
             p { clear: both; }
-            
+            p+p { text-indent: 1.5em }
             @page { margin: 3cm }
             body {
               padding-top: 10em; 
@@ -265,8 +265,6 @@
   <!--
     Wordpress wraps all images in anchor tags, which the epub format doesn't like.
     Strip all links from images
-    
-    CHANGE: should also confirm that the image tag is the only child
   -->
 
   <xsl:template match="a[img and count(.//*) = 1]" mode="html-content">
@@ -297,7 +295,6 @@
         </xsl:call-template>
       </xsl:variable>
       <xsl:value-of select="concat($images-directory, $img-url-filename-only)"/>
-      <!--select="concat($images-directory, '/', $img-url-filename-only)"/>-->
     </xsl:attribute>
   </xsl:template>
 
