@@ -97,6 +97,7 @@ class TeiDom {
 		$partObjectsArray = $partsData->posts;
 		usort($partObjectsArray, array('TeiDom', 'postSort'));
 
+
 		$partNumber = 0;
 		foreach($partObjectsArray as $partObject) {
 			$newPart = $this->newPart($partObject);
@@ -108,9 +109,13 @@ class TeiDom {
 			//TODO: find a way to set no limit to post_per_page without the magic big number
 			$libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item', 'posts_per_page'=>200));
 			$libraryItemObjectsArray = $libraryItemsData->posts;
+
+
+
 			//sort objects, by menu_order, then ID
 			usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
 			$itemNumber = 0;
+
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
 
 				$origPostData = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
@@ -585,6 +590,9 @@ class TeiDom {
 		$content = $this->sanitizeEntities($content);
 		if ($isMultiline) {
 			$content = wpautop($content);
+			$content = $this->sanitizeShortCodes($content);
+
+
 			$element = "div";
 		} else {
 			$element = "span";
@@ -619,10 +627,14 @@ class TeiDom {
 
 	private function sanitizeShortCodes($content) {
 
-	     $pattern = get_shortcode_regex();
+		$content = do_shortcode($content);
+		if($this->doShortcodes) {
+		    $pattern = get_shortcode_regex();
+			return preg_replace_callback('/'.$pattern.'/s', array('TeiDom', 'sanitizeShortCode'), $content);
+		} else {
+			return strip_shortcodes($content);
+		}
 
-	     return preg_replace_callback('/'.$pattern.'/s', array('TeiDom', 'sanitizeShortCode'), $content);
-	     //TODO: go to town on additional shortcodes not being expanded
 	}
 
 	private function sanitizeEntities($content) {
@@ -632,7 +644,7 @@ class TeiDom {
 	}
 
 	private function sanitizeShortCode($m) {
-		//modified from WP do_shortcode_tag() wp_includes/shorcodes.php
+		//modified from WP do_shortcode_tag() wp_includes/shortcodes.php
 
 		$tag = $m[2];
 		$html = "<span class='anthologize-shortcode'>***";

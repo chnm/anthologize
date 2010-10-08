@@ -25,8 +25,10 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 
 $ops['outputParams'] = $_SESSION['outputParams'];
 
+
 $tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
+
 
 
 $fileName = $api->getFileName();
