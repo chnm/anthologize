@@ -79,7 +79,7 @@ if( isset($ops['outputParams']['download']) ) {
 
 			while( anth_part_items() ) {
 				anth_item();
-
+				anth_author_meta();
 				?>
 				<h3><?php anth_the_title() ?></h3>
 				<div class="item-meta">
