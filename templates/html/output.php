@@ -8,8 +8,8 @@ global $api;
 
 //TODO: simplify and condense these options
 
-$ops = array('includeStructuredSubjects' => false, //Include structured data about tags and categories
-		'includeItemSubjects' => false, // Include basic data about tags and categories
+$ops = array('includeStructuredSubjects' => true, //Include structured data about tags and categories
+		'includeItemSubjects' => true, // Include basic data about tags and categories
 		'includeCreatorData' => true, // Include basic data about creators
 		'includeStructuredCreatorData' => true, //include structured data about creators
 		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories and creator data)
@@ -28,8 +28,6 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
 $tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
-
-
 
 $fileName = $api->getFileName();
 $ext = "html";
@@ -81,6 +79,20 @@ if( isset($ops['outputParams']['download']) ) {
 
 			while( anth_part_items() ) {
 				anth_item();
+				echo "<p>Tags</p><ul>";
+				while( anth_tags() ) {
+					echo "<li>" . anth_get_the_tag() . "</li>";
+
+				}
+				echo "</ul>";
+
+				echo "<p>Categories</p><ul>";
+				while( anth_categories() ) {
+					echo "<li>" . anth_get_the_category() . "</li>";
+
+				}
+				echo "</ul>";
+
 				anth_author_meta();
 				?>
 				<h3><?php anth_the_title() ?></h3>

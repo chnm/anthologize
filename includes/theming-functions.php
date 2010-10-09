@@ -282,28 +282,68 @@ function anth_get_the_author_detail($detail) {
 
 
 function anth_tags() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $tags;
+	global $tagIndex;
 
+	if(! is_array($tags) ) {
+		$tags = $api->getSectionPartItemTags($section, $partN, $itemN);
+		$tagIndex = -1;
+	}
+
+
+	if($tags) {
+		$tagIndex++;
+		if($tagIndex >= count($tags)) {
+			unset($tags);
+			$tagIndex = -1;
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
+
+/**
+ * sets the deep data array for the tag. access details via anth_tag_detail($detail)
+ */
 
 function anth_tag() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $tags;
+	global $tagIndex;
+
 
 }
 
-function anth_categories() {
+
+function anth_get_the_tag() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $tags;
+	global $tagIndex;
+
+	return $tags[$tagIndex]['spans'][0]['value'];
 
 }
 
-function anth_category() {
+function anth_the_tag() {
 
-}
-
-function anth_get_the_tag($valueOnly = false) {
-
-}
-
-function anth_the_tag($valueOnly = false) {
-
-
+	echo anth_get_the_tag();
 }
 
 function anth_get_the_tag_detail($detail) {
@@ -314,15 +354,62 @@ function anth_the_tag_detail($detail) {
 
 }
 
-function anth_get_the_category($valueOnly = false) {
+
+
+function anth_categories() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $categories;
+	global $catIndex;
+
+	if(! is_array($categories) ) {
+		$categories = $api->getSectionPartItemCategories($section, $partN, $itemN);
+		$catIndex = -1;
+	}
+
+
+	if($categories) {
+		$catIndex++;
+		if($catIndex >= count($categories)) {
+			unset($categories);
+			$catIndex = -1;
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
+function anth_category() {
 
 }
+
+
+
+function anth_get_the_category() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $categories;
+	global $catIndex;
+
+	return $categories[$catIndex]['spans'][0]['value'];
+}
+
+
+function anth_the_category() {
+	echo anth_get_the_category();
+}
+
 
 function anth_get_the_category_detail($detail) {
-
-}
-
-function anth_the_category($valueOnly = false) {
 
 }
 

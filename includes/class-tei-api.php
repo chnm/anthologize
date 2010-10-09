@@ -150,6 +150,7 @@ class TeiApi {
 			$nodeList = $this->getNodeListByXPath($queryString);
 		}
 
+
 		if(! $nodeList ) {
 			return false;
 		}
@@ -607,7 +608,7 @@ class TeiApi {
 	}
 	/**
 	 * get the tags and categories for the item
-	 * Opinionated comment: the distinction is usually irrelevant across more than one user and blog, so the output gets to sort it out.
+	 * Opinionated comment: the distinction is usually irrelevant across more than one user and blog, so -Subjects covers both, -Tags and -Categories make the distinction
 	 * @param $section the section. front, body, or back
 	 * @param $partNumer the number of the part within the section
 	 * @param $itemNumber the number of the item within the part
@@ -620,6 +621,26 @@ class TeiApi {
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
 		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs",
+		'asNode'=> $asNode);
+		$data = $this->getNodeDataByParams($params, false);
+		return $data;
+	}
+
+	public function getSectionPartItemTags($section, $partNumber, $itemNumber, $asNode = false ) {
+		$params = array('section'=> $section,
+		'partNumber'=>$partNumber,
+		'itemNumber'=>$itemNumber,
+		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs[@type='tag']",
+		'asNode'=> $asNode);
+		$data = $this->getNodeDataByParams($params, false);
+		return $data;
+	}
+
+	public function getSectionPartItemCategories($section, $partNumber, $itemNumber, $asNode = false ) {
+		$params = array('section'=> $section,
+		'partNumber'=>$partNumber,
+		'itemNumber'=>$itemNumber,
+		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs[@type='category']",
 		'asNode'=> $asNode);
 		$data = $this->getNodeDataByParams($params, false);
 		return $data;
