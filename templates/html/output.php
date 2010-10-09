@@ -81,15 +81,19 @@ if( isset($ops['outputParams']['download']) ) {
 				anth_item();
 				echo "<p>Tags</p><ul>";
 				while( anth_tags() ) {
-					echo "<li>" . anth_get_the_tag() . "</li>";
-
+					anth_tag_meta();
+					echo "<li>";
+					echo "<a href='" . anth_get_the_tag_detail('url') . "'>"  . anth_get_the_tag() . "</a>";
+					echo "</li>";
 				}
 				echo "</ul>";
 
 				echo "<p>Categories</p><ul>";
 				while( anth_categories() ) {
-					echo "<li>" . anth_get_the_category() . "</li>";
-
+					anth_category_meta();
+					echo "<li>";
+					echo "<a href='" . anth_get_the_category_detail('url') . "'>"  . anth_get_the_category() . "</a>";
+					echo "</li>";
 				}
 				echo "</ul>";
 

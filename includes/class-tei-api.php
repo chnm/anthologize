@@ -673,14 +673,15 @@ class TeiApi {
 		}
 	}
 
+
 	/**
-	 * get the structured data about a person based on their id/username
+	 * get the structured data about a person or subject based on their id/username
 	 * @param $ref the id/username of the person. (it's a ref attribute in the TEI)
 	 * @param $asNode whether to return the DOMNode
 	 * @return array
 	 */
 
-	public function getPersonByRef($ref, $asNode = false) {
+	public function getDetailsByRef($ref, $asNode = false) {
 		$params = array('id'=>$ref ,
 		'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);

@@ -237,7 +237,7 @@ function anth_author_meta() {
 		$author =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
 	}
 
-	$author_meta = $api->getPersonByRef($author['atts']['ref']);
+	$author_meta = $api->getDetailsByRef($author['atts']['ref']);
 }
 
 
@@ -261,7 +261,7 @@ function anth_get_the_author_detail($detail) {
 			$author =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
 		}
 
-		$author_meta = $api->getPersonByRef($author['atts']['ref']);
+		$author_meta = $api->getDetailsByRef($author['atts']['ref']);
 	}
 
 
@@ -313,7 +313,7 @@ function anth_tags() {
  * sets the deep data array for the tag. access details via anth_tag_detail($detail)
  */
 
-function anth_tag() {
+function anth_tag_meta() {
 	global $api;
 	global $section;
 	global $partN;
@@ -322,8 +322,13 @@ function anth_tag() {
 	global $itemN;
 	global $tags;
 	global $tagIndex;
+	global $tag_meta;
 
 
+	if(is_array($tags) && isset($tags[$tagIndex] ) ) {
+		$ref = $tags[$tagIndex]['atts']['ref'];
+		$tag_meta = $api->getDetailsByRef($ref);
+	}
 }
 
 
@@ -347,11 +352,27 @@ function anth_the_tag() {
 }
 
 function anth_get_the_tag_detail($detail) {
+	global $tag_meta;
+
+	switch($detail) {
+		case 'count':
+			$retValue = $tag_meta['nums'][0]['value'];
+		break;
+
+		case 'description':
+			$retValue = $tag_meta['descs'][0]['divs'][0]['value'];
+		break;
+
+		case 'url':
+			$retValue = $tag_meta['idents'][0]['value'];
+		break;
+	}
+	return $retValue;
 
 }
 
 function anth_the_tag_detail($detail) {
-
+	echo anth_get_the_tag_detail($detail);
 }
 
 
@@ -384,8 +405,22 @@ function anth_categories() {
 	}
 }
 
-function anth_category() {
+function anth_category_meta() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $categories;
+	global $catIndex;
+	global $cat_meta;
 
+
+	if(is_array($categories) && isset($categories[$catIndex] ) ) {
+		$ref = $categories[$catIndex]['atts']['ref'];
+		$cat_meta = $api->getDetailsByRef($ref);
+	}
 }
 
 
@@ -410,11 +445,26 @@ function anth_the_category() {
 
 
 function anth_get_the_category_detail($detail) {
+	global $cat_meta;
 
+	switch($detail) {
+		case 'count':
+			$retValue = $cat_meta['nums'][0]['value'];
+		break;
+
+		case 'description':
+			$retValue = $cat_meta['descs'][0]['divs'][0]['value'];
+		break;
+
+		case 'url':
+			$retValue = $cat_meta['idents'][0]['value'];
+		break;
+	}
+	return $retValue;
 }
 
 function anth_the_category_detail($detail) {
-
+	echo anth_get_the_category_detail($detail);
 }
 
 
