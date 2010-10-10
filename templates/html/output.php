@@ -98,13 +98,15 @@ if( isset($ops['outputParams']['download']) ) {
 				echo "</ul>";
 
 				anth_author_meta();
+				anth_anthologizer_meta();
+
 				?>
 				<h3><?php anth_the_title() ?></h3>
-				<div class="item-meta">
+				<div class="item-meta" style="border: 1px solid blue; margin: 5px; padding: 5px;">
 
 					<img class="gravatar" src="<?php anth_the_author_gravatar_url(); ?>" />
-					<span class="item-author">By <?php anth_the_author() ?></span>
-
+					<p class="item-author">By <?php anth_the_author(); ?></p>
+					<p class="item-anthologizer">Anthologized by: <?php anth_the_anthologizer(); ?></p>
 				</div>
 				<div class="item-content">
 					<?php anth_the_item_content() ?>

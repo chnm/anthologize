@@ -528,9 +528,9 @@ class TeiDom {
 			break;
 
 			case 'anth_library_item':
-
 				//gets the wordpress author info
 				$itemCreatorObject = get_userdata($postObject->post_author);
+
 				$bibl = $this->dom->createElementNS(TEI, 'bibl');
 				$newHead->appendChild($bibl);
 				if($itemCreatorObject) {
@@ -540,6 +540,7 @@ class TeiDom {
 
 				//work with the anthologize data
 				$meta = get_post_meta($postObject->ID, 'anthologize_meta', true );
+
 				if($meta && isset($meta['author_name_array'])) {
 					foreach ($meta['author_name_array'] as $authorName) {
 						//originalCreator might not be correct, but until more data comes from the UI, it's the best guess
@@ -554,23 +555,14 @@ class TeiDom {
 				if($this->includeOriginalPostData) {
 					$origPostData = get_post($postObject->original_post_id);
 					$origCreator = get_userdata($origPostData->post_author);
+
 					$bibl->appendChild($this->newAuthor($origCreator, 'originalCreator') );
 					if($this->includeStructuredCreatorData) {
 						$this->addStructuredPerson($origCreator);
 					}
 				}
 			break;
-
-
 		}
-
-
-		//$this->addPerson($authorObject);
-
-
-
-
-
 
 		return $newHead;
 	}

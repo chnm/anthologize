@@ -166,6 +166,9 @@ function anth_the_author() {
 }
 
 function anth_get_the_author() {
+
+	//TODO branch around whether the auther has been manually set in the export UI
+
 	global $api;
 	global $section;
 	global $partN;
@@ -267,6 +270,77 @@ function anth_get_the_author_detail($detail) {
 
 	return $api->getPersonDetail($author_meta, $detail);
 }
+
+
+function anth_anthologizer_meta() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $anthologizer_meta;
+
+	if(false !== $partCount) {
+		//$anthologizer = $api->getSectionPartCreator($section, $partN, false); TODO
+	}
+
+	if(false !== $itemCount) {
+		$anthologizer =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
+	}
+
+	$anthologizer_meta = $api->getDetailsByRef($anthologizer['atts']['ref']);
+}
+
+function anth_the_anthologizer() {
+	echo anth_get_the_anthologizer();
+}
+
+function anth_get_the_anthologizer() {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+
+	if(false !== $itemCount) {
+		return $api->getSectionPartItemAnthologizer($section, $partN, $itemN);
+	}
+
+	if(false !== $partCount) {
+		//return $api->getSectionPartAnthologizer($section, $partN); TODO
+	}
+
+	return false;
+}
+
+function anth_get_the_anthologizer_detail($detail) {
+	global $api;
+	global $section;
+	global $partN;
+	global $partCount;
+	global $itemCount;
+	global $itemN;
+	global $anthologizer_meta;
+
+	if(! isset($anthologizer_meta)) {
+
+		if(false !== $partCount) {
+			//$author = $api->getSectionPartCreator($section, $partN, false); TODO
+		}
+
+		if(false !== $itemCount) {
+			$anthologizer =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
+		}
+
+		$anthologizer_meta = $api->getDetailsByRef($anthologizer['atts']['ref']);
+	}
+
+
+	return $api->getPersonDetail($author_meta, $detail);
+}
+
 
 /* Functions requiring structured content information */
 

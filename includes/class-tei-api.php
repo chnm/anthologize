@@ -552,7 +552,7 @@ class TeiApi {
 	 * @return mixed string or array
 	 */
 
-	public function getSectionPartItemCreator($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+	public function getSectionPartItemAnthologizer($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
