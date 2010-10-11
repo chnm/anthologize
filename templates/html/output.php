@@ -13,7 +13,7 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'includeCreatorData' => true, // Include basic data about creators
 		'includeStructuredCreatorData' => true, //include structured data about creators
 		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories and creator data)
-		'checkImgSrcs' => true, //whether to check availability of image sources
+		'checkImgSrcs' => false, //whether to check availability of image sources
 		'linkToEmbeddedObjects' => false,
 		'indexSubjects' => false,
 		'indexCategories' => false,

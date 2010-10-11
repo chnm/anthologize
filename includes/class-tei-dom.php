@@ -17,7 +17,6 @@ class TeiDom {
 	public $doShortcodes = true;
 	public $checkImgSrcs = true;
 
-
 	public $front1Title = "Dedication";
 	public $front2Title = "Acknowledgements";
 
@@ -103,7 +102,7 @@ class TeiDom {
 
 		$partsData = new WP_Query($args);
 		$partObjectsArray = $partsData->posts;
-		//usort($partObjectsArray, array('TeiDom', 'postSort'));
+		//usort($partObjectsArray, array('TeiDom', 'postSort')); TODO
 
 
 		$partNumber = 0;
@@ -127,7 +126,7 @@ class TeiDom {
 
 
 			//sort objects, by menu_order, then ID
-			//usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
+			//usort($libraryItemObjectsArray, array('TeiDom', 'postSort')); TODO
 			$itemNumber = 0;
 
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
@@ -622,7 +621,7 @@ class TeiDom {
 		//loadHTML adds head and body tags silently
 		@$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><$element xmlns='http://www.w3.org/1999/xhtml'>$content</$element>" );
 		if($this->checkImgSrcs) {
-			$this->checkImgSrcs($tmpHTML);
+			//$this->checkImageSources($tmpHTML);
 
 		}
 
@@ -637,7 +636,7 @@ class TeiDom {
 
 		//TODO: strip out any empty containers
 		if($this->checkImgSrcs) {
-			$this->checkImgSrcs();
+			$this->checkImageSources();
 		}
 	}
 
@@ -672,18 +671,14 @@ class TeiDom {
 		return $html;
 	}
 
-	private function checkImgSrcs() {
+	private function checkImageSources() {
 		//TODO: check for net connectivity
 		//TODO: improve pseudo-error message and feedback
-		$imgs = $this->dom->getElementsByTagName('img');
-		for($i = $imgs->length; $i>0; $i--) {
-			$imgNode = $imgs->item(0);
-			$src = $imgNode->getAttribute('src');
-			//TODO: check to see if the src is http:// or a relative path
-			// if relative path, convert it into an http://
-			//first clobber any annoying img links to Reddit, delicious, etc.
-			//that might have been inserted.
+		$srcs = $this->xpath->evaluate("//img/@src");
 
+		foreach($srcs as $srcNode) {
+			$imgNode = $srcNode->parentNode;
+			$src = $srcNode->nodeValue;
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $src);
 			//curl_setopt($ch, CURLOPT_HEADER, true);
@@ -691,8 +686,8 @@ class TeiDom {
 			curl_exec($ch);
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
-			if($code == 404) {
-				$noImgSpan = $this->dom->createElementNS(HTML, 'p', 'Image not found');
+			if($code != 200) {
+				$noImgSpan = $this->dom->createElement('span', 'Image not found');
 				$noImgSpan->setAttribute('class', 'anthologize-error');
 				$imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
 			}
