@@ -177,6 +177,10 @@ function anth_get_the_author() {
 	global $itemN;
 
 	if(false !== $itemCount) {
+		$author = $api->getSectionPartItemAnthAuthor($section, $partN, $itemN);
+		if($author && ($author != '')) {
+			return $author;
+		}
 		return $api->getSectionPartItemOriginalCreator($section, $partN, $itemN);
 	}
 

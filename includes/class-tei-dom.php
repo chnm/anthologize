@@ -92,10 +92,18 @@ class TeiDom {
 
 	public function buildProjectData() {
 
-		$partsData = new WP_Query(array('post_parent'=>$this->projectData['project_id'], 'post_type'=>'anth_part'));
+		$args = array(
+			'post_parent'=>$this->projectData['project_id'],
+			'post_type'=>'anth_part',
+			'orderby' => 'menu_order',
+			'posts_per_page' => -1,
+			'order' => 'ASC'
 
+			);
+
+		$partsData = new WP_Query($args);
 		$partObjectsArray = $partsData->posts;
-		usort($partObjectsArray, array('TeiDom', 'postSort'));
+		//usort($partObjectsArray, array('TeiDom', 'postSort'));
 
 
 		$partNumber = 0;
@@ -106,14 +114,20 @@ class TeiDom {
 			if($this->includeDeepDocumentData) {
 
 			}
-			//TODO: find a way to set no limit to post_per_page without the magic big number
-			$libraryItemsData = new WP_Query(array('post_parent'=>$partObject->ID, 'post_type'=>'anth_library_item', 'posts_per_page'=>200));
+			$args = array(
+				'post_parent'=>$partObject->ID,
+				'post_type'=>'anth_library_item',
+				'posts_per_page'=> -1,
+				'orderby' => 'menu_order',
+				'order' => 'ASC' );
+
+			$libraryItemsData = new WP_Query( $args );
 			$libraryItemObjectsArray = $libraryItemsData->posts;
 
 
 
 			//sort objects, by menu_order, then ID
-			usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
+			//usort($libraryItemObjectsArray, array('TeiDom', 'postSort'));
 			$itemNumber = 0;
 
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
@@ -541,13 +555,23 @@ class TeiDom {
 				//work with the anthologize data
 				$meta = get_post_meta($postObject->ID, 'anthologize_meta', true );
 
+				if($meta && isset($meta['author_name'])) {
+						$authorName = $meta['author_name'];
+						$newAuthor = $this->newAuthor($authorName, 'anthologizeMeta');
+
+						$bibl->appendChild($newAuthor);
+						$bibl->appendChild($this->dom->createElement('p', 'wtf'));
+
+				}
+
+/*
 				if($meta && isset($meta['author_name_array'])) {
 					foreach ($meta['author_name_array'] as $authorName) {
 						//originalCreator might not be correct, but until more data comes from the UI, it's the best guess
 						$bibl->appendChild($this->newAuthor($authorName, 'anthologizeMeta'));
 					}
 				}
-
+*/
 				if($this->includeItemSubjects) {
 					$this->addItemSubjects($postObject->original_post_id, $newHead);
 				}
@@ -566,7 +590,7 @@ class TeiDom {
 
 		return $newHead;
 	}
-
+/* TODO: remove after testing confirms this can go away
 	private function postSort($a, $b) {
 		if($a->menu_order > $b->menu_order) {
 			return 1;
@@ -576,7 +600,7 @@ class TeiDom {
 			return $a->ID - $b->ID;
 		}
 	}
-
+*/
 	private function sanitizeString($content, $isMultiline = false) {
 
 		$content = $this->sanitizeEntities($content);
