@@ -271,7 +271,6 @@ function anth_get_the_author_detail($detail) {
 		$author_meta = $api->getDetailsByRef($author['atts']['ref']);
 	}
 
-
 	return $api->getPersonDetail($author_meta, $detail);
 }
 

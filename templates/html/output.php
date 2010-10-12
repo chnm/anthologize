@@ -27,8 +27,11 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
 
 $tei = new TeiDom($_SESSION, $ops);
-$api = new TeiApi($tei);
+header("Content-type: application/xml");
+echo $tei->getTeiString();
 
+die();
+$api = new TeiApi($tei);
 
 
 $fileName = $api->getFileName();

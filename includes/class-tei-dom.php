@@ -12,8 +12,6 @@ class TeiDom {
 	public $includeStructuredCreatorData = true;
 	public $includeOriginalPostData = true;
 	public $includeDeepDocumentData = true;
-	public $avatarSize = '96';
-	public $avatarDefault = "http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536";
 	public $doShortcodes = true;
 	public $checkImgSrcs = true;
 
@@ -68,10 +66,9 @@ class TeiDom {
 		$this->addPublicationStmt();
 		$this->addFileDesc();
 		$this->addTitlePageBibl();
-		$this->addEncodingDesc();
 		$this->addFrontMatter();
 
-		$this->sanitizeContent();
+		$this->sanitizeMedia();
 		$this->addBackMatter();
 
 	}
@@ -102,7 +99,6 @@ class TeiDom {
 
 		$partsData = new WP_Query($args);
 		$partObjectsArray = $partsData->posts;
-		//usort($partObjectsArray, array('TeiDom', 'postSort')); TODO
 
 
 		$partNumber = 0;
@@ -123,10 +119,6 @@ class TeiDom {
 			$libraryItemsData = new WP_Query( $args );
 			$libraryItemObjectsArray = $libraryItemsData->posts;
 
-
-
-			//sort objects, by menu_order, then ID
-			//usort($libraryItemObjectsArray, array('TeiDom', 'postSort')); TODO
 			$itemNumber = 0;
 
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
@@ -221,8 +213,7 @@ class TeiDom {
 			$projectPostData = get_post($this->projectData['project_id']);
 			$userData = get_userdata($projectPostData->post_author);
 
-			$projectBibl->appendChild($this->newAuthor($userData, 'projectCreator'));
-
+			$projectBibl->appendChild($this->newAuthor($userData, 'projectCreator') );
 			$createdNode = $this->dom->createElementNS(TEI, 'date');
 			$createdNode->setAttribute('type', 'created');
 			$projectBibl->appendChild($createdNode);
@@ -232,9 +223,6 @@ class TeiDom {
 
 	}
 
-	public function addEncodingDesc() {
-
-	}
 
 	public function addFrontMatter() {
 		//TODO: sanitize content and regularize the mode of adding.
@@ -319,6 +307,8 @@ class TeiDom {
 
 		if( array_key_exists($id, $this->knownPersons)) {
 			$this->knownPersons[$id] = $this->knownPersons[$id] + 1;
+
+			//since the node is added to the TEI at 1st occurance, update the node already in the TEI
 			$personCountNode = $this->xpath->query("//tei:person[@xml:id = '$id']/tei:persName/tei:num")->item(0);
 			$personCountNode->nodeValue = $this->knownPersons[$id];
 			return false;
@@ -346,16 +336,21 @@ class TeiDom {
 		$email = $this->dom->createElementNS(TEI, 'email');
 		$email->appendChild($this->sanitizeString($wpUserObj->user_email));
 
+		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $wpUserObj->user_email ) ) ) ;
+
+		//building it myself rather using WP's function so I build a node in the right document
+		$grav = $this->dom->createElementNS(HTML, 'img');
+		$src = $grav->setAttribute('src', $grav_url);
+
 		//adding the nodes to the TEI as I build them because otherwise funky and wrong xmlns:defaults are added
-		//don't get why, just that this works!
 
 		$figure = $this->dom->createElementNS(TEI, 'figure');
 		$person->appendChild($figure);
 		$graphic = $this->dom->createElementNS(TEI, 'graphic');
 		$graphic->setAttribute('type', 'gravatar');
-		$graphic->setAttribute('url', $this->newGravatar($wpUserObj->user_email, true));
+		$graphic->setAttribute('url', $grav_url);
 		$figure->appendChild($graphic);
-		$graphic->appendChild($this->newGravatar($wpUserObj->user_email));
+		$graphic->appendChild($grav);
 
 		$persName->appendChild($name);
 		$persName->appendChild($firstname);
@@ -372,15 +367,17 @@ class TeiDom {
 	}
 
 	public function newAuthor($userData, $role='') {
+
 		$author = $this->dom->createElementNS(TEI, 'author');
 		$author->setAttribute('role', $role);
 
 		if(is_string($userData)) {
-			$author->appendChild($this->sanitizeString($userData));
-			return $author;
+			$displayNameSpan = $this->sanitizeString($userData);
+		} else {
+			$author->setAttribute('ref', $userData->user_login);
+			$displayNameSpan = $this->sanitizeString($userData->display_name);
 		}
-		$author->appendChild($this->sanitizeString($userData->display_name));
-		$author->setAttribute('ref', $userData->user_login);
+		$author->appendChild($displayNameSpan);
 		return $author;
 	}
 
@@ -398,6 +395,19 @@ class TeiDom {
 		$item = $this->dom->createElementNS(TEI, 'item');
 		$item->setAttribute('xml:id', $id );
 		$item->setAttribute('type', $subject->taxonomy);
+
+		switch ($subject->taxonomy) {
+
+			case 'post_tag':
+				$subject->guid = get_tag_link($subject->term_id);
+				$subject->taxonomy = "tag";
+			break;
+
+			case 'category':
+				$subject->guid = get_category_link($subject->term_id);
+			break;
+		}
+
 
 		$ident = $this->dom->createElementNS(TEI, 'ident');
 		$ident->setAttribute('type', 'guid');
@@ -453,28 +463,15 @@ class TeiDom {
 	public function fetchPostSubjects($postID) {
 		$subjects = wp_get_post_tags($postID);
 
-		$catIds = wp_get_post_categories($postID); //srsly, WordPress?
+		$catIds = wp_get_post_categories($postID);
 		foreach($catIds as $catId) {
-			$cat = get_category($catId); //srsly?
+			$cat = get_category($catId);
 			//category and term data structures don't align, so duplicate category data so I can use same code later
 			$cat->description = $cat->category_description;
 			$subjects[] = $cat;
 		}
 
-		//add in the links here to keep this sort of processing in one place
-		foreach($subjects as $subject) {
-			switch ($subject->taxonomy) {
 
-				case 'post_tag':
-					$subject->guid = get_tag_link($subject->term_id);
-					$subject->taxonomy = "tag";
-				break;
-
-				case 'category':
-					$subject->guid = get_category_link($subject->term_id);
-				break;
-			}
-		}
 
 		return $subjects;
 	}
@@ -505,12 +502,6 @@ class TeiDom {
 		$newItem->appendChild($this->newHead($libraryItemObject));
 
 		$content = $libraryItemObject->post_content;
-
-		if($this->doShortcodes) {
-			$content = do_shortcode($content);
-		} else {
-			$content = $this->sanitizeShortCodes($content);
-		}
 
 		$newItem->appendChild($this->sanitizeString($libraryItemObject->post_content, true));
 
@@ -547,8 +538,9 @@ class TeiDom {
 				$bibl = $this->dom->createElementNS(TEI, 'bibl');
 				$newHead->appendChild($bibl);
 				if($itemCreatorObject) {
-					$bibl->appendChild($this->newAuthor($itemCreatorObject, 'itemCreator'));
+					$bibl->appendChild($this->newAuthor($itemCreatorObject, 'anthologizer') );
 				}
+
 
 
 				//work with the anthologize data
@@ -556,64 +548,39 @@ class TeiDom {
 
 				if($meta && isset($meta['author_name'])) {
 						$authorName = $meta['author_name'];
-						$newAuthor = $this->newAuthor($authorName, 'anthologizeMeta');
-
-						$bibl->appendChild($newAuthor);
-						$bibl->appendChild($this->dom->createElement('p', 'wtf'));
-
-				}
-
-/*
-				if($meta && isset($meta['author_name_array'])) {
-					foreach ($meta['author_name_array'] as $authorName) {
-						//originalCreator might not be correct, but until more data comes from the UI, it's the best guess
-						$bibl->appendChild($this->newAuthor($authorName, 'anthologizeMeta'));
-					}
-				}
-*/
-				if($this->includeItemSubjects) {
-					$this->addItemSubjects($postObject->original_post_id, $newHead);
+						$bibl->appendChild($this->newAuthor($authorName, 'assertedAuthor') );
 				}
 
 				if($this->includeOriginalPostData) {
 					$origPostData = get_post($postObject->original_post_id);
 					$origCreator = get_userdata($origPostData->post_author);
-
-					$bibl->appendChild($this->newAuthor($origCreator, 'originalCreator') );
+					$bibl->appendChild($this->newAuthor($origCreator, 'originalAuthor') );
 					if($this->includeStructuredCreatorData) {
 						$this->addStructuredPerson($origCreator);
 					}
 				}
+
+				if($this->includeItemSubjects) {
+					$this->addItemSubjects($postObject->original_post_id, $newHead);
+				}
+
+
 			break;
 		}
 
 		return $newHead;
 	}
-/* TODO: remove after testing confirms this can go away
-	private function postSort($a, $b) {
-		if($a->menu_order > $b->menu_order) {
-			return 1;
-		} else if ($a->menu_order < $b->menu_order) {
-			return -1;
-		} else if ($a->menu_order == $b->menu_order) {
-			return $a->ID - $b->ID;
-		}
-	}
-*/
+
 	private function sanitizeString($content, $isMultiline = false) {
 
 		$content = $this->sanitizeEntities($content);
 		if ($isMultiline) {
 			$content = wpautop($content);
 			$content = $this->sanitizeShortCodes($content);
-
-
 			$element = "div";
 		} else {
 			$element = "span";
 		}
-
-
 
 		//using loadHTML because it is more forgiving than loadXML
 		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
@@ -621,24 +588,14 @@ class TeiDom {
 		//loadHTML adds head and body tags silently
 		@$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><$element xmlns='http://www.w3.org/1999/xhtml'>$content</$element>" );
 		if($this->checkImgSrcs) {
-			//$this->checkImageSources($tmpHTML);
-
+			$this->checkImageSources($tmpHTML);
 		}
 
 		$contentDiv = $tmpHTML->getElementsByTagName($element)->item(0);
-		//$contentDiv->setAttribute('xmlns', HTML);
 		$imported = $this->dom->importNode($contentDiv, true);
 		return $imported;
 	}
 
-	private function sanitizeContent() {
-		$this->sanitizeMedia();
-
-		//TODO: strip out any empty containers
-		if($this->checkImgSrcs) {
-			$this->checkImageSources();
-		}
-	}
 
 	private function sanitizeShortCodes($content) {
 
@@ -671,17 +628,17 @@ class TeiDom {
 		return $html;
 	}
 
-	private function checkImageSources() {
+	private function checkImageSources($tmpHTML) {
 		//TODO: check for net connectivity
 		//TODO: improve pseudo-error message and feedback
-		$srcs = $this->xpath->evaluate("//img/@src");
+		$xpath = new DOMXPath($tmpHTML);
+		$srcs = $xpath->evaluate("//img/@src");
 
 		foreach($srcs as $srcNode) {
 			$imgNode = $srcNode->parentNode;
 			$src = $srcNode->nodeValue;
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $src);
-			//curl_setopt($ch, CURLOPT_HEADER, true);
 			curl_setopt($ch, CURLOPT_NOBODY, true);
 			curl_exec($ch);
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -715,21 +672,6 @@ class TeiDom {
 			}
 			$index ++;
 		}
-	}
-
-	public function newGravatar($email, $urlOnly = false, $size = false) {
-		if( ! $size) {
-			$size = isset($this->outputParams['avatar-size']) ? $this->outputParams['avatar-size'] : $this->avatarSize;
-		}
-
-		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $this->avatarDefault );
-		if($urlOnly) {
-			return $grav_url;
-		}
-		//building it myself rather using WP's function so I build a node in the right document
-		$grav = $this->dom->createElementNS(HTML, 'img');
-		$src = $grav->setAttribute('src', $grav_url . "%26s=" . $size);
-		return $grav;
 	}
 
 	public function doIndexing() {
@@ -793,32 +735,28 @@ class TeiDom {
 		return $item;
 	}
 
-	public function indexNodeList($nodes, $indexTypes) {
+	public function indexNodeList($nodes, $targetTypes) {
 		$nodesArray = array();
 
-
-
 		foreach($nodes as $node) {
-
+			$nodeClone = $node->cloneNode(true);
 			$key = $this->getNodeKeyForIndex($node);
 			$labelNode = $this->getNodeLabelForIndex($node);
-			foreach($indexTypes as $indexType) {
-				switch($indexType) {
+			foreach($targetTypes as $targetType) {
+				switch($targetType) {
 					case 'items':
-						$targetItem = $this->getParentItem($node);
+						$target = $this->getParentItem($node);
 					break;
 
 					case 'direct':
-
-
-						$targetItem = $node;
+						$target = $node;
 					break;
 				}
 
 				if(array_key_exists($key, $nodesArray)) {
-					$nodesArray[$key][$indexType][] = $targetItem;
+					$nodesArray[$key][$targetType][] = $target;
 				} else {
-					$nodesArray[$key] = array('label'=>$labelNode, 'node'=>$node, $indexType=>array($targetItem));
+					$nodesArray[$key] = array('label'=>$labelNode, 'node'=>$nodeClone, $targetType=>array($target));
 				}
 			}
 
@@ -927,10 +865,10 @@ class TeiDom {
 	public function getNodeLabelForIndex($node) {
 
 		if ($node->firstChild->nodeName == 'span') {
-			return $node->firstChild;
+			return $node->firstChild->cloneNode(true);
 		}
 
-		return $node->cloneNode();
+		return $node->cloneNode(true);
 
 	}
 
