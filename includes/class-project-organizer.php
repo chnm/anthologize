@@ -275,15 +275,17 @@ class Anthologize_Project_Organizer {
 			$author_name = $user->display_name;
 		$author_name_array = array( $author_name );
 
-		$anthologize_meta = array(
+		$anthologize_meta = apply_filters( 'anth_add_item_postmeta', array(
 			'author_name' => $author_name,
 			'author_name_array' => $author_name_array,
 			'author_id' => $post->post_author,
 			'original_post_id' => $item_id
-		);
+		) );
+		
 		update_post_meta( $imported_item_id, 'anthologize_meta', $anthologize_meta );
-		update_post_meta( $imported_item_id, 'author_name', $author_name );
-		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array );
+		
+		update_post_meta( $imported_item_id, 'author_name', $author_name ); // Deprecated - please use anthologize_meta
+		update_post_meta( $imported_item_id, 'author_name_array', $author_name_array ); // Deprecated - please use anthologize_meta
 
 		return $imported_item_id;
 	}
