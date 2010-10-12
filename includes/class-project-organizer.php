@@ -238,7 +238,7 @@ class Anthologize_Project_Organizer {
 	}
 
 	function add_item_to_part( $item_id, $part_id ) {
-		global $wpdb;
+		global $wpdb, $current_user;
 
 		if ( !(int)$last_item = get_post_meta( $part_id, 'last_item', true ) )
 			$last_item = 0;
@@ -252,7 +252,7 @@ class Anthologize_Project_Organizer {
 		  'comment_status' => $post->comment_status,
 		  'ping_status' => $post->ping_status,
 		  'pinged' => $post->pinged,
-		  'post_author' => $post->post_author,
+		  'post_author' => $current_user->ID,
 		  'post_content' => $post->post_content,
 		  'post_date' => $post->post_date,
 		  'post_date_gmt' => $post->post_date_gmt,
@@ -278,6 +278,7 @@ class Anthologize_Project_Organizer {
 		$anthologize_meta = array(
 			'author_name' => $author_name,
 			'author_name_array' => $author_name_array,
+			'author_id' => $post->post_author,
 			'original_post_id' => $item_id
 		);
 		update_post_meta( $imported_item_id, 'anthologize_meta', $anthologize_meta );
