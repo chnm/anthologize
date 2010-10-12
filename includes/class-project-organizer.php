@@ -584,22 +584,23 @@ class Anthologize_Project_Organizer {
 		}
 
 		if ( true === $new_post ) {
-            $add_item_result = $this->add_item_to_part( $post_id, $dest_id );
-			if (false === $add_item_result)
+			$add_item_result = $this->add_item_to_part( $post_id, $dest_id );
+			if (false === $add_item_result) {
 				return false;
-            $post_id = $add_item_result;
-            $dest_seq[$post_id] = $dest_seq['new_new_new'];
-            unset($dest_seq['new_new_new']);
-        } else {
-            $post_params = Array('ID' => $post_id,
-                                 'post_parent' => $dest_id);
-            $update_item_result = wp_update_post($post_params);
+			}
+			$post_id = $add_item_result;
+      // $dest_seq[$post_id] = $dest_seq['new_new_new'];
+      // unset($dest_seq['new_new_new']);
+		} else {
+			$post_params = Array('ID' => $post_id,
+				'post_parent' => $dest_id);
+			$update_item_result = wp_update_post($post_params);
 			if (0 === $update_item_result) {
 				return false;
-            }
-            $post_id = $update_item_result;
-            $this->rearrange_items( $source_seq );
-        }
+			}
+			$post_id = $update_item_result;
+			$this->rearrange_items( $source_seq );
+		}
 
         // not really any point in checking for errors at this point
         // Since the insert succeeded
@@ -608,7 +609,7 @@ class Anthologize_Project_Organizer {
 		// All items require the destination siblings to be reordered
 /*		if ( !$this->rearrange_items( $dest_seq ) )
     return false;*/
-        $this->rearrange_items( $dest_seq );
+		//$this->rearrange_items( $dest_seq );
 
 		return $post_id;
 	}
