@@ -48,6 +48,32 @@ var anth_admin_ajax = {
         });
 
     },
+    place_items: function(config_obj) {
+        jQuery.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            dataType: 'json',
+            data: {action:'place_items',
+                   project_id:config_obj.project_id,
+                   post_ids:seq_stringify(config_obj.item_ids),
+                   dest_id:config_obj.dest_id,
+                   dest_seq:seq_stringify(config_obj.dest_seq)},
+            async:false,
+            timeout:20000,
+            success: function(data){
+								for (var i in data.post_ids){
+									anthologize.newItem = jQuery('#added-' + i);
+                	anthologize.updateAddedItem(data.post_ids[i]);
+								}
+                anthologize.setAppendStatus();
+                jQuery.unblockUI();
+            },
+            error: function(){
+                ajax_error_refresh();
+            }
+        });
+
+    },
     merge_items: function(config_obj) {
         jQuery.ajax({
             url: ajaxurl,
