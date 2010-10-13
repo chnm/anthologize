@@ -27,10 +27,8 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
 
 $tei = new TeiDom($_SESSION, $ops);
-header("Content-type: application/xml");
-echo $tei->getTeiString();
+header("Content-type: text/html");
 
-die();
 $api = new TeiApi($tei);
 
 
@@ -38,7 +36,7 @@ $fileName = $api->getFileName();
 $ext = "html";
 
 if( isset($ops['outputParams']['download']) ) {
-	header("Content-type: application/xml");
+	header("Content-type: text/html");
 	header("Content-Disposition: attachment; filename=$fileName.$ext");
 }
 

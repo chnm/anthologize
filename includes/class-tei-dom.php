@@ -339,7 +339,7 @@ class TeiDom {
 		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $wpUserObj->user_email ) ) ) ;
 
 		//building it myself rather using WP's function so I build a node in the right document
-		$grav = $this->dom->createElementNS(HTML, 'img');
+		$grav = $this->dom->createElement('img');
 		$src = $grav->setAttribute('src', $grav_url);
 
 		//adding the nodes to the TEI as I build them because otherwise funky and wrong xmlns:defaults are added
@@ -533,12 +533,15 @@ class TeiDom {
 
 			case 'anth_library_item':
 				//gets the wordpress author info
-				$itemCreatorObject = get_userdata($postObject->post_author);
+				$itemCreator = get_userdata($postObject->post_author);
 
 				$bibl = $this->dom->createElementNS(TEI, 'bibl');
 				$newHead->appendChild($bibl);
-				if($itemCreatorObject) {
-					$bibl->appendChild($this->newAuthor($itemCreatorObject, 'anthologizer') );
+				if($itemCreator) {
+					$bibl->appendChild($this->newAuthor($itemCreator, 'anthologizer') );
+					if($this->includeStructuredCreatorData) {
+						$this->addStructuredPerson($itemCreator);
+					}
 				}
 
 
@@ -644,7 +647,7 @@ class TeiDom {
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
 			if($code != 200) {
-				$noImgSpan = $this->dom->createElement('span', 'Image not found');
+				$noImgSpan = $tmpHTML->createElement('span', 'Image not found');
 				$noImgSpan->setAttribute('class', 'anthologize-error');
 				$imgNode->parentNode->replaceChild($noImgSpan, $imgNode);
 			}

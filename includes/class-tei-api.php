@@ -525,11 +525,11 @@ class TeiApi {
 	 * @return mixed string or array
 	 */
 
-	public function getSectionPartItemOriginalCreator($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+	public function getSectionPartItemOriginalAuthor($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "tei:head/tei:bibl/tei:author[@role='originalCreator']",
+						'subPath' => "tei:head/tei:bibl/tei:author[@role='originalAuthor']",
 						'asNode'=>$asNode
 						);
 
@@ -556,7 +556,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "tei:head/tei:bibl/tei:author[@role='itemCreator']",
+						'subPath' => "tei:head/tei:bibl/tei:author[@role='anthologizer']",
 						'asNode'=>$asNode
 						);
 
@@ -576,11 +576,11 @@ class TeiApi {
 	 * @param $asNode whether to return the DOMNode
 	 * @return mixed string or array
 	 */
-	public function getSectionPartItemAnthAuthor($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+	public function getSectionPartItemAssertedAuthor($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "tei:head/tei:bibl/tei:author[@role='anthologizeMeta']",
+						'subPath' => "tei:head/tei:bibl/tei:author[@role='assertedAuthor']",
 						'asNode'=>$asNode
 						);
 

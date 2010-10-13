@@ -177,11 +177,11 @@ function anth_get_the_author() {
 	global $itemN;
 
 	if(false !== $itemCount) {
-		$author = $api->getSectionPartItemAnthAuthor($section, $partN, $itemN);
+		$author = $api->getSectionPartItemAssertedAuthor($section, $partN, $itemN);
 		if($author && ($author != '')) {
 			return $author;
 		}
-		return $api->getSectionPartItemOriginalCreator($section, $partN, $itemN);
+		return $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN);
 	}
 
 	if(false !== $partCount) {
@@ -241,7 +241,7 @@ function anth_author_meta() {
 	}
 
 	if(false !== $itemCount) {
-		$author =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
+		$author =  $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN, false);
 	}
 
 	$author_meta = $api->getDetailsByRef($author['atts']['ref']);
@@ -289,7 +289,7 @@ function anth_anthologizer_meta() {
 	}
 
 	if(false !== $itemCount) {
-		$anthologizer =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
+		$anthologizer =  $api->getSectionPartItemAnthologizer($section, $partN, $itemN, false);
 	}
 
 	$anthologizer_meta = $api->getDetailsByRef($anthologizer['atts']['ref']);
