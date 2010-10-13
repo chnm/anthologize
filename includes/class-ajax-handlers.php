@@ -220,8 +220,6 @@ class Anthologize_Ajax_Handlers {
 			$this->project_organizer->rearrange_items($dest_seq_array);
 			
 			print json_encode(array("post_ids" => $ret_ids));
-			//print "{\"post_id\":\"$insert_result\"}";
-
 			die();
     }
 
