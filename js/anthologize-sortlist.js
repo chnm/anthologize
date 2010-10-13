@@ -81,14 +81,6 @@ var anthologize = {
 		var dest_id = ui.item.closest("li.part").attr("id");
 		ui.item.detach();
 		
-		// var i = 0;
-		// jQuery("#sidebar-posts li").clone().each(function(){
-		// 	var orig_id = anthologize.cleanPostIds(jQuery(this).attr("id"));
-		// 	var added_id = "added-" + orig_id;
-		// 	jQuery(this).attr("id", added_id);
-		// 	item_ids[i] = added_id;
-		// 	i++;
-		// });
     offset = 1;
     startOffset.siblings().andSelf().each(function(){
       dest_seq[jQuery(this).attr("id")] = offset;
@@ -100,7 +92,6 @@ var anthologize = {
 	    "item_ids": item_ids,
 	    "dest_seq":  dest_seq,
     };
-    console.log(ajax_options);
     anth_admin_ajax.place_items(ajax_options);
 	},
   "didSortChange" : function(ajax_options){
@@ -173,7 +164,6 @@ var anthologize = {
   },
   "updateAddedItem" : function (new_item_id){
 	  newItem = anthologize.newItem;
-	console.log(newItem);
 	  newItem.attr("id", "item-" + new_item_id);
 	  newItem.children("h3").wrapInner('<span class="part-title" />');
 
