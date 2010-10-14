@@ -309,7 +309,7 @@ class Anthologize_Loader {
 		anthologize_register_format_option( 'html', 'download', __('Download HTML?', 'anthologize'), 'checkbox', array('Download'=>'download'), 'download');
 
 		// Register TEI. No options for this one
-		anthologize_register_format( 'tei', __( 'TEI (plus HTML)', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
+		anthologize_register_format( 'tei', __( 'Anthologize TEI', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
 	}
 
 

@@ -728,7 +728,7 @@ class TeiApi {
 			break;
 
 			case 'gravatarUrl':
-				return $personArray['figures'][0]['graphics'][0]['html:imgs'][0]['atts']['src'];
+				return $personArray['figures'][0]['graphics'][0]['imgs'][0]['atts']['src'];
 			break;
 
 		}

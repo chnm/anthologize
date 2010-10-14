@@ -93,9 +93,7 @@ class TeiDom {
 			'post_type'=>'anth_part',
 			'orderby' => 'menu_order',
 			'posts_per_page' => -1,
-			'order' => 'ASC'
-
-			);
+			'order' => 'ASC' );
 
 		$partsData = new WP_Query($args);
 		$partObjectsArray = $partsData->posts;
@@ -259,7 +257,6 @@ class TeiDom {
 	}
 
 	public function sanitizeImages() {
-		 //TODO: check connectivity
 
 		//strip out <a rel="nofollow"> (wordpress feeds)
 		$aNoFollowNodes = $this->xpath->query('//a[@rel="nofollow"]');
@@ -444,7 +441,6 @@ class TeiDom {
 			if($newSubject) {
 				$this->structuredSubjectList->appendChild($newSubject);
 			}
-
 		}
 	}
 
@@ -462,16 +458,14 @@ class TeiDom {
 
 	public function fetchPostSubjects($postID) {
 		$subjects = wp_get_post_tags($postID);
-
 		$catIds = wp_get_post_categories($postID);
+
 		foreach($catIds as $catId) {
 			$cat = get_category($catId);
 			//category and term data structures don't align, so duplicate category data so I can use same code later
 			$cat->description = $cat->category_description;
 			$subjects[] = $cat;
 		}
-
-
 
 		return $subjects;
 	}
@@ -690,7 +684,7 @@ class TeiDom {
 			$this->backNode->appendChild($this->indexTags());
 		}
 
-		if($this->indexAuthors) {
+		if($this->indexPeople) {
 			$this->backNode->appendChild($this->indexAuthors());
 		}
 
@@ -703,36 +697,62 @@ class TeiDom {
 		$indexDiv = $this->dom->createElementNS(TEI, 'div');
 		$indexDiv->setAttribute('type', 'index');
 		$indexDiv->setAttribute('subtype', $type);
-		$indexCount = $this->xpath->evaluate("count(//div[@type = 'index'])");
+		$indexCount = $this->xpath->evaluate("count(//tei:div[@type='index'])");
 		$indexDiv->setAttribute('n', $indexCount);
 		return $indexDiv;
 
 	}
 
-	public function newIndexListItem($labelNode, $targetNodeData) {
+	public function newIndexListItem($data) {
 
 		$item = $this->dom->createElement('item');
-		$teiLabelNode = $this->dom->createElement('label');
-		$item->appendChild($teiLabelNode);
-		$teiLabelNode->appendChild($labelNode);
 
-		foreach($targetNodeData as $type=>$targetNodes) {
-			if( ($type == 'node') || ($type == 'label') ) {
-				continue;
+
+		//$targetNodes is poorly named. the name makes sense for the actual index targets, but not so much for other $types
+		foreach($data as $type=>$targetNodes) {
+
+			switch ($type) {
+
+				case 'node':
+				case 'ref':
+				case 'role':
+					continue;
+				break;
+
+				case 'label':
+					$labelNode = $targetNodes; //really just the one node, and not really a target per se
+
+					$teiRSNode = $this->dom->createElement('rs');
+					if($data['ref'] != '') {
+						$teiRSNode->setAttribute('ref', $data['ref']);
+					}
+
+					$item->appendChild($teiRSNode);
+					$teiRSNode->appendChild($labelNode);
+				break;
+
+
+
+				//default goes throught whatever arbitrary index types are passed along
+				default:
+					$listRef = $this->dom->createElement('listRef');
+					$item->appendChild($listRef);
+					$listRef->setAttribute('type', $type);
+
+					foreach($targetNodes as $type=>$itemNode) {
+						$targetData = $this->getNodeTargetData($itemNode);
+						$rs = $this->dom->createElement('rs');
+						$listRef->appendChild($rs);
+						if($data['role'] != '') {
+							$rs->setAttribute('role', $data['role']);
+						}
+						$rs->setAttribute('ref', $targetData['id']);
+						$rs->appendChild($this->sanitizeString($targetData['title']));
+					}
+
+				break;
 			}
 
-			$listRef = $this->dom->createElement('listRef');
-			$item->appendChild($listRef);
-			$listRef->setAttribute('type', $type);
-
-
-			foreach($targetNodes as $type=>$itemNode) {
-				$targetData = $this->getNodeTargetData($itemNode);
-				$rs = $this->dom->createElement('rs');
-				$listRef->appendChild($rs);
-				$rs->setAttribute('ref', $targetData['id']);
-				$rs->appendChild($this->sanitizeString($targetData['title']));
-			}
 		}
 
 		return $item;
@@ -759,7 +779,14 @@ class TeiDom {
 				if(array_key_exists($key, $nodesArray)) {
 					$nodesArray[$key][$targetType][] = $target;
 				} else {
-					$nodesArray[$key] = array('label'=>$labelNode, 'node'=>$nodeClone, $targetType=>array($target));
+					$ref = $node->getAttribute('ref');
+					$role = $node->getAttribute('role');
+					$nodesArray[$key] = array(
+						'label'=>$labelNode,
+						'ref'=>$ref,
+						'role'=>$role,
+						'node'=>$nodeClone,
+						$targetType=>array($target));
 				}
 			}
 
@@ -770,19 +797,18 @@ class TeiDom {
 		$list = $this->dom->createElement('list');
 
 		foreach($nodesArray as $key=>$data) {
-			$list->appendChild($this->newIndexListItem($data['label'], $data));
+			$list->appendChild($this->newIndexListItem($data));
 		}
 
 		return $list;
 	}
 
-	public function indexAuthors() {
+	public function indexPersons() {
 		$nodes = $this->xpath->query("//tei:body//tei:author");
 		$list = $this->indexNodeList($nodes, array('items'));
-		$index = $this->newIndex('authors');
+		$index = $this->newIndex('persons');
 		$index->appendChild($list);
 		return $index;
-
 	}
 
 	public function indexCategories() {

@@ -42,8 +42,6 @@ function anth_get_the_project_subtitle($valueOnly = false) {
  * set the section to loop through ('front', 'body', or 'back') and prepare to loop through parts
  */
 
-//TODO: handle front and back sections
-
 function anth_section($section_name) {
 	global $api;
 	global $section;
@@ -161,13 +159,11 @@ function anth_get_the_title() {
  * echo the author of the item, or part
  */
 
-function anth_the_author() {
-	echo anth_get_the_author();
+function anth_the_person($role = 'author') {
+	echo anth_get_the_author($role);
 }
 
-function anth_get_the_author() {
-
-	//TODO branch around whether the auther has been manually set in the export UI
+function anth_get_the_person($role = 'author') {
 
 	global $api;
 	global $section;
@@ -218,131 +214,67 @@ function anth_the_item_content() {
 
 /* Functions requiring structured author information */
 
-function anth_the_author_gravatar_url() {
-	echo anth_get_the_author_gravatar_url();
+function anth_the_person_gravatar_url($role = 'author') {
+	echo anth_get_the_person_gravatar_url();
 
 }
 
-function anth_get_the_author_gravatar_url() {
-	return anth_get_the_author_detail('gravatarUrl');
+function anth_get_the_person_gravatar_url($role = 'author') {
+	return anth_get_the_person_detail('gravatarUrl', $role);
 }
 
-function anth_author_meta() {
+function anth_person_details($role = 'author') {
 	global $api;
 	global $section;
 	global $partN;
 	global $partCount;
 	global $itemCount;
 	global $itemN;
-	global $author_meta;
-
-	if(false !== $partCount) {
-		//$author = $api->getSectionPartCreator($section, $partN, false); TODO
-	}
+	global $person_details;
 
 	if(false !== $itemCount) {
-		$author =  $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN, false);
+		switch ($role) {
+			case 'author':
+				$person =  $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN, false);
+			break;
+
+			case 'anthologizer':
+				$person = $api->getSectionPartItemAnthologizer($section, $partN, $itemN, false);
+			break;
+
+			case 'assertedAuthor':
+				$person = $api->getSectionPartItemAssertedAuthor($section, $partN, $itemN, false);
+			break;
+		}
+
 	}
 
-	$author_meta = $api->getDetailsByRef($author['atts']['ref']);
+	$person_details = $api->getDetailsByRef($person['atts']['ref']);
 }
 
 
 
-function anth_get_the_author_detail($detail) {
+function anth_get_the_person_detail($detail, $role = 'author') {
 	global $api;
 	global $section;
 	global $partN;
 	global $partCount;
 	global $itemCount;
 	global $itemN;
-	global $author_meta;
+	global $person_details;
 
-	if(! isset($author_meta)) {
-
-		if(false !== $partCount) {
-			//$author = $api->getSectionPartCreator($section, $partN, false); TODO
-		}
+	if(! isset($person_details)) {
 
 		if(false !== $itemCount) {
-			$author =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
+			$person =  anth_get_the_person($role);
 		}
 
-		$author_meta = $api->getDetailsByRef($author['atts']['ref']);
+		$person_details = $api->getDetailsByRef($person['atts']['ref']);
 	}
 
-	return $api->getPersonDetail($author_meta, $detail);
+	return $api->getPersonDetail($person_details, $detail);
 }
 
-
-function anth_anthologizer_meta() {
-	global $api;
-	global $section;
-	global $partN;
-	global $partCount;
-	global $itemCount;
-	global $itemN;
-	global $anthologizer_meta;
-
-	if(false !== $partCount) {
-		//$anthologizer = $api->getSectionPartCreator($section, $partN, false); TODO
-	}
-
-	if(false !== $itemCount) {
-		$anthologizer =  $api->getSectionPartItemAnthologizer($section, $partN, $itemN, false);
-	}
-
-	$anthologizer_meta = $api->getDetailsByRef($anthologizer['atts']['ref']);
-}
-
-function anth_the_anthologizer() {
-	echo anth_get_the_anthologizer();
-}
-
-function anth_get_the_anthologizer() {
-	global $api;
-	global $section;
-	global $partN;
-	global $partCount;
-	global $itemCount;
-	global $itemN;
-
-	if(false !== $itemCount) {
-		return $api->getSectionPartItemAnthologizer($section, $partN, $itemN);
-	}
-
-	if(false !== $partCount) {
-		//return $api->getSectionPartAnthologizer($section, $partN); TODO
-	}
-
-	return false;
-}
-
-function anth_get_the_anthologizer_detail($detail) {
-	global $api;
-	global $section;
-	global $partN;
-	global $partCount;
-	global $itemCount;
-	global $itemN;
-	global $anthologizer_meta;
-
-	if(! isset($anthologizer_meta)) {
-
-		if(false !== $partCount) {
-			//$author = $api->getSectionPartCreator($section, $partN, false); TODO
-		}
-
-		if(false !== $itemCount) {
-			$anthologizer =  $api->getSectionPartItemOriginalCreator($section, $partN, $itemN, false);
-		}
-
-		$anthologizer_meta = $api->getDetailsByRef($anthologizer['atts']['ref']);
-	}
-
-
-	return $api->getPersonDetail($author_meta, $detail);
-}
 
 
 /* Functions requiring structured content information */
@@ -390,7 +322,7 @@ function anth_tags() {
  * sets the deep data array for the tag. access details via anth_tag_detail($detail)
  */
 
-function anth_tag_meta() {
+function anth_tag_details() {
 	global $api;
 	global $section;
 	global $partN;
@@ -399,12 +331,12 @@ function anth_tag_meta() {
 	global $itemN;
 	global $tags;
 	global $tagIndex;
-	global $tag_meta;
+	global $tag_details;
 
 
 	if(is_array($tags) && isset($tags[$tagIndex] ) ) {
 		$ref = $tags[$tagIndex]['atts']['ref'];
-		$tag_meta = $api->getDetailsByRef($ref);
+		$tag_details = $api->getDetailsByRef($ref);
 	}
 }
 
@@ -429,19 +361,19 @@ function anth_the_tag() {
 }
 
 function anth_get_the_tag_detail($detail) {
-	global $tag_meta;
+	global $tag_details;
 
 	switch($detail) {
 		case 'count':
-			$retValue = $tag_meta['nums'][0]['value'];
+			$retValue = $tag_details['nums'][0]['value'];
 		break;
 
 		case 'description':
-			$retValue = $tag_meta['descs'][0]['divs'][0]['value'];
+			$retValue = $tag_details['descs'][0]['divs'][0]['value'];
 		break;
 
 		case 'url':
-			$retValue = $tag_meta['idents'][0]['value'];
+			$retValue = $tag_details['idents'][0]['value'];
 		break;
 	}
 	return $retValue;
@@ -482,7 +414,7 @@ function anth_categories() {
 	}
 }
 
-function anth_category_meta() {
+function anth_category_details() {
 	global $api;
 	global $section;
 	global $partN;
@@ -491,12 +423,12 @@ function anth_category_meta() {
 	global $itemN;
 	global $categories;
 	global $catIndex;
-	global $cat_meta;
+	global $cat_details;
 
 
 	if(is_array($categories) && isset($categories[$catIndex] ) ) {
 		$ref = $categories[$catIndex]['atts']['ref'];
-		$cat_meta = $api->getDetailsByRef($ref);
+		$cat_details = $api->getDetailsByRef($ref);
 	}
 }
 
@@ -522,19 +454,19 @@ function anth_the_category() {
 
 
 function anth_get_the_category_detail($detail) {
-	global $cat_meta;
+	global $cat_details;
 
 	switch($detail) {
 		case 'count':
-			$retValue = $cat_meta['nums'][0]['value'];
+			$retValue = $cat_details['nums'][0]['value'];
 		break;
 
 		case 'description':
-			$retValue = $cat_meta['descs'][0]['divs'][0]['value'];
+			$retValue = $cat_details['descs'][0]['divs'][0]['value'];
 		break;
 
 		case 'url':
-			$retValue = $cat_meta['idents'][0]['value'];
+			$retValue = $cat_details['idents'][0]['value'];
 		break;
 	}
 	return $retValue;

@@ -14,15 +14,17 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'indexSubjects' => true,
 		'indexCategories' => true,
 		'indexTags' => true,
-		'indexAuthors' => true,
+		'indexPeople' => true,
 		'indexImages' => true,
 		);
+
 
 
 $ops['outputParams'] = $_SESSION['outputParams'];
 
 $tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
+
 
 
 //if you want to make it a download.
