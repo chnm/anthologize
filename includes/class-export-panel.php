@@ -250,9 +250,9 @@ class Anthologize_Export_Panel {
 				echo "OK";
 			
 			if ( $_POST['export-step'] == '3' )
-				$_SESSION['outputParams'][$key] = $value;
+				$_SESSION['outputParams'][$key] = stripslashes( $value );
 			else
-				$_SESSION[$key] = $value;
+				$_SESSION[$key] = stripslashes( $value );
 		
 		}
 	
