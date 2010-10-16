@@ -685,7 +685,7 @@ class TeiDom {
 		}
 
 		if($this->indexPeople) {
-			$this->backNode->appendChild($this->indexAuthors());
+			$this->backNode->appendChild($this->indexPersons());
 		}
 
 		if($this->indexImages) {
@@ -726,7 +726,6 @@ class TeiDom {
 					if($data['ref'] != '') {
 						$teiRSNode->setAttribute('ref', $data['ref']);
 					}
-
 					$item->appendChild($teiRSNode);
 					$teiRSNode->appendChild($labelNode);
 				break;
@@ -738,16 +737,18 @@ class TeiDom {
 					$listRef = $this->dom->createElement('listRef');
 					$item->appendChild($listRef);
 					$listRef->setAttribute('type', $type);
-
+					$n=0;
 					foreach($targetNodes as $type=>$itemNode) {
 						$targetData = $this->getNodeTargetData($itemNode);
 						$rs = $this->dom->createElement('rs');
+						$rs->setAttribute('n', $n);
 						$listRef->appendChild($rs);
 						if($data['role'] != '') {
 							$rs->setAttribute('role', $data['role']);
 						}
 						$rs->setAttribute('ref', $targetData['id']);
 						$rs->appendChild($this->sanitizeString($targetData['title']));
+						$n++;
 					}
 
 				break;
@@ -796,8 +797,12 @@ class TeiDom {
 		ksort($nodesArray, SORT_STRING);
 		$list = $this->dom->createElement('list');
 
+		$n=0;
 		foreach($nodesArray as $key=>$data) {
-			$list->appendChild($this->newIndexListItem($data));
+			$newItem = $this->newIndexListItem($data);
+			$newItem->setAttribute('n', $n);
+			$list->appendChild($newItem);
+			$n++;
 		}
 
 		return $list;

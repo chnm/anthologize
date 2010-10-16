@@ -5,7 +5,6 @@ include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 require_once(WP_PLUGIN_DIR. '/anthologize/includes/theming-functions.php');
 global $api;
 
-
 //TODO: simplify and condense these options
 
 $ops = array('includeStructuredSubjects' => true, //Include structured data about tags and categories
@@ -18,7 +17,7 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'indexSubjects' => false,
 		'indexCategories' => false,
 		'indexTags' => false,
-		'indexAuthors' => false,
+		'indexPeople' => true,
 		'indexImages' => false,
 		);
 
@@ -31,6 +30,12 @@ header("Content-type: text/html");
 
 $api = new TeiApi($tei);
 
+$index = $api->getIndex('persons');
+print_r($index);
+
+//echo $tei->dom->saveXML($index);
+
+die();
 
 $fileName = $api->getFileName();
 $ext = "html";
@@ -84,7 +89,7 @@ if( isset($ops['outputParams']['download']) ) {
 				anth_item();
 				echo "<p>Tags</p><ul>";
 				while( anth_tags() ) {
-					anth_tag_meta();
+					anth_tag_details();
 					echo "<li>";
 					echo "<a href='" . anth_get_the_tag_detail('url') . "'>"  . anth_get_the_tag() . "</a>";
 					echo "</li>";
@@ -93,23 +98,24 @@ if( isset($ops['outputParams']['download']) ) {
 
 				echo "<p>Categories</p><ul>";
 				while( anth_categories() ) {
-					anth_category_meta();
+					anth_category_details();
 					echo "<li>";
 					echo "<a href='" . anth_get_the_category_detail('url') . "'>"  . anth_get_the_category() . "</a>";
 					echo "</li>";
 				}
 				echo "</ul>";
 
-				anth_author_meta();
-				anth_anthologizer_meta();
+				anth_person_details();
+				anth_person_details('anthologizer');
 
 				?>
 				<h3><?php anth_the_title() ?></h3>
 				<div class="item-meta" style="border: 1px solid blue; margin: 5px; padding: 5px;">
 
-					<img class="gravatar" src="<?php anth_the_author_gravatar_url(); ?>" />
-					<p class="item-author">By <?php anth_the_author(); ?></p>
-					<p class="item-anthologizer">Anthologized by: <?php anth_the_anthologizer(); ?></p>
+					<img class="gravatar" src="<?php anth_the_person_gravatar_url(); ?>" />
+					<p class="item-author">By <?php anth_the_person(); ?></p>
+					<p class="item-anthologizer">Anthologized by: <?php anth_the_person('anthologizer'); ?></p>
+					<p class="item-asserted-author">Attributed to: <?php anth_the_person('assertedAuthor'); ?></p>
 				</div>
 				<div class="item-content">
 					<?php anth_the_item_content() ?>

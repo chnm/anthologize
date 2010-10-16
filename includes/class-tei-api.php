@@ -30,7 +30,7 @@ class TeiApi {
 	* @return Array
 	*/
 
-	public function nodeToArray($node, $deep = true) {
+	public function nodeToArray($node, $deep = true, $followRefs = false) {
 
 		$retArray = array();
 
@@ -83,7 +83,7 @@ class TeiApi {
 			}
 			$retArray[$plName][] = $this->nodeToArray($childNode, $deep);
 
-			if($childNode->hasAttribute('ref')) {
+			if($followRefs && $childNode->hasAttribute('ref')) {
 				$ref = $childNode->getAttribute('ref');
 				$nd = $this->getNodeDataByParams(array('id'=>$ref));
 				$retArray[$plName][] = $nd;
@@ -138,6 +138,13 @@ class TeiApi {
 					$queryString .= "/tei:div[@n='$itemNumber']";
 				}
 			}
+
+
+		} else if(isset($index)) {
+			$queryString = "//tei:div[@type='index'][@subtype='$index']";
+			if(isset($itemNumber)) {
+				$queryString .= "/tei:list/tei:item[@n='$itemNumber']";
+			}
 		}
 
 		if(isset($subPath) ) {
@@ -149,7 +156,6 @@ class TeiApi {
 		} else {
 			$nodeList = $this->getNodeListByXPath($queryString);
 		}
-
 
 		if(! $nodeList ) {
 			return false;
@@ -229,6 +235,7 @@ class TeiApi {
 	 */
 
 	public function getNodeListByXPath($xpath, $firstOnly = false) {
+
 		if(is_array($xpath)) {
 			$nodeList = $this->xpath->query($xpath['xpath'], $xpath['contextNode']);
 		} else {
@@ -425,14 +432,7 @@ class TeiApi {
 	}
 
 
-	public function getSectionPartMetaEl($section, $partNumber, $elName, $asNode = false) {
-		$params = array('section'=> $section,
-		'partNumber'=>$partNumber,
-		'subPath'=>"tei:$elName",
-		'asNode'=>$asNode);
-		return $this->getNodeDataByParams($params);
 
-	}
 
 	/**
 	 * get the number of items in a part in a section
@@ -592,20 +592,6 @@ class TeiApi {
 
 	}
 
-	public function getSectionPartItemMetaEl($section, $partNumber, $itemNumber, $elName, $asNode = false) {
-
-		$xpath = "//tei:body/tei:div[@n='$partNumber']/tei:div[@n='$itemNumber']/tei:head/$elName";
-		$nl = $this->getNodeListByXPath($xpath);
-
-		$retArray = array();
-		foreach($nl as $node) {
-			$retArray[] = $this->nodeToArray($node);
-		}
-
-		return $retArray;
-
-
-	}
 	/**
 	 * get the tags and categories for the item
 	 * Opinionated comment: the distinction is usually irrelevant across more than one user and blog, so -Subjects covers both, -Tags and -Categories make the distinction
@@ -674,6 +660,103 @@ class TeiApi {
 	}
 
 
+	public function getIndex($indexName, $asNode = false) {
+		$params = array('index'=>$indexName,
+						'asNode'=>$asNode,
+						);
+
+		return $this->getNodeDataByParams($params);
+	}
+
+	public function getIndexItemCount($index) {
+
+		if( is_array($index)) {
+			//TODO
+		} else if ( is_a($index, 'DOMElement') ) {
+			$xpath = "/tei:list/tei:item";
+			return $this->xpath->evaluate(count($xpath), $index);
+		} else {
+			throw new Exception('index must be node or array');
+		}
+
+	}
+
+/*
+ 		if (is_array($index)) {
+
+		} else if (is_a($index, 'DOMElement')) {
+
+		} else {
+			throw new Exception('index must be node or array');
+		}
+ */
+
+
+	public function getIndexItem($index, $itemNumber) {
+		if (is_array($index)) {
+
+		} else if (is_a($index, 'DOMElement')) {
+			$params = array('contextNode'=>$index,
+							'asNode'=>true,
+							'subpath'=>"/tei:list/tei:item[@n='$itemNumber']"
+							);
+			return $this->getNodeDataByParams($params);
+
+		} else {
+			throw new Exception('index must be node or array');
+		}
+	}
+
+	public function getIndexItemLabel($item) {
+ 		if (is_array($item)) {
+
+		} else if (is_a($item, 'DOMElement')) {
+			$params = array('contextNode'=>$item,
+							'asNode'=>true,
+							'subpath'=>"/tei:rs/span"
+							);
+			return $this->getNodeDataByParams($params);
+
+		} else {
+			throw new Exception('item must be node or array');
+		}
+	}
+
+
+	public function getIndexItemTargets($item) {
+ 		if (is_array($item)) {
+
+		} else if (is_a($item, 'DOMElement')) {
+			$params = array('contextNode'=>$item,
+							'asNode'=>true,
+							'subpath'=>"/tei:listRef/tei:rs"
+							);
+			return $this->getNodeDataByParams($params);
+		} else {
+			throw new Exception('item must be node or array');
+		}
+	}
+
+	public function getIndexItemTargetCount($item) {
+
+	}
+
+	public function getIndexItemTarget($item, $targetNumber) {
+ 		if (is_array($item)) {
+
+		} else if (is_a($item, 'DOMElement')) {
+			$params = array('contextNode'=>$item,
+							'asNode'=>true,
+							'subpath'=>"/tei:listRef/tei:rs[@n='$targetNumber']"
+							);
+
+			return $this->getNodeDataByParams($params);
+		} else {
+			throw new Exception('item must be node or array');
+		}
+	}
+
+
 	/**
 	 * get the structured data about a person or subject based on their id/username
 	 * @param $ref the id/username of the person. (it's a ref attribute in the TEI)
@@ -687,12 +770,6 @@ class TeiApi {
 		return $this->getNodeDataByParams($params);
 	}
 
-	public function getPersonMetaEl($authorId, $elName, $asNode = false) {
-		$params = array('id'=>$authorId ,
-		'asNode'=>$asNode,
-		'elName'=>$elName);
-		return $this->getNodeDataByParams($params);
-	}
 
 	/**
 	 * dig up a particular piece of data out of the structured array for a user. Basically a helper to sort through the array

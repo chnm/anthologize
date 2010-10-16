@@ -160,7 +160,7 @@ function anth_get_the_title() {
  */
 
 function anth_the_person($role = 'author') {
-	echo anth_get_the_author($role);
+	echo anth_get_the_person($role);
 }
 
 function anth_get_the_person($role = 'author') {
@@ -173,15 +173,26 @@ function anth_get_the_person($role = 'author') {
 	global $itemN;
 
 	if(false !== $itemCount) {
-		$author = $api->getSectionPartItemAssertedAuthor($section, $partN, $itemN);
-		if($author && ($author != '')) {
-			return $author;
-		}
-		return $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN);
-	}
 
-	if(false !== $partCount) {
-		return $api->getSectionPartOriginalCreator($section, $partN);
+		switch ($role) {
+			case 'author':
+				return $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN);
+			break;
+
+			case 'anthologizer':
+					return $api->getSectionPartItemAnthologizer($section, $partN, $itemN);
+			break;
+
+			case 'assertedAuthor':
+				$author = $api->getSectionPartItemAssertedAuthor($section, $partN, $itemN);
+				if($author && ($author != '')) {
+					return $author;
+				}
+			break;
+		}
+
+
+
 	}
 
 	return false;
@@ -286,8 +297,6 @@ function anth_get_the_person_detail($detail, $role = 'author') {
 
 
 /* Functions requiring subject data */
-
-
 
 
 function anth_tags() {
@@ -477,7 +486,13 @@ function anth_the_category_detail($detail) {
 }
 
 
+/* Indexing functions */
 
+function anth_index($type) {
+	global $api;
+	global $index;
+
+}
 
 
 
