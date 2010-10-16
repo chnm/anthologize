@@ -148,7 +148,8 @@ class TeiApi {
 		}
 
 		if(isset($subPath) ) {
-			$queryString .= "/$subPath";
+			//TODO check whether I use/need a first slash
+			$queryString .= "$subPath";
 		}
 
 		if(isset($contextNode) ) {
@@ -362,7 +363,7 @@ class TeiApi {
 	public function getProjectPublicationDate() {
 		$query = "//tei:front/tei:head/tei:bibl/tei:data[@type = 'created']";
 		$params = array('section'=>'front',
-						'subPath'=>"tei:head/tei:bibl/tei:date[@type = 'created']",
+						'subPath'=>"/tei:head/tei:bibl/tei:date[@type = 'created']",
 						'asNode'=>false
 					);
 		$data = $this->getNodeDataByParams($params);
@@ -402,7 +403,7 @@ class TeiApi {
 	public function getSectionPartHead($section, $partNumber, $asNode = false) {
 		$params = array('section' => $section,
 		'partNumber'=>$partNumber,
-		'subPath'=>'tei:head',
+		'subPath'=>'/tei:head',
 		'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);
 	}
@@ -418,7 +419,7 @@ class TeiApi {
 	public function getSectionPartTitle($section, $partNumber, $asNode = false) {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
-		'subPath'=>'tei:head/tei:title',
+		'subPath'=>'/tei:head/tei:title',
 		'asNode'=>true);
 
 		$data = $this->getNodeDataByParams($params);
@@ -483,7 +484,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
-		'subPath'=>"tei:head/tei:title",
+		'subPath'=>"/tei:head/tei:title",
 		'asNode'=>true);
 
 		$data = $this->getNodeDataByParams($params);
@@ -508,7 +509,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "@xml:id",
+						'subPath' => "/@xml:id",
 						'asNode'=>false
 						);
 		$data = $this->getNodeDataByParams($params);
@@ -529,7 +530,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "tei:head/tei:bibl/tei:author[@role='originalAuthor']",
+						'subPath' => "/tei:head/tei:bibl/tei:author[@role='originalAuthor']",
 						'asNode'=>$asNode
 						);
 
@@ -556,7 +557,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "tei:head/tei:bibl/tei:author[@role='anthologizer']",
+						'subPath' => "/tei:head/tei:bibl/tei:author[@role='anthologizer']",
 						'asNode'=>$asNode
 						);
 
@@ -580,7 +581,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
-						'subPath' => "tei:head/tei:bibl/tei:author[@role='assertedAuthor']",
+						'subPath' => "/tei:head/tei:bibl/tei:author[@role='assertedAuthor']",
 						'asNode'=>$asNode
 						);
 
@@ -606,7 +607,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
-		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs",
+		'subPath'=>"/tei:head/tei:list[@type='subjects']/tei:item/tei:rs",
 		'asNode'=> $asNode);
 		$data = $this->getNodeDataByParams($params, false);
 		return $data;
@@ -616,7 +617,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
-		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs[@type='tag']",
+		'subPath'=>"/tei:head/tei:list[@type='subjects']/tei:item/tei:rs[@type='tag']",
 		'asNode'=> $asNode);
 		$data = $this->getNodeDataByParams($params, false);
 		return $data;
@@ -626,7 +627,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
-		'subPath'=>"tei:head/tei:list[@type='subjects']/tei:item/tei:rs[@type='category']",
+		'subPath'=>"/tei:head/tei:list[@type='subjects']/tei:item/tei:rs[@type='category']",
 		'asNode'=> $asNode);
 		$data = $this->getNodeDataByParams($params, false);
 		return $data;
@@ -646,7 +647,7 @@ class TeiApi {
 		$params = array('section'=> $section,
 		'partNumber'=>$partNumber,
 		'itemNumber'=>$itemNumber,
-		'subPath'=>'div',
+		'subPath'=>'/div',
 		'asNode'=> true);
 		$data = $this->getNodeDataByParams($params);
 
@@ -671,10 +672,10 @@ class TeiApi {
 	public function getIndexItemCount($index) {
 
 		if( is_array($index)) {
-			//TODO
+			return count($index['lists'][0]['items']);
 		} else if ( is_a($index, 'DOMElement') ) {
-			$xpath = "/tei:list/tei:item";
-			return $this->xpath->evaluate(count($xpath), $index);
+			$xpath = "list/item"; //looks like when giving a context node, evaluate doesn't want prefixes
+			return $this->xpath->evaluate("count($xpath)", $index);
 		} else {
 			throw new Exception('index must be node or array');
 		}
@@ -694,11 +695,11 @@ class TeiApi {
 
 	public function getIndexItem($index, $itemNumber) {
 		if (is_array($index)) {
-
+			return $index['lists'][0]['items'][$itemNumber];
 		} else if (is_a($index, 'DOMElement')) {
 			$params = array('contextNode'=>$index,
 							'asNode'=>true,
-							'subpath'=>"/tei:list/tei:item[@n='$itemNumber']"
+							'subPath'=>"list/item[@n='$itemNumber']"
 							);
 			return $this->getNodeDataByParams($params);
 
@@ -707,15 +708,21 @@ class TeiApi {
 		}
 	}
 
-	public function getIndexItemLabel($item) {
+	public function getIndexItemLabel($item, $asNode = false) {
  		if (is_array($item)) {
-
+			return $item['rss'][0]['spans'][0]['value'];
 		} else if (is_a($item, 'DOMElement')) {
 			$params = array('contextNode'=>$item,
 							'asNode'=>true,
-							'subpath'=>"/tei:rs/span"
+							'subPath'=>"rs"
 							);
-			return $this->getNodeDataByParams($params);
+
+			$data =  $this->getNodeDataByParams($params);
+
+			if($asNode) {
+				return $data;
+			}
+			return $this->getNodeXML($data);
 
 		} else {
 			throw new Exception('item must be node or array');
@@ -723,36 +730,87 @@ class TeiApi {
 	}
 
 
-	public function getIndexItemTargets($item) {
+	public function getIndexItemRef($item, $asNode = false) {
  		if (is_array($item)) {
-
+			$ref = $item['rss'][0]['atts']['ref'];
 		} else if (is_a($item, 'DOMElement')) {
-			$params = array('contextNode'=>$item,
-							'asNode'=>true,
-							'subpath'=>"/tei:listRef/tei:rs"
-							);
-			return $this->getNodeDataByParams($params);
+			$ref = $item->firstChild->getAttribute('ref');
 		} else {
-			throw new Exception('item must be node or array');
+			throw new Exception('index must be node or array');
 		}
+		return $this->getDetailsByRef($ref);
 	}
+
 
 	public function getIndexItemTargetCount($item) {
-
+		if( is_array($item)) {
+			return count($item['listRefs'][0]['rss']);
+		} else if ( is_a($item, 'DOMElement') ) {
+			$xpath = "listRef/rs"; //looks like when giving a context node, evaluate doesn't want prefixes
+			return $this->xpath->evaluate("count($xpath)", $item);
+		} else {
+			throw new Exception('index must be node or array');
+		}
 	}
 
 	public function getIndexItemTarget($item, $targetNumber) {
  		if (is_array($item)) {
-
+			return $item['listRefs'][0]['rss'][$targetNumber];
 		} else if (is_a($item, 'DOMElement')) {
 			$params = array('contextNode'=>$item,
 							'asNode'=>true,
-							'subpath'=>"/tei:listRef/tei:rs[@n='$targetNumber']"
+							'subPath'=>"listRef/rs[@n='$targetNumber']"
 							);
 
 			return $this->getNodeDataByParams($params);
 		} else {
 			throw new Exception('item must be node or array');
+		}
+	}
+
+	/**
+	 * dig up a detail about the target
+	 *
+	 * @param DOMElement $target
+	 * @param string $detail this is the info you are looking for: ref, role, label
+	 */
+
+	public function getIndexItemTargetDetail($target, $detail, $asNode = false) {
+ 		if (is_array($target)) {
+			switch ($detail) {
+				case 'ref':
+					return $target['atts']['ref'];
+				break;
+
+				case 'role':
+					return $target['atts']['role'];
+				break;
+
+				case 'label':
+					return $target['spans'][0]['value'];
+				break;
+
+			}
+		} else if (is_a($target, 'DOMElement')) {
+			switch ($detail) {
+				case 'ref':
+					return $target->getAttribute('ref');
+				break;
+
+				case 'role':
+					return $target->getAttribute('role');
+				break;
+
+				case 'label':
+					if($asNode) {
+						return $target->firstChild;
+					}
+					return $this->getNodeXML($target->firstChild);
+
+				break;
+			}
+		} else {
+			throw new Exception('index must be node or array');
 		}
 	}
 
@@ -766,7 +824,7 @@ class TeiApi {
 
 	public function getDetailsByRef($ref, $asNode = false) {
 		$params = array('id'=>$ref ,
-		'asNode'=>$asNode);
+						'asNode'=>$asNode);
 		return $this->getNodeDataByParams($params);
 	}
 

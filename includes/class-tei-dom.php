@@ -715,7 +715,6 @@ class TeiDom {
 
 				case 'node':
 				case 'ref':
-				case 'role':
 					continue;
 				break;
 
@@ -738,16 +737,16 @@ class TeiDom {
 					$item->appendChild($listRef);
 					$listRef->setAttribute('type', $type);
 					$n=0;
-					foreach($targetNodes as $type=>$itemNode) {
-						$targetData = $this->getNodeTargetData($itemNode);
+					foreach($targetNodes as $targetNodeData) {
+						$targetNode = $this->getNodeTargetData($targetNodeData['target']);
 						$rs = $this->dom->createElement('rs');
 						$rs->setAttribute('n', $n);
 						$listRef->appendChild($rs);
-						if($data['role'] != '') {
-							$rs->setAttribute('role', $data['role']);
+						if($targetNodeData['role'] != '') {
+							$rs->setAttribute('role', $targetNodeData['role']);
 						}
-						$rs->setAttribute('ref', $targetData['id']);
-						$rs->appendChild($this->sanitizeString($targetData['title']));
+						$rs->setAttribute('ref', $targetNodeData['id']);
+						$rs->appendChild($this->sanitizeString($targetNode['title']));
 						$n++;
 					}
 
@@ -766,6 +765,7 @@ class TeiDom {
 			$nodeClone = $node->cloneNode(true);
 			$key = $this->getNodeKeyForIndex($node);
 			$labelNode = $this->getNodeLabelForIndex($node);
+			$role = $node->getAttribute('role');
 			foreach($targetTypes as $targetType) {
 				switch($targetType) {
 					case 'items':
@@ -778,16 +778,15 @@ class TeiDom {
 				}
 
 				if(array_key_exists($key, $nodesArray)) {
-					$nodesArray[$key][$targetType][] = $target;
+					$nodesArray[$key][$targetType][] = array('target'=>$target, 'role'=>$role );
 				} else {
 					$ref = $node->getAttribute('ref');
-					$role = $node->getAttribute('role');
+
 					$nodesArray[$key] = array(
 						'label'=>$labelNode,
 						'ref'=>$ref,
-						'role'=>$role,
 						'node'=>$nodeClone,
-						$targetType=>array($target));
+						$targetType=>array( array('target'=>$target, 'role'=>$role)) );
 				}
 			}
 
@@ -796,6 +795,7 @@ class TeiDom {
 
 		ksort($nodesArray, SORT_STRING);
 		$list = $this->dom->createElement('list');
+
 
 		$n=0;
 		foreach($nodesArray as $key=>$data) {

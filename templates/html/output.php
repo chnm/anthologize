@@ -30,12 +30,43 @@ header("Content-type: text/html");
 
 $api = new TeiApi($tei);
 
-$index = $api->getIndex('persons');
-print_r($index);
+/*
+$index = $api->getIndex('persons', true);
 
-//echo $tei->dom->saveXML($index);
 
+echo $api->getIndexItemCount($index);
+echo "<br/>";
+$item = $api->getIndexItem($index, 1);
+echo "<br/>";
+
+echo $api->getIndexItemLabel($item);
+
+echo "<br/>";
+
+$structuredData = $api->getIndexItemRef($item);
+echo $structuredData->nodeName;
+
+echo "<br/>";
+
+echo $api->getIndexItemTargetCount($item);
+echo "<br/>";
+
+$target = $api->getIndexItemTarget($item, 0);
+echo $target->nodeName;
+
+
+echo "<br/>";
+echo $api->getIndexItemTargetDetail($target, 'ref');
+echo "<br/>";
+echo $api->getIndexItemTargetDetail($target, 'role');
+echo "<br/>";
+echo $api->getIndexItemTargetDetail($target, 'label');
+echo "<br/>";
+
+echo "<br/>";
 die();
+
+*/
 
 $fileName = $api->getFileName();
 $ext = "html";
@@ -126,6 +157,30 @@ if( isset($ops['outputParams']['download']) ) {
 		}
 	}
 	?>
+
+	<div class='anth-index'>
+		<h1>Author Index</h1>
+		<?php anth_index('persons'); ?>
+		<?php while(anth_index_items() ) : ?>
+			<?php anth_index_item(); ?>
+			<h3><?php anth_index_the_item_label(); ?></h3>
+			<?php while(anth_index_item_targets() ): ?>
+				<?php anth_index_item_target(); ?>
+				<?php if(anth_index_item_get_the_target('role') == 'originalAuthor'): ?>
+				<h5><?php anth_index_item_the_target(); ?></h5>
+				<?php endif; ?>
+
+			<?php endwhile; ?>
+
+
+		<?php endwhile; ?>
+
+
+
+
+
+	</div>
+
 
 	</body>
 

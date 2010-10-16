@@ -488,11 +488,111 @@ function anth_the_category_detail($detail) {
 
 /* Indexing functions */
 
-function anth_index($type) {
+
+
+function anth_index($name) {
 	global $api;
 	global $index;
+	global $indexItemIndex;
+
+	$indexIndex = -1;
+	$index = $api->getIndex($name);
 
 }
+
+function anth_index_items() {
+	global $api;
+	global $index;
+	global $indexItemIndex;
+
+
+	if($index) {
+		$indexItemIndex++;
+		if($indexItemIndex >= $api->getIndexItemCount($index)) {
+			unset($index);
+			$IndexItemIndex = -1;
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
+function anth_index_item() {
+	global $api;
+	global $index;
+	global $indexItemIndex;
+	global $indexItem;
+	global $indexItemTargetIndex;
+
+	$indexItemTargetIndex = -1;
+	$indexItem =  $api->getIndexItem($index, $indexItemIndex);
+}
+
+function anth_index_get_the_item_label() {
+	global $api;
+	global $indexItem;
+
+	return $api->getIndexItemLabel($indexItem);
+
+}
+
+function anth_index_the_item_label() {
+	global $api;
+	global $indexItem;
+
+	echo anth_index_get_the_item_label();
+}
+
+function anth_index_item_ref() {
+	global $api;
+	global $indexItem;
+	global $indexItemRef;
+
+	$indexItemRef = $api->getIndexItemRef($indexItem);
+
+}
+
+function anth_index_item_targets() {
+	global $api;
+	global $indexItem;
+	global $indexItemTargetIndex;
+
+	if($indexItem) {
+		$indexItemTargetIndex++;
+		if($indexItemTargetIndex >= $api->getIndexItemTargetCount($indexItem)) {
+			unset($indexItem);
+			$indexItemTargetIndex = -1;
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
+
+function anth_index_item_target() {
+	global $api;
+	global $indexItem;
+	global $indexItemTarget;
+	global $indexItemTargetIndex;
+
+	$indexItemTarget = $api->getIndexItemTarget($indexItem, $indexItemTargetIndex);
+}
+
+
+function anth_index_item_get_the_target($detail = 'label') {
+	global $api;
+	global $indexItemTarget;
+
+	return $api->getIndexItemTargetDetail($indexItemTarget, $detail);
+}
+
+
+
+function anth_index_item_the_target($detail = 'label') {
+	echo anth_index_item_get_the_target($detail);
+}
+
 
 
 
