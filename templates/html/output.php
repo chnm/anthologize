@@ -167,7 +167,7 @@ if( isset($ops['outputParams']['download']) ) {
 			<?php while(anth_index_item_targets() ): ?>
 				<?php anth_index_item_target(); ?>
 				<?php if(anth_index_item_get_the_target('role') == 'originalAuthor'): ?>
-				<h5><?php anth_index_item_the_target(); ?></h5>
+				<h5><a href="#<?php anth_index_item_the_target('ref') ?>"><?php anth_index_item_the_target(); ?></a></h5>
 				<?php endif; ?>
 
 			<?php endwhile; ?>

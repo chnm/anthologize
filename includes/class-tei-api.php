@@ -777,6 +777,7 @@ class TeiApi {
 
 	public function getIndexItemTargetDetail($target, $detail, $asNode = false) {
  		if (is_array($target)) {
+
 			switch ($detail) {
 				case 'ref':
 					return $target['atts']['ref'];

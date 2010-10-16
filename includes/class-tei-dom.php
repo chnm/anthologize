@@ -745,7 +745,7 @@ class TeiDom {
 						if($targetNodeData['role'] != '') {
 							$rs->setAttribute('role', $targetNodeData['role']);
 						}
-						$rs->setAttribute('ref', $targetNodeData['id']);
+						$rs->setAttribute('ref', $targetNode['id']);
 						$rs->appendChild($this->sanitizeString($targetNode['title']));
 						$n++;
 					}
