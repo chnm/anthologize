@@ -1743,8 +1743,6 @@ $cw=array(
 	40853=>1000,40854=>1000,40855=>1000,40856=>1000,40857=>1000,40858=>1000,40859=>1000,40860=>1000,40861=>1000,40862=>1000,40863=>1000,40864=>1000,40865=>1000,40866=>1000,40867=>1000,40868=>1000,
 	40869=>1000);
 $diff='';
-
-
 $originalsize=23275812;
 
 // CID Information
@@ -1760,20 +1758,12 @@ $originalsize=23275812;
 //$enc='UniGB-UTF16-H';
 //$cidinfo=array('Registry'=>'Adobe','Ordering'=>'GB1','Supplement'=>2);
 //include(dirname(__FILE__).'/uni2cid_ag15.php');
-switch ($_SESSION['outputParams']['font-face']) {
-	case 'arialunicid0-cj':
-		$enc='UniJIS-UTF16-H';
-		$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Japan1','Supplement'=>5);
-		include(dirname(__FILE__).'/uni2cid_aj16.php');
 
-	break;
+//$enc='UniKS-UTF16-H';
+//$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Korea1','Supplement'=>0);
+//include(dirname(__FILE__).'/uni2cid_ak12.php');
 
-	case 'arialunicid0-ko':
-		$enc='UniKS-UTF16-H';
-		$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Korea1','Supplement'=>0);
-		include(dirname(__FILE__).'/uni2cid_ak12.php');
-
-	break;
-}
-
-
+$enc='UniJIS-UTF16-H';
+$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Japan1','Supplement'=>5);
+include(dirname(__FILE__).'/uni2cid_aj16.php');
+// --- EOF ---
