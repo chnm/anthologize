@@ -12,7 +12,7 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'includeCreatorData' => true, // Include basic data about creators
 		'includeStructuredCreatorData' => true, //include structured data about creators
 		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories and creator data)
-		'checkImgSrcs' => false, //whether to check availability of image sources
+		'checkImgSrcs' => true, //whether to check availability of image sources
 		'linkToEmbeddedObjects' => false,
 		'indexSubjects' => false,
 		'indexCategories' => false,
@@ -30,43 +30,6 @@ header("Content-type: text/html");
 
 $api = new TeiApi($tei);
 
-/*
-$index = $api->getIndex('persons', true);
-
-
-echo $api->getIndexItemCount($index);
-echo "<br/>";
-$item = $api->getIndexItem($index, 1);
-echo "<br/>";
-
-echo $api->getIndexItemLabel($item);
-
-echo "<br/>";
-
-$structuredData = $api->getIndexItemRef($item);
-echo $structuredData->nodeName;
-
-echo "<br/>";
-
-echo $api->getIndexItemTargetCount($item);
-echo "<br/>";
-
-$target = $api->getIndexItemTarget($item, 0);
-echo $target->nodeName;
-
-
-echo "<br/>";
-echo $api->getIndexItemTargetDetail($target, 'ref');
-echo "<br/>";
-echo $api->getIndexItemTargetDetail($target, 'role');
-echo "<br/>";
-echo $api->getIndexItemTargetDetail($target, 'label');
-echo "<br/>";
-
-echo "<br/>";
-die();
-
-*/
 
 $fileName = $api->getFileName();
 $ext = "html";
@@ -141,7 +104,7 @@ if( isset($ops['outputParams']['download']) ) {
 
 				?>
 				<h3><?php anth_the_title() ?></h3>
-				<div class="item-meta" style="border: 1px solid blue; margin: 5px; padding: 5px;">
+				<div class="item-meta" style="border: 1px solid black; margin: 5px; padding: 5px;">
 
 					<img class="gravatar" src="<?php anth_the_person_gravatar_url(); ?>" />
 					<p class="item-author">By <?php anth_the_person(); ?></p>
