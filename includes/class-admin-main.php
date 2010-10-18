@@ -469,7 +469,6 @@ class Anthologize_Admin_Main {
         global $post;
 
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
-        print_r($meta);
         $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
        	$author_name = get_post_meta( $post->ID, 'author_name', true );
         ?>
