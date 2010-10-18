@@ -163,10 +163,10 @@ class Anthologize_Admin_Main {
 			'order' => 'ASC'
 		);
 
-		$items_query = new WP_Query( $args );
+		$parts_query = new WP_Query( $args );
 
-		if ( $posts = $items_query->get_posts() ) {
-            return $posts;
+		if ( $parts = $parts_query->get_posts() ) {
+            return $parts;
 		}
 
 	}
@@ -195,9 +195,9 @@ class Anthologize_Admin_Main {
         		$items_query = new WP_Query( $args );
 
                 // May need optimization
-        		if ( $posts = $items_query->get_posts() ) {
-                    foreach($posts as $post) {
-                        $items[] = $post;
+        		if ( $child_posts = $items_query->get_posts() ) {
+                    foreach($child_posts as $child_post) {
+                        $items[] = $child_post;
                     }
         		}
             }
@@ -283,7 +283,7 @@ class Anthologize_Admin_Main {
             </thead>
 			<tbody>
 				<?php while ( have_posts() ) : the_post(); ?>
-
+				
 					<tr>
 						<tr>
             			<th scope="row" class="check-column">
@@ -323,11 +323,10 @@ class Anthologize_Admin_Main {
 
                         <td scope="row anthologize-number-items">
                             <?php $items = $this->get_project_items();  echo count($items); ?>
-
 						</td>
 
 						<td scope="row anthologize-date-created">
-						    <?php the_date(); ?>
+						    <?php global $post; echo date( "F j, Y", strtotime( $post->post_date ) ) ?>
 						</td>
 
 						<td scope="row anthologize-date-modified">

@@ -244,32 +244,43 @@ class Anthologize_Project_Organizer {
 			$last_item = 0;
 
 		$last_item++;
-		$post = get_post( $item_id );
+		$the_item = get_post( $item_id );
 		$part = get_post( $part_id );
 
 		$args = array(
 		  'menu_order' => $last_item,
-		  'comment_status' => $post->comment_status,
-		  'ping_status' => $post->ping_status,
-		  'pinged' => $post->pinged,
+		  'comment_status' => $the_item->comment_status,
+		  'ping_status' => $the_item->ping_status,
+		  'pinged' => $the_item->pinged,
 		  'post_author' => $current_user->ID,
-		  'post_content' => $post->post_content,
-		  'post_date' => $post->post_date,
-		  'post_date_gmt' => $post->post_date_gmt,
-		  'post_excerpt' => $post->post_excerpt,
+		  'post_content' => $the_item->post_content,
+		  'post_date' => $the_item->post_date,
+		  'post_date_gmt' => $the_item->post_date_gmt,
+		  'post_excerpt' => $the_item->post_excerpt,
 		  'post_parent' => $part_id,
-		  'post_password' => $post->post_password,
+		  'post_password' => $the_item->post_password,
 		  'post_status' => $part->post_status, // post_status is set to the post_status of the parent part
-		  'post_title' => $post->post_title,
+		  'post_title' => $the_item->post_title,
 		  'post_type' => 'anth_library_item',
-		  'to_ping' => $post->to_ping, // todo: tags and categories
+		  'to_ping' => $the_item->to_ping, // todo: tags and categories
 		);
 
 		if ( !$imported_item_id = wp_insert_post( $args ) )
 			return false;
+		
+		// Update the parent project's Date Modified field to right now
+		$project_post = get_post( $this->project_id );
+		$project_args = array(
+			'ID' => $this->project_id,
+            'post_modified' => date( "Y-m-d G:H:i" ),
+            'post_modified_gmt' => gmdate( "Y-m-d G:H:i" ),
+            'post_date' => date( "Y-m-d G:H:i", strtotime( $project_post->post_date ) ),
+            'post_date_gmt' => gmdate( "Y-m-d G:H:i", strtotime( $project_post->post_date ) ),
+		);
+		wp_update_post( $project_args );
 
 		// Author data
-		$user = get_userdata( $post->post_author );
+		$user = get_userdata( $the_item->post_author );
 
 		if ( !$author_name = get_post_meta( $item_id, 'author_name', true ) )
 			$author_name = $user->display_name;
@@ -278,7 +289,7 @@ class Anthologize_Project_Organizer {
 		$anthologize_meta = apply_filters( 'anth_add_item_postmeta', array(
 			'author_name' => $author_name,
 			'author_name_array' => $author_name_array,
-			'author_id' => $post->post_author,
+			'author_id' => $the_item->post_author,
 			'original_post_id' => $item_id
 		) );
 		

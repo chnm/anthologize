@@ -18,7 +18,9 @@ class Anthologize_New_Project {
         $post_data = array(
             'post_title' => 'Default Title',
             'post_type' => 'anth_project',
-            'post_status' => ''
+            'post_status' => '',
+            'post_date' => date( "Y-m-d G:H:i" ),
+            'post_date_gmt' => gmdate( "Y-m-d G:H:i" ),
         );
 
         if (!empty($_POST['post_title']))
