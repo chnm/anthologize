@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: oneweekonetool, boonebgorges, digitaleffie, gossettphd, janaremy, jcmeloni, jeremyboggs, knoxdw, patrickmj, patrickrashleigh, sramsay, zmccune, chnm
 Donate link: http://anthologize.org/
-Tags: book, pdf, tei, epub, publish, rtf, ebook
+Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.0
 Tested up to: 3.0.1
 Stable tag: 0.4-alpha
