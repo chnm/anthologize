@@ -181,7 +181,7 @@ class TeiDom {
 
 		$strAvailNode = $this->xpath->query("//tei:publicationStmt//tei:ab[@rend='structured']")->item(0);
 		$strAvailNode->appendChild($this->dom->createTextNode("cc-" . $this->projectData['cctype']) );
-		$strAvailNode->setAttribute('status', $this->projectData['ctype']);
+		$strAvailNode->parentNode->setAttribute('status', $this->projectData['ctype']);
 
 		//date
 		$pubDateNode = $this->xpath->query("//tei:publicationStmt/tei:date")->item(0);
