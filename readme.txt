@@ -42,7 +42,6 @@ If you're upgrading manually from a previous version of Anthologize, please be s
 * Minimize/maximize parts to make project editing easier
 * Add multiple items to parts by dragging the Posts header on the project organizer screen
 * Linked Table of Contents and better pagination in PDF
-* New "Created with Anthologize" colophon that can be toggled on and off
 * Improved support for Gravatars in exports
 * Methods added to the TEI class that allow for some automated indexing
 * Many bugfixes and stability enhancements
