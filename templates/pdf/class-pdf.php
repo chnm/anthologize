@@ -76,7 +76,7 @@ $this->pdf->setLanguageArray($lg);
 	}
 
 	public function write_pdf() {
-
+		$toc_page = 3;
 		$book_title = $this->tei->getProjectTitle();
 		$book_subtitle = $this->tei->getProjectSubTitle();
 		$book_author = $this->tei->getProjectCreator();
@@ -100,6 +100,15 @@ $this->pdf->setLanguageArray($lg);
 
 
 		$this->pdf->WriteHTML('<div>' . $rights_html . '</div>', true, 0, true, 0);
+
+		$dedication = $this->get_dedication();
+		$acknowledgements = $this->get_acknowledgements();
+		if ($dedication || $acknowledgements){
+			$toc_page = 4;
+    	$this->pdf->AddPage();
+			$this->pdf->WriteHTML($dedication.$acknowledgements);
+		}
+
 
 		// Main content
 		$this->pdf->AddPage();
@@ -148,7 +157,7 @@ $this->pdf->setLanguageArray($lg);
 		$this->pdf->WriteHTML("<h3>Table of Contents</h3>", true, 0, true, 0);
 
 		// add TOC at page 3
-		$this->pdf->addTOC(3);
+		$this->pdf->addTOC($toc_page);
 
 		// // end of TOC page
 		$this->pdf->endTOCPage();
@@ -250,6 +259,28 @@ $this->pdf->setLanguageArray($lg);
 
 		return $colophon;
 
+	}
+	
+	private function get_dedication(){
+		$dedication_html = '';
+		$dedication = $this->tei->getSectionPartItemContent('front', 0, 0);
+		if ($this->tei->getSectionPartItemContent('front', 0, 0, true)->textContent){
+			$dedication_html = '<h3>'.$this->tei->getSectionPartItemTitle('front', 0, 0).'</h3>';
+			$dedication_html .= '<div><i>'.$dedication.'</i></div>';
+		}
+		
+		return $dedication_html;
+	}
+	
+	private function get_acknowledgements(){
+		$acknowledgements_html = '';
+		$acknowledgements = $this->tei->getSectionPartItemContent('front', 0, 1);
+		if ($this->tei->getSectionPartItemContent('front', 0, 1, true)->textContent){
+			$acknowledgements_html = '<h3>'.$this->tei->getSectionPartItemTitle('front', 0, 1).'</h3>';
+			$acknowledgements_html .= '<div><i>'.$acknowledgements.'</i></div>';
+		}
+		
+		return $acknowledgements_html;		
 	}
 
 } // TeiPdf
