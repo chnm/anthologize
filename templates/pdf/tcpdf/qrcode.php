@@ -1,9 +1,15 @@
 <?php
 //============================================================+
 // File name   : qrcode.php
+<<<<<<< HEAD
 // Version     : 1.0.005
 // Begin       : 2010-03-22
 // Last Update : 2010-08-08
+=======
+// Version     : 1.0.006
+// Begin       : 2010-03-22
+// Last Update : 2010-08-30
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 // Author      : Nicola Asuni - Tecnick.com S.r.l - Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -79,7 +85,11 @@
  * @copyright 2010-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
+<<<<<<< HEAD
  * @version 1.0.005
+=======
+ * @version 1.0.006
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
  */
 
 // definitions
@@ -295,7 +305,11 @@ if (!class_exists('QRcode', false)) {
 	 * @copyright 2010-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 	 * @link http://www.tcpdf.org
 	 * @license http://www.gnu.org/copyleft/lesser.html LGPL
+<<<<<<< HEAD
 	 * @version 1.0.005
+=======
+	 * @version 1.0.006
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 	 */
 	class QRcode {
 
@@ -663,6 +677,12 @@ if (!class_exists('QRcode', false)) {
 			}
 			$this->items = array();
 			$this->encodeString($code);
+<<<<<<< HEAD
+=======
+			if (is_null($this->data)) {
+				return false;
+			}
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 			$qrTab = $this->binarize($this->data);
 			$size = count($qrTab);
 			$barcode_array['num_rows'] = $size;
@@ -2060,6 +2080,12 @@ if (!class_exists('QRcode', false)) {
 		 * @return array bitstream
 		 */
 		 protected function appendPaddingBit($bstream) {
+<<<<<<< HEAD
+=======
+		 	if (is_null($bstream)) {
+		 		return null;
+		 	}
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 			$bits = count($bstream);
 			$maxwords = $this->getDataLength($this->version, $this->level);
 			$maxbits = $maxwords * 8;
@@ -2091,6 +2117,12 @@ if (!class_exists('QRcode', false)) {
 		 */
 		 protected function mergeBitStream($items) {
 			$items = $this->convertData($items);
+<<<<<<< HEAD
+=======
+			if (!is_array($items)) {
+				return null;
+			}
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 			$bstream = array();
 			foreach ($items as $item) {
 				$bstream = $this->appendBitstream($bstream, $item['bstream']);
@@ -2227,6 +2259,12 @@ if (!class_exists('QRcode', false)) {
 		 * @return array of bytes
 		 */
 		 protected function bitstreamToByte($bstream) {
+<<<<<<< HEAD
+=======
+			if (is_null($bstream)) {
+		 		return null;
+		 	}
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 			$size = count($bstream);
 			if ($size == 0) {
 				return array();

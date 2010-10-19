@@ -76,7 +76,10 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	 * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
 	 */
 	define ('K_PATH_URL', $k_path_url);
+<<<<<<< HEAD
 	//define ('K_PATH_URL', "http://192.168.1.152/wordpress/wp-content/plugins/anthologize/includes/tcpdf/");
+=======
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 
  	/**
 	 * path for PDF fonts

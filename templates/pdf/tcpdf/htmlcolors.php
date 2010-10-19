@@ -1,9 +1,15 @@
 <?php
 //============================================================+
 // File name   : htmlcolors.php
+<<<<<<< HEAD
 // Version     : 1.0.006
 // Begin       : 2002-04-09
 // Last Update : 2010-08-08
+=======
+// Version     : 1.0.007
+// Begin       : 2002-04-09
+// Last Update : 2010-10-18
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 // Author      : Nicola Asuni - Tecnick.com S.r.l - Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -44,7 +50,10 @@
 /**
  * Array of WEB safe colors
  */
+<<<<<<< HEAD
 global $webcolor;
+=======
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 $webcolor = array (
 'aliceblue' => 'f0f8ff',
 'antiquewhite' => 'faebd7',
