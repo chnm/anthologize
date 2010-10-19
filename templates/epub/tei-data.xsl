@@ -32,7 +32,7 @@
 
   <xsl:variable name="book.dedication">
     <xsl:copy-of
-      select="/tei:TEI/tei:text/tei:front/tei:div[@n='0']/html:div/node()"
+      select="/tei:TEI/tei:text/tei:front/tei:div[@n='0']"
     />
   </xsl:variable>
 
@@ -42,7 +42,7 @@
     select="/tei:TEI/tei:text/tei:front/tei:div[@n='1']" /> 
 
   <xsl:variable name="book.acknowledgements.text">
-    <xsl:copy-of select="$book.acknowledgements/html:div/node()"/>
+    <xsl:copy-of select="$book.acknowledgements/div/node()"/>
   </xsl:variable>
 
   <xsl:variable name="book.acknowledgements.title"

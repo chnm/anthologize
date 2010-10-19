@@ -110,13 +110,12 @@
         <div id="publication-statement-page">
 
           <!-- Dedication -->
-
+          <h1>Dedication</h1>
+          
           <xsl:if test="normalize-space($book.dedication) != ''">
-            <p xml:id="anthologize-dedication">
-              <em>
-                <xsl:copy-of select="$book.dedication"/>
-              </em>
-            </p>
+            <div xml:id="anthologize-dedication">         
+                <xsl:copy-of select="$book.dedication"/>              
+            </div>
           </xsl:if>
 
           <!-- Title  -->
@@ -148,7 +147,7 @@
 
         <!-- Acknowledgements page -->
 
-        <xsl:if test="normalize-space($book.acknowledgements.text) != ''">
+        <xsl:if test="normalize-space($book.acknowledgements) != ''">
 
           <div class="chapter" id="anthologize-acknowledgements-page">
 
@@ -161,7 +160,7 @@
             <!-- Acknowledgement text -->
 
             <div xml:id="chapter-content">
-              <xsl:copy-of select="$book.acknowledgements.text"/>
+              <xsl:copy-of select="$book.acknowledgements"/>
             </div>
           </div>
         </xsl:if>

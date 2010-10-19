@@ -234,7 +234,7 @@ class TeiDom {
 		//currently, f1 is hardcoded to be Dedication
 		//TODO: change this when UI changes
 		$f1TitleNode->appendChild($this->sanitizeString(htmlspecialchars($this->front1Title)));
-		$f1Node->appendChild($this->sanitizeString(htmlspecialchars($this->projectData['dedication']), true));
+		$f1Node->appendChild($this->sanitizeString($this->projectData['dedication'], true));
 
 		//front2
 		$f2Node = $this->xpath->query("//tei:front/tei:div[@n='1']")->item(0);
@@ -243,7 +243,7 @@ class TeiDom {
 		$f2TitleNode->appendChild($this->sanitizeString(htmlspecialchars($this->front2Title)));
 
 
-		$f2Node->appendChild($this->sanitizeString(htmlspecialchars($this->projectData['acknowledgements']), true));
+		$f2Node->appendChild($this->sanitizeString($this->projectData['acknowledgements'], true));
 	}
 
 	public function addBackMatter() {
