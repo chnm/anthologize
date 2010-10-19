@@ -32,6 +32,22 @@ If you're upgrading manually from a previous version of Anthologize, please be s
 
 == Changelog ==
 
+= 0.5-alpha =
+* anthologize_register_format() API allows third-party developers to register their output-format plugins and options
+* Newly added theming functions allow plugin developers to use familiar WordPress loops for creating new output formats
+* Improved character encoding all-around
+* Increased support for Korean, Japanese, Chinese text
+* RTF export format discontinued in favor of a more stable HTML output
+* New post filters on the project organizer screen: filter by date, filter by post type
+* Minimize/maximize parts to make project editing easier
+* Add multiple items to parts by dragging the Posts header on the project organizer screen
+* Linked Table of Contents in PDF
+* The "Created with Anthologize" colophon can be toggled on and off
+* Improved support for Gravatars in exports
+* Methods added to the TEI class that allow for some automated indexing
+* Many bugfixes
+
+
 = 0.4-alpha =
 * Better PHP error handling for increased export reliability
 * Better character encoding in output formats
