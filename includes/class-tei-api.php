@@ -339,7 +339,7 @@ class TeiApi {
 	 */
 
 	public function getProjectOutputParams($param = false, $asNode = false) {
-		$xpath = "/anth:outputDecl/anth:outputParams";
+		$xpath = "//anth:outputDecl/anth:outputParams";
 		if($param) {
 			$xpath .= "/anth:param[@name='$param']";
 		}

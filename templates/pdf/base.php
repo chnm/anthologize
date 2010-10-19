@@ -63,6 +63,7 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
 	$tei = new TeiDom($_SESSION, $ops);
 
+
 	$tei_master = new TeiApi($tei);
 
 	$pdf = new TeiPdf($tei_master);

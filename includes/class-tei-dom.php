@@ -154,6 +154,7 @@ class TeiDom {
 				$heightParam->setAttribute('name', 'page-height');
 				switch($value) {
 					case 'A4':
+					case 'a4':
 						$widthParam->nodeValue = '210mm';
 						$heightParam->nodeValue = '297mm';
 					break;
