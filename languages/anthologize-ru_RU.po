@@ -1,0 +1,552 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: antologize ru_RU\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/anthologize\n"
+"POT-Creation-Date: 2010-08-10 16:30+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Levati Team <levati@mail.ru>\n"
+"Language-Team: LeVaTi Team <levati@mail.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: anthologize.php:120
+msgid "Projects"
+msgstr "Проекты"
+
+#: anthologize.php:132
+msgctxt "post type general name"
+msgid "Parts"
+msgstr "Главы"
+
+#: anthologize.php:133
+msgctxt "post type singular name"
+msgid "Part"
+msgstr "Глава"
+
+#: anthologize.php:134
+#: anthologize.php:161
+#: anthologize.php:188
+msgctxt "book"
+msgid "Add New"
+msgstr "Добавить"
+
+#: anthologize.php:135
+msgid "Add New Part"
+msgstr "Добавить главу"
+
+#: anthologize.php:136
+msgid "Edit Part"
+msgstr "Править главу"
+
+#: anthologize.php:137
+#: includes/class-project-organizer.php:109
+msgid "New Part"
+msgstr "Новая глава"
+
+#: anthologize.php:138
+msgid "View Part"
+msgstr "Просмотр"
+
+#: anthologize.php:139
+msgid "Search Parts"
+msgstr "Поиск глав"
+
+#: anthologize.php:140
+msgid "No parts found"
+msgstr "Главы не найдены"
+
+#: anthologize.php:141
+msgid "No parts found in Trash"
+msgstr "Главы в Корзине не найдены"
+
+#: anthologize.php:146
+#: includes/class-project-organizer.php:109
+msgid "Parts"
+msgstr "Главы"
+
+#: anthologize.php:159
+msgctxt "post type general name"
+msgid "Library Items"
+msgstr "Элементы библиотеки"
+
+#: anthologize.php:160
+msgctxt "post type singular name"
+msgid "Library Item"
+msgstr "Элемент библиотеки"
+
+#: anthologize.php:162
+msgid "Add New Library Item"
+msgstr "Добавить элемент библиотеки"
+
+#: anthologize.php:163
+msgid "Edit Anthologize Library Item"
+msgstr "Править элемент библиотеки"
+
+#: anthologize.php:164
+msgid "New Anthologize Library Item"
+msgstr "Новый элемент библиотеки"
+
+#: anthologize.php:165
+msgid "View Anthologize Library Item"
+msgstr "Просмотреть элемент библиотеки"
+
+#: anthologize.php:166
+msgid "Search Library Items"
+msgstr "Поиск элементов библиотеки"
+
+#: anthologize.php:167
+msgid "No library items found"
+msgstr "Элементов библиотеки не найдено"
+
+#: anthologize.php:168
+msgid "No library items found in Trash"
+msgstr "Элементов библиотеки в Корзине не найдено"
+
+#: anthologize.php:173
+msgid "Library Items"
+msgstr "Элементы библиотеки"
+
+#: anthologize.php:186
+msgctxt "post type general name"
+msgid "Imported Items"
+msgstr "Импортированные элементы"
+
+#: anthologize.php:187
+msgctxt "post type singular name"
+msgid "Imported Item"
+msgstr "Импортированный элемент"
+
+#: anthologize.php:189
+msgid "Add New Imported Item"
+msgstr "Добавить импортированный элемент"
+
+#: anthologize.php:190
+msgid "Edit Imported Item"
+msgstr "Править импортированный элемент"
+
+#: anthologize.php:191
+msgid "New Imported Item"
+msgstr "Новый импортированный элемент"
+
+#: anthologize.php:192
+msgid "View Imported Item"
+msgstr "Просмотреть импортированный элемент"
+
+#: anthologize.php:193
+msgid "Search Imported Items"
+msgstr "Поиск импортированных элементов"
+
+#: anthologize.php:194
+msgid "No imported items found"
+msgstr "Импортированных элементов не найдено"
+
+#: anthologize.php:195
+msgid "No imported items found in Trash"
+msgstr "Импортированных элементов в Корзине не найдено"
+
+#: anthologize.php:200
+msgid "Imported Items"
+msgstr "Импортированные элементы"
+
+#. #-#-#-#-#  plugin.pot (Anthologize 0.4-alpha)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: includes/class-admin-main.php:29
+#: includes/class-admin-main.php:52
+#: includes/class-admin-main.php:53
+msgid "Anthologize"
+msgstr "Anthologize"
+
+#: includes/class-admin-main.php:30
+msgid "Save"
+msgstr "Сохранить"
+
+#: includes/class-admin-main.php:60
+#: includes/class-admin-main.php:235
+msgid "My Projects"
+msgstr "Мои проекты"
+
+#: includes/class-admin-main.php:62
+msgid "New Project"
+msgstr "Новый проект"
+
+#: includes/class-admin-main.php:64
+#: includes/class-export-panel.php:67
+#: includes/class-project-organizer.php:135
+msgid "Export Project"
+msgstr "Экспортировать проект"
+
+#: includes/class-admin-main.php:66
+#: includes/class-import-feeds.php:21
+msgid "Import Content"
+msgstr "Импортировать содержание"
+
+#: includes/class-admin-main.php:143
+msgid "Project not found"
+msgstr "Проект не найден"
+
+#: includes/class-admin-main.php:235
+msgid "Add New"
+msgstr "Добавить новый"
+
+#: includes/class-admin-main.php:240
+msgid "Project Saved"
+msgstr "Проект сохранен"
+
+#: includes/class-admin-main.php:271
+#: includes/class-new-project.php:116
+msgid "Project Title"
+msgstr "Заголовок проекта"
+
+#: includes/class-admin-main.php:272
+msgid "Created By"
+msgstr "Автор "
+
+#: includes/class-admin-main.php:273
+msgid "Number of Parts"
+msgstr "Количество глав"
+
+#: includes/class-admin-main.php:274
+msgid "Number of Items"
+msgstr "Количество элементов"
+
+#: includes/class-admin-main.php:275
+msgid "Date Created"
+msgstr "Дата создания"
+
+#: includes/class-admin-main.php:276
+msgid "Date Modified"
+msgstr "Дата изменения"
+
+#: includes/class-admin-main.php:293
+#: includes/class-project-organizer.php:60
+msgid "Project Details"
+msgstr "Детали проекта"
+
+#: includes/class-admin-main.php:294
+msgid "Manage Parts"
+msgstr "Управление главами"
+
+#: includes/class-admin-main.php:295
+#: includes/class-project-organizer.php:61
+msgid "Delete Project"
+msgstr "Удалить проект"
+
+#: includes/class-admin-main.php:350
+msgid "You haven't created any projects yet."
+msgstr "Вы еще не создали ни одного проекта."
+
+#: includes/class-admin-main.php:352
+msgid "Start a new project."
+msgstr "Создан новый проект."
+
+#: includes/class-admin-main.php:388
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: includes/class-admin-main.php:489
+msgid "Source feed:"
+msgstr "RSS ресурса:"
+
+#: includes/class-admin-main.php:493
+msgid "Source URL:"
+msgstr "URL ресурса:"
+
+#: includes/class-admin-main.php:502
+msgid "Date created:"
+msgstr "Дата создания:"
+
+#: includes/class-export-panel.php:63
+#: includes/class-project-organizer.php:52
+msgid "There has been an unexpected error. Please wait while we reload the content."
+msgstr "При обработке произошла ошибка. Дождитесь перезагрузки содержимого."
+
+#: includes/class-export-panel.php:77
+msgid "Select a project..."
+msgstr "Выберите проект..."
+
+#: includes/class-export-panel.php:88
+msgid "Copyright Information"
+msgstr "Защита авторских прав"
+
+#: includes/class-export-panel.php:92
+msgid "Year"
+msgstr "Год"
+
+#: includes/class-export-panel.php:97
+msgid "Copyright Holder"
+msgstr "Владелец"
+
+#: includes/class-export-panel.php:102
+#: includes/class-export-panel.php:163
+msgid "Type"
+msgstr "Тип"
+
+#: includes/class-export-panel.php:104
+msgid "Copyright"
+msgstr "Права публикации"
+
+#: includes/class-export-panel.php:105
+msgid "Creative Commons"
+msgstr "Лицензии Creative Commons"
+
+#: includes/class-export-panel.php:107
+msgid "Select One..."
+msgstr "Выберите..."
+
+#: includes/class-export-panel.php:108
+msgid "Attribution"
+msgstr "Установление авторства"
+
+#: includes/class-export-panel.php:109
+msgid "Attribution Share-Alike"
+msgstr "Аттрибут С указанием авторства (Копилефт)"
+
+#: includes/class-export-panel.php:110
+msgid "Attribution No Derivatives"
+msgstr "Аттрибут С указанием авторства (Без производных)"
+
+#: includes/class-export-panel.php:111
+msgid "Attribution Non-Commercial"
+msgstr "Аттрибут С указанием авторства (Некоммерческая)"
+
+#: includes/class-export-panel.php:112
+msgid "Attribution Non-Commercial Share Alike"
+msgstr "Аттрибут С указанием авторства (Некоммерческая с сохранением условий)"
+
+#: includes/class-export-panel.php:113
+msgid "Attribution Non-Commercial No Derivatives"
+msgstr "Аттрибут С указанием авторства (Некоммерческая  без производных)"
+
+#: includes/class-export-panel.php:119
+msgid "Edition"
+msgstr "Редакция"
+
+#: includes/class-export-panel.php:124
+msgid "Add Author(s)"
+msgstr "Добавить автора(ов)"
+
+#: includes/class-export-panel.php:130
+msgid "Next"
+msgstr "Далее"
+
+#: includes/class-export-panel.php:143
+msgid "Title"
+msgstr "Заголовок"
+
+#: includes/class-export-panel.php:148
+msgid "Dedication"
+msgstr "Посвящение"
+
+#: includes/class-export-panel.php:153
+msgid "Acknowledgements"
+msgstr "Благодарности"
+
+#: includes/class-export-panel.php:160
+msgid "Publishing Options"
+msgstr "Настройки публикации"
+
+#: includes/class-export-panel.php:166
+msgid "ePub"
+msgstr "ePub"
+
+#: includes/class-export-panel.php:168
+msgid "ePub requires the PHP Zip library to be enabled. Contact your hosting provider to enable Zip."
+msgstr "Для обработки ePub попросите провайдера включить на сайте библиотеку PHP Zip."
+
+#: includes/class-export-panel.php:170
+msgid "PDF"
+msgstr "PDF"
+
+#: includes/class-export-panel.php:171
+msgid "TEI (plus HTML)"
+msgstr "TEI (с HTML)"
+
+#: includes/class-export-panel.php:173
+msgid "RTF"
+msgstr "RTF"
+
+#: includes/class-export-panel.php:177
+msgid "Page Size"
+msgstr "Размер страницы"
+
+#: includes/class-export-panel.php:178
+msgid "Letter"
+msgstr "Letter"
+
+#: includes/class-export-panel.php:179
+msgid "A4"
+msgstr "A4"
+
+#: includes/class-export-panel.php:183
+msgid "Font Size"
+msgstr "Размер шрифта"
+
+#: includes/class-export-panel.php:195
+msgid "Font Face"
+msgstr "Тип шрифта"
+
+#: includes/class-export-panel.php:204
+msgid "Shortcodes"
+msgstr "Шоткоды"
+
+#: includes/class-export-panel.php:205
+msgid "WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose \"Disable\" to keep Anthologize from processing them."
+msgstr "Шоткоды WordPress (например, [caption]) иногда некорректно обрабатываются при создании электронных книг. Если Вы заметили подобные проблемы, Выберите \"Выключить\", чтобы Anthologize пропускал шоткоды."
+
+#: includes/class-export-panel.php:207
+msgid "Enable"
+msgstr "Включить"
+
+#: includes/class-export-panel.php:208
+msgid "Disable"
+msgstr "Выключить"
+
+#: includes/class-export-panel.php:228
+msgid "Export"
+msgstr "Экспорт"
+
+#: includes/class-import-feeds.php:27
+msgid "Want to populate your Anthologize project with content from another web site? Enter the RSS feed address of the site from which you'd like to import and click Go."
+msgstr "Хотите снабдить Ваш проект содержимым другого сайта? Введите адрес RSS сайта, содержимое из которого Вы хотите импортировать и нажмите Принять."
+
+#: includes/class-import-feeds.php:29
+msgid "Please respect the rights of copyright holders when using this import tool."
+msgstr "Уважайте чужой труд и авторское право при использовании инструмента импорта."
+
+#: includes/class-import-feeds.php:33
+#: includes/class-import-feeds.php:87
+msgid "Feed URL:"
+msgstr "Адрес RSS:"
+
+#: includes/class-import-feeds.php:36
+#: includes/class-import-feeds.php:90
+msgid "Go"
+msgstr "Принять"
+
+#: includes/class-import-feeds.php:44
+msgid "Sorry, no items were found. Please try another feed address."
+msgstr "Элементы не найдены. Попробуйте другой адрес фида."
+
+#: includes/class-import-feeds.php:57
+msgid "Select the items you'd like to import to your Imported Items library and click Import."
+msgstr "Отметьте элементы, которые Вы хотите импортировать в Вашу библиотеку и нажмите Импорт."
+
+#: includes/class-import-feeds.php:61
+msgid "Feed items:"
+msgstr "Элементы RSS:"
+
+#: includes/class-import-feeds.php:78
+msgid "Import"
+msgstr "Импорт"
+
+#: includes/class-import-feeds.php:83
+msgid "Or enter a new feed URL and click Go to import different feed content."
+msgstr "или введите новый адрес фида и нажмите Принять для импорта содержимого."
+
+#: includes/class-import-feeds.php:123
+msgid "Successfully imported!"
+msgstr "Импорт завершен!"
+
+#: includes/class-import-feeds.php:127
+msgid "No items found. Please try another feed address."
+msgstr "Элементов не найдено. Попробуй другой адрес фида."
+
+#: includes/class-import-feeds.php:132
+msgid "Back to Anthologize"
+msgstr "Назад в Anthologize"
+
+#: includes/class-new-project.php:109
+msgid "Edit Project"
+msgstr "Править проект"
+
+#: includes/class-new-project.php:111
+msgid "Add New Project"
+msgstr "Добавить новый проект"
+
+#: includes/class-new-project.php:121
+msgid "Subtitle"
+msgstr "Подзаголовок"
+
+#: includes/class-new-project.php:126
+msgid "Author Name <span>(optional)</span>"
+msgstr "Имя автора <span>(по желанию)</span>"
+
+#: includes/class-project-organizer.php:68
+msgid "Select the items you would like to append and click Go."
+msgstr "Отметь элементы которые хочешь прикрепить и нажми Принять."
+
+#: includes/class-project-organizer.php:77
+msgid "Items"
+msgstr "Элементы"
+
+#: includes/class-project-organizer.php:91
+msgid "Posts"
+msgstr "Записи"
+
+#: includes/class-project-organizer.php:118
+msgid "New Parts"
+msgstr "Новые главы"
+
+#: includes/class-project-organizer.php:119
+msgid "Wanna create a new part? You know you do."
+msgstr "Хочешь создать главу? Так создай."
+
+#: includes/class-project-organizer.php:153
+msgid "Tag"
+msgstr "Метка"
+
+#: includes/class-project-organizer.php:153
+msgid "Category"
+msgstr "Рубрика"
+
+#: includes/class-project-organizer.php:159
+msgid "All posts"
+msgstr "Все записи"
+
+#: includes/class-project-organizer.php:174
+msgid "All tags"
+msgstr "Все метки"
+
+#: includes/class-project-organizer.php:178
+msgid "All categories"
+msgstr "Все рубрики"
+
+#: includes/class-project-organizer.php:289
+#: includes/class-project-organizer.php:604
+msgid "Edit"
+msgstr "Править"
+
+#: includes/class-project-organizer.php:290
+#: includes/class-project-organizer.php:610
+msgid "Remove"
+msgstr "Убрать"
+
+#: includes/class-project-organizer.php:327
+#, php-format
+msgid "You haven't created any parts yet! Click <a href=\"%1$s\">\"New Part\"</a> to get started."
+msgstr "Вы еще не создали ни одной главы! Нажмите на ссылку <a href=\"%1$s\">\"Новая глава\"</a> для создания."
+
+#: includes/class-project-organizer.php:606
+msgid "Append"
+msgstr "Добавить"
+
+#. Plugin URI of the plugin/theme
+msgid "http://anthologize.org"
+msgstr "http://anthologize.org"
+
+#. Description of the plugin/theme
+msgid "Use the power of WordPress to transform your content into a book."
+msgstr "Используйте возможности WordPress для преобразования содержимого сайта в книгу."
+
+#. Author of the plugin/theme
+msgid "One Week | One Tool"
+msgstr "Одна неделя | Один инструмент"
+
+#. Author URI of the plugin/theme
+msgid "http://oneweekonetool.org"
+msgstr "http://oneweekonetool.org"
+

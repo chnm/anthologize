@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>File_Archive</name>
+ <channel>pear.php.net</channel>
+ <summary>File_Archive will let you manipulate easily the tar, gz, tgz, bz2, tbz, zip, ar (or deb) files</summary>
+ <description>This library is strongly object oriented. It makes it very easy to use, writing simple code, yet the library is very powerfull.
+It lets you easily read or generate tar, gz, tgz, bz2, tbz, zip, ar (or deb) archives to files, memory, mail or standard output.
+See http://poocl.la-grotte.org for a tutorial</description>
+ <lead>
+  <name>Charles Brunet</name>
+  <user>cbrunet</user>
+  <email>charles.fmj@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Vincent Lascaux</name>
+  <user>VincentLascaux</user>
+  <email>vincent.lascaux@centraliens.net</email>
+  <active>no</active>
+ </lead>
+ <developer>
+  <name>Pablo Fischer</name>
+  <user>PFischer</user>
+  <email>pfischer@php.net</email>
+  <active>yes</active>
+ </developer>
+ <date>2008-06-05</date>
+ <time>17:31:03</time>
+ <version>
+  <release>1.5.4</release>
+  <api>1.5.4</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+ <notes>+ Bug #4159, #4204, #4548, #7650 (PHP4 compatibility)
++ Bug #4194, #4925 (short opening tags, whitespaces at beginning of file)
++ Bug #4916, #4921, #12175 (missing or wrong require_once)
++ Bug #4953 (absolute paths on Windows)
++ Bug #5095 (removed some debug code)
++ Bug #5145, #6646 (missing $)
++ Bug #5566 (support extraction of JAR files)
++ Bug #5792, #12450 (some PEAR::Error weren&apos;t returned back to caller)
++ Bug #5991 (reading of long filenames in TAR files)
++ Bug #6387 (reading of PK00PK ZIP files)
++ Bug #6570 (corrected headers in Output functions)
++ Bug #6743 (reading of uppercase filenames)
++ Bug #8187 (. mangled in paths)
++ Bug #8647 (typo)
++ Bug #9676 (reading of ZIP files with special signature)
++ Bug #10247 (CS stuff)
++ Bug #11084 (package2.xml file)
++ Bug #12448 (empty dirs removed on tar archives)
++ Bug #13311 (extracting of ZIP files on 64 bits systems)
++ Bug #13516 (removing of PHP warnings)
++ Bug #13904 (bzip2 doesn&apos;t support compression level)
++ Add File_Archive::removeDirectoryStructure to create a reader that discard
+  the directory information of another reader
++ Readers now report the directories as file ending with a / (warning: this
+  may be a backward compatibility problem if you read directly from the reader,
+  but not if you exclusively use File_Archive::extract)
++</notes>
+ <contents>
+  <dir baseinstalldir="File" name="/">
+   <file baseinstalldir="File" md5sum="06eb5650a4bc2a9856717890e5f2dd4c" name="Archive/Predicate/And.php" role="php" />
+   <file baseinstalldir="File" md5sum="a3aab040d68fdb2c536d00ae421483a0" name="Archive/Predicate/Current.php" role="php" />
+   <file baseinstalldir="File" md5sum="9bb36d49dcd749480352d070cdeb37f5" name="Archive/Predicate/Custom.php" role="php" />
+   <file baseinstalldir="File" md5sum="30d324c4fca913e651cd6e102f68a3f5" name="Archive/Predicate/Duplicate.php" role="php" />
+   <file baseinstalldir="File" md5sum="a89fe818f27e754265112c0fcdb6ce3e" name="Archive/Predicate/Ereg.php" role="php" />
+   <file baseinstalldir="File" md5sum="5f9efdf963c1b61a98534a158c369bd2" name="Archive/Predicate/Eregi.php" role="php" />
+   <file baseinstalldir="File" md5sum="da5a55a6dc1b2bbd445cdbf0e37f12e2" name="Archive/Predicate/Extension.php" role="php" />
+   <file baseinstalldir="File" md5sum="bfa576758a976c17fc2aa165ac9b451c" name="Archive/Predicate/False.php" role="php" />
+   <file baseinstalldir="File" md5sum="99dc416810c8300ec17203cd35cf24e7" name="Archive/Predicate/Index.php" role="php" />
+   <file baseinstalldir="File" md5sum="c823169cef0890c8f524ceec7679035d" name="Archive/Predicate/MaxDepth.php" role="php" />
+   <file baseinstalldir="File" md5sum="aa233d1f691966619100098fe2680cec" name="Archive/Predicate/MIME.php" role="php" />
+   <file baseinstalldir="File" md5sum="432aefbe4590fb3cfb52c1ace178651b" name="Archive/Predicate/MinSize.php" role="php" />
+   <file baseinstalldir="File" md5sum="f577f495a64df85823fec3d89b2648d5" name="Archive/Predicate/MinTime.php" role="php" />
+   <file baseinstalldir="File" md5sum="622ca582ca31c319f6f67717928ccced" name="Archive/Predicate/Not.php" role="php" />
+   <file baseinstalldir="File" md5sum="3b65da0aeb6dded9045d3d16b3718a96" name="Archive/Predicate/Or.php" role="php" />
+   <file baseinstalldir="File" md5sum="2ab6b2a795a744e5955f11dd06f656a4" name="Archive/Predicate/True.php" role="php" />
+   <file baseinstalldir="File" md5sum="6866e1b1827283825d3c4152a1f2c93e" name="Archive/Reader/ChangeName/AddDirectory.php" role="php" />
+   <file baseinstalldir="File" md5sum="b5a82d63b5be1b7e9ec7c24c4134fd3e" name="Archive/Reader/ChangeName/Callback.php" role="php" />
+   <file baseinstalldir="File" md5sum="530faa82d51397d64d8ff3bdc7be0fe5" name="Archive/Reader/ChangeName/Directory.php" role="php" />
+   <file baseinstalldir="File" md5sum="75028689bc1b65e67cc0fd21330eac8a" name="Archive/Reader/Ar.php" role="php" />
+   <file baseinstalldir="File" md5sum="a7f5756d44414576dd72ac5693e1770c" name="Archive/Reader/Archive.php" role="php" />
+   <file baseinstalldir="File" md5sum="c62e47ac3e5b3faa30bb60cce042e5bd" name="Archive/Reader/Bzip2.php" role="php" />
+   <file baseinstalldir="File" md5sum="90d4a86465df47fdd11c76565b9191e9" name="Archive/Reader/Cache.php" role="php" />
+   <file baseinstalldir="File" md5sum="7a874b0989823df310802727847139bd" name="Archive/Reader/ChangeName.php" role="php" />
+   <file baseinstalldir="File" md5sum="2fae1819118af70262ee90040101bbb2" name="Archive/Reader/Concat.php" role="php" />
+   <file baseinstalldir="File" md5sum="2e09ff0be334c0a430541d989cc5d750" name="Archive/Reader/Directory.php" role="php" />
+   <file baseinstalldir="File" md5sum="b98dc86b3100965a4e083b3ed2792814" name="Archive/Reader/File.php" role="php" />
+   <file baseinstalldir="File" md5sum="4f0c07f2d3b9165be90d661ee6ad02da" name="Archive/Reader/Filter.php" role="php" />
+   <file baseinstalldir="File" md5sum="386ebf562d2fd7193d7e1145aec21490" name="Archive/Reader/Gzip.php" role="php" />
+   <file baseinstalldir="File" md5sum="5ea886512f4d3da989f219ef0be68916" name="Archive/Reader/Memory.php" role="php" />
+   <file baseinstalldir="File" md5sum="25fec49aa74b6639c47956a36fc2c01c" name="Archive/Reader/MimeList.php" role="php" />
+   <file baseinstalldir="File" md5sum="a06024ba750daa9703ee177ac6d7a021" name="Archive/Reader/Multi.php" role="php" />
+   <file baseinstalldir="File" md5sum="92e9ddafae103dccfa5740978cec3dbe" name="Archive/Reader/Relay.php" role="php" />
+   <file baseinstalldir="File" md5sum="0f59e92f17bfba40ed02a7dcddb53278" name="Archive/Reader/Select.php" role="php" />
+   <file baseinstalldir="File" md5sum="671c5bd7bfce23f2704417787fe5f84b" name="Archive/Reader/Tar.php" role="php" />
+   <file baseinstalldir="File" md5sum="afc8706f7a04e1cbdb01e17b6e63877a" name="Archive/Reader/Uncompress.php" role="php" />
+   <file baseinstalldir="File" md5sum="486ad92943d2800a0324b5d36c298fba" name="Archive/Reader/Zip.php" role="php" />
+   <file baseinstalldir="File" md5sum="909692b92fbc3d92758e93d5d41526d1" name="Archive/Writer/AddBaseName.php" role="php" />
+   <file baseinstalldir="File" md5sum="f0a9cbd96e0ef6bb98565f2aaf705140" name="Archive/Writer/Ar.php" role="php" />
+   <file baseinstalldir="File" md5sum="b314642f2aa069fe571a84a8e6c74006" name="Archive/Writer/Archive.php" role="php" />
+   <file baseinstalldir="File" md5sum="696287e2892111e88ea567f3f198b615" name="Archive/Writer/Bzip2.php" role="php" />
+   <file baseinstalldir="File" md5sum="efd563b65e88d73933751ac16657af0e" name="Archive/Writer/Files.php" role="php" />
+   <file baseinstalldir="File" md5sum="9f98385d69ce668194aefee19a250365" name="Archive/Writer/Gzip.php" role="php" />
+   <file baseinstalldir="File" md5sum="dcf2e96b1a66f70f4c084cd17779ee10" name="Archive/Writer/Mail.php" role="php" />
+   <file baseinstalldir="File" md5sum="d9732f0e50e8b706f14ae1cb81c9f8e5" name="Archive/Writer/Memory.php" role="php" />
+   <file baseinstalldir="File" md5sum="99668cd0d1158f12511bc958a3f56bd1" name="Archive/Writer/MemoryArchive.php" role="php" />
+   <file baseinstalldir="File" md5sum="f931fd89c5baa3999ddb0fe0142a00b7" name="Archive/Writer/Multi.php" role="php" />
+   <file baseinstalldir="File" md5sum="191f4c855ee7100395c267e5777dc9d7" name="Archive/Writer/Output.php" role="php" />
+   <file baseinstalldir="File" md5sum="e00d3a26e3a8bfabcec6e570da5e27d4" name="Archive/Writer/Tar.php" role="php" />
+   <file baseinstalldir="File" md5sum="33035ec0bfb27dc8b791ef79e362699d" name="Archive/Writer/UniqueAppender.php" role="php" />
+   <file baseinstalldir="File" md5sum="6384dbd99dd42a9825cead823654bf3b" name="Archive/Writer/Zip.php" role="php" />
+   <file baseinstalldir="File" md5sum="f45edf0fb3581d38f09e1f906b4b4628" name="Archive/Predicate.php" role="php" />
+   <file baseinstalldir="File" md5sum="971cc65c83a076ef05f834245e25db88" name="Archive/Reader.php" role="php" />
+   <file baseinstalldir="File" md5sum="1680db2af13ca51111073a4bcc3f0d6d" name="Archive/Writer.php" role="php" />
+   <file baseinstalldir="File" md5sum="90670def2d1a76adc20bf1f90280dd4a" name="doc/readme.txt" role="doc" />
+   <file baseinstalldir="File" md5sum="498b63669b0fec43f3afcbdd81da7ca6" name="tests/test.php" role="test" />
+   <file baseinstalldir="File" md5sum="be490eca9e3430f3d5043c201cc090c1" name="Archive.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.3.3</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+   <package>
+    <name>MIME_Type</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <extension>
+    <name>bz2</name>
+   </extension>
+   <extension>
+    <name>pcre</name>
+   </extension>
+   <extension>
+    <name>zlib</name>
+   </extension>
+  </required>
+  <optional>
+   <package>
+    <name>Mail_Mime</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Mail</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Cache_Lite</name>
+    <channel>pear.php.net</channel>
+    <min>1.5.0</min>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>1.5.3</release>
+    <api>1.5.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-08-16</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>Bug #4953 (absolute windows path)
+Bug #5095 (date of files when creating a zip archive)
+Fix a bug when using File_Archive::appender on non existing archives</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.2</release>
+    <api>1.5.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-07-27</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>Bug #4921, #4925</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.1</release>
+    <api>1.5.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-07-26</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>Bug #4916</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.0</release>
+    <api>1.5.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-07-15</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Improved zip reader (File_Archive_Zip_Reader implements more options of the PKZip standard)
+
++ Some change in the Cache_File use:
+  - The fileNameProtection is forced to false when setting the cache option
+  - Add a File_Archive_cleanCache function
+    To remove the cached compressed version of the files that are no longer present on the system, call
+    $cache-&gt;clean(false, &apos;callback_File_Archive_cleanCache&apos;);
+    where $cache is the Cache_Lite object passed to File_Archive.
+    
++ Introduce &apos;blockSize&apos; option that indicates the size of the blocs copied from a reader to a writer when
+  extracting a file. The default has been set to 64kB but is subject to change in future releases
+  
++ File_Archive::cache to cache a reader if you read it several times in the same script
+
++ &apos;cacheCondition&apos; option. With this option, you can specify you want to cache all the http
+  transfer for example. Caching an http transfer ensure that the file won&apos;t be downloaded several times
+ 
++ File_Archive::readUploadedFile creates a reader on an uploaded file</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.1</release>
+    <api>1.4.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-06-08</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>Bug #4548</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.0</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-06-06</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Add the possibility to use Cache_Lite to cache intermediary output of Zip compression
++ Add get and setOption method to change the default behavior of readers and writers
+  Available options are
+  	- zipCompressionLevel: default compression level of zip archives (default is 9)
+  	- gzCompressionLevel: default compression level of gz archives (default is 9)
+  	- tmpDirectory: directory where temporary files will be stored (default is &apos;.&apos;)
+  	- cache: instance of Cache_Lite that may be used by any writer to cache data
+  	         for future use. Currently used by Zip writer (default is null: no cache)
+  	- appendRemoveDuplicates: specify if the appenders should remove the old files
+  	         from an archive to avoid creating duplicates (default is false, which is faster)
++ Add the possibility to use wildcards in read function
+     File_Archive::read(&apos;dir/*.txt&apos;) will read all txt files from directory dir
+     File_Archive::read(&apos;archive.zip/*.txt&apos;) will read all txt files from the zip archive
+	Note: The wildcards can only be used after the last &apos;/&apos;
++ All the File_Archive functions that take a reader or a writer as an argument can now take
+	a string or an array. For readers, strings are interpreted using File_Archive::read function
+	and array using File_Archive::readMulti. For writers, strings are interpreted using File_Archive::appender
+	function and array by creating a multi writer.</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.3.0</release>
+    <api>1.3.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-05-30</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Add some functions to allow archive modification
+  - File_Archive::appender creates a writer to append files to an existing archive
+  - File_Archive::remove and File_Archive::removeDuplicates removes some files from
+    an existing archive
+  
+  These functions allow to modify archives or even nested archives
+  See http://poocl.la-grotte.org for more detailed examples</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.0</release>
+    <api>1.2.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-05-26</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Add an ar (or deb) reader / writer
++ Add a getFileList() on any reader to quickly retrieve file list
++ File_Archive::readArchive properly handles tgz and tbz extensions
++ Better error handling
++ Various bug fixes</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-04-21</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Bug 4192 (&lt;? instead of &lt;?php in some source files)
++ Functions File_Archive::isKnownExtension and File_Archive:;readArchive
+  added. They allow to specify the type of an archive. This is usefull is the extension
+  of the file doesn&apos;t reflect its real type.</notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-04-17</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Bug 4159 (PHP4 compatibility)
++ Bug 4165 (Better USTAR handling in tar files)
++ The package now use temporary files to reduce the amount of memory used
+  when reading or writing large archives. The following indicates the current
+  memory usage of the different reader / writers
+  - Tar writer: constant memory usage
+  - GZip writer: constant memory usage, temporary file
+  - BZ2 writer: constant memory usage, temporary file
+  - ZIP writer: size of the largest file written to the archive
+  
+  - Tar reader: constant memory usage
+  - GZip reader: constant memory usage, temporary file
+  - BZ2 reader: constant memory usage, temporary file
+  - ZIP reader: size of the largest file read from the archive
+  
+  The temporary files are created in the current directory. Their name start with
+  far, their extension is tmp. They are automatically deleted when the reader / writer
+  is closed.</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2005-04-08</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Bug 3894
++ The File_Archive::read function does no longer take the optional source parameter
+  A File_Archive::readSource function has been created that takes the source parameter
++ The mail parameter in File_Archive::toMail is now mandatory, but giving a null variable will
+  result in using Mail::factory(&quot;mail&quot;)
++ The File_Archive::toMemory function does no longer take a variable argument
+  A File_Archive::toVariable function has been created for that</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2005-02-24</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>+ Add a MIME predicate
++ Change the toArchive function to detect the compression format using the extension of the file
+  (Warning: this is not backward compatible since the order of the arguments have changed)</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2005-02-20</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>First release</notes>
+  </release>
+ </changelog>
+</package>

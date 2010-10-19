@@ -1,0 +1,37 @@
+======================
+     Anthologize
+http://anthologize.org
+======================
+
+
+CREDITS
+
+Anthologize was originally written during One Week | One Tool
+http://oneweekonetool.org, between July 25 and July 31, 2010.
+The One Week | One Tool team consisted of twelve members:
+
+====
+Jason Casden, Boone Gorges, Kathie Gossett, Scott Hanrath,
+Effie Kapsalis, Doug Knox, Zachary McCune, Julie Meloni,
+Patrick Murray-John, Steve Ramsay, Patrick Rashleigh, Jana Remy
+====
+
+One Week | One Tool was held at the Center for History and New
+Media at George Mason University http://chnm.gmu.edu. One
+zillion thanks to the team at CHNM who worked alongside the One
+Week team throughout the week: Sheila Brennan, Jeremy Boggs,
+Dan Cohen, Sharon Leon, Trevor Owen, Tom Scheinfeldt.
+
+One Week | One Tool was a summer institute sponsored by the
+National Endowment for the Humanities's Office of Digital
+Humanities. Many thanks to the NEH and the ODH for taking a
+chance on a weird project!
+
+
+====
+Translation credits:
+- Japanese: Tai
+- French: Boone Gorges
+- Russian: LeVaTi Team
+- Italian: Luca Camellini
+====

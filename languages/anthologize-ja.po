@@ -1,0 +1,482 @@
+# Translation of the WordPress plugin Anthologize 0.3-alpha by One Week | One Tool.
+# Copyright (C) 2010 One Week | One Tool
+# This file is distributed under the same license as the Anthologize package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Anthologize 0.3-alpha\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-09 11:23+0900\n"
+"PO-Revision-Date: 2010-08-09 11:38+0900\n"
+"Last-Translator: jotaki <jotaki@digitalcube.jp>\n"
+"Language-Team: Digitalcube <info@digitalcube.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-Basepath: /Users/digitalcubeimac/www/wp_301_ja/wp-content/plugins\n"
+"X-Poedit-SearchPath-0: anthologize\n"
+
+#: anthologize/anthologize.php:120
+msgid "Projects"
+msgstr "プロジェクト"
+
+#: anthologize/anthologize.php:131
+#: anthologize/anthologize.php:145
+#: anthologize/includes/class-project-organizer.php:102
+msgid "Parts"
+msgstr "章"
+
+#: anthologize/anthologize.php:132
+msgid "Part"
+msgstr "章"
+
+#: anthologize/anthologize.php:133
+#: anthologize/anthologize.php:170
+#: anthologize/includes/class-admin-main.php:231
+msgid "Add New"
+msgstr "新規追加"
+
+#: anthologize/anthologize.php:134
+msgid "Add New Part"
+msgstr "新しい章を追加"
+
+#: anthologize/anthologize.php:135
+msgid "Edit Part"
+msgstr "章の編集"
+
+#: anthologize/anthologize.php:136
+#: anthologize/includes/class-project-organizer.php:102
+msgid "New Part"
+msgstr "新しい章"
+
+#: anthologize/anthologize.php:137
+msgid "View Part"
+msgstr "章の表示"
+
+#: anthologize/anthologize.php:138
+msgid "Search Parts"
+msgstr "章の検索"
+
+#: anthologize/anthologize.php:139
+msgid "No parts found"
+msgstr "章は見つかりませんでした。"
+
+#: anthologize/anthologize.php:140
+msgid "No parts found in Trash"
+msgstr "ゴミ箱に章は見つかりませんでした"
+
+#: anthologize/anthologize.php:157
+msgid "Library Items"
+msgstr "ライブラリアイテム"
+
+#: anthologize/anthologize.php:168
+#: anthologize/anthologize.php:169
+#: anthologize/anthologize.php:182
+msgid "Imported Items"
+msgstr "インポートしたアイテム"
+
+#: anthologize/anthologize.php:171
+msgid "Add New Imported Item"
+msgstr "新規インポートアイテムを追加"
+
+#: anthologize/anthologize.php:172
+msgid "Edit Imported Item"
+msgstr "インポートしたアイテムの編集"
+
+#: anthologize/anthologize.php:173
+msgid "New Imported Item"
+msgstr "新しくインポートしたアイテム"
+
+#: anthologize/anthologize.php:174
+msgid "View Imported Item"
+msgstr "インポートしたアイテムを表示"
+
+#: anthologize/anthologize.php:175
+msgid "Search Imported Items"
+msgstr "インポートしたアイテムの検索"
+
+#: anthologize/anthologize.php:176
+msgid "No imported items found"
+msgstr "インポートしたアイテムは見つかりませんでした"
+
+#: anthologize/anthologize.php:177
+msgid "No imported items found in Trash"
+msgstr "インポートされたアイテムはゴミ箱にありませんでした"
+
+#: anthologize/includes/class-admin-main.php:50
+#: anthologize/includes/class-admin-main.php:51
+msgid "Anthologize"
+msgstr "Anthologize"
+
+#: anthologize/includes/class-admin-main.php:58
+#: anthologize/includes/class-admin-main.php:231
+msgid "My Projects"
+msgstr "マイプロジェクト"
+
+#: anthologize/includes/class-admin-main.php:60
+msgid "New Project"
+msgstr "新規プロジェクト"
+
+#: anthologize/includes/class-admin-main.php:62
+#: anthologize/includes/class-export-panel.php:49
+#: anthologize/includes/class-project-organizer.php:128
+msgid "Export Project"
+msgstr "プロジェクトのエクスポート"
+
+#: anthologize/includes/class-admin-main.php:64
+#: anthologize/includes/class-import-feeds.php:21
+msgid "Import Content"
+msgstr "コンテンツのインポート"
+
+#: anthologize/includes/class-admin-main.php:140
+msgid "Project not found"
+msgstr "プロジェクトが見つかりませんでした"
+
+#: anthologize/includes/class-admin-main.php:260
+#: anthologize/includes/class-new-project.php:64
+msgid "Project Title"
+msgstr "プロジェクトタイトル"
+
+#: anthologize/includes/class-admin-main.php:261
+msgid "Created By"
+msgstr "作成者"
+
+#: anthologize/includes/class-admin-main.php:262
+msgid "Number of Parts"
+msgstr "章の数"
+
+#: anthologize/includes/class-admin-main.php:263
+msgid "Number of Items"
+msgstr "アイテムの数"
+
+#: anthologize/includes/class-admin-main.php:264
+msgid "Date Created"
+msgstr "作成日"
+
+#: anthologize/includes/class-admin-main.php:265
+msgid "Date Modified"
+msgstr "最終編集日"
+
+#: anthologize/includes/class-admin-main.php:282
+#: anthologize/includes/class-new-project.php:57
+msgid "Edit Project"
+msgstr "プロジェクトの編集"
+
+#: anthologize/includes/class-admin-main.php:283
+msgid "Manage Parts"
+msgstr "章の管理"
+
+#: anthologize/includes/class-admin-main.php:284
+msgid "Delete Project"
+msgstr "プロジェクトの削除"
+
+#: anthologize/includes/class-admin-main.php:339
+msgid "You haven't created any projects yet."
+msgstr "まだプロジェクトを作成していません。"
+
+#: anthologize/includes/class-admin-main.php:341
+msgid "Start a new project."
+msgstr "新規プロジェクトを開始する。"
+
+#: anthologize/includes/class-admin-main.php:450
+msgid "Source feed:"
+msgstr "ソールフィード:"
+
+#: anthologize/includes/class-admin-main.php:454
+msgid "Source URL:"
+msgstr "ソース URL:"
+
+#: anthologize/includes/class-admin-main.php:463
+msgid "Date created:"
+msgstr "作成日: "
+
+#: anthologize/includes/class-export-panel.php:62
+msgid "Select Project..."
+msgstr "プロジェクトを選択…"
+
+#: anthologize/includes/class-export-panel.php:72
+msgid "Copyright Information"
+msgstr "著作権情報"
+
+#: anthologize/includes/class-export-panel.php:76
+msgid "Year"
+msgstr "年"
+
+#: anthologize/includes/class-export-panel.php:81
+msgid "Copyright Holder"
+msgstr "著作権保持者"
+
+#: anthologize/includes/class-export-panel.php:86
+#: anthologize/includes/class-export-panel.php:147
+msgid "Type"
+msgstr "タイプ"
+
+#: anthologize/includes/class-export-panel.php:88
+msgid "Copyright"
+msgstr "コピーライト"
+
+#: anthologize/includes/class-export-panel.php:89
+msgid "Creative Commons"
+msgstr "クリエイティブ・コモンズ"
+
+#: anthologize/includes/class-export-panel.php:91
+msgid "Select One..."
+msgstr "選択してください…"
+
+#: anthologize/includes/class-export-panel.php:92
+msgid "Attribution"
+msgstr "表示"
+
+#: anthologize/includes/class-export-panel.php:93
+msgid "Attribution Share-Alike"
+msgstr "表示—継承"
+
+#: anthologize/includes/class-export-panel.php:94
+msgid "Attribution No Derivatives"
+msgstr "表示—改変禁止"
+
+#: anthologize/includes/class-export-panel.php:95
+msgid "Attribution Non-Commercial"
+msgstr "表示—非営利"
+
+#: anthologize/includes/class-export-panel.php:96
+msgid "Attribution Non-Commercial Share Alike"
+msgstr "表示—非営利—継承"
+
+#: anthologize/includes/class-export-panel.php:97
+msgid "Attribution Non-Commercial No Derivatives"
+msgstr "表示—非営利—改変禁止"
+
+#: anthologize/includes/class-export-panel.php:103
+msgid "Edition"
+msgstr "版"
+
+#: anthologize/includes/class-export-panel.php:108
+msgid "Add Author(s)"
+msgstr "著者を追加"
+
+#: anthologize/includes/class-export-panel.php:114
+msgid "Next"
+msgstr "次へ"
+
+#: anthologize/includes/class-export-panel.php:127
+msgid "Title"
+msgstr "タイトル"
+
+#: anthologize/includes/class-export-panel.php:132
+msgid "Dedication"
+msgstr "献辞"
+
+#: anthologize/includes/class-export-panel.php:137
+msgid "Acknowledgements"
+msgstr "謝辞"
+
+#: anthologize/includes/class-export-panel.php:144
+msgid "Publishing Options"
+msgstr "出版オプション"
+
+#: anthologize/includes/class-export-panel.php:150
+msgid "ePub"
+msgstr "ePub"
+
+#: anthologize/includes/class-export-panel.php:152
+msgid "ePub requires the PHP Zip library to be enabled. Contact your hosting provider to enable Zip."
+msgstr "ePub は PHP Zip ライブラリが有効になっている必要があります。ご利用のホスティング会社に連絡し、Zip を有効にしてください。"
+
+#: anthologize/includes/class-export-panel.php:154
+msgid "PDF"
+msgstr "PDF"
+
+#: anthologize/includes/class-export-panel.php:155
+msgid "TEI (plus HTML)"
+msgstr "TEI (+ HTML)"
+
+#: anthologize/includes/class-export-panel.php:157
+msgid "RTF"
+msgstr "RTF"
+
+#: anthologize/includes/class-export-panel.php:161
+msgid "Page Size"
+msgstr "ページサイズ"
+
+#: anthologize/includes/class-export-panel.php:162
+msgid "Letter"
+msgstr "レター"
+
+#: anthologize/includes/class-export-panel.php:163
+msgid "A4"
+msgstr "A4"
+
+#: anthologize/includes/class-export-panel.php:167
+msgid "Font Size"
+msgstr "文字サイズ"
+
+#: anthologize/includes/class-export-panel.php:179
+msgid "Font Face"
+msgstr "フォントフェイス"
+
+#: anthologize/includes/class-export-panel.php:188
+msgid "Shortcodes"
+msgstr "ショートコード"
+
+#: anthologize/includes/class-export-panel.php:189
+msgid "WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose \"Disable\" to keep Anthologize from processing them."
+msgstr "WordPress ショートコード ([caption] など) は出力フォーマットで問題を引き起こすことがあります。もしショートコードコンテンツが正しく出力されない場合は Anthologize でショートコードを処理しないように \"無効\" を選択してください。"
+
+#: anthologize/includes/class-export-panel.php:191
+msgid "Enable"
+msgstr "有効"
+
+#: anthologize/includes/class-export-panel.php:192
+msgid "Disable"
+msgstr "無効"
+
+#: anthologize/includes/class-export-panel.php:212
+msgid "Export"
+msgstr "エクスポート"
+
+#: anthologize/includes/class-import-feeds.php:27
+msgid "Want to populate your Anthologize project with content from another web site? Enter the RSS feed address of the site from which you'd like to import and click Go."
+msgstr "ご自分の Anthologize プロジェクトに別のウェブサイトからのコンテンツを追加しますか ? インポートしたいサイトの RSS フィードを入力し、「ゴー」をクリックしてください。"
+
+#: anthologize/includes/class-import-feeds.php:32
+#: anthologize/includes/class-import-feeds.php:86
+msgid "Feed URL:"
+msgstr "フィード URL:"
+
+#: anthologize/includes/class-import-feeds.php:35
+#: anthologize/includes/class-import-feeds.php:89
+msgid "Go"
+msgstr "ゴー"
+
+#: anthologize/includes/class-import-feeds.php:43
+msgid "Sorry, no items were found. Please try another feed address."
+msgstr "アイテムは見つかりませんでした。別のフィードアドレスをお試しください。"
+
+#: anthologize/includes/class-import-feeds.php:56
+msgid "Select the items you'd like to import to your Imported Items library and click Import."
+msgstr "インポートアイテムライブラリにインポートしたいアイテムを選択し、インポートボタンをクリックしてください。"
+
+#: anthologize/includes/class-import-feeds.php:60
+msgid "Feed items:"
+msgstr "フィードアイテム:"
+
+#: anthologize/includes/class-import-feeds.php:77
+msgid "Import"
+msgstr "インポート"
+
+#: anthologize/includes/class-import-feeds.php:82
+msgid "Or enter a new feed URL and click Go to import different feed content."
+msgstr "もしくは、新しいフィード URL を入力して「ゴー」ボタンをクリックして別のフィードコンテンツをインポートしてください。"
+
+#: anthologize/includes/class-import-feeds.php:122
+msgid "Successfully imported!"
+msgstr "インポートに成功しました !"
+
+#: anthologize/includes/class-import-feeds.php:126
+msgid "No items found. Please try another feed address."
+msgstr "アイテムは見つかりませんでした。別のフィードアドレスをお試しください。"
+
+#: anthologize/includes/class-import-feeds.php:131
+msgid "Back to Anthologize"
+msgstr "Anthologize へ戻る"
+
+#: anthologize/includes/class-new-project.php:59
+msgid "Add New Project"
+msgstr "新規プロジェクトを開始"
+
+#: anthologize/includes/class-new-project.php:69
+msgid "Subtitle"
+msgstr "副題"
+
+#: anthologize/includes/class-new-project.php:74
+msgid "Author Name <span>(optional)</span>"
+msgstr "著者名 <span>(任意)</span>"
+
+#: anthologize/includes/class-project-organizer.php:52
+msgid "There has been an unexpected error. Please wait while we reload the content."
+msgstr "予期せぬエラーが発生しました。コンテンツを再読み込みするのでお待ちください。"
+
+#: anthologize/includes/class-project-organizer.php:61
+msgid "Select the items you would like to append and click Go."
+msgstr "追加したいアイテムを選択し、ゴーをクリックしてください。"
+
+#: anthologize/includes/class-project-organizer.php:70
+msgid "Items"
+msgstr "アイテム"
+
+#: anthologize/includes/class-project-organizer.php:84
+msgid "Posts"
+msgstr "投稿"
+
+#: anthologize/includes/class-project-organizer.php:111
+msgid "New Parts"
+msgstr "新しい章"
+
+#: anthologize/includes/class-project-organizer.php:112
+msgid "Wanna create a new part? You know you do."
+msgstr "新しい章を作成しますか ? 方法はご存知ですね。"
+
+#: anthologize/includes/class-project-organizer.php:146
+msgid "Tag"
+msgstr "タグ"
+
+#: anthologize/includes/class-project-organizer.php:146
+msgid "Category"
+msgstr "カテゴリ"
+
+#: anthologize/includes/class-project-organizer.php:151
+msgid "All posts"
+msgstr "すべての投稿"
+
+#: anthologize/includes/class-project-organizer.php:277
+#: anthologize/includes/class-project-organizer.php:585
+msgid "Edit"
+msgstr "編集"
+
+#: anthologize/includes/class-project-organizer.php:278
+#: anthologize/includes/class-project-organizer.php:591
+msgid "Remove"
+msgstr "削除"
+
+#: anthologize/includes/class-project-organizer.php:315
+#, php-format
+msgid "You haven't created any parts yet! Click <a href=\"%1$s\">\"New Part\"</a> to get started."
+msgstr "まだ章がひとつも作成されていません。<a href=\"%1$s\">\"新しい章\"</a>をクリックして始めてください。"
+
+#: anthologize/includes/class-project-organizer.php:587
+msgid "Append"
+msgstr "追加"
+
+#~ msgctxt "post type general name"
+
+#~ msgid "Parts"
+#~ msgstr "章"
+#~ msgctxt "book"
+
+#~ msgid "Add New"
+#~ msgstr "新規追加"
+#~ msgctxt "post type general name"
+
+#~ msgid "Imported Items"
+#~ msgstr "インポートしたアイテム"
+#~ msgctxt "post type singular name"
+
+#~ msgid "Imported Items"
+#~ msgstr "インポートしたアイテム"
+
+#~ msgid "http://anthologize.org"
+#~ msgstr "http://anthologize.org"
+
+#~ msgid "Use the power of WordPress to transform your content into a book."
+#~ msgstr "WordPress のパワーを利用して、あなたのコンテンツを本に変換します。"
+
+#~ msgid "One Week | One Tool"
+#~ msgstr "One Week | One Tool"
+
+#~ msgid "http://oneweekonetool.org"
+#~ msgstr "http://oneweekonetool.org"
