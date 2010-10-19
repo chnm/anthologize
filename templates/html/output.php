@@ -26,6 +26,9 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
 
 $tei = new TeiDom($_SESSION, $ops);
+
+
+
 header("Content-type: text/html");
 
 $api = new TeiApi($tei);

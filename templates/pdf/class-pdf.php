@@ -222,6 +222,7 @@ $this->pdf->setLanguageArray($lg);
 		if(strpos($font_family, 'arialunicid0') !== false) {
 			$font_family = 'arialunicid0';
 		}
+
 		$this->pdf->SetFont($font_family, '', $font_size, '', true);
 //		$this->pdf->SetFont('arialunicid0', '', $font_size, '', true);
 	}
