@@ -1,9 +1,15 @@
 <?php
 //============================================================+
 // File name   : unicode_data.php
+<<<<<<< HEAD
 // Version     : 1.0.005
 // Begin       : 2008-01-01
 // Last Update : 2010-08-08
+=======
+// Version     : 1.0.006
+// Begin       : 2008-01-01
+// Last Update : 2010-10-18
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 // Author      : Nicola Asuni - Tecnick.com S.r.l - Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -35,7 +41,11 @@
 // Saleh AlMatrafe
 
 /**
+<<<<<<< HEAD
  * Unicode data for TCPDF library.
+=======
+ * Unicode data class for TCPDF library.
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
  * @author Nicola Asuni
  * @copyright 2008-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @package com.tecnick.tcpdf
@@ -45,6 +55,7 @@
 */
 
 /**
+<<<<<<< HEAD
 * Left-to-Right Mark
 */
 define('K_LRM', 8206);
@@ -77,6 +88,65 @@ define('K_RLO', 8238);
  * Pattern to test RTL (Righ-To-Left) strings using regular expressions.
  */
 define('K_RE_PATTERN_RTL', "/(
+=======
+* This is a PHP class containing Unicde data for TCPDF library
+* @name TCPDF_UNICODE_DATA
+* @package com.tecnick.tcpdf
+* @version 1.0.006
+* @author Nicola Asuni - info@tecnick.com
+* @link http://www.tcpdf.org
+* @license http://www.gnu.org/copyleft/lesser.html LGPL
+*/
+class TCPDF_UNICODE_DATA {
+
+/**
+ * @var Unicode code for Left-to-Right Mark
+ * @access public
+ */
+public $uni_LRM = 8206;
+
+/**
+ * @var Unicode code for Right-to-Left Mark
+ * @access public
+ */
+public $uni_RLM = 8207;
+
+/**
+ * @var Unicode code for Left-to-Right Embedding
+ * @access public
+ */
+public $uni_LRE = 8234;
+
+/**
+ * @var Unicode code for Right-to-Left Embedding
+ * @access public
+ */
+public $uni_RLE = 8235;
+
+/**
+ * @var Unicode code for Pop Directional Format
+ * @access public
+ */
+public $uni_PDF = 8236;
+
+/**
+ * @var Unicode code for Left-to-Right Override
+ * @access public
+ */
+public $uni_LRO = 8237;
+
+/**
+ * @var Unicode code for Right-to-Left Override
+ * @access public
+ */
+public $uni_RLO = 8238;
+
+/*
+ * @var Pattern to test RTL (Righ-To-Left) strings using regular expressions.
+ * @access public
+ */
+public $uni_RE_PATTERN_RTL = "/(
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 	  \xD6\xBE                                             # R
 	| \xD7[\x80\x83\x86\x90-\xAA\xB0-\xB4]                 # R
 	| \xDF[\x80-\xAA\xB4\xB5\xBA]                          # R
@@ -88,6 +158,7 @@ define('K_RE_PATTERN_RTL', "/(
 	| \xF0\x90\xA8[\x80\x90-\x93\x95-\x97\x99-\xB3]        # R
 	| \xF0\x90\xA9[\x80-\x87\x90-\x98]                     # R
 	| \xE2\x80[\xAB\xAE]                                   # RLE & RLO
+<<<<<<< HEAD
 	)/x");
 
 /*
@@ -95,6 +166,16 @@ define('K_RE_PATTERN_RTL', "/(
  * source: http://www.w3.org/International/questions/qa-forms-utf-8
  */
 define("K_RE_PATTERN_ARABIC", "/(
+=======
+	)/x";
+
+/*
+ * @var Pattern to test Arabic strings using regular expressions.
+ * Source: http://www.w3.org/International/questions/qa-forms-utf-8
+ * @access public
+ */
+public $uni_RE_PATTERN_ARABIC = "/(
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 		  \xD8[\x80-\x83\x8B\x8D\x9B\x9E\x9F\xA1-\xBA]  # AL
 		| \xD9[\x80-\x8A\xAD-\xAF\xB1-\xBF]             # AL
 		| \xDA[\x80-\xBF]                               # AL
@@ -114,6 +195,7 @@ define("K_RE_PATTERN_ARABIC", "/(
 		| \xEF\xBA[\x80-\xBF]                           # AL
 		| \xEF\xBB[\x80-\xBC]                           # AL
 		| \xD9[\xA0-\xA9\xAB\xAC]                       # AN
+<<<<<<< HEAD
 		)/x");
 
 /**
@@ -121,6 +203,15 @@ define("K_RE_PATTERN_ARABIC", "/(
  */
 global $unicode;
 $unicode = array(
+=======
+		)/x";
+
+/**
+ * @var Array of Unicode types
+ * @access public
+ */
+public $uni_type = array(
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 0=>'BN',
 1=>'BN',
 2=>'BN',
@@ -17844,12 +17935,21 @@ $unicode = array(
 );
 
 /**
+<<<<<<< HEAD
  * Mirror unicode characters.
  * For information on bidi mirroring, see UAX #9: Bidirectional Algorithm,
  * at http://www.unicode.org/unicode/reports/tr9/
  */
 global $unicode_mirror;
 $unicode_mirror = array (
+=======
+ * @var Mirror unicode characters.
+ * For information on bidi mirroring, see UAX #9: Bidirectional Algorithm,
+ * at http://www.unicode.org/unicode/reports/tr9/
+ * @access public
+ */
+public $uni_mirror = array (
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 0x0028=>0x0029,
 0x0029=>0x0028,
 0x003C=>0x003E,
@@ -18204,11 +18304,18 @@ $unicode_mirror = array (
 0xFF63=>0xFF62);
 
 /**
+<<<<<<< HEAD
  * Arabic shape subtitutions
  * char code=>isolated, final, initial, medial
  */
 global $unicode_arlet;
 $unicode_arlet = array(
+=======
+ * @var Arabic shape substitutions: char code => (isolated, final, initial, medial)
+ * @access public
+ */
+public $uni_arabicsubst = array(
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 1569=>array(65152),
 1570=>array(65153, 65154, 65153, 65154),
 1571=>array(65155, 65156, 65155, 65156),
@@ -18288,11 +18395,18 @@ $unicode_arlet = array(
 );
 
 /**
+<<<<<<< HEAD
  * Arabic laa letter
  * char code=>isolated, final, initial, medial
  */
 global $laa_array;
 $laa_array = array (
+=======
+ * @var Arabic laa letter: char code => isolated, final, initial, medial
+ * @access public
+ */
+public $uni_laa_array = array (
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 1570 =>array(65269, 65270, 65269, 65270),
 1571 =>array(65271, 65272, 65271, 65272),
 1573 =>array(65273, 65274, 65273, 65274),
@@ -18300,12 +18414,21 @@ $laa_array = array (
 );
 
 /**
+<<<<<<< HEAD
  * Array of character substitutions for sequences of two diacritics symbols.
  * Putting the combining mark and character in the same glyph allows us to avoid the two marks overlapping each other in an illegible manner.
  * second NSM char code=>substitution char
  */
 global $diacritics;
 $diacritics = array (
+=======
+ * @var Array of character substitutions for sequences of two diacritics symbols.
+ * Putting the combining mark and character in the same glyph allows us to avoid the two marks overlapping each other in an illegible manner.
+ * second NSM char code => substitution char
+ * @access public
+ */
+public $uni_diacritics = array (
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 1612=>64606, # Shadda + Dammatan
 1613=>64607, # Shadda + Kasratan
 1614=>64608, # Shadda + Fatha
@@ -18314,10 +18437,17 @@ $diacritics = array (
 );
 
 /**
+<<<<<<< HEAD
  * Array of character substitutions from UTF-8 unicode to latin1
  */
 global $utf8tolatin;
 $utf8tolatin = array (
+=======
+ * @var Array of character substitutions from UTF-8 Unicode to Latin1
+ * @access public
+ */
+public $uni_utf8tolatin = array (
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 8364=>128, # Euro1
 338=>140,  # OE
 352=>138,  # Scaron
@@ -18347,6 +18477,11 @@ $utf8tolatin = array (
 382=>158   # zcaron2
 );
 
+<<<<<<< HEAD
+=======
+} // --- END OF CLASS ---
+
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 //============================================================+
 // END OF FILE
 //============================================================+

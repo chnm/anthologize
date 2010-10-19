@@ -1,3 +1,181 @@
+<<<<<<< HEAD
+=======
+5.9.006 (2010-10-16)
+	- Support for AES 256 bit encryption was added (see example n. 16).
+	- Method getNumLines() was fixed for the empty string case.
+
+5.9.005 (2010-10-18)
+	- Method addPageRegion() was changed to accept regions starting exactly from the top of the page.
+
+5.9.004 (2010-10-18)
+	- A bug related to annotations was fixed.
+	- The file unicode_data.php was canged to encapsulate all data in a class.
+	- The file htmlcolors.php was changed to remove the global variable.
+
+5.9.003 (2010-10-15)
+	- Support for no-write page regions was added. Check the example n. 64 and new methods setPageRegions(), addPageRegion(), getPageRegions(), removePageRegion().
+	- A bug on Right-To-Left alignment was fixed.
+
+5.9.002 (2010-10-08)
+	- Cell method was improved to preserve the font stretching and spacing values when using the $stretch parameter (see example n. 4).
+
+5.9.001 (2010-10-07)
+	- The problem of blank page for nobr table higher than a single page was fixed.
+
+5.9.000 (2010-10-06)
+	- Support for text stretching and spacing (kerning) was added, see example n. 63 and methods setFontStretching(), getFontStretching(), setFontSpacing(), getFontSpacing().
+	- Support for CSS properties 'font-stretch' and 'letter-spacing' was added (see example n. 63).
+	- The cMargin state was replaced by cell_padding array that can be set/get using setCellPadding() and getCellPadding() methods.
+	- Methods getCellPaddings() and setCellPaddings() were added to fine tune cell paddings (see example n. 5).
+	- Methods getCellMargins() and setCellMargins() were added to fine tune cell margins (see example n. 5).
+	- Method write1DBarcode() was improved to permit custom labels (see example n. 27).
+	- Method ImagePngAlpha() now includes support for ImageMagick to improve performances.
+	- XObject Template support was extended to support Multicell(), writeHTML() and writeHTMLCell() methods.
+	- The signature of getNumLines() and getStringHeight() methods is changed.
+	- Example n. 57 was updated.
+
+// -------------------------------------------------------------------
+
+5.8.034 (2010-09-27)
+	- A bug related to SetFont on XObject templates was fixed.
+
+5.8.033 (2010-09-25)
+	- A problem with Footer() and multiple columns was fixed.
+
+5.8.032 (2010-09-22)
+	- Bug #3073165 "Issues with changes to addHTMLVertSpace()" was fixed.
+
+5.8.031 (2010-09-20)
+	- Bug #3071961 "Spaces in HTML" was fixed.
+
+5.8.030 (2010-09-17)
+	- SVG support was improved and some bugs were fixed.
+
+5.8.029 (2010-09-16)
+	- A problem with HTML borders was fixed.
+
+5.8.028 (2010-09-13)
+	- Bug #3065224 "mcrypt_create_iv error on TCPDF 5.8.027 on PHP 5.3.2" was fixed.
+
+5.8.027 (2010-09-13)
+	- Bug #3065118 "mcrypt_decrypt error on TCPDF 5.8.026 on PHP 5.3.2" was fixed.
+
+5.8.026 (2010-09-13)
+	- A bug on addHTMLTOC() method was fixed. Note: be sure that the #TOC_PAGE_NUMBER# template has enough width to be printed correctly.
+
+5.8.025 (2010-09-09)
+	- Bug #3062692 "Textarea inside a table" was fixed.
+
+5.8.024 (2010-09-08)
+	- Bug #3062005 "Undefined variable: ann_obj_id" was fixed.
+
+5.8.023 (2010-08-31)
+	- Forms bug added on version 5.8.019 was fixed.
+
+5.8.022 (2010-08-31)
+	- Bug #3056632 "SVG rendered vertically flipped" was fixed.
+
+5.8.021 (2010-08-30)
+	- A new CID-0 'chinese' font was added for traditional Chinese.
+	- Bug #3054287 'Inner tags are ignored due to "align" attribute' was fixed.
+
+5.8.020 (2010-08-26)
+	- CSS "catch-all" class selector is now supported.
+
+5.8.019 (2010-08-26)
+	- XObject Templates now includes support for links and annotations.
+	- A problem related to link alignment on cell was fixed.
+	- A problem related to SVG styles was fixed.
+
+5.8.018 (2010-08-25)
+	- Method getNumberOfColumns() was added.
+	- A problem related to table header was fixed.
+	- Method getSVGTransformMatrix() was fixed to apply SVG transformations in the correct order.
+	- SVG support was improved and several bugs were fixed.
+
+5.8.017 (2010-08-25)
+	- This version includes support for XObject Templates (see the new example n. 62).
+	- Methods starttemplate(), endTemplate() and printTemplate() were added (see the new example n. 62).
+
+5.8.016 (2010-08-24)
+	- Alignment problem on write2DBarcode was fixed.
+
+5.8.015 (2010-08-24)
+	- A problem arised with the latest bugfix was fixed.
+
+5.8.014 (2010-08-23)
+	- Method _getxobjectdict() was added for better compatibility with external extensions.
+	- A bug related to radiobuttons was fixed.
+	- Bug #3051509 "new line after punctuation marks" was fixed (partially).
+
+5.8.013 (2010-08-23)
+	- SVG support for 'direction' property was added.
+	- A problem on default width calculation for linear barcodes was fixed.
+	- New option was added to write1DBarcode() method to improve alignments (see example n. 27).
+	- Bug #3050896 "Nested HTML tables: styles are not applied" was fixed.
+	- Method _putresourcedict() was improved to include external XObject templates.
+
+5.8.012 (2010-08-22)
+	- Support for SVG 'text-anchor' property was added.
+
+5.8.011 (2010-08-21)
+	- Method write1DBarcode() was improved to be backward compatible (check the new example n. 27).
+	- Support for CSS width and height properties on images were added.
+
+5.8.010 (2010-08-20)
+	- Documentation of unhtmlentities() was fixed.
+	- The 'fitwidth' option was added and border color problem was fixed on write1DBarcode() method (check the example n. 27).
+
+5.8.009 (2010-08-20)
+	- Internal object numbering was improved.
+	- Some errors in object encryption were fixed.
+
+5.8.008 (2010-08-19)
+	- Method write1DBarcode() was changed, check the example n. 27.
+	- Method Footer() was changed to account for barcode changes.
+	- Automatic calculation of K_PATH_URL constant was fixed on configuration file.
+	- Method setEqualColumns() was fixed for $width=0 case.
+	- Method AddTOC() was fixed for multipage and multicolumn modes.
+	- Better support for SVG "font-family" property.
+	- A problem on default Page Zoom mode was fixed.
+	- Several Annotation bugs were fixed.
+
+5.8.007 (2010-08-18)
+	- A bug affecting HTML tables was fixed.
+	- Bug #3047500 "SVG not rendering paths properly" was fixed.
+
+5.8.006 (2010-08-17)
+	- A bug affecting HTML table nesting was fixed.
+
+5.8.005 (2010-08-17)
+	- A bug affecting the HTML 'select' tag in certain conditions was fixed.
+
+5.8.004 (2010-08-17)
+	- Better support for HTML "font-family" property.
+	- A bug related to HTML multicolumn was fixed.
+
+5.8.003 (2010-08-16)
+	- Better support for HTML "font-family" property.
+
+5.8.002 (2010-08-14)
+	- HTML alignments were improved
+	- IMPORTANT: Default regular expression to find spaces has been changed to exclude the non-breaking-space (160 DEC- A0 HEX). If you are using setSpacesRE() method, please read the new documentation.
+	- Example n. 1 was updated.
+
+5.8.001 (2010-08-12)
+	- Bug #3043650 "subsetchars incorrectly cached" was fixed.
+
+5.8.000 (2010-08-11)
+	- A control to avoid bookmarking page 0 was added.
+	- addTOC() method now includes support for multicolumn mode.
+	- Support for tables in multicolumn mode was improved.
+	- Example n.10 was updated.
+	- All trimming functions were replaced with stringLeftTrim(), stringRightTrim() and stringTrim().
+	- HTML alignments were improved.
+
+------------------------------------------------------------
+
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 5.7.003 (2010-08-08)
 	- Bug #3041263 "php source ending is bad" was fixed (all PHP files were updated, including fonts).
 
@@ -11,7 +189,11 @@
 	- CSS borders are now supported for HTML tables and other block tags (see example n. 61);
 	- Cell borders were improved (see example n. 57);
 	- Minor bugs were fixed.
+<<<<<<< HEAD
 
+=======
+encry
+>>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 ------------------------------------------------------------
 
 5.6.000 (2010-07-31)
