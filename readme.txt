@@ -4,7 +4,7 @@ Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 0.4-alpha
+Stable tag: 0.5-alpha
 
 Use the power of WordPress to transform your content into a book.
 
@@ -33,6 +33,7 @@ If you're upgrading manually from a previous version of Anthologize, please be s
 == Changelog ==
 
 = 0.5-alpha =
+* Code name "Gabardine"
 * anthologize_register_format() API allows third-party developers to register their output-format plugins and options
 * Newly added theming functions allow plugin developers to use familiar WordPress loops for creating new output formats
 * Improved character encoding all-around
