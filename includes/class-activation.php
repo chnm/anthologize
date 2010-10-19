@@ -24,6 +24,7 @@ class Anthologize_Activation {
 		// Fixes for those coming from v0.4
 		if ( $version < '0.5' ) {
 			$this->unpublish_imported_content();
+			$this->flush_cookies();
 		}
 		
 		$this->default_settings(); // Settings should be updated last, so that we can take advantage of old version info
@@ -100,6 +101,12 @@ class Anthologize_Activation {
 			);
 			wp_update_post( $update_post );
 		}
+	}
+	
+	// Flushes post filter cookies
+	function flush_cookies() {
+		setcookie('anth-term', '', time() - 60, '/', '', 0);
+		setcookie('anth-filter', '', time() - 60, '/', '', 0);
 	}
 	
 

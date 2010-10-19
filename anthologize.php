@@ -28,6 +28,9 @@ Anthologize includes TCPDF, which is released under the LGPL Use and
 modifications of TDPDF must comply with its license.
 */
 
+if ( !defined( 'ANTHOLOGIZE_VERSION' ) )
+	define( 'ANTHOLOGIZE_VERSION', '0.4' );
+
 if ( !class_exists( 'Anthologize_Loader' ) ) :
 
 class Anthologize_Loader {
@@ -77,8 +80,7 @@ class Anthologize_Loader {
 
 	// Load constants
 	function load_constants() {
-		if ( !defined( 'ANTHOLOGIZE_VERSION' ) )
-			define( 'ANTHOLOGIZE_VERSION', '0.4' );
+		
 
 		if ( !defined( 'ANTHOLOGIZE_TEIDOM_PATH' ) )
 			define( 'ANTHOLOGIZE_TEIDOM_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php' );
