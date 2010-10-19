@@ -312,10 +312,18 @@ class TeiApi {
 	public function getProjectCopyright($asStructured = false) {
 
 		if($asStructured) {
+
 			$cr = $this->getNodeListByXPath("//tei:publicationStmt/tei:availability[@rend='structured']/tei:ab", true);
+			if($cr->parentNode->getAttribute('status') == 'c') {
+				return "<span>Copyright</span>";
+			}
 
 		} else {
 			$cr = $this->getNodeListByXPath("//tei:publicationStmt/tei:availability[@rend='literal']/span", true);
+
+			if($cr->parentNode->getAttribute('status') == 'c') {
+				return "<span>Copyright</span>";
+			}
 		}
 		return $this->getNodeXML($cr);
 	}

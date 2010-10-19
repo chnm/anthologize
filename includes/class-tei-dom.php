@@ -173,11 +173,15 @@ class TeiDom {
 	public function addPublicationStmt() {
 
 		//cr
+
+
 		$litAvailNode = $this->xpath->query("//tei:publicationStmt/tei:availability[@rend='literal']")->item(0);
 		$litAvailNode->appendChild($this->sanitizeString("Creative Commons - " . strtoupper( $this->projectData['cctype'] )));
+		$litAvailNode->setAttribute('status', $this->projectData['ctype']);
 
 		$strAvailNode = $this->xpath->query("//tei:publicationStmt//tei:ab[@rend='structured']")->item(0);
 		$strAvailNode->appendChild($this->dom->createTextNode("cc-" . $this->projectData['cctype']) );
+		$strAvailNode->setAttribute('status', $this->projectData['ctype']);
 
 		//date
 		$pubDateNode = $this->xpath->query("//tei:publicationStmt/tei:date")->item(0);
