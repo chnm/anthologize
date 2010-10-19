@@ -269,15 +269,7 @@ class Anthologize_Project_Organizer {
 			return false;
 		
 		// Update the parent project's Date Modified field to right now
-		$project_post = get_post( $this->project_id );
-		$project_args = array(
-			'ID' => $this->project_id,
-            'post_modified' => date( "Y-m-d G:H:i" ),
-            'post_modified_gmt' => gmdate( "Y-m-d G:H:i" ),
-            'post_date' => date( "Y-m-d G:H:i", strtotime( $project_post->post_date ) ),
-            'post_date_gmt' => gmdate( "Y-m-d G:H:i", strtotime( $project_post->post_date ) ),
-		);
-		wp_update_post( $project_args );
+		$this->update_project_modified_date();
 
 		// Author data
 		$user = get_userdata( $the_item->post_author );
@@ -300,6 +292,16 @@ class Anthologize_Project_Organizer {
 
 		return $imported_item_id;
 	}
+	
+	function update_project_modified_date() {
+		$project_post = get_post( $this->project_id );
+		$project_args = array(
+			'ID' => $this->project_id,
+            'post_modified' => date( "Y-m-d G:H:i" ),
+            'post_modified_gmt' => gmdate( "Y-m-d G:H:i" )
+		);
+		wp_update_post( $project_args );
+	}
 
 	function add_new_part( $part_name ) {
 		if ( !(int)$last_item = get_post_meta( $this->project_id, 'last_item', true ) )
@@ -321,6 +323,8 @@ class Anthologize_Project_Organizer {
 
 		// Store the menu order of the last item to enable easy moving later on
 		update_post_meta( $this->project, 'last_item', $last_item );
+
+		$this->update_project_modified_date();
 
 		return true;
 	}
@@ -631,6 +635,8 @@ class Anthologize_Project_Organizer {
 			$q = "UPDATE $wpdb->posts SET menu_order = %d WHERE ID = %d";
 			$post_up_query = $wpdb->query( $wpdb->prepare( $q, $pos, $item_id ) );
 		}
+		
+		$this->update_project_modified_date();
 
 		return true;
 	}
@@ -639,6 +645,8 @@ class Anthologize_Project_Organizer {
 		// Git ridda the post
 		if ( !wp_delete_post( $id ) )
 			return false;
+		
+		$this->update_project_modified_date();
 
 		return true;
 	}
@@ -685,6 +693,8 @@ class Anthologize_Project_Organizer {
 
 		update_post_meta( $append_parent, 'author_name', $author_name );
 		update_post_meta( $append_parent, 'author_name_array', $author_name_array );
+
+		$this->update_project_modified_date();
 
 		return true;
 	}
