@@ -110,9 +110,9 @@
         <div id="publication-statement-page">
 
           <!-- Dedication -->
-          <h1>Dedication</h1>
-          
-          <xsl:if test="normalize-space($book.dedication) != ''">
+          <!-- might be gremlins, but the convoluted string lenght normalize space was only way I got this to work right PMJ -->
+          <xsl:if test="string-length( normalize-space( $book.dedication.text ) ) != 0">
+            <h1>Dedication</h1>
             <div xml:id="anthologize-dedication">         
                 <xsl:copy-of select="$book.dedication"/>              
             </div>
@@ -147,7 +147,7 @@
 
         <!-- Acknowledgements page -->
 
-        <xsl:if test="normalize-space($book.acknowledgements) != ''">
+        <xsl:if test="string-length(normalize-space($book.acknowledgements.text) ) != 0 " >
 
           <div class="chapter" id="anthologize-acknowledgements-page">
 

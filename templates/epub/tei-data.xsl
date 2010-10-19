@@ -35,15 +35,14 @@
       select="/tei:TEI/tei:text/tei:front/tei:div[@n='0']"
     />
   </xsl:variable>
+  <xsl:variable name="book.dedication.text" select="/tei:TEI/tei:text/tei:front/tei:div[@n='0']/div"></xsl:variable>
 
   <!-- Acknowledgements-->
 
   <xsl:variable name="book.acknowledgements"
     select="/tei:TEI/tei:text/tei:front/tei:div[@n='1']" /> 
 
-  <xsl:variable name="book.acknowledgements.text">
-    <xsl:copy-of select="$book.acknowledgements/div/node()"/>
-  </xsl:variable>
+  <xsl:variable name="book.acknowledgements.text" select="/tei:TEI/tei:text/tei:front/tei:div[@n='1']/div"></xsl:variable>
 
   <xsl:variable name="book.acknowledgements.title"
     select="$book.acknowledgements/tei:head/tei:title"/>
