@@ -42,7 +42,7 @@
           <xsl:if test="$parameters.font-size != ''">          
             <xsl:value-of select="concat('&#xa;font-size:', $parameters.font-size, ';')"/>
           </xsl:if>
-          <xsl:message>Root: <xsl:value-of select="$parameters.root"/></xsl:message>
+
           <xsl:if test="$parameters.font-family != ''">
             <xsl:value-of select="concat('&#xa;font-family:', $parameters.font-family, ';')"/>
           </xsl:if>
@@ -103,6 +103,8 @@
               <xsl:value-of select="$book.title-page.doc-author"/>
             </h3>
           </xsl:if>
+          
+
         </div>
 
         <!-- Publication statement page -->
