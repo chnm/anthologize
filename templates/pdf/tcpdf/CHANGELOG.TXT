@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 5.9.006 (2010-10-16)
 	- Support for AES 256 bit encryption was added (see example n. 16).
 	- Method getNumLines() was fixed for the empty string case.
@@ -175,7 +173,6 @@
 
 ------------------------------------------------------------
 
->>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 5.7.003 (2010-08-08)
 	- Bug #3041263 "php source ending is bad" was fixed (all PHP files were updated, including fonts).
 
@@ -189,11 +186,7 @@
 	- CSS borders are now supported for HTML tables and other block tags (see example n. 61);
 	- Cell borders were improved (see example n. 57);
 	- Minor bugs were fixed.
-<<<<<<< HEAD
-
-=======
 encry
->>>>>>> 60210fbd811c0bf6db876a55c8fae87fc3f018ce
 ------------------------------------------------------------
 
 5.6.000 (2010-07-31)
