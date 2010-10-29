@@ -470,6 +470,10 @@ class Anthologize_Project_Organizer {
 			</ul>
 		<?php
 		}
+
+        if ( $cfilter == 'date' ) {
+            remove_filter('posts_where', $filter_where);
+        }
 	}
 
 	function get_posts_as_option_list( $part_id ) {
