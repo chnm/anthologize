@@ -225,15 +225,33 @@ class Anthologize_Project_Organizer {
 		<?php
 	}
 	
-	// A filterable list of post types that can
-	// serve as a filter for the project organizer
+	/**
+	 * Provide a list of post types available as a filter on the project organizer screen.
+	 *
+	 * @package Anthologize
+	 * @subpackage Project Organizer
+	 * @since 0.5
+	 *
+	 * @return array A list of post type labels, keyed by name
+	 */
 	function available_post_types() {
-		$types = array(
-			'post' => __( 'Posts' ),
-			'page' => __( 'Pages' ),
-			'anth_imported_item' => __( 'Imported Items', 'anthologize' )
-		);
+		$all_post_types = get_post_types( false, false );
 		
+		$excluded_post_types = apply_filters( 'anth_excluded_post_types', array(
+			'anth_library_item',
+			'anth_part',
+			'anth_project',
+			'attachment',
+			'revision',
+			'nav_menu_item'
+		) );
+		
+		$types = array();
+		foreach( $all_post_types as $name => $post_type ) {
+			if ( !in_array( $name, $excluded_post_types ) )
+				$types[$name] = isset( $post_type->labels->name ) ? $post_type->labels->name : $name;
+		}
+				
 		return apply_filters( 'anth_available_post_types', $types );		
 	}
 
