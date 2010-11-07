@@ -39,7 +39,7 @@ class Anthologize_Format_API {
 			'label' => $label,
 			'loader-path' => $loader_path
 		);
-			
+		
 		// Register the format
 		if ( $anthologize_formats[$name] = $new_format )
 			return true;
