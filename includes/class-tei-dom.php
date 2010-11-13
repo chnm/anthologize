@@ -61,6 +61,12 @@ class TeiDom {
 		$this->dom->preserveWhiteSpace = false;
 		$this->setXPath();
 
+		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
+		$this->frontNode = $this->xpath->query("//tei:front")->item(0);
+		$this->backNode = $this->xpath->query("//tei:back")->item(0);
+		$this->structuredSubjectList = $this->xpath->query("//tei:list[@xml:id='subjects']")->item(0);
+		$this->structuredPersonList = $this->xpath->query("//tei:sourceDesc/tei:listPerson")->item(0);
+
 		$this->buildProjectData();
 		$this->addOutputDesc();
 		$this->addPublicationStmt();
@@ -77,12 +83,6 @@ class TeiDom {
 		$this->xpath->registerNamespace('tei', TEI);
 		$this->xpath->registerNamespace('html', HTML);
 		$this->xpath->registerNamespace('anth', ANTH);
-		$this->bodyNode = $this->xpath->query("//tei:body")->item(0);
-		$this->frontNode = $this->xpath->query("//tei:front")->item(0);
-		$this->backNode = $this->xpath->query("//tei:back")->item(0);
-		$this->structuredSubjectList = $this->xpath->query("//tei:list[@xml:id='subjects']")->item(0);
-		$this->structuredPersonList = $this->xpath->query("//tei:sourceDesc/tei:listPerson")->item(0);
-
 	}
 
 
@@ -104,9 +104,7 @@ class TeiDom {
 			$newPart = $this->newPart($partObject);
 			$newPart->setAttribute('n', $partNumber);
 			$newPart->setAttribute('xml:id', "body-$partNumber");
-			if($this->includeDeepDocumentData) {
 
-			}
 			$args = array(
 				'post_parent'=>$partObject->ID,
 				'post_type'=>'anth_library_item',
@@ -174,7 +172,6 @@ class TeiDom {
 
 		//cr
 
-
 		$litAvailNode = $this->xpath->query("//tei:publicationStmt/tei:availability[@rend='literal']")->item(0);
 		$litAvailNode->appendChild($this->sanitizeString("Creative Commons - " . strtoupper( $this->projectData['cctype'] )));
 		$litAvailNode->setAttribute('status', $this->projectData['ctype']);
@@ -222,8 +219,6 @@ class TeiDom {
 			$projectBibl->appendChild($createdNode);
 			$createdNode->appendChild($this->dom->createTextNode($this->projectData['post_date']));
 		}
-
-
 	}
 
 
@@ -543,8 +538,6 @@ class TeiDom {
 					}
 				}
 
-
-
 				//work with the anthologize data
 				$meta = get_post_meta($postObject->ID, 'anthologize_meta', true );
 
@@ -554,7 +547,14 @@ class TeiDom {
 				}
 
 				if($this->includeOriginalPostData) {
+					//TODO: include date created and modified data
 					$origPostData = get_post($postObject->original_post_id);
+
+					$origGuid = $this->dom->createElementNS(TEI, 'ident');
+					$origGuid->appendChild($this->dom->createCDataSection($origPostData->guid));
+					$origGuid->setAttribute('type', 'origGuid');
+					$newHead->appendChild($origGuid);
+
 					$origCreator = get_userdata($origPostData->post_author);
 					$bibl->appendChild($this->newAuthor($origCreator, 'originalAuthor') );
 					if($this->includeStructuredCreatorData) {
@@ -573,7 +573,7 @@ class TeiDom {
 		return $newHead;
 	}
 
-	private function sanitizeString($content, $isMultiline = false) {
+	public function sanitizeString($content, $isMultiline = false) {
 
 		$content = $this->sanitizeEntities($content);
 		if ($isMultiline) {
@@ -599,7 +599,7 @@ class TeiDom {
 	}
 
 
-	private function sanitizeShortCodes($content) {
+	public function sanitizeShortCodes($content) {
 
 		$content = do_shortcode($content);
 		if($this->doShortcodes) {
@@ -611,13 +611,13 @@ class TeiDom {
 
 	}
 
-	private function sanitizeEntities($content) {
+	public function sanitizeEntities($content) {
 		//TODO: sort out the best order to convert characters and sanitizing stuff.
 
 		return str_replace("&nbsp;", " ", $content);
 	}
 
-	private function sanitizeShortCode($m) {
+	public function sanitizeShortCode($m) {
 		//modified from WP do_shortcode_tag() wp_includes/shortcodes.php
 
 		$tag = $m[2];
@@ -630,7 +630,7 @@ class TeiDom {
 		return $html;
 	}
 
-	private function checkImageSources($tmpHTML) {
+	public function checkImageSources($tmpHTML) {
 		//TODO: check for net connectivity
 		//TODO: improve pseudo-error message and feedback
 		$xpath = new DOMXPath($tmpHTML);
@@ -645,6 +645,7 @@ class TeiDom {
 			curl_exec($ch);
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
+
 			if($code != 200) {
 				$noImgSpan = $tmpHTML->createElement('span', 'Image not found');
 				$noImgSpan->setAttribute('class', 'anthologize-error');
@@ -653,13 +654,13 @@ class TeiDom {
 		}
 	}
 
-	private function getID($node) {
+	public function getID($node) {
 		//if its in the HTML, check if it already has an id
-		$existingID = $node->getAttribute('id');
-		if($node->getAttribute('id')) {
+
+		if($node->hasAttribute('id')) {
 			return $node->getAttribute('id');
 		}
-		if($node->getAttribute('xml:id')) {
+		if($node->hasAttribute('xml:id')) {
 			return $node->getAttribute('xml:id');
 		}
 		$parentItem = $this->getParentItem($node);
@@ -854,16 +855,7 @@ class TeiDom {
 	}
 
 
-	/* Accessor Methods */
 
-
-	public function getTeiString() {
-		return $this->dom->saveXML();
-	}
-
-	public function getTeiDom() {
-		return $this->dom;
-	}
 
 	public function getFileName($sessionArray) {
 
@@ -896,7 +888,6 @@ class TeiDom {
 	public function getParentItem($node) {
 		while( $node->getAttribute('type') != 'libraryItem') {
 			$node = $node->parentNode;
-
 		}
 		return $node;
 	}
@@ -933,7 +924,13 @@ class TeiDom {
 
 	}
 
+	public function getTeiString() {
+		return $this->dom->saveXML();
+	}
 
+	public function getTeiDom() {
+		return $this->dom;
+	}
 }
 
 
