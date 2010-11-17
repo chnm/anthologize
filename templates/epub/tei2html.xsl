@@ -180,6 +180,9 @@
             </h2>
             <div class="chapter-content">
               <xsl:for-each select="tei:div[@type='libraryItem']">
+                <xsl:element name="a">
+                  <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
+                </xsl:element>
                 <div class="library-item">
                   <xsl:if test="tei:head/tei:title">
                     <h3 class="library-item-title">

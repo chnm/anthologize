@@ -258,6 +258,8 @@ class TeiApi {
 	 * @return string
 	 */
 
+
+//TODO: make option to return node like other methods
 	public function getProjectTitle($valueOnly = false) {
 
 		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='main']";
@@ -308,7 +310,7 @@ class TeiApi {
 	 * @param $asStructured = false return as structured data or human-readable
 	 * return string
 	 */
-
+//TODO: make it return a node,
 	public function getProjectCopyright($asStructured = false) {
 
 		if($asStructured) {
@@ -690,15 +692,6 @@ class TeiApi {
 
 	}
 
-/*
- 		if (is_array($index)) {
-
-		} else if (is_a($index, 'DOMElement')) {
-
-		} else {
-			throw new Exception('index must be node or array');
-		}
- */
 
 
 	public function getIndexItem($index, $itemNumber) {
@@ -876,8 +869,5 @@ class TeiApi {
 			break;
 
 		}
-
 	}
-
-
 }
