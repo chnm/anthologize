@@ -19,33 +19,31 @@ class Anthologize_Admin_Main {
 	}
 
 	function init() {
-
-	    foreach ( array('anth_project', 'anth_part', 'anth_library_item', 'anth_imported_item') as $type )
-    	{
-            add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array($this,'item_meta_box'), $type, 'side', 'high');
-            add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array($this,'meta_save_box'), $type, 'side', 'high');
-            remove_meta_box( 'submitdiv' , $type , 'normal' );
-    	}
-
-    	add_action('save_post',array( $this, 'item_meta_save' ));
-
+		foreach ( array('anth_project', 'anth_part', 'anth_library_item', 'anth_imported_item') as $type ) {
+			add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array($this,'item_meta_box'), $type, 'side', 'high');
+			add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array($this,'meta_save_box'), $type, 'side', 'high');
+			remove_meta_box( 'submitdiv' , $type , 'normal' );
+		}
+		
+		add_action('save_post',array( $this, 'item_meta_save' ));
+		
 		do_action( 'anthologize_admin_init' );
 	}
 
 	function dashboard_hooks() {
 		global $menu;
-
+		
 		if ( !current_user_can( 'manage_options' ) )
 			return;
-
+		
 		$menu[57] = array(
 			1 => 'read',
 			2 => 'separator-anthologize',
 			4 => 'wp-menu-separator'
 		);
-
+		
 		$plugin_pages = array();
-
+		
 		// Adds the top-level Anthologize Dashboard menu button
 		$this->add_admin_menu_page( array(
 			'menu_title' => __( 'Anthologize', 'anthologize' ),
@@ -54,16 +52,16 @@ class Anthologize_Admin_Main {
 			'function' => array( $this, 'display'),
 			'position' => 56
 		) );
-
+		
 		// Creates the submenu items
 		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','anthologize'), __('My Projects','anthologize'), 'manage_options', 'anthologize', array ( $this, 'display' ) );
-
-        $plugin_pages[] = add_submenu_page( 'anthologize', __('New Project','anthologize'), __('New Project','anthologize'), 'manage_options', dirname( __FILE__ ) . '/class-new-project.php');
-
+		
+		$plugin_pages[] = add_submenu_page( 'anthologize', __('New Project','anthologize'), __('New Project','anthologize'), 'manage_options', dirname( __FILE__ ) . '/class-new-project.php');
+		
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export Project', 'anthologize' ), __( 'Export Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
-
+		
 		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Import Content', 'anthologize' ), __( 'Import Content', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-import-feeds.php' );
-
+		
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts", array( $this, 'load_scripts' ) );
@@ -115,21 +113,21 @@ class Anthologize_Admin_Main {
 	}
 
 	function load_scripts() {
-    	wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
-    	wp_enqueue_script( 'jquery');
-    	wp_enqueue_script( 'jquery-ui-core');
-    	wp_enqueue_script( 'jquery-ui-sortable');
-    	wp_enqueue_script( 'jquery-ui-draggable');
-			wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/anthologize/js/jquery-ui-datepicker.js');
-    	wp_enqueue_script( 'jquery-cookie', WP_PLUGIN_URL . '/anthologize/js/jquery-cookie.js' );
-    	wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
-    	wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
-    	wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
-	}
-
+		wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
+		wp_enqueue_script( 'jquery');
+		wp_enqueue_script( 'jquery-ui-core');
+		wp_enqueue_script( 'jquery-ui-sortable');
+		wp_enqueue_script( 'jquery-ui-draggable');
+		wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/anthologize/js/jquery-ui-datepicker.js');
+		wp_enqueue_script( 'jquery-cookie', WP_PLUGIN_URL . '/anthologize/js/jquery-cookie.js' );
+		wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
+		wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
+		wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
+		}
+		
 	function load_styles() {
-    	wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
-			wp_enqueue_style( 'jquery-ui-datepicker-css', WP_PLUGIN_URL . '/anthologize/css/jquery-ui-1.7.3.custom.css');
+		wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
+		wp_enqueue_style( 'jquery-ui-datepicker-css', WP_PLUGIN_URL . '/anthologize/css/jquery-ui-1.7.3.custom.css');
 	}
 
 	function load_project_organizer( $project_id ) {

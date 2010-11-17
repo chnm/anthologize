@@ -122,11 +122,12 @@ class Anthologize_Loader {
 
 		foreach ( $menu as $mkey => $m ) {
 
-			$key = array_search( 'edit.php?post_type=anth_part', $m );
-			$keyb = array_search( 'edit.php?post_type=anth_library_item', $m );
+			$key = array_search( 'edit.php?post_type=anth_part', $m, true );
+			$keyb = array_search( 'edit.php?post_type=anth_library_item', $m, true );
 
-			if ( $key || $keyb )
+			if ( $key || $keyb ) {
 				unset( $menu[$mkey] );
+			}
 		}
 
 		return $menu_order;
