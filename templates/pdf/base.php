@@ -120,6 +120,11 @@ class AnthologizeTCPDF extends TCPDF {
 				$page = 1;
 			}
 		}
+
+
+		//ADDED
+		$this->Write(0, 'Table of Contents', '', false, 'C', true);
+
 		foreach ($this->outlines as $key => $outline) {
 			if ($this->rtl) {
 				$aligntext = 'R';
@@ -164,6 +169,7 @@ class AnthologizeTCPDF extends TCPDF {
 			$link = $this->AddLink();
 			$this->SetLink($link, 0, $outline['p']);
 			// write the text
+
 			$this->Write(0, $outline['t'], $link, 0, $aligntext, false, 0, false, false, 0);
 			$this->SetFont($numbersfont, $fontstyle, $fontsize);
 			if ($this->empty_string($page)) {
@@ -227,7 +233,7 @@ class AnthologizeTCPDF extends TCPDF {
 //since $page is the page where the TOC is being inserted, subtracting it again from $np gets the printed page
 //numbers to match up with the numbering in the TOC
 
-					$ns = $this->formatTOCPageNumber($np );
+					$ns = $this->formatTOCPageNumber($np - $page );
 					$nu = $ns;
 					$sdiff = strlen($k) - strlen($ns) - 1;
 					$sdiffu = strlen($ku) - strlen($ns) - 1;
@@ -258,6 +264,50 @@ class AnthologizeTCPDF extends TCPDF {
 			for ($i = 0; $i < $numpages; ++$i) {
 				$this->movePage($page_last, $page);
 			}
+		}
+	}
+
+	public function Footer() {
+		$cur_y = $this->GetY();
+		$ormargins = $this->getOriginalMargins();
+		$this->SetTextColor(0, 0, 0);
+		//set style for cell border
+		$line_width = 0.85 / $this->getScaleFactor();
+		$this->SetLineStyle(array('width' => $line_width, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)));
+		//print document barcode
+		$barcode = $this->getBarcode();
+		if (!empty($barcode)) {
+			$this->Ln($line_width);
+			$barcode_width = round(($this->getPageWidth() - $ormargins['left'] - $ormargins['right']) / 3);
+			$style = array(
+				'position' => $this->rtl?'R':'L',
+				'align' => $this->rtl?'R':'L',
+				'stretch' => false,
+				'fitwidth' => true,
+				'cellfitalign' => '',
+				'border' => false,
+				'padding' => 0,
+				'fgcolor' => array(0,0,0),
+				'bgcolor' => false,
+				'text' => false
+			);
+			$this->write1DBarcode($barcode, 'C128B', '', $cur_y + $line_width, '', (($this->getFooterMargin() / 3) - $line_width), 0.3, $style, '');
+		}
+
+		//Anthologize change: remove /totalpages
+		if (empty($this->pagegroups)) {
+			$pagenumtxt = $this->l['w_page'].' '.$this->getAliasNumPage();
+		} else {
+			$pagenumtxt = $this->l['w_page'].' '.$this->getPageNumGroupAlias();
+		}
+		$this->SetY($cur_y);
+		//Print page number
+		if ($this->getRTL()) {
+			$this->SetX($ormargins['right']);
+			$this->Cell(0, 0, $pagenumtxt, 'T', 0, 'L');
+		} else {
+			$this->SetX($ormargins['left']);
+			$this->Cell(0, 0, $pagenumtxt, 'T', 0, 'R');
 		}
 	}
 
