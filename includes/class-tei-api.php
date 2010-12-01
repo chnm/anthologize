@@ -661,6 +661,10 @@ class TeiApi {
 		'asNode'=> true);
 		$data = $this->getNodeDataByParams($params);
 
+		if ($data->childNodes->length == 0) {
+			return false;
+		}
+
 		if($asNode) {
 			return $data;
 		}

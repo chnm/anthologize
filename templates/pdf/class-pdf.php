@@ -260,7 +260,7 @@ $this->pdf->setLanguageArray($lg);
 		return $colophon;
 
 	}
-	
+
 	private function get_dedication(){
 		$dedication_html = '';
 		$dedication = $this->tei->getSectionPartItemContent('front', 0, 0);
@@ -268,10 +268,10 @@ $this->pdf->setLanguageArray($lg);
 			$dedication_html = '<h3>'.$this->tei->getSectionPartItemTitle('front', 0, 0).'</h3>';
 			$dedication_html .= '<div><i>'.$dedication.'</i></div>';
 		}
-		
+
 		return $dedication_html;
 	}
-	
+
 	private function get_acknowledgements(){
 		$acknowledgements_html = '';
 		$acknowledgements = $this->tei->getSectionPartItemContent('front', 0, 1);
@@ -279,8 +279,8 @@ $this->pdf->setLanguageArray($lg);
 			$acknowledgements_html = '<h3>'.$this->tei->getSectionPartItemTitle('front', 0, 1).'</h3>';
 			$acknowledgements_html .= '<div><i>'.$acknowledgements.'</i></div>';
 		}
-		
-		return $acknowledgements_html;		
+
+		return $acknowledgements_html;
 	}
 
 } // TeiPdf
