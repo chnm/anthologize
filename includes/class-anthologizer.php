@@ -5,9 +5,8 @@ abstract class Anthologizer {
 	public $api;
 	public $output;
 
-	public function __construct($api, $ops) {
+	public function __construct($api) {
 		$this->api = $api;
-		$this->ops = $ops;
 		$this->init();
 		$this->appendFront();
 		$this->appendBody();
@@ -79,9 +78,30 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->setPrintHeader(false);
 		$this->output->setPrintFooter(false);
 
+		$this->output->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$this->output->setFooterFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 
-		$this->set_font();
-		$this->set_margins();
+
+		// set default monospaced font
+		$this->output->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+		// set default font subsetting mode
+		$this->output->setFontSubsetting(false);
+
+		$font_family = $this->api->getProjectOutputParams('font-face');
+		$this->baseH = $this->api->getProjectOutputParams('font-size');
+
+		if(strpos($font_family, 'arialunicid0') !== false) {
+			$font_family = 'arialunicid0';
+		}
+
+		$this->output->SetFont($font_family, '', $this->baseH, '', true);
+
+		$this->output->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$this->output->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$this->output->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		$this->set_header(array('logo'=>'med-logo.png', 'logo_width'=>'10'));
+
 		$this->partH = $this->baseH + 4;
 		$this->itemH = $this->baseH + 2;
 
@@ -96,17 +116,29 @@ class PdfAnthologizer extends Anthologizer {
 		//add the front matter
 
 		//title and author
-		$book_author = $this->api->getProjectCreator();
+		$creator = $this->api->getProjectCreator(false, false);
+
 		$book_title = $this->api->getProjectTitle(true);
 		$this->output->SetCreator("Anthologize: A One Week | One Tool Production");
-		$this->output->SetAuthor($book_author);
+		$this->output->SetAuthor($creator);
 		$this->output->SetTitle($book_title);
 
 		//subjects
 
 
 		//append cover
-		$this->appendCoverPage();
+		$this->output->AddPage();
+		$this->frontPages++;
+		$this->output->setFont('', 'B', $this->partH + 6);
+		$this->output->SetY(80);
+		$this->output->Write('', $book_title, '', false, 'C', true );
+		$this->output->setFont('', '', $this->baseH);
+		$this->output->Write('', $creator, '', false, 'C', true );
+		$this->output->SetY(120);
+		$year = substr( $this->api->getProjectPublicationDate(), 0, 4 );
+		$this->output->Write('', $this->api->getProjectCopyright(false, false) . ' -- ' . $year , '', false, 'C', true );
+
+
 
 		//dedication
 		$dedication = $this->api->getSectionPartItemContent('front', 0, 0);
@@ -136,16 +168,13 @@ class PdfAnthologizer extends Anthologizer {
 			$this->output->setFont('', '', $this->baseH);
 			$this->frontPages++;
 		}
-
 	}
 
-	public function appendCoverPage() {
-		//TODO
-	}
 
 	public function appendBody() {
 
 		$this->output->startPageGroup();
+		$this->output->setPrintHeader(true);
 
 		//actually letting appendPart and append Item do the appending
 		//this just fires up the loop through the body parts
@@ -154,30 +183,30 @@ class PdfAnthologizer extends Anthologizer {
 		for($partNo = 0; $partNo <$partsCount; $partNo++) {
 			$this->appendPart('body', $partNo);
 		}
-		$this->output->endPage();
+
 	}
 
 	public function appendBack() {
-		if(isset($this->ops['use-colophon']) && $this->ops['use-colophon']) {
+		if( $this->api->getProjectOutputParams('colophon') == 'on' )  {
 			$this->output->writeHTML('colophon');
 		}
 	}
 
 	public function appendPart($section, $partNo) {
+		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
+		$title = $titleNode->textContent;
 
+		$this->set_header(array('title'=>$title));
 
-		$this->set_header();
-
-		if(isset($this->ops['break-parts']) && $this->ops['break-parts']) {
+		if($partNo == 0) {
+			$this->output->AddPage();
+		} elseif($this->api->getProjectOutputParams('break-parts') == 'on' )  {
 			$this->output->AddPage();
 		}
 
 		//TCPDF seems to add the footer to prev. page if AddPage hasn't been fired
-		$this->set_footer();
+		$this->output->setPrintFooter(true);
 
-
-		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
-		$title = $titleNode->textContent;
 		$this->output->Bookmark($title);
 		//add the header info
 		$this->appendPartHead($section, $partNo);
@@ -186,6 +215,7 @@ class PdfAnthologizer extends Anthologizer {
 		for($itemNo = 0; $itemNo < $itemsCount; $itemNo++) {
 			$this->appendItem($section, $partNo, $itemNo);
 		}
+		$this->output->endPage();
 	}
 
 
@@ -202,12 +232,12 @@ class PdfAnthologizer extends Anthologizer {
 
 	public function appendItem($section, $partNo, $itemNo) {
 		//append the header stuff
-		if(isset($this->ops['break-items']) && $this->ops['break-items'] && $itemNo !== 0 ) {
+		if( $this->api->getProjectOutputParams('break-items') == 'on' && $itemNo !== 0 ) {
 			$this->output->AddPage();
 		}
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
 		$title = $titleNode->textContent;
-
+		$this->set_header(array('string'=>$title));
 		//to get the correct page number (w/o counting front matter)
 
 		$this->output->Bookmark($title, 1);
@@ -241,49 +271,23 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->setPrintHeader(false);
 		$this->output->setPrintFooter(false);
 		$this->output->addTOCPage();
-		$this->output->addTOC($this->frontPages + 1, '', '', 'Table of Contents');
+
+		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
+		$this->output->addTOC($this->frontPages + 1 , '', '', 'Table of Contents');
 		$this->output->endTOCPage();
 	}
 
-	private function set_header() {
-		// set default header data
 
-		$this->output->setPrintHeader(true);
-		$this->output->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$this->output->SetHeaderData('', '', 'Title', 'woot');
-	}
 
-	private function set_footer() {
-		// set header and footer fonts
+	private function set_header($array) {
 
-		$this->output->setPrintFooter(true);
-		$this->output->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-	}
-
-	private function set_font() {
-
-		// set default monospaced font
-		//$this->output->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-		// set default font subsetting mode
-		$this->output->setFontSubsetting(false);
-
-		$font_family = $this->api->getProjectOutputParams('font-face');
-		$this->baseH = $this->api->getProjectOutputParams('font-size');
-
-		//TODO: why would this be a substring?
-		if(strpos($font_family, 'arialunicid0') !== false) {
-			$font_family = 'arialunicid0';
+		$newArray = $this->output->getHeaderData();
+		foreach($array as $prop=>$value) {
+			$newArray[$prop] = $value;
 		}
 
-		$this->output->SetFont($font_family, '', $this->baseH, '', true);
-//		$this->output->SetFont('arialunicid0', '', $this->baseH, '', true);
+		$this->output->setHeaderData($newArray['logo'], $newArray['logo_width'], $newArray['title'], $newArray['string']);
 	}
 
-	private function set_margins() {
-
-		$this->output->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		$this->output->SetHeaderMargin(PDF_MARGIN_HEADER);
-		$this->output->SetFooterMargin(PDF_MARGIN_FOOTER);
-	}
 
 }

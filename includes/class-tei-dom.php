@@ -141,7 +141,7 @@ class TeiDom {
 
 		$outParamsNode = $this->xpath->query("//anth:outputParams")->item(0);
 
-		foreach($this->outputParams as $name=>$value) {
+		foreach($this->projectData['outputParams'] as $name=>$value) {
 			$newParam = $this->dom->createElementNS(ANTH, 'param', $value);
 			$newParam->setAttribute('name', $name);
 			$outParamsNode->appendChild($newParam);
