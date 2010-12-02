@@ -20,6 +20,7 @@ class TeiDom {
 
 	public $dom;
 	public $xpath;
+	public $tidy = false;
 
 	public $bodyNode;
 	public $projectData;
@@ -28,6 +29,10 @@ class TeiDom {
 
 
 	function __construct($sessionArray, $ops = array()) {
+
+		if(class_exists('Tidy')) {
+			$this->tidy = new Tidy();
+		}
 
 		foreach($ops as $op=>$value) {
 			$this->$op = $value;
@@ -579,6 +584,13 @@ class TeiDom {
 		if ($isMultiline) {
 			$content = wpautop($content);
 			$content = $this->sanitizeShortCodes($content);
+			if($this->tidy) {
+				$this->tidy->parseString($content, array(), 'utf8');
+				$this->tidy->cleanRepair();
+				$content =  $this->tidy;
+			}
+
+
 			$element = "div";
 		} else {
 			$element = "span";
