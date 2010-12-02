@@ -30,17 +30,18 @@
 
 
 //error_reporting(0);
-ini_set('max_execution_time', '180');
+//ini_set('max_execution_time', '180');
 ini_set('memory_limit', '128M');
 
 
 include_once(ANTHOLOGIZE_TEIDOM_PATH);
 include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
-
-require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
-require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR . 'class-anthologize-tcpdf.php');
-
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');
+$pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
+require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
+require_once($pdfPath .  'class-anthologize-tcpdf.php');
+require_once($pdfPath . 'class-pdf-anthologizer.php' );
+
 
 
 $ops = array('includeStructuredSubjects' => false, //Include structured data about tags and categories
