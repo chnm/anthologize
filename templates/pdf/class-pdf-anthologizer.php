@@ -127,8 +127,11 @@ class PdfAnthologizer extends Anthologizer {
 	}
 
 	public function appendBack() {
-		if( $this->api->getProjectOutputParams('colophon') == 'on' )  {
-			$this->output->writeHTML('colophon');
+		$this->output->startPageGroup();
+		$this->output->setPrintHeader(true);
+		$partsCount = $this->api->getSectionPartCount('back');
+		for($partNo = 0; $partNo <$partsCount; $partNo++) {
+			$this->appendPart('back', $partNo);
 		}
 	}
 

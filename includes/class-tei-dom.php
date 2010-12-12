@@ -163,6 +163,7 @@ class TeiDom {
 					break;
 
 					case 'letter':
+					case 'Letter':
 						$widthParam->nodeValue = '8.5in';
 						$heightParam->nodeValue = '11in';
 					break;
@@ -251,6 +252,14 @@ class TeiDom {
 	}
 
 	public function addBackMatter() {
+		if($this->projectData['outputParams']['colophon'] && $this->projectData['outputParams']['colophon'] == 'on') {
+			$colophonNode = $this->dom->createElementNS(TEI, 'div');
+			$colophonNode->setAttribute('n', '0');
+			$colophonNode->appendChild($this->newColophon() );
+
+			$this->backNode->appendChild( $colophonNode );
+		}
+
 		$this->doIndexing();
 	}
 	public function sanitizeMedia() {
@@ -322,7 +331,7 @@ class TeiDom {
 		$persName = $this->dom->createElementNS(TEI, 'persName');
 		$name = $this->dom->createElementNS(TEI, 'name');
 		$name->appendChild($this->sanitizeString($wpUserObj->display_name));
-		$firstname = $this->dom->createElementNS(TEI, 'firstname');
+		$firstname = $this->dom->createElementNS(TEI, 'forename');
 		$firstname->appendChild($this->sanitizeString($wpUserObj->first_name));
 		$surname = $this->dom->createElementNS(TEI, 'surname');
 		$surname->appendChild($this->sanitizeString($wpUserObj->last_name));
@@ -341,7 +350,7 @@ class TeiDom {
 		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $wpUserObj->user_email ) ) ) ;
 
 		//building it myself rather using WP's function so I build a node in the right document
-		$grav = $this->dom->createElement('img');
+		$grav = $this->dom->createElementNS(HTML, 'img');
 		$src = $grav->setAttribute('src', $grav_url);
 
 		//adding the nodes to the TEI as I build them because otherwise funky and wrong xmlns:defaults are added
@@ -438,6 +447,17 @@ class TeiDom {
 		return $rs;
 	}
 
+	public function newNote($commentObj) {
+		$note = $this->dom->createElementNS(TEI, 'note');
+		$bibl = $this->dom->createElementNS(TEI, 'bibl');
+		$note->appendChild($bibl);
+		//TODO: figure out commenter data structures
+		$commenterObj = new StdClass();
+		$bibl->appendChild($this->newCommenter($commenterObj));
+		$note->appendChild($this->sanitizeString($commentObj->comment_content, true));
+	}
+
+
 	public function addStructuredSubjects($postID) {
 
 		$subjects = $this->fetchPostSubjects($postID);
@@ -500,9 +520,24 @@ class TeiDom {
 		$newItem->setAttribute('subtype', 'html');
 		$newItem->appendChild($this->newHead($libraryItemObject));
 
+		/*
+		 *
+		 * planning ahead toward revised tei to include comments
+		$div = $this->dom->createElementNS(TEI, 'div');
+		$div->setAttribute('type', 'itemContent');
+		*/
 		$content = $libraryItemObject->post_content;
 
 		$newItem->appendChild($this->sanitizeString($libraryItemObject->post_content, true));
+
+		if($this->includeComments) {
+			$commentsDiv = $this->dom->createElementNS(TEI, 'div');
+			$commentsDiv->setAttribute('type', 'comments');
+			$comments = array(); //for me and boone to figure out
+			foreach($comments as $comment) {
+				$commentsDiv->appendChild($this->newNote($comment));
+			}
+		}
 
 		return $newItem;
 	}
@@ -581,17 +616,23 @@ class TeiDom {
 	public function sanitizeString($content, $isMultiline = false) {
 
 		$content = $this->sanitizeEntities($content);
+
 		if ($isMultiline) {
 			$content = wpautop($content);
 			$content = $this->sanitizeShortCodes($content);
+
 			if($this->tidy) {
 				$this->tidy->parseString($content, array(), 'utf8');
 				$this->tidy->cleanRepair();
-				$content =  $this->tidy;
+
+				//Tidy makes a full html document, with head section, so get just the body
+				//then strip out the body tag
+				$content = tidy_get_body( $this->tidy );
+				$content = rtrim($content, '</body>');
+				$content = ltrim($content, '<body>');
 			}
-
-
 			$element = "div";
+
 		} else {
 			$element = "span";
 		}
@@ -604,7 +645,6 @@ class TeiDom {
 		if($this->checkImgSrcs) {
 			$this->checkImageSources($tmpHTML);
 		}
-
 		$contentDiv = $tmpHTML->getElementsByTagName($element)->item(0);
 		$imported = $this->dom->importNode($contentDiv, true);
 		return $imported;
@@ -687,6 +727,23 @@ class TeiDom {
 			}
 			$index ++;
 		}
+	}
+
+	public function newColophon() {
+		//$colophon = $this->dom->createElementNS(TEI, 'div');
+		//$colophon->setAttribute('type', 'colophon');
+		$day   = date(jS);
+		$month = date(F);
+	 	$year  = date(Y);
+		$date  = "the " . $day . " of " . $month . ", " . $year;
+
+		$logo  = WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif';
+
+		$horace_quote = "Omne tulit punctum qui miscuit utile dulci -- Horace";
+
+		$colophon = "<div style=\"text-align: center;\"><em>This Document was Generated on<br/>" . $date . "<br/>using<br/><br/><a href=\"http://www.anthologize.org/\"><img src=\"" . $logo . "\"\></a></em><br/><br/>" . $horace_quote . "</div>";
+
+		return $this->sanitizeString($colophon, true);
 	}
 
 	public function doIndexing() {
