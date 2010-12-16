@@ -4,6 +4,8 @@ class PdfAnthologizer extends Anthologizer {
 
 	public $partH = '16';
 	public $itemH = '12';
+	public $headerLogo = 'med-logo.png'; //TCPDF looks for this in /tcpdf/images
+	public $headerLogoWidth = '10';
 	public $tidy = false;
 
 	public function init() {
@@ -46,7 +48,7 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$this->output->SetFooterMargin(PDF_MARGIN_FOOTER);
 
-		$this->set_header(array('logo'=>'med-logo.png', 'logo_width'=>'10'));
+		$this->set_header(array('logo'=>$this->headerLogo, 'logo_width'=>$this->headerLogoWidth));
 
 		$this->partH = $this->baseH + 4;
 		$this->itemH = $this->baseH + 2;
