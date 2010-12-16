@@ -36,7 +36,7 @@
           <xsl:value-of
             select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident"
           />
-        </dc:identifier>
+        </dc:identifier>        
       </metadata>
       <!--  
         Each item in the manifest describes a document, an image file, a style sheet, 

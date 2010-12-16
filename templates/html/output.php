@@ -8,6 +8,7 @@ global $api;
 //TODO: simplify and condense these options
 
 $ops = array('includeStructuredSubjects' => true, //Include structured data about tags and categories
+		'includeComments' => false,
 		'includeItemSubjects' => true, // Include basic data about tags and categories
 		'includeCreatorData' => true, // Include basic data about creators
 		'includeStructuredCreatorData' => true, //include structured data about creators

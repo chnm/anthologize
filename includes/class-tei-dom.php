@@ -253,11 +253,7 @@ class TeiDom {
 
 	public function addBackMatter() {
 		if($this->projectData['outputParams']['colophon'] && $this->projectData['outputParams']['colophon'] == 'on') {
-			$colophonNode = $this->dom->createElementNS(TEI, 'div');
-			$colophonNode->setAttribute('n', '0');
-			$colophonNode->appendChild($this->newColophon() );
-
-			$this->backNode->appendChild( $colophonNode );
+			$this->backNode->appendChild( $this->newColophon() );
 		}
 
 		$this->doIndexing();
@@ -636,7 +632,7 @@ class TeiDom {
 		} else {
 			$element = "span";
 		}
-
+		$content = trim($content);
 		//using loadHTML because it is more forgiving than loadXML
 		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
 		//conceal the Warning about bad html with @
@@ -730,8 +726,11 @@ class TeiDom {
 	}
 
 	public function newColophon() {
-		//$colophon = $this->dom->createElementNS(TEI, 'div');
-		//$colophon->setAttribute('type', 'colophon');
+
+		$colophonNode = $this->dom->createElementNS(TEI, 'div');
+		$colophonNode->setAttribute('n', '0');
+		$colophonNode->setAttribute('type', 'colophon');
+
 		$day   = date(jS);
 		$month = date(F);
 	 	$year  = date(Y);
@@ -743,7 +742,8 @@ class TeiDom {
 
 		$colophon = "<div style=\"text-align: center;\"><em>This Document was Generated on<br/>" . $date . "<br/>using<br/><br/><a href=\"http://www.anthologize.org/\"><img src=\"" . $logo . "\"\></a></em><br/><br/>" . $horace_quote . "</div>";
 
-		return $this->sanitizeString($colophon, true);
+		$colophonNode->appendChild( $this->sanitizeString($colophon, true) );
+		return $colophonNode;
 	}
 
 	public function doIndexing() {

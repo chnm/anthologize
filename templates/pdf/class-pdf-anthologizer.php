@@ -84,7 +84,6 @@ class PdfAnthologizer extends Anthologizer {
 
 		//dedication
 		$dedication = $this->api->getSectionPartItemContent('front', 0, 0);
-
 		if ($dedication){
 			$this->output->AddPage();
 			$this->output->setFont('', 'B', $this->partH);
@@ -129,8 +128,10 @@ class PdfAnthologizer extends Anthologizer {
 	public function appendBack() {
 		$this->output->startPageGroup();
 		$this->output->setPrintHeader(true);
-		$partsCount = $this->api->getSectionPartCount('back');
-		for($partNo = 0; $partNo <$partsCount; $partNo++) {
+		$partsCount = $this->api->getSectionPartItemCount('back');
+		//echo $partsCount;
+		//die();
+		for($partNo = 0; $partNo < $partsCount; $partNo++) {
 			$this->appendPart('back', $partNo);
 		}
 	}
@@ -149,12 +150,14 @@ class PdfAnthologizer extends Anthologizer {
 
 		//TCPDF seems to add the footer to prev. page if AddPage hasn't been fired
 		$this->output->setPrintFooter(true);
+		if($section == 'body') {
+			$this->output->Bookmark($title);
+		}
 
-		$this->output->Bookmark($title);
 		//add the header info
 		$this->appendPartHead($section, $partNo);
 		//loop the items and append
-		$itemsCount = $this->api->getSectionPartItemCount('body', $partNo);
+		$itemsCount = $this->api->getSectionPartItemCount($section, $partNo);
 		for($itemNo = 0; $itemNo < $itemsCount; $itemNo++) {
 			$this->appendItem($section, $partNo, $itemNo);
 		}
@@ -179,15 +182,18 @@ class PdfAnthologizer extends Anthologizer {
 		$title = $titleNode->textContent;
 		$this->set_header(array('string'=>$title));
 
-		if( $this->api->getProjectOutputParams('break-items') == 'on'  ) {
+		if( ($this->api->getProjectOutputParams('break-items') == 'on') && $itemNo != 0   ) {
 			$this->output->AddPage();
 		}
 
-		$this->output->Bookmark($title, 1);
+		if($section == 'body') {
+			$this->output->Bookmark($title, 1);
+		}
+
 		$this->appendItemHead($section, $partNo, $itemNo);
 
 		//append the item content
-		$content = $this->writeItemContent('body', $partNo, $itemNo);
+		$content = $this->writeItemContent($section, $partNo, $itemNo);
 		$this->output->writeHTML($content, true, false, true);
 
 	}

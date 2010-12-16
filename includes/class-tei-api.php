@@ -464,7 +464,7 @@ class TeiApi {
 	 * @return int
 	 */
 
-	public function getSectionPartItemCount($section, $partNumber) {
+	public function getSectionPartItemCount($section, $partNumber = null) {
 		switch($section) {
 			case 'front':
 				$count = $this->xpath->evaluate("count(//tei:$section/tei:div)");
@@ -475,7 +475,7 @@ class TeiApi {
 			break;
 
 			case 'back':
-
+				$count = $this->xpath->evaluate("count(//tei:$section/tei:div)");
 			break;
 
 		}
