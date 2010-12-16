@@ -66,7 +66,6 @@ $tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
 
 
-
 //$start = time();
 
 $pdfer = new PdfAnthologizer($api);

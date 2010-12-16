@@ -209,12 +209,6 @@ class PdfAnthologizer extends Anthologizer {
 
 	}
 
-	public function output() {
-		header('Content-type: application/pdf');
-		$filename = $this->api->getFileName() . ".pdf";
-		$this->output->Output($filename, 'I');
-	}
-
 	public function finish() {
 		//add TOC
 		$this->output->setPrintHeader(false);
@@ -226,6 +220,11 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->endTOCPage();
 	}
 
+
+	public function output() {
+		$filename = $this->api->getFileName() . ".pdf";
+		$this->output->Output($filename, 'D');
+	}
 
 
 	private function set_header($array) {
