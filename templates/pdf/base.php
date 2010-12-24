@@ -30,8 +30,16 @@
 
 
 //error_reporting(0);
-ini_set('max_execution_time', '180');
-ini_set('memory_limit', '128M');
+
+// altering the execution time and memory limit might help if you are encountering blank white screens
+// however, server settings and permissions might not allow this, and if you use a shared hosting
+// service they might get mad at you
+// Override the default PHP settings at your own risk.
+//
+// The settings available will vary from server to server. Please consult your hosting company for more information.
+
+//ini_set('max_execution_time', '180');
+//ini_set('memory_limit', '128M');
 
 
 include_once(ANTHOLOGIZE_TEIDOM_PATH);
@@ -39,7 +47,7 @@ include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');
 $pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
 require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
-require_once($pdfPath .  'class-anthologize-tcpdf.php');
+require_once($pdfPath .  'class-anthologize-tcpdf.php'); //overrides some methods in TCPDF
 require_once($pdfPath . 'class-pdf-anthologizer.php' );
 
 
@@ -58,21 +66,9 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		'indexImages' => false,
 		);
 
-
-
 $tei = new TeiDom($_SESSION, $ops);
-//echo $tei->getTeiString();
-//die();
 $api = new TeiApi($tei);
-
-
-//$start = time();
-
 $pdfer = new PdfAnthologizer($api);
 $pdfer->output();
-
-//$end = time();
-//echo $end-$start;
-
 
 ?>

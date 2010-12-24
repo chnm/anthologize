@@ -11,6 +11,7 @@ class PdfAnthologizer extends Anthologizer {
 	public function init() {
 		$page_size = $this->api->getProjectOutputParams('page-size');
 
+		//keep track of how many pages in front so the TOC can be inserted in proper position in finish()
 		$this->frontPages = 0;
 		$this->output = new AnthologizeTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $page_size, true, 'UTF-8', false);
 		$lg = array();
