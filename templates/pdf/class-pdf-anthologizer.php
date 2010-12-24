@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * class PdfAnthologizer
+ * @package Anthologize
+ * @subpackage PDF-Template
+ *
+ * Produces PDF from Anthologize TEI
+ *
+ */
+
 class PdfAnthologizer extends Anthologizer {
 
 	public $partH = '16';
@@ -229,14 +238,15 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->Output($filename, 'D');
 	}
 
+	protected function set_header($array) {
 
-	private function set_header($array) {
-
+		//get the current data. . .
 		$newArray = $this->output->getHeaderData();
+		//. . . and override with whatever is in the param . . .
 		foreach($array as $prop=>$value) {
 			$newArray[$prop] = $value;
 		}
-
+		//. . . and set it back in the TCPDF
 		$this->output->setHeaderData($newArray['logo'], $newArray['logo_width'], $newArray['title'], $newArray['string']);
 	}
 
