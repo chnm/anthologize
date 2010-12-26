@@ -3,7 +3,13 @@
 // This plugin file contains miscellaneous Anthologize functions that are needed in the global scope. Todo: Clean up.
 
 function anthologize_save_project_meta() {
-	$project_id = $_POST['project_id'];
+	if ( !empty( $_POST['project_id'] ) )
+		$project_id = $_POST['project_id'];
+	else if ( !empty( $_GET['project_id'] ) )
+		$project_id = $_GET['project_id'];
+	else
+		return;
+	
 	$project_meta = get_post_meta( $project_id, 'anthologize_meta', true );
 
 	foreach( $_POST as $key => $value ) {
@@ -14,7 +20,7 @@ function anthologize_save_project_meta() {
 		$project_meta[$key] = $value;
 	}
 
-	update_post_meta( $_POST['project_id'], 'anthologize_meta', $project_meta );
+	update_post_meta( $project_id, 'anthologize_meta', $project_meta );
 }
 
 function anthologize_get_project_parts($projectId) {

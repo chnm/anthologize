@@ -38,28 +38,23 @@ class Anthologize_Export_Panel {
 
 		$options = get_post_meta( $project_id, 'anthologize_meta', true );
 
-		if ( !$cdate = $options['cdate'] )
-			$cdate = date('Y');
+		$cdate = !empty( $options['cdate'] ) ? $options['cdate'] : date('Y');
 
-		if ( !$cname = $options['cname'] )
-			$cname = $options['author_name'];
+		$cname = !empty( $options['cname'] ) ? $options['cname'] : $options['author_name'];
 
 		// Default is Creative Commons
-		if ( !$ctype = $options['ctype'] )
-			$ctype = 'cc';
-
-		if ( !$cctype = $options['cctype'] )
-			$cctype = 'by';
+		$ctype = !empty( $options['ctype'] ) ? $options['ctype'] : 'cc';
+		
+		$cctype = !empty( $options['cctype'] ) ? $options['cctype'] : 'by';
 
 		// No default for edition number
 		$edition = $options['edition'];
 
-		if ( !$authors = $options['authors'] )
-			$authors = $options['author_name'];
+	 	$authors = !empty( $options['authors'] ) ? $options['authors'] : $options['author_name'];
+	 	
+		$dedication = !empty( $options['dedication'] ) ? $options['dedication'] : '';
 
-		$dedication = $options['dedication'];
-
-		$acknowledgements = $options['acknowledgements'];
+		$acknowledgements = !empty( $options['acknowledgements'] ) ? $options['acknowledgements'] : '';
 
 		?>
 		<div class="wrap anthologize">
@@ -238,9 +233,10 @@ class Anthologize_Export_Panel {
 		
 		// outputParams need to be reset at step 3 so that
 		// on a refresh null values will overwrite
-		if ( $_POST['export-step'] == '3' )
+		if ( $_POST['export-step'] == '3' ) {
 			$_SESSION['outputParams'] = array( 'format' => $_SESSION['outputParams']['filetype'] );
-				
+		}		
+		
 		
 		foreach ( $_POST as $key => $value ) {
 			if ( $key == 'submit' || $key == 'export-step' )

@@ -13,8 +13,9 @@ class Anthologize_Project_Organizer {
 		$this->project_id = $project_id;
 
 		$project = get_post( $project_id );
-	
-		$this->project_name = $project->post_title;
+		
+		if ( !empty( $project->post_title ) )
+			$this->project_name = $project->post_title;
 
 	}
 
@@ -152,8 +153,7 @@ class Anthologize_Project_Organizer {
 			'date' => __( 'Date Range', 'anthologize' ),
 			'post_type' => __( 'Post Type', 'anthologize' )
 		);
-		if ( isset( $_COOKIE['anth-filter'] ) )
-			$cfilter = $_COOKIE['anth-filter'];
+		$cfilter = isset( $_COOKIE['anth-filter'] ) ? $_COOKIE['anth-filter'] : '';
 		?>
             <span><?php _e( 'Filter by', 'anthologize' ) ?></span>
 			<select name="sortby" id="sortby-dropdown">
@@ -521,8 +521,7 @@ class Anthologize_Project_Organizer {
 
 	function get_part_items( $part_id ) {
 
-		if ( isset( $_GET['append_parent'] ) )
-			$append_parent = $_GET['append_parent'];
+		$append_parent = !empty( $_GET['append_parent'] ) ? $_GET['append_parent'] : false;
 
 		$items = get_post_meta( $part_id, 'items', true );
 

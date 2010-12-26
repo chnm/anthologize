@@ -15,25 +15,23 @@ class Anthologize_New_Project {
 
 	function save_project () {
 
-        $post_data = array(
-            'post_title' => 'Default Title',
-            'post_type' => 'anth_project',
-            'post_status' => '',
-            'post_date' => date( "Y-m-d G:H:i" ),
-            'post_date_gmt' => gmdate( "Y-m-d G:H:i" ),
-        );
-
-        if (!empty($_POST['post_title']))
-            $post_data['post_title'] = $_POST['post_title'];
-
-        if (!empty($_POST['post_status']))
-            $post_data['post_status'] = $_POST['post_status'];
-
-       // print_r($_POST); die();
-
-        // If we're editing an existing project.
-        if ( !empty($_POST['project_id'])) {
-			
+		$post_data = array(
+		    'post_title' => 'Default Title',
+		    'post_type' => 'anth_project',
+		    'post_status' => '',
+		    'post_date' => date( "Y-m-d G:H:i" ),
+		    'post_date_gmt' => gmdate( "Y-m-d G:H:i" ),
+		);
+		
+		if (!empty($_POST['post_title']))
+		    $post_data['post_title'] = $_POST['post_title'];
+		
+		if (!empty($_POST['post_status']))
+		    $post_data['post_status'] = $_POST['post_status'];
+		
+		// If we're editing an existing project.
+		if ( !empty($_POST['project_id'])) {
+				
 			if ( !$new_anthologize_meta = get_post_meta( 'anthologize_meta' ) ) {
 				$new_anthologize_meta = $_POST['anthologize_meta'];
 			} else {
@@ -41,25 +39,26 @@ class Anthologize_New_Project {
 					$new_anthologize_meta[$key] = $value;
 				}
 			}
-
-        	$the_project = get_post( $_POST['project_id'] );
+			
+			$the_project = get_post( $_POST['project_id'] );
 			if ( !empty ($_POST['post_status']) && ($the_project->post_status != $_POST['post_status'] ))
 				$this->change_project_status( $_POST['project_id'], $_POST['post_status'] );
-
-            $post_data['ID'] = $_POST['project_id'];
-		    wp_update_post($post_data);
-
-		    if ( is_null($new_anthologize_meta) ) {
-		        delete_post_meta( $post_data['ID'] ,'anthologize_meta' );
-		    } else {
+			
+			$post_data['ID'] = $_POST['project_id'];
+			wp_update_post($post_data);
+			
+			if ( is_null($new_anthologize_meta) ) {
+				delete_post_meta( $post_data['ID'] ,'anthologize_meta' );
+			} else {
 				update_post_meta( $post_data['ID'], 'anthologize_meta', $new_anthologize_meta );
-		    }
-
+			}
+		
 		} else { // Otherwise, we're creating a new project
-
-            $new_post = wp_insert_post($post_data);
-            update_post_meta($new_post, 'anthologize_meta', $new_anthologize_meta );
-
+		
+			$new_post = wp_insert_post($post_data);
+			// Nothing to save if we are creating a new project
+			//update_post_meta($new_post, 'anthologize_meta', $new_anthologize_meta );
+		
 		}
 
 		wp_redirect( get_admin_url() . 'admin.php?page=anthologize&project_saved=1' );

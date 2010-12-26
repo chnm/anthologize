@@ -37,8 +37,10 @@ class Anthologize_Admin_Main {
 			return;
 		
 		$menu[57] = array(
+			0 => '',
 			1 => 'read',
 			2 => 'separator-anthologize',
+			3 => '',
 			4 => 'wp-menu-separator'
 		);
 		
@@ -66,7 +68,6 @@ class Anthologize_Admin_Main {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts", array( $this, 'load_scripts' ) );
 		}
-
 
 	}
 
@@ -248,7 +249,7 @@ class Anthologize_Admin_Main {
 		<?php
 
 
-		if ( $_GET['action'] == 'edit' && !isset( $_GET['project_id'] ) || isset( $_GET['project_id'] ) && !$project ) {
+		if ( !empty( $_GET['action'] ) && $_GET['action'] == 'edit' && !isset( $_GET['project_id'] ) || isset( $_GET['project_id'] ) && !$project ) {
 			$this->display_no_project_id_message();
 		}
 
@@ -411,16 +412,18 @@ class Anthologize_Admin_Main {
      * custom post metadata. Also responsible for correctly
      * redirecting to Anthologize pages after saving.
      **/
-    function item_meta_save($post_id)
-    {
-        // make sure data came from our meta box
-        if ( !wp_verify_nonce($_POST['anthologize_noncename'],__FILE__) ) return $post_id;
+    function item_meta_save($post_id) {
+    	    		
+        // make sure data came from our meta box. Only save when nonce is present
+        if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
+        	return $post_id;
 
         // check user permissions
-        if ( !current_user_can('edit_post', $post_id) ) return $post_id;
+        if ( !current_user_can('edit_post', $post_id) ) 
+        	return $post_id;
 
-		if ( !$item_id = $_POST['item_id'] )
-			return false;
+	if ( empty( $_POST['item_id'] ) && !$item_id = $_POST['item_id'] )
+		return false;
 
         if ( !$new_data = $_POST['anthologize_meta'] )
         	$new_data = array();
