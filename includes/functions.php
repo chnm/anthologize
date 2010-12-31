@@ -9,11 +9,11 @@ function anthologize_save_project_meta() {
 		$project_id = $_GET['project_id'];
 	else
 		return;
-	
+
 	$project_meta = get_post_meta( $project_id, 'anthologize_meta', true );
 
 	foreach( $_POST as $key => $value ) {
-	
+
 		if ( $key == 'project_id' || $key == 'submit' )
 			continue;
 

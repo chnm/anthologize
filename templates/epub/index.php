@@ -103,8 +103,8 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
   // Create directories in temp directory
 
-  mkdir($temp_epub_meta_inf_dir, 0777, true);
-  mkdir($temp_epub_oebps_dir,    0777, true);
+  @mkdir($temp_epub_meta_inf_dir, 0777, true);
+  @mkdir($temp_epub_oebps_dir,    0777, true);
 
   if (! file_exists($temp_epub_images_dir))
   {
@@ -139,10 +139,12 @@ $ops['outputParams'] = $_SESSION['outputParams'];
   $tei_data = new TeiDom($_SESSION, $ops);
 
 
-localizeLinks($tei_data, 'wp.nmc.org/horizon2010');
+  localizeLinks($tei_data);
 
 
   $teiDom = $tei_data->getTeiDom();
+
+
 
   // Get all images referenced in intermediate TEI file & copy over to image directory
   // DOM Query using xpath: http://www.exforsys.com/tutorials/php-oracle/querying-a-dom-document-with-xpath.html
@@ -354,5 +356,30 @@ localizeLinks($tei_data, 'wp.nmc.org/horizon2010');
     rmdir($dir);
   }
 
+
+  function localizeLinks($tei)
+  {
+
+	$test = substr(get_bloginfo('url'),7);
+  	$links = $tei->xpath->query("//a[contains(@href, '$test' )]");
+  	foreach($links as $link) {
+  		$guid = $link->getAttribute('href');
+
+  		$targetGuidNL = $tei->xpath->query("//tei:ident[ . = '$guid']");
+
+  		if($targetGuidNL->length == 0 ) {
+  			//I hate the problem of links and trailing slashes
+  			$targetGuidNL = $tei->xpath->query("//tei:ident[ . = '$guid/']");
+  		}
+
+		if($targetGuidNL->length != 0) {
+
+			$item = $tei->getParentItem($targetGuidNL->item(0));
+  			$link->setAttribute('href', '#' .$tei->getId($item));
+
+		}
+  	}
+  	return $tei;
+  }
 
 ?>

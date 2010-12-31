@@ -209,7 +209,19 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->writeHTML($content, true, false, true);
 
 	}
+/*
+	protected function writeItemContent($section, $partNo, $itemNo) {
+		$content = parent::writeItemContent($section, $partNo, $itemNo);
 
+		//when the TEI gets here, & has become &amp; in img@src, so this is a not-so-subtle-or-elegant fix
+		if(strpos($content, "&amp;") !== false) {
+			$content = htmlspecialchars_decode($content);
+			echo $content;
+			//$content = str_replace("&amp;", "&", $content);
+		}
+		return $content;
+	}
+*/
 	public function appendItemHead($section, $partNo, $itemNo) {
 		//write the head, avoiding HTML for optimization
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);

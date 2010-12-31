@@ -29,7 +29,8 @@ class TeiDom {
 
 
 	function __construct($sessionArray, $ops = array()) {
-
+		//the anthologize filter echos content, which clobbers exports
+		remove_filter('the_content', 'anthologize_filter_post_content');
 		if(class_exists('Tidy')) {
 			$this->tidy = new Tidy();
 		}
@@ -81,7 +82,8 @@ class TeiDom {
 
 		$this->sanitizeMedia();
 		$this->addBackMatter();
-
+		//all done filtering, so add anthologize filter back in
+		add_filter('the_content', 'anthologize_filter_post_content');
 	}
 	public function setXPath() {
 		$this->xpath = new DOMXPath($this->dom);
@@ -511,6 +513,7 @@ class TeiDom {
 	}
 
 	public function newItem($libraryItemObject) {
+
 		$newItem = $this->dom->createElementNS(TEI, 'div');
 		$newItem->setAttribute('type', 'libraryItem');
 		$newItem->setAttribute('subtype', 'html');
@@ -522,9 +525,18 @@ class TeiDom {
 		$div = $this->dom->createElementNS(TEI, 'div');
 		$div->setAttribute('type', 'itemContent');
 		*/
-		$content = $libraryItemObject->post_content;
 
-		$newItem->appendChild($this->sanitizeString($libraryItemObject->post_content, true));
+		$content = $libraryItemObject->post_content;
+//echo $content;
+//global $wp_filter;
+//print_r($wp_filter['the_content']);
+//die();
+
+$content = apply_filters('the_content', $content);
+//echo $content;
+//die();
+		$contentImport = $this->sanitizeString($content, true);
+		$newItem->appendChild($contentImport);
 
 		if($this->includeComments) {
 			$commentsDiv = $this->dom->createElementNS(TEI, 'div');
@@ -633,6 +645,7 @@ class TeiDom {
 			$element = "span";
 		}
 		$content = trim($content);
+
 		//using loadHTML because it is more forgiving than loadXML
 		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
 		//conceal the Warning about bad html with @
@@ -649,9 +662,10 @@ class TeiDom {
 
 	public function sanitizeShortCodes($content) {
 
-		$content = do_shortcode($content);
 		if($this->doShortcodes) {
+			$content = do_shortcode($content);
 		    $pattern = get_shortcode_regex();
+
 			return preg_replace_callback('/'.$pattern.'/s', array('TeiDom', 'sanitizeShortCode'), $content);
 		} else {
 			return strip_shortcodes($content);
@@ -683,8 +697,8 @@ class TeiDom {
 		//TODO: improve pseudo-error message and feedback
 		$xpath = new DOMXPath($tmpHTML);
 		$srcs = $xpath->evaluate("//img/@src");
-
 		foreach($srcs as $srcNode) {
+
 			$imgNode = $srcNode->parentNode;
 			$src = $srcNode->nodeValue;
 			$ch = curl_init();
@@ -693,7 +707,6 @@ class TeiDom {
 			curl_exec($ch);
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
-
 			if($code != 200) {
 				$noImgSpan = $tmpHTML->createElement('span', 'Image not found');
 				$noImgSpan->setAttribute('class', 'anthologize-error');

@@ -18,7 +18,7 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'indexSubjects' => false,
 		'indexCategories' => false,
 		'indexTags' => false,
-		'indexPeople' => true,
+		'indexPeople' => false,
 		'indexImages' => false,
 		);
 

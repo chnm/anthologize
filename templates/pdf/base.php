@@ -66,7 +66,9 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		'indexImages' => false,
 		);
 
+
 $tei = new TeiDom($_SESSION, $ops);
+
 $api = new TeiApi($tei);
 $pdfer = new PdfAnthologizer($api);
 $pdfer->output();
