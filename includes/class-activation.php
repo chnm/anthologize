@@ -13,20 +13,30 @@ class Anthologize_Activation {
 		if ( !$this->settings = get_option( 'anthologize_settings' ) )
 			$this->settings = array();
 
-		$version = ( isset( $this->settings['version'] ) ) ? $this->settings['version'] : '0.3';			
+		$version = ( isset( $this->settings['version'] ) ) ? $this->settings['version'] : '0.3';
+
+		//create temp directory for epub output
+		//added version 0.5.1 by PMJ
+		$tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
+								. DIRECTORY_SEPARATOR . 'templates'
+								. DIRECTORY_SEPARATOR . 'epub'
+								. DIRECTORY_SEPARATOR . 'temp';
+		if(! is_dir($tempDir)) {
+			mkdir($tempDir);
+		}
 
 		// Fixes for those coming from v0.3
 		if ( $version < '0.4' ) {
 			$this->namespace_post_types();
 			$this->unpublish_content();
 		}
-		
+
 		// Fixes for those coming from v0.4
 		if ( $version < '0.5' ) {
 			$this->unpublish_imported_content();
 			$this->flush_cookies();
 		}
-		
+
 		$this->default_settings(); // Settings should be updated last, so that we can take advantage of old version info
 	}
 
@@ -87,7 +97,7 @@ class Anthologize_Activation {
 			unset( $posts );
 		}
 	}
-	
+
 	// Unpublishes imported content which was published by default
 	// in original release and v0.4.
 	function unpublish_imported_content() {
@@ -102,17 +112,17 @@ class Anthologize_Activation {
 			wp_update_post( $update_post );
 		}
 	}
-	
+
 	// Flushes post filter cookies
 	function flush_cookies() {
 		setcookie('anth-term', '', time() - 60, '/', '', 0);
 		setcookie('anth-filter', '', time() - 60, '/', '', 0);
 	}
-	
+
 
 	function default_settings() {
 		$this->settings['version'] = ANTHOLOGIZE_VERSION;
-		
+
 		update_option( 'anthologize_settings', $this->settings );
 	}
 }
