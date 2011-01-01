@@ -527,14 +527,7 @@ class TeiDom {
 		*/
 
 		$content = $libraryItemObject->post_content;
-//echo $content;
-//global $wp_filter;
-//print_r($wp_filter['the_content']);
-//die();
 
-$content = apply_filters('the_content', $content);
-//echo $content;
-//die();
 		$contentImport = $this->sanitizeString($content, true);
 		$newItem->appendChild($contentImport);
 
@@ -625,10 +618,13 @@ $content = apply_filters('the_content', $content);
 
 		$content = $this->sanitizeEntities($content);
 
-		if ($isMultiline) {
-			$content = wpautop($content);
-			$content = $this->sanitizeShortCodes($content);
 
+
+		if ($isMultiline) {
+			//TODO: check if this is redundant now that I'm using apply_filters()'
+			//$content = wpautop($content);
+			//$content = $this->sanitizeShortCodes($content);
+			$content = apply_filters('the_content', $content);
 			if($this->tidy) {
 				$this->tidy->parseString($content, array(), 'utf8');
 				$this->tidy->cleanRepair();

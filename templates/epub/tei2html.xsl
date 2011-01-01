@@ -59,7 +59,7 @@
             }
             #publication-statement-page 
             { 
-              page-break-after: always; padding-top: 10em; text-align: center
+              page-break-after: always; padding-top: 10em; 
             }
             .anthologize-chapter-title 
             { 
