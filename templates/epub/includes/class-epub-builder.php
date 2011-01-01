@@ -109,6 +109,17 @@ class EpubBuilder {
 	}
 
 	public function createDirs() {
+
+		//double check that temp exists (mostly for direct git pulls -- should be okay for new installs/activations)
+		$tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
+								. DIRECTORY_SEPARATOR . 'templates'
+								. DIRECTORY_SEPARATOR . 'epub'
+								. DIRECTORY_SEPARATOR . 'temp';
+		if(! is_dir($tempDir)) {
+			mkdir($tempDir);
+		}
+
+
 //TODO: make tempDir figure out the correct plugin dir
 		$this->tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
 										. DIRECTORY_SEPARATOR . 'templates'
