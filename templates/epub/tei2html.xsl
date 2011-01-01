@@ -176,6 +176,9 @@
         <xsl:for-each select="$blog.posts">
           <div class="chapter" id="epub-chapter-{position()}">
             <h2 class="anthologize-chapter-title">
+                <xsl:element name="a">
+                  <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
+                </xsl:element>            	
               <xsl:value-of select="tei:head/tei:title"/>
             </h2>
             <div class="chapter-content">

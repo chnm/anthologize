@@ -290,6 +290,20 @@ class Anthologize_Loader {
 
 		anthologize_register_format_option( 'epub', 'font-family', __( 'Font Family', 'anthologize' ), 'dropdown', $d_font_face_epub, 'Times New Roman' );
 
+		//build the covers list for selection
+		$coversArray = array();
+		//scan the covers directory and return the array
+		$filesArray = scandir(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' .
+			 DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'covers');
+		foreach($filesArray as $file) {
+			if(! is_dir($file)) {
+				$coversArray[$file] = $file;
+			}
+		}
+
+		anthologize_register_format_option( 'epub', 'cover', __( 'Cover Image', 'anthologize' ), 'dropdown', $coversArray);
+
+
 		anthologize_register_format_option( 'epub', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
 
 		// Register HTML
