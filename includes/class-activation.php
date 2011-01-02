@@ -17,10 +17,11 @@ class Anthologize_Activation {
 
 		//create temp directory for epub output
 		//added version 0.5.1 by PMJ
-		$tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
+		$epubDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
 								. DIRECTORY_SEPARATOR . 'templates'
-								. DIRECTORY_SEPARATOR . 'epub'
-								. DIRECTORY_SEPARATOR . 'temp';
+								. DIRECTORY_SEPARATOR . 'epub';
+		$tempDir = $epubDir . DIRECTORY_SEPARATOR . 'temp';
+
 		if(! is_dir($tempDir)) {
 			mkdir($tempDir);
 		}
