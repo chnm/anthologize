@@ -21,9 +21,8 @@ The best way to install Anthologize is via the Add New link under Dashboard > Pl
 To install Anthologize manually, follow these steps.
 
 1. Upload the `anthologize` directory to `/wp-content/plugins/`
-1. Make the `/anthologize/templates/epub/` folder writable by the server
+1. Make sure the `/anthologize/templates/epub/temp/` directory is writable by the server
 1. Activate Anthologize through the WordPres 'Plugins' menu
-1. Remove write access from the `/anthologize/templates/epub/` directory
 1. Visit Dashboard > Anthologize to start compiling your project
 
 If you're upgrading manually from a previous version of Anthologize, please be sure to deactivate your existing plugin before replacing it with the new files, and reactivate after uploading.
@@ -58,7 +57,7 @@ To add your own cover images, just upload them to the anthologize/templates/cove
 * added anthologize logo and part-item breadcrumbs to PDF output
 * partially OOified epub export
 * added part-item nesting to epub ToC
-* added cover image option to epub output (might not work in all readers)
+* added cover image option to epub output (might not work in all readers. standards-schmandards)
 
 
 = 0.5-alpha =
