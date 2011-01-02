@@ -29,6 +29,7 @@ class TeiDom {
 
 
 	function __construct($sessionArray, $ops = array()) {
+		@apply_filters('init');
 		//the anthologize filter echos content, which clobbers exports
 		remove_filter('the_content', 'anthologize_filter_post_content');
 		if(class_exists('Tidy')) {
@@ -621,6 +622,7 @@ class TeiDom {
 			//TODO: check if this is redundant now that I'm using apply_filters()'
 			//$content = wpautop($content);
 			//$content = $this->sanitizeShortCodes($content);
+
 			$content = apply_filters('the_content', $content);
 			if($this->tidy) {
 				$this->tidy->parseString($content, array(), 'utf8');
@@ -734,6 +736,7 @@ class TeiDom {
 	public function newColophon() {
 
 		$colophonNode = $this->dom->createElementNS(TEI, 'div');
+		$colophonNode->setAttribute('xml:id', 'colophon');
 		$colophonNode->setAttribute('n', '0');
 		$colophonNode->setAttribute('type', 'colophon');
 

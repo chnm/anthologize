@@ -75,6 +75,11 @@
               margin-bottom: 2em;
             }
             
+						div.back 
+						{
+						  page-break-before: always;
+						}
+						
             /* Wordpress styles */
             
             .alignright { float: right }
@@ -203,6 +208,8 @@
             </div>
           </div>
         </xsl:for-each>
+				
+					
       </body>
     </html>
   </xsl:template>

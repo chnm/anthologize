@@ -303,8 +303,8 @@ class Anthologize_Loader {
 
 		anthologize_register_format_option( 'epub', 'cover', __( 'Cover Image', 'anthologize' ), 'dropdown', $coversArray);
 
-
-		anthologize_register_format_option( 'epub', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
+		//epub colophon commented out until we get the XSLTs working for it
+		//anthologize_register_format_option( 'epub', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
 
 		// Register HTML
 

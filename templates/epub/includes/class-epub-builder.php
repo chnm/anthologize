@@ -397,12 +397,12 @@ class EpubBuilder {
 	  	foreach($links as $link) {
 	  		$guid = $link->getAttribute('href');
 
-	  		$targetGuidNL = $tei->xpath->query("//tei:ident[ . = '$guid']");
+	  		$targetGuidNL = $this->tei->xpath->query("//tei:ident[ . = '$guid']");
 
 	  		if($targetGuidNL->length == 0 ) {
 	  			//I hate the problem of links and trailing slashes
 	  			//if length is zero, see if including the slash produces matches
-	  			$targetGuidNL = $tei->xpath->query("//tei:ident[ . = '$guid/']");
+	  			$targetGuidNL = $this->tei->xpath->query("//tei:ident[ . = '$guid/']");
 	  		}
 
 			if($targetGuidNL->length != 0) {
