@@ -257,7 +257,6 @@ class TeiDom {
 		if($this->projectData['outputParams']['colophon'] && $this->projectData['outputParams']['colophon'] == 'on') {
 			$this->backNode->appendChild( $this->newColophon() );
 		}
-
 		$this->doIndexing();
 	}
 	public function sanitizeMedia() {
@@ -617,8 +616,6 @@ class TeiDom {
 	public function sanitizeString($content, $isMultiline = false) {
 
 		$content = $this->sanitizeEntities($content);
-
-
 
 		if ($isMultiline) {
 			//TODO: check if this is redundant now that I'm using apply_filters()'

@@ -102,9 +102,7 @@
             <h3>
               <xsl:value-of select="$book.title-page.doc-author"/>
             </h3>
-          </xsl:if>
-          
-
+          </xsl:if>         
         </div>
 
         <!-- Publication statement page -->
