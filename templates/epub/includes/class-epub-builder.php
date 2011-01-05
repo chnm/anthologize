@@ -117,7 +117,7 @@ class EpubBuilder {
 								. DIRECTORY_SEPARATOR . 'temp';
 		*/
 		$upload_dir = wp_upload_dir();
-		$tempDir = $upload_dir['basedir'] . '/anthologize-temp';
+		$tempDir = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . 'anthologize-temp';
 		if(! is_dir($tempDir)) {
 			mkdir($tempDir);
 		}
