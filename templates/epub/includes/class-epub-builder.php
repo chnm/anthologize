@@ -111,25 +111,32 @@ class EpubBuilder {
 	public function createDirs() {
 
 		//double check that temp exists (mostly for direct git pulls -- should be okay for new installs/activations)
-		$tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
+		/*$tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
 								. DIRECTORY_SEPARATOR . 'templates'
 								. DIRECTORY_SEPARATOR . 'epub'
 								. DIRECTORY_SEPARATOR . 'temp';
+		*/
+		$upload_dir = wp_upload_dir();
+		$tempDir = $upload_dir['basedir'] . '/anthologize-temp';
 		if(! is_dir($tempDir)) {
 			mkdir($tempDir);
 		}
 
 
 //TODO: make tempDir figure out the correct plugin dir
-		$this->tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
+		/*$this->tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
 										. DIRECTORY_SEPARATOR . 'templates'
 										. DIRECTORY_SEPARATOR . 'epub'
 										. DIRECTORY_SEPARATOR . 'temp'
 										. DIRECTORY_SEPARATOR
 										. sha1(microtime()) //make sure that if two users export different project from same site, they don't clobber each other
-										. DIRECTORY_SEPARATOR;
+										. DIRECTORY_SEPARATOR; */
+		$this->tempDir = 	$tempDir . 
+					DIRECTORY_SEPARATOR . 
+					sha1(microtime()) . //make sure that if two users export different project from same site, they don't clobber each other
+					DIRECTORY_SEPARATOR;
 
-		$this->epubDir = $this->tempDir  . 'epub' ;
+		$this->epubDir = $this->tempDir  . 'epub' ; 
 		$this->oebpsDir = $this->epubDir . DIRECTORY_SEPARATOR . 'OEBPS' . DIRECTORY_SEPARATOR;
 		$this->metaInfDir = $this->epubDir . DIRECTORY_SEPARATOR . 'META-INF' . DIRECTORY_SEPARATOR;
 
