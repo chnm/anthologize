@@ -131,12 +131,12 @@ class EpubBuilder {
 										. DIRECTORY_SEPARATOR
 										. sha1(microtime()) //make sure that if two users export different project from same site, they don't clobber each other
 										. DIRECTORY_SEPARATOR; */
-		$this->tempDir = 	$tempDir . 
-					DIRECTORY_SEPARATOR . 
+		$this->tempDir = 	$tempDir .
+					DIRECTORY_SEPARATOR .
 					sha1(microtime()) . //make sure that if two users export different project from same site, they don't clobber each other
 					DIRECTORY_SEPARATOR;
 
-		$this->epubDir = $this->tempDir  . 'epub' ; 
+		$this->epubDir = $this->tempDir  . 'epub' ;
 		$this->oebpsDir = $this->epubDir . DIRECTORY_SEPARATOR . 'OEBPS' . DIRECTORY_SEPARATOR;
 		$this->metaInfDir = $this->epubDir . DIRECTORY_SEPARATOR . 'META-INF' . DIRECTORY_SEPARATOR;
 
@@ -181,29 +181,26 @@ class EpubBuilder {
 		$creatorNode = $xpath->query("//dc:creator")->item(0);
 		$creatorNode->nodeValue = trim($teiCreatorNode->nodeValue);
 
-		//add a cover image
-		//add the meta element
-		$metadataNode = $opf->getElementsByTagName('metadata')->item(0);
-		$coverNode = $opf->createElement('meta');
-		$coverNode->setAttribute('name', 'cover');
-		$coverNode->setAttribute('content', 'cover');
-		$metadataNode->appendChild($coverNode);
+		//add a cover image, if it is set
+		if($this->coverImage != 'none') {
+			//add the meta element
+			$metadataNode = $opf->getElementsByTagName('metadata')->item(0);
+			$coverNode = $opf->createElement('meta');
+			$coverNode->setAttribute('name', 'cover');
+			$coverNode->setAttribute('content', 'cover');
+			$metadataNode->appendChild($coverNode);
 
-		//add to the manifest
-		$manifestNode = $opf->getElementsByTagName('manifest')->item(0);
-		$coverItemNode = $opf->createElement('item');
-		$coverItemNode->setAttribute('href', 'cover.jpg');
-		$coverItemNode->setAttribute('id', 'cover');
-		$coverItemNode->setAttribute('media-type', 'image/jpeg');
-		$manifestNode->appendChild($coverItemNode);
-
-		//copy the image over to the epub tmp dir
-
-		$coverImgPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'covers' . DIRECTORY_SEPARATOR . $this->coverImage;
-
-		copy($coverImgPath, $this->oebpsDir . 'cover.jpg');
-
-
+			//add to the manifest
+			$manifestNode = $opf->getElementsByTagName('manifest')->item(0);
+			$coverItemNode = $opf->createElement('item');
+			$coverItemNode->setAttribute('href', 'cover.jpg');
+			$coverItemNode->setAttribute('id', 'cover');
+			$coverItemNode->setAttribute('media-type', 'image/jpeg');
+			$manifestNode->appendChild($coverItemNode);
+			//copy the image over to the epub tmp dir
+			$coverImgPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'covers' . DIRECTORY_SEPARATOR . $this->coverImage;
+			copy($coverImgPath, $this->oebpsDir . 'cover.jpg');
+		}
 		$opf->save($this->oebpsDir . 'book.opf');
 	}
 

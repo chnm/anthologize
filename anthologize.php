@@ -292,6 +292,7 @@ class Anthologize_Loader {
 
 		//build the covers list for selection
 		$coversArray = array();
+		$coversArray['none'] = 'None';
 		//scan the covers directory and return the array
 		$filesArray = scandir(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' .
 			 DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'covers');
