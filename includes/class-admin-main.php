@@ -413,15 +413,12 @@ class Anthologize_Admin_Main {
      * redirecting to Anthologize pages after saving.
      **/
     function item_meta_save( $post_id ) {
-    	global $current_user;
-    	
 	// make sure data came from our meta box. Only save when nonce is present
 	if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
 		return $post_id;
 	
-	// Check user permissions. You should only be able to save this data if you are the author
-	// or the admin
-	if ( !current_user_can( 'edit_post', $post_id ) ) 
+	// Check user permissions.
+	if ( !$this->user_can_edit() ) 
 		return $post_id;
 	
 	if ( empty( $_POST['anthologize_meta'] ) || !$new_data = $_POST['anthologize_meta'] )
@@ -542,9 +539,39 @@ class Anthologize_Admin_Main {
     }
 
 
-
-	function user_can_edit() {
-	
+	/**
+	 * Checks whether a user has permission to edit the item in question
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 *
+	 * @param int $post_id Optional The post to check. Defaults to current post
+	 * @param int $user_id Optional The user to check. Defaults to logged-in user
+	 * @return bool $user_can_edit Returns true when the user can edit, false if not
+	 */
+	function user_can_edit( $post_id = false, $user_id = false ) {
+		global $post, $current_user;
+		
+		$user_can_edit = false;
+		
+		if ( is_super_admin() ) {
+			// When the user is a super admin (network admin on MS, Administrator on
+			// single WP) there is no need to check anything else
+			$user_can_edit = true;
+		} else {				
+			if ( !$user_id )
+				$user_id = $current_user->ID;
+			
+			if ( $post_id ) {
+				$post = get_post( $post_id );
+			}
+			
+			// Is the user the author of the post in question?
+			if ( $user_id == $post->post_author )
+				$user_can_edit = true;
+		}		
+		
+		return apply_filters( 'anth_user_can_edit', $user_can_edit, $post_id, $user_id );
 	}
 	
 	function version_nag() {
