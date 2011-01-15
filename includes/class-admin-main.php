@@ -412,34 +412,34 @@ class Anthologize_Admin_Main {
      * custom post metadata. Also responsible for correctly
      * redirecting to Anthologize pages after saving.
      **/
-    function item_meta_save($post_id) {
-    	    		
-        // make sure data came from our meta box. Only save when nonce is present
-        if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
-        	return $post_id;
-
-        // check user permissions
-        if ( !current_user_can('edit_post', $post_id) ) 
-        	return $post_id;
-
-	if ( empty( $_POST['item_id'] ) && !$item_id = $_POST['item_id'] )
-		return false;
-
-        if ( !$new_data = $_POST['anthologize_meta'] )
-        	$new_data = array();
-
-		if ( !$anthologize_meta = get_post_meta( $item_id, 'anthologize_meta', true ) )
+    function item_meta_save( $post_id ) {
+    	global $current_user;
+    	
+	// make sure data came from our meta box. Only save when nonce is present
+	if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
+		return $post_id;
+	
+	// Check user permissions. You should only be able to save this data if you are the author
+	// or the admin
+	if ( !current_user_can( 'edit_post', $post_id ) ) 
+		return $post_id;
+	
+	if ( empty( $_POST['anthologize_meta'] ) || !$new_data = $_POST['anthologize_meta'] )
+		$new_data = array();
+	
+		if ( !$anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
 			$anthologize_meta = array();
-
+	
 		foreach( $new_data as $key => $value ) {
 			$anthologize_meta[$key] = maybe_unserialize( $value );
 		}
-
-		update_post_meta($post_id,'anthologize_meta', $anthologize_meta);
+	
+		update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
 		update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
-
-        add_filter('redirect_post_location', array($this , 'item_meta_redirect'));
-    	return $post_id;
+	
+	add_filter( 'redirect_post_location', array( $this, 'item_meta_redirect' ) );
+	
+	return $post_id;
     }
 
     function item_meta_redirect($location) {
@@ -535,10 +535,6 @@ class Anthologize_Admin_Main {
             	<input type="hidden" name="new_part" value="1" />
             <?php endif; ?>
 
-            <?php if ( isset( $post->ID ) ) : ?>
-            	<input type="hidden" name="item_id" value="<?php echo $post->ID ?>" />
-            <?php endif; ?>
-
             <input type="hidden" name="menu_order" value="<?php echo $post->menu_order; ?>">
             <input type="hidden" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
         </div>
@@ -547,6 +543,10 @@ class Anthologize_Admin_Main {
 
 
 
+	function user_can_edit() {
+	
+	}
+	
 	function version_nag() {
 		global $wp_version;
 
