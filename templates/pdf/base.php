@@ -31,15 +31,6 @@
 
 //error_reporting(0);
 
-// altering the execution time and memory limit might help if you are encountering blank white screens
-// however, server settings and permissions might not allow this, and if you use a shared hosting
-// service they might get mad at you
-// Override the default PHP settings at your own risk.
-//
-// The settings available will vary from server to server. Please consult your hosting company for more information.
-
-//ini_set('max_execution_time', '180');
-//ini_set('memory_limit', '128M');
 
 
 include_once(ANTHOLOGIZE_TEIDOM_PATH);
@@ -66,11 +57,13 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		'indexImages' => false,
 		);
 
-
 $tei = new TeiDom($_SESSION, $ops);
-
 $api = new TeiApi($tei);
 $pdfer = new PdfAnthologizer($api);
+
+
+
+
 $pdfer->output();
 
 ?>

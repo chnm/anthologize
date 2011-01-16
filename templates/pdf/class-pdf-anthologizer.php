@@ -50,6 +50,8 @@ class PdfAnthologizer extends Anthologizer {
 
 		if(strpos($font_family, 'arialunicid0') !== false) {
 			$font_family = 'arialunicid0';
+			//TODO rewrite unicid0.php for different fonts (CJK), and and branch accordingly here
+			//-zh, -ko, -jp
 		}
 
 		$this->output->SetFont($font_family, '', $this->baseH, '', true);
@@ -62,6 +64,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		$this->partH = $this->baseH + 4;
 		$this->itemH = $this->baseH + 2;
+
 
 	}
 
