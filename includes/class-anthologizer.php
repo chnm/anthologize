@@ -26,9 +26,13 @@ abstract class Anthologizer {
 		$this->api = $api;
 		$this->init();
 		$this->appendFront();
+
 		$this->appendBody();
+
 		$this->appendBack();
+
 		$this->finish();
+
 	}
 
 	/*

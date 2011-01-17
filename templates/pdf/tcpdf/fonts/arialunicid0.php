@@ -1759,11 +1759,11 @@ $originalsize=23275812;
 //$cidinfo=array('Registry'=>'Adobe','Ordering'=>'GB1','Supplement'=>2);
 //include(dirname(__FILE__).'/uni2cid_ag15.php');
 
-$enc='UniKS-UTF16-H';
-$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Korea1','Supplement'=>0);
-include(dirname(__FILE__).'/uni2cid_ak12.php');
+//$enc='UniKS-UTF16-H';
+//$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Korea1','Supplement'=>0);
+//include(dirname(__FILE__).'/uni2cid_ak12.php');
 
-//$enc='UniJIS-UTF16-H';
-//$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Japan1','Supplement'=>5);
-//include(dirname(__FILE__).'/uni2cid_aj16.php');
+$enc='UniJIS-UTF16-H';
+$cidinfo=array('Registry'=>'Adobe','Ordering'=>'Japan1','Supplement'=>5);
+include(dirname(__FILE__).'/uni2cid_aj16.php');
 // --- EOF ---
