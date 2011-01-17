@@ -41,6 +41,13 @@ class Anthologize_Loader {
 	function anthologize_loader () {
 
 		session_start();
+		
+		// If the PHP version is less than 5, print a message and stop the plugin from
+		// loading
+		if ( version_compare( phpversion(), '5', '<' ) ) {
+			add_action( 'admin_notices', array ( $this, 'phpversion_nag' ) );
+			return;
+		}
 
 		// Give me something to believe in
 		add_action( 'plugins_loaded', array ( $this, 'loaded' ) );
@@ -378,6 +385,23 @@ class Anthologize_Loader {
 	}
 
 	function deactivation() {}
+	
+	/**
+	* Prints a warning to the screen when the PHP version is insufficient
+	*
+	* Anthologize requires at least PHP version 5.0. If the currently running version of PHP is
+	* less than 5.0, this function will warn the user to upgrade.
+	*
+	* @package Anthologize
+	* @since 0.6
+	*/
+	function phpversion_nag() {
+		?>
+		<div id="message" class="updated fade">
+			<p style="line-height: 150%"><?php printf( __( "<strong>Anthologize will not work with your version of PHP</strong>. You are currently running PHP v%s, and Anthologize requires version 5.0 or greater. Please contact your host if you would like to use Anthologize. ", 'buddypress' ), phpversion() ) ?></p>
+		</div>
+		<?php
+	}
 }
 
 endif; // class exists
