@@ -12,7 +12,7 @@ class Anthologize_Admin_Main {
 
 		add_action( 'admin_init', array ( $this, 'init' ) );
 
-		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ) );
+		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 999 );
 
 		add_action( 'admin_notices', array( $this, 'version_nag' ) );
 
@@ -30,19 +30,38 @@ class Anthologize_Admin_Main {
 		do_action( 'anthologize_admin_init' );
 	}
 
+	/**
+	 * Adds Anthologize's plugin pages to the Dashboard
+	 *
+	 * Uses a somewhat hackish method, borrowed from BuddyPress, to get things in a nice order
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 */
 	function dashboard_hooks() {
 		global $menu;
-		
+	
 		if ( !current_user_can( 'manage_options' ) )
 			return;
 		
-		$menu[57] = array(
+		// The default location of the Anthologize menu item. Anthologize needs an empty
+		// space before and after it in order to display, so it might have to poke around
+		// a bit to find room for itself
+		$default_index = apply_filters( 'anth_default_menu_position', 55 ); 
+		
+		while ( !empty( $menu[$default_index - 1] ) || !empty( $menu[$default_index ] ) || !empty( $menu[$default_index + 1] ) ) {
+			$default_index++;
+		}
+		
+		$separator = array(
 			0 => '',
 			1 => 'read',
 			2 => 'separator-anthologize',
 			3 => '',
 			4 => 'wp-menu-separator'
 		);
+		$menu[$default_index - 1] = $separator;
+		$menu[$default_index + 1] = $separator;
 		
 		$plugin_pages = array();
 		
@@ -52,7 +71,7 @@ class Anthologize_Admin_Main {
 			'page_title' => __( 'Anthologize', 'anthologize' ),
 			'access_level' => 'manage_options', 'file' => 'anthologize',
 			'function' => array( $this, 'display'),
-			'position' => 56
+			'position' => $default_index
 		) );
 		
 		// Creates the submenu items

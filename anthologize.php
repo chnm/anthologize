@@ -117,7 +117,7 @@ class Anthologize_Loader {
 		return true;
 	}
 
-	function menu_order_my_function($menu_order){
+	function menu_order_my_function( $menu_order ){
 		global $menu;
 
 		foreach ( $menu as $mkey => $m ) {
