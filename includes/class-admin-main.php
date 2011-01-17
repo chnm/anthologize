@@ -4,12 +4,14 @@
 if ( !class_exists( 'Anthologize_Admin_Main' ) ) :
 
 class Anthologize_Admin_Main {
+	var $minimum_cap;
 
 	/**
 	 * List all my projects. Pretty please
 	 */
 	function anthologize_admin_main () {
-
+		$this->minimum_cap = $this->minimum_cap();
+		
 		add_action( 'admin_init', array ( $this, 'init' ) );
 
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 999 );
@@ -31,6 +33,34 @@ class Anthologize_Admin_Main {
 	}
 
 	/**
+	 * Loads the minimum user capability for displaying the Anthologize menus
+	 *
+	 * When running Multisite, this function first checks to see whether the super admin has
+	 * allowed per-blog settings.
+	 *
+	 * For now, Anthologize pages are all-or-nothing. In the future, finer-grained access is
+	 * planned. In the meantime, feel free to filter this value in your own plugin.
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 */
+	function minimum_cap() {
+		// If the super admin hasn't set a default, it'll fall back to manage_options, i.e. Administrators-only
+		$site_settings = get_site_option( 'anth_site_settings' );
+
+		$default_cap = !empty( $site_settings['default_minimum_cap'] ) ? $site_settings['default_minimum_cap'] : 'manage_options';
+		
+		if ( !is_multisite() || !empty( $site_settings['forbid_per_blog_caps'] ) ) {
+			$blog_settings = is_multisite() ? get_option( 'anth_settings' ) : $site_settings;
+			$cap = !empty( $blog_settings['minimum_cap'] ) ? $blog_settings['minimum_cap'] : $default_cap;
+		} else {
+			$cap = $default_cap; 
+		}
+		
+		return apply_filters( 'anth_minimum_cap', $cap );
+	}
+
+	/**
 	 * Adds Anthologize's plugin pages to the Dashboard
 	 *
 	 * Uses a somewhat hackish method, borrowed from BuddyPress, to get things in a nice order
@@ -40,9 +70,6 @@ class Anthologize_Admin_Main {
 	 */
 	function dashboard_hooks() {
 		global $menu;
-	
-		if ( !current_user_can( 'manage_options' ) )
-			return;
 		
 		// The default location of the Anthologize menu item. Anthologize needs an empty
 		// space before and after it in order to display, so it might have to poke around
@@ -75,13 +102,15 @@ class Anthologize_Admin_Main {
 		) );
 		
 		// Creates the submenu items
-		$plugin_pages[] = add_submenu_page( 'anthologize', __('My Projects','anthologize'), __('My Projects','anthologize'), 'manage_options', 'anthologize', array ( $this, 'display' ) );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'My Projects', 'anthologize' ), __( 'My Projects','anthologize' ), $this->minimum_cap, 'anthologize', array ( $this, 'display' ) );
 		
-		$plugin_pages[] = add_submenu_page( 'anthologize', __('New Project','anthologize'), __('New Project','anthologize'), 'manage_options', dirname( __FILE__ ) . '/class-new-project.php');
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'New Project','anthologize' ), __('New Project','anthologize'), $this->minimum_cap, dirname( __FILE__ ) . '/class-new-project.php');
 		
-		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export Project', 'anthologize' ), __( 'Export Project', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-export-panel.php' );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Export Project', 'anthologize' ), __( 'Export Project', 'anthologize' ), $this->minimum_cap, dirname( __FILE__ ) . '/class-export-panel.php' );
 		
-		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Import Content', 'anthologize' ), __( 'Import Content', 'anthologize' ), 'manage_options', dirname( __FILE__ ) . '/class-import-feeds.php' );
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Import Content', 'anthologize' ), __( 'Import Content', 'anthologize' ), $this->minimum_cap, dirname( __FILE__ ) . '/class-import-feeds.php' );
+		
+		$plugin_pages[] = add_submenu_page( 'anthologize', __( 'Settings', 'anthologize' ), __( 'Settings', 'anthologize' ), $this->minimum_cap, dirname( __FILE__ ) . '/class-settings.php' );
 		
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
