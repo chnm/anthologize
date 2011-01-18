@@ -14,7 +14,7 @@ class Anthologize_Admin_Main {
 		
 		add_action( 'admin_init', array ( $this, 'init' ) );
 
-		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 999 );
+		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 990 );
 
 		add_action( 'admin_notices', array( $this, 'version_nag' ) );
 

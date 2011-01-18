@@ -25,12 +25,32 @@ class Anthologize_Settings {
 	}
 	
 	/**
+	 * Catches a saved settings page and saves settings
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 */	
+	function save() {
+		check_admin_referer( 'anth_settings' );
+	
+		$anth_settings = !empty( $_POST['anth_settings'] ) ? $_POST['anth_settings'] : array();
+	
+		// This needs to be reset so that we don't have to refresh the page
+		$this->settings = $anth_settings;
+	
+		update_option( 'anth_settings', $anth_settings );
+	}
+	
+	/**
 	 * Markup for the settings panel
 	 *
 	 * @package Anthologize
 	 * @since 0.6
 	 */	
 	function display() {
+		if ( !empty( $_POST['anth_settings_submit'] ) )
+			$this->save();
+	
 		$minimum_cap = !empty( $this->settings['minimum_cap'] ) ? $this->settings['minimum_cap'] : 'manage_options';
 		?>
 		
