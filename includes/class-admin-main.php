@@ -17,7 +17,11 @@ class Anthologize_Admin_Main {
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 990 );
 
 		add_action( 'admin_notices', array( $this, 'version_nag' ) );
-
+		
+		if ( is_multisite() ) {
+			add_action( 'wpmu_options', array( $this, 'ms_settings' ) );
+			add_action( 'update_wpmu_options', array( $this, 'save_ms_settings' ) );
+		}
 	}
 
 	function init() {
@@ -635,7 +639,49 @@ class Anthologize_Admin_Main {
 
 		<?php
 	}
-
+	
+	/**
+	 * Adds Anthologize settings to the ms-options.php panel of an MS dashboard
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 */
+	function ms_settings() {
+		?>
+		
+		<h3><?php _e( 'Anthologize', 'anthologize' ); ?></h3>
+		
+		<table id="menu" class="form-table">
+			<tr valign="top">
+				<th scope="row"><?php _e( 'Allow individual site admins to determine which kinds of users can use Anthologize?' ); ?></th>
+				<td>
+			
+				<?php $site_settings = get_site_option( 'anth_site_settings' ) ?>
+				
+				<label><input type='checkbox' name='anth_site_settings[forbid_per_blog_caps]' value='1' <?php if ( empty( $site_settings['forbid_per_blog_caps'] ) ) : ?>checked="checked"<?php endif ?>> <?php _e( 'When unchecked, access to Anthologize will be limited to the default role you select below.', 'anthologize' ) ?></label>
+			
+				</td>
+			</tr>
+		</table>
+		
+		<?php
+	}
+	
+	/**
+	 * Saves the settings created in ms_settings()
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 */
+	function save_ms_settings() {
+		$forbid_per_blog_caps = empty( $_POST['anth_site_settings']['forbid_per_blog_caps'] ) ? 1 : 0;
+		
+		$anth_site_settings = array(
+			'forbid_per_blog_caps' => $forbid_per_blog_caps
+		);
+		
+		update_site_option( 'anth_site_settings', $anth_site_settings );
+	}
 }
 
 endif;
