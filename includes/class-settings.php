@@ -2,6 +2,10 @@
 
 class Anthologize_Settings {
 	var $settings;
+	var $site_settings;
+	
+	var $minimum_cap;
+	var $forbid_local_caps;
 	
 	/**
 	 * Constructor method
@@ -11,6 +15,10 @@ class Anthologize_Settings {
 	 */	
 	function __construct() {
 		$this->settings = $this->get_settings();
+		$this->site_settings = $this->get_site_settings();
+		$this->forbid_local_caps = $this->forbid_local_caps();
+		$this->minimum_cap = $this->minimum_cap();
+		
 		$this->display();
 	}
 	
@@ -25,6 +33,36 @@ class Anthologize_Settings {
 	}
 	
 	/**
+	 * Loads the settings for the blog
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 */	
+	function get_site_settings() {
+		$site_settings = array();
+		
+		if ( is_multisite() )
+			$site_settings = get_site_option( 'anth_site_settings' );
+			
+		return apply_filters( 'anth_site_settings', $site_settings );
+	}
+	
+	/**
+	 * Determine whether the network admin has forbidden the setting of local caps
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 */	
+	function forbid_local_caps() {
+		$forbid_local_caps = false;
+		
+		if ( !empty( $this->site_settings['forbid_per_blog_caps'] ) )
+			$forbid_local_caps = true;
+			
+		return apply_filters( 'anth_forbid_local_caps', $forbid_local_caps );
+	}
+	
+	/**
 	 * Catches a saved settings page and saves settings
 	 *
 	 * @package Anthologize
@@ -35,8 +73,9 @@ class Anthologize_Settings {
 	
 		$anth_settings = !empty( $_POST['anth_settings'] ) ? $_POST['anth_settings'] : array();
 	
-		// This needs to be reset so that we don't have to refresh the page
+		// These need to be reset so that we don't have to refresh the page
 		$this->settings = $anth_settings;
+		$this->minimum_cap = $anth_settings['minimum_cap'];
 	
 		update_option( 'anth_settings', $anth_settings );
 	}
@@ -50,8 +89,6 @@ class Anthologize_Settings {
 	function display() {
 		if ( !empty( $_POST['anth_settings_submit'] ) )
 			$this->save();
-	
-		$minimum_cap = !empty( $this->settings['minimum_cap'] ) ? $this->settings['minimum_cap'] : 'manage_options';
 		?>
 		
 		<div class="wrap anthologize">
@@ -71,22 +108,25 @@ class Anthologize_Settings {
 				<tr>
 					<th scope="row"><?php _e( 'Minimum role for creating and editing Anthologize projects', 'anthologize' ) ?>:</th>
 					<td>
-						<select name="anth_settings[minimum_cap]">
+						<select name="anth_settings[minimum_cap]" <?php if ( $this->forbid_local_caps ) : ?>disabled="disabled"<?php endif ?>>
 						<?php if ( is_multisite() ) : ?>
-							<option<?php selected( $minimum_cap, 'manage_network' ) ?> value="manage_network"><?php _e( 'Network Admin', 'anthologize' ) ?></option>
+							<option<?php selected( $this->minimum_cap, 'manage_network' ) ?> value="manage_network"><?php _e( 'Network Admin', 'anthologize' ) ?></option>
 						<?php endif ?>
 					
-							<option<?php selected( $minimum_cap, 'manage_options' ) ?> value="manage_options"><?php _e( 'Administrator', 'anthologize' ) ?></option>
+							<option<?php selected( $this->minimum_cap, 'manage_options' ) ?> value="manage_options"><?php _e( 'Administrator', 'anthologize' ) ?></option>
 						
-							<option<?php selected( $minimum_cap, 'delete_others_posts' ) ?> value="delete_others_posts"><?php _e( 'Editor', 'anthologize' ) ?></option>
+							<option<?php selected( $this->minimum_cap, 'delete_others_posts' ) ?> value="delete_others_posts"><?php _e( 'Editor', 'anthologize' ) ?></option>
 						
-							<option<?php selected( $minimum_cap, 'publish_posts' ) ?> value="publish_posts"><?php _e( 'Author', 'anthologize' ) ?></option>
+							<option<?php selected( $this->minimum_cap, 'publish_posts' ) ?> value="publish_posts"><?php _e( 'Author', 'anthologize' ) ?></option>
 						
-							<option<?php selected( $minimum_cap, 'edit_posts' ) ?> value="edit_posts"><?php _e( 'Contributor', 'anthologize' ) ?></option>
+							<option<?php selected( $this->minimum_cap, 'edit_posts' ) ?> value="edit_posts"><?php _e( 'Contributor', 'anthologize' ) ?></option>
 						
-							<option<?php selected( $minimum_cap, 'read' ) ?> value="read"><?php _e( 'Subscriber', 'anthologize' ) ?></option>
+							<option<?php selected( $this->minimum_cap, 'read' ) ?> value="read"><?php _e( 'Subscriber', 'anthologize' ) ?></option>
 						
 						</select>
+						<?php if ( $this->forbid_local_caps ) : ?>
+							<label for="anth_settings[minimum_cap]"><?php _e( 'Your network administrator has disabled this setting.', 'anthologize' ) ?></label>
+						<?php endif ?>
 					</td>
 				</tr>
 			</tbody>
@@ -104,6 +144,30 @@ class Anthologize_Settings {
 		</div>
 		
 		<?php
+	}
+	
+	function minimum_cap() {
+		$default_cap = 'manage_options';
+	
+		if ( is_multisite() ) {
+			// On multisite, the network admin is able to override the local admin's
+			// settings
+			$forbid_local_caps = !empty( $this->site_settings['forbid_per_blog_caps'] ) ? true : false;
+			
+			if ( $this->forbid_local_caps ) {
+				$minimum_cap = !empty( $this->site_settings['minimum_cap'] ) ? $this->site_settings['minimum_cap'] : 'manage_options';
+			} else {
+				// If the network admin has not forbidden local caps, we still must
+				// check whether there's a network default
+				$default_cap = !empty( $this->site_settings['minimum_cap'] ) ? $this->site_settings['minimum_cap'] : 'manage_options';
+				$minimum_cap = !empty( $this->settings['minimum_cap'] ) ? $this->settings['minimum_cap'] : $default_cap;
+			}
+		} else {		
+			// On non-MS, we can check the local settings directly
+			$minimum_cap = !empty( $this->settings['minimum_cap'] ) ? $this->settings['minimum_cap'] : $default_cap;
+		}
+		
+		return apply_filters( 'anth_settings_minimum_cap', $minimum_cap );
 	}
 }
 

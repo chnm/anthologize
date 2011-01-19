@@ -50,10 +50,17 @@ class Anthologize_Admin_Main {
 	 */
 	function minimum_cap() {
 		// If the super admin hasn't set a default, it'll fall back to manage_options, i.e. Administrators-only
-		$site_settings = get_site_option( 'anth_site_settings' );
-
-		$default_cap = !empty( $site_settings['default_minimum_cap'] ) ? $site_settings['default_minimum_cap'] : 'manage_options';
 		
+		// Get the default cap
+		if ( is_multisite() ) {
+			$site_settings = get_site_option( 'anth_site_settings' );
+	
+			$default_cap = !empty( $site_settings['minimum_cap'] ) ? $site_settings['minimum_cap'] : 'manage_options';
+		} else {
+			$default_cap = 'manage_options';
+		}
+		
+		// Then use the default to set the minimum cap for this blog
 		if ( !is_multisite() || empty( $site_settings['forbid_per_blog_caps'] ) ) {
 			$blog_settings = is_multisite() ? get_option( 'anth_settings' ) : $site_settings;
 			$cap = !empty( $blog_settings['minimum_cap'] ) ? $blog_settings['minimum_cap'] : $default_cap;
@@ -647,18 +654,54 @@ class Anthologize_Admin_Main {
 	 * @since 0.6
 	 */
 	function ms_settings() {
+		
+		$site_settings = get_site_option( 'anth_site_settings' );
+		
+		$minimum_cap = !empty( $site_settings['minimum_cap'] ) ? $site_settings['minimum_cap'] : 'manage_options';
+		
 		?>
 		
 		<h3><?php _e( 'Anthologize', 'anthologize' ); ?></h3>
 		
 		<table id="menu" class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Allow individual site admins to determine which kinds of users can use Anthologize?' ); ?></th>
+				<th scope="row"><?php _e( 'Allow individual site admins to determine which kinds of users can use Anthologize?', 'anthologize' ); ?></th>
 				<td>
-			
-				<?php $site_settings = get_site_option( 'anth_site_settings' ) ?>
 				
+				<?php 
+				/**
+				 * This value is called 'forbid_per_blog_caps' but is worded in
+				 * terms of 'allowing'. This is because I wanted the wording to be
+				 * in terms of allowing (so that checked = allowed) but for the
+				 * default value to be allowed, without needing to initialize
+				 * options in the installer.
+				 */
+				?>
 				<label><input type='checkbox' name='anth_site_settings[forbid_per_blog_caps]' value='1' <?php if ( empty( $site_settings['forbid_per_blog_caps'] ) ) : ?>checked="checked"<?php endif ?>> <?php _e( 'When unchecked, access to Anthologize will be limited to the default role you select below.', 'anthologize' ) ?></label>
+			
+				</td>
+			</tr>
+			
+			<tr valign="top">
+				<th scope="row"><?php _e( 'Default mimimum role for Anthologizers', 'anthologize' ); ?></th>
+				<td>
+				
+				<label>
+					<select name="anth_site_settings[minimum_cap]">
+						<option<?php selected( $minimum_cap, 'manage_network' ) ?> value="manage_network"><?php _e( 'Network Admin', 'anthologize' ) ?></option>
+				
+						<option<?php selected( $minimum_cap, 'manage_options' ) ?> value="manage_options"><?php _e( 'Administrator', 'anthologize' ) ?></option>
+					
+						<option<?php selected( $minimum_cap, 'delete_others_posts' ) ?> value="delete_others_posts"><?php _e( 'Editor', 'anthologize' ) ?></option>
+					
+						<option<?php selected( $minimum_cap, 'publish_posts' ) ?> value="publish_posts"><?php _e( 'Author', 'anthologize' ) ?></option>
+					
+						<option<?php selected( $minimum_cap, 'edit_posts' ) ?> value="edit_posts"><?php _e( 'Contributor', 'anthologize' ) ?></option>
+					
+						<option<?php selected( $minimum_cap, 'read' ) ?> value="read"><?php _e( 'Subscriber', 'anthologize' ) ?></option>
+					
+					</select>
+				</label>
 			
 				</td>
 			</tr>
@@ -675,9 +718,12 @@ class Anthologize_Admin_Main {
 	 */
 	function save_ms_settings() {
 		$forbid_per_blog_caps = empty( $_POST['anth_site_settings']['forbid_per_blog_caps'] ) ? 1 : 0;
+		$minimum_cap = empty( $_POST['anth_site_settings']['minimum_cap'] ) ? 'manage_options' : $_POST['anth_site_settings']['minimum_cap'];
 		
+		//print_r( $_POST['anth_site_settings']['minimum_cap'] );
 		$anth_site_settings = array(
-			'forbid_per_blog_caps' => $forbid_per_blog_caps
+			'forbid_per_blog_caps' => $forbid_per_blog_caps,
+			'minimum_cap' => $minimum_cap
 		);
 		
 		update_site_option( 'anth_site_settings', $anth_site_settings );
