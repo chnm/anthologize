@@ -192,7 +192,10 @@ class PdfAnthologizer extends Anthologizer {
 		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
 		$title = $titleNode->textContent;
 
-		$this->set_header(array('title'=>$title, 'string'=>''));
+		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
+		$string = $firstItemNode->textContent;
+
+		$this->set_header(array('title'=>$title, 'string'=>$string));
 
 
 		if($partNo == 0) {
