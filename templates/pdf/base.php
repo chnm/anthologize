@@ -32,7 +32,6 @@
 //error_reporting(0);
 
 
-
 include_once(ANTHOLOGIZE_TEIDOM_PATH);
 include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');

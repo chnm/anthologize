@@ -36,7 +36,7 @@ If you're upgrading manually from a previous version of Anthologize, please be s
 Many optimizations to the PDF export have been added, but resource limits on the server will always be a potential issue. Here are some tips for large exports:
 
 1. Include page breaks between parts and items. This appears to reduce the memory that the PDF classes (TCPDF) require.
-2. Add the following lines at the end of wp-config.php in your WordPress installation
+2. Add the following lines at the top of wp-setting.php in your WordPress installation, above define( 'WPINC', 'wp-includes' );
 
 ini_set('max_execution_time', '180');
 ini_set('memory_limit', '128M');
