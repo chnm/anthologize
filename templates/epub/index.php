@@ -38,11 +38,10 @@ $ops['outputParams'] = $_SESSION['outputParams'];
 
 
   $tei_data = new TeiDom($_SESSION, $ops);
-//echo $tei_data->getTeiString();
-//die();
   $epub = new EpubBuilder($tei_data, $anthEpubDir  . 'tei2html.xsl');
-
-
+//echo $epub->tei->getTeiString();
+//echo $epub->html->saveHTML();
+//die();
   $epub->output();
 
 //done!

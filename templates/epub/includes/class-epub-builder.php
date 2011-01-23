@@ -25,6 +25,11 @@ class EpubBuilder {
 		$this->ncxXSL = $anthEpubDir . 'tei2ncx.xsl';
 		$this->opfXSL = $anthEpubDir . 'tei2opf.xsl';
 
+
+		//dig up the selected cover image
+		$this->coverImage = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0)->nodeValue;
+		$this->localizeLinks();
+
 		if (is_string($data)) {
 
 			if (file_exists($data)) {
@@ -41,12 +46,8 @@ class EpubBuilder {
 			$this->html = $data;
 		}
 
-		//dig up the selected cover image
-		$this->coverImage = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0)->nodeValue;
-		$this->localizeLinks();
 
 		$this->fetchImages();
-
 		$this->saveContainer();
 		$this->saveNCX();
 		$this->saveOPF();
@@ -110,27 +111,12 @@ class EpubBuilder {
 
 	public function createDirs() {
 
-		//double check that temp exists (mostly for direct git pulls -- should be okay for new installs/activations)
-		/*$tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
-								. DIRECTORY_SEPARATOR . 'templates'
-								. DIRECTORY_SEPARATOR . 'epub'
-								. DIRECTORY_SEPARATOR . 'temp';
-		*/
 		$upload_dir = wp_upload_dir();
 		$tempDir = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . 'anthologize-temp';
 		if(! is_dir($tempDir)) {
 			mkdir($tempDir);
 		}
 
-
-//TODO: make tempDir figure out the correct plugin dir
-		/*$this->tempDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize'
-										. DIRECTORY_SEPARATOR . 'templates'
-										. DIRECTORY_SEPARATOR . 'epub'
-										. DIRECTORY_SEPARATOR . 'temp'
-										. DIRECTORY_SEPARATOR
-										. sha1(microtime()) //make sure that if two users export different project from same site, they don't clobber each other
-										. DIRECTORY_SEPARATOR; */
 		$this->tempDir = 	$tempDir .
 					DIRECTORY_SEPARATOR .
 					sha1(microtime()) . //make sure that if two users export different project from same site, they don't clobber each other
@@ -395,24 +381,27 @@ class EpubBuilder {
 	}
 
 	private function localizeLinks() {
-
+//TODO: this will likely play hell with links directly to anchor!
 		$test = substr(get_bloginfo('url'),7);
 	  	$links = $this->tei->xpath->query("//a[contains(@href, '$test' )]");
+
 	  	foreach($links as $link) {
 	  		$guid = $link->getAttribute('href');
 
-	  		$targetGuidNL = $this->tei->xpath->query("//tei:ident[ . = '$guid']");
+	  		$targetGuidNL = $this->tei->xpath->query("//tei:ident[@type = 'permalink'][ . = '$guid']");
+
 
 	  		if($targetGuidNL->length == 0 ) {
 	  			//I hate the problem of links and trailing slashes
 	  			//if length is zero, see if including the slash produces matches
-	  			$targetGuidNL = $this->tei->xpath->query("//tei:ident[ . = '$guid/']");
+	  			$targetGuidNL = $this->tei->xpath->query("//tei:ident[@type = 'permalink'][ . = '$guid/']");
 	  		}
 
 			if($targetGuidNL->length != 0) {
-				$item = $tei->getParentItem($targetGuidNL->item(0));
-	  			$link->setAttribute('href', '#' .$tei->getId($item));
+				$item = $this->tei->getParentItem($targetGuidNL->item(0));
+	  			$link->setAttribute('href', '#' . $this->tei->getId($item));
 			}
+
 	  	}
 	}
 }

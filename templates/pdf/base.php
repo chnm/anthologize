@@ -46,7 +46,7 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		'includeItemSubjects' => false, // Include basic data about tags and categories
 		'includeCreatorData' => false, // Include basic data about creators
 		'includeStructuredCreatorData' => false, //include structured data about creators
-		'includeOriginalPostData' => false, //include data about the original post (true to use tags and categories)
+		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
 		'checkImgSrcs' => true, //whether to check availability of image sources
 		'linkToEmbeddedObjects' => true,
 		'indexSubjects' => false,
@@ -57,6 +57,7 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		);
 
 $tei = new TeiDom($_SESSION, $ops);
+
 $api = new TeiApi($tei);
 $pdfer = new PdfAnthologizer($api);
 
