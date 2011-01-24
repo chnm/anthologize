@@ -46,7 +46,6 @@ class EpubBuilder {
 			$this->html = $data;
 		}
 
-
 		$this->fetchImages();
 		$this->saveContainer();
 		$this->saveNCX();
@@ -60,8 +59,8 @@ class EpubBuilder {
 
 	public function fetchImages() {
 		//TODO: switch to HTML based image work so arbitrary HTML can be passed in.
-		$xpath = new DOMXPath($this->html);
-//		$xpath->registerNamespace('html', 'http://www.w3.org/1999/xhtml');
+		//will require adjusting the XSL so that it does not remove the full URL
+		$xpath = $this->tei->xpath;
 
 		$srcNodes = $xpath->query("//img/@src");
 
