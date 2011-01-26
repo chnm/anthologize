@@ -107,8 +107,8 @@ class Anthologize_Admin_Main {
 		$this->add_admin_menu_page( array(
 			'menu_title' => __( 'Anthologize', 'anthologize' ),
 			'page_title' => __( 'Anthologize', 'anthologize' ),
-			'access_level' => 'manage_options', 'file' => 'anthologize',
-			'function' => array( $this, 'display'),
+			'access_level' => $this->minimum_cap, 'file' => 'anthologize',
+			'function' => array( $this, 'display' ),
 			'position' => $default_index
 		) );
 		
