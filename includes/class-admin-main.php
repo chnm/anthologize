@@ -172,6 +172,14 @@ class Anthologize_Admin_Main {
 		return $hookname;
 	}
 
+	/**
+	 * Loads Anthologize's JS
+	 *
+	 * This needs a massive amount of cleanup
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 */
 	function load_scripts() {
 		wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
 		wp_enqueue_script( 'jquery');
@@ -183,13 +191,29 @@ class Anthologize_Admin_Main {
 		wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
 		wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
 		wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
-		}
-		
+	}
+	
+	/**
+	 * Loads Anthologize's styles
+	 *
+	 * This should be optimized to load CSS only on Anthologize pages
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 */
 	function load_styles() {
 		wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
 		wp_enqueue_style( 'jquery-ui-datepicker-css', WP_PLUGIN_URL . '/anthologize/css/jquery-ui-1.7.3.custom.css');
 	}
 
+	/**
+	 * Loads the project organizer when an 'edit' parameter is passed with the url
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 *
+	 * @param int $project_id The id for the project being loaded
+	 */
 	function load_project_organizer( $project_id ) {
 		require_once( dirname( __FILE__ ) . '/class-project-organizer.php' );
 		$project_organizer = new Anthologize_Project_Organizer( $project_id );
@@ -197,6 +221,12 @@ class Anthologize_Admin_Main {
 
 	}
 
+	/**
+	 * Displays error markup when a project is not found by the supplied ID
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 */
 	function display_no_project_id_message() {
 		?>
 			<div id="notice" class="error below-h2">
@@ -205,14 +235,22 @@ class Anthologize_Admin_Main {
 		<?php
 	}
 
-    function get_project_parts($project_id = null) {
-
-        global $post;
-
-        if (!$project_id) {
-            $project_id = $post->ID;
-        }
-
+	/**
+	 * Gets the parts associated with a project
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 *
+	 * @param int $project_id The id for the project being loaded
+	 * @return array $parts The project's parts
+	 */
+    	function get_project_parts( $project_id = null ) {
+		global $post;
+	
+		if ( !$project_id ) {
+		    $project_id = $post->ID;
+		}
+	
 		$args = array(
 			'post_parent' => $project_id,
 			'post_type' => 'anth_part',
@@ -220,53 +258,64 @@ class Anthologize_Admin_Main {
 			'orderby' => 'menu_order',
 			'order' => 'ASC'
 		);
-
+	
 		$parts_query = new WP_Query( $args );
-
+	
 		if ( $parts = $parts_query->get_posts() ) {
-            return $parts;
+			return $parts;
 		}
-
 	}
 
+	/**
+	 * Gets the items associated with a project
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 *
+	 * @param int $project_id The id for the project being loaded
+	 * @return array $items The project's items
+	 */
 	function get_project_items($project_id = null) {
-
-        global $post;
-
-        if (!$project_id) {
-            $project_id = $post->ID;
-        }
-
-        $parts = $this->get_project_parts($project_id);
-
-        $items = array();
-        if ($parts) {
-            foreach ($parts as $part) {
-                $args = array(
-        			'post_parent' => $part->ID,
-        			'post_type' => 'anth_library_item',
-        			'posts_per_page' => -1,
-        			'orderby' => 'menu_order',
-        			'order' => 'ASC'
-        		);
-
-        		$items_query = new WP_Query( $args );
-
-                // May need optimization
-        		if ( $child_posts = $items_query->get_posts() ) {
-                    foreach($child_posts as $child_post) {
-                        $items[] = $child_post;
-                    }
-        		}
-            }
-        }
-        return $items;
-
+		global $post;
+	
+		if (!$project_id) {
+			$project_id = $post->ID;
+		}
+	
+		$parts = $this->get_project_parts($project_id);
+	
+		$items = array();
+		if ( $parts ) {
+			foreach ($parts as $part) {
+				$args = array(
+					'post_parent' => $part->ID,
+					'post_type' => 'anth_library_item',
+					'posts_per_page' => -1,
+					'orderby' => 'menu_order',
+					'order' => 'ASC'
+				);
+				
+				$items_query = new WP_Query( $args );
+				
+				// May need optimization
+				if ( $child_posts = $items_query->get_posts() ) {
+					foreach($child_posts as $child_post) {
+						$items[] = $child_post;
+					}
+				}
+			}
+		}
+		
+		return $items;
 	}
 
+	/**
+	 * Displays the markup for the main admin panel
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 */
 	function display() {
-//		print_r($_GET); die();
-
 		if ( isset( $_GET['project_id'] ) )
 			$project = get_post( $_GET['project_id'] );
 
