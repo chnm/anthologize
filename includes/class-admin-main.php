@@ -536,39 +536,39 @@ class Anthologize_Admin_Main {
 
 
 
-    /**
-     * item_meta_save
-     *
-     * Processes post save from the item_meta_box function. Saves
-     * custom post metadata. Also responsible for correctly
-     * redirecting to Anthologize pages after saving.
-     **/
-    function item_meta_save( $post_id ) {
-	// make sure data came from our meta box. Only save when nonce is present
-	if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
+	/**
+	* item_meta_save
+	*
+	* Processes post save from the item_meta_box function. Saves
+	* custom post metadata. Also responsible for correctly
+	* redirecting to Anthologize pages after saving.
+	**/
+	function item_meta_save( $post_id ) {
+		// make sure data came from our meta box. Only save when nonce is present
+		if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
+			return $post_id;
+		
+		// Check user permissions.
+		if ( !$this->user_can_edit() ) 
+			return $post_id;
+		
+		if ( empty( $_POST['anthologize_meta'] ) || !$new_data = $_POST['anthologize_meta'] )
+			$new_data = array();
+		
+			if ( !$anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
+				$anthologize_meta = array();
+		
+			foreach( $new_data as $key => $value ) {
+				$anthologize_meta[$key] = maybe_unserialize( $value );
+			}
+		
+			update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
+			update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
+		
+		add_filter( 'redirect_post_location', array( $this, 'item_meta_redirect' ) );
+		
 		return $post_id;
-	
-	// Check user permissions.
-	if ( !$this->user_can_edit() ) 
-		return $post_id;
-	
-	if ( empty( $_POST['anthologize_meta'] ) || !$new_data = $_POST['anthologize_meta'] )
-		$new_data = array();
-	
-		if ( !$anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
-			$anthologize_meta = array();
-	
-		foreach( $new_data as $key => $value ) {
-			$anthologize_meta[$key] = maybe_unserialize( $value );
-		}
-	
-		update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
-		update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
-	
-	add_filter( 'redirect_post_location', array( $this, 'item_meta_redirect' ) );
-	
-	return $post_id;
-    }
+	}
 
     function item_meta_redirect($location) {
         $postParent = get_post($_POST['post_parent']);
