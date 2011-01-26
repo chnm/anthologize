@@ -119,10 +119,12 @@ class Anthologize_Settings {
 						
 							<option<?php selected( $this->minimum_cap, 'publish_posts' ) ?> value="publish_posts"><?php _e( 'Author', 'anthologize' ) ?></option>
 						
+							<?php /* I think it doesn't make sense for these to be available */ ?>
+							<?php /*
 							<option<?php selected( $this->minimum_cap, 'edit_posts' ) ?> value="edit_posts"><?php _e( 'Contributor', 'anthologize' ) ?></option>
 						
 							<option<?php selected( $this->minimum_cap, 'read' ) ?> value="read"><?php _e( 'Subscriber', 'anthologize' ) ?></option>
-						
+							*/ ?>
 						</select>
 						<?php if ( $this->forbid_local_caps ) : ?>
 							<label for="anth_settings[minimum_cap]"><?php _e( 'Your network administrator has disabled this setting.', 'anthologize' ) ?></label>

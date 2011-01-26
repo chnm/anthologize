@@ -768,10 +768,12 @@ class Anthologize_Admin_Main {
 					
 						<option<?php selected( $minimum_cap, 'publish_posts' ) ?> value="publish_posts"><?php _e( 'Author', 'anthologize' ) ?></option>
 					
+						<?php /* Removing these for now */ ?>
+						<?php /*
 						<option<?php selected( $minimum_cap, 'edit_posts' ) ?> value="edit_posts"><?php _e( 'Contributor', 'anthologize' ) ?></option>
 					
 						<option<?php selected( $minimum_cap, 'read' ) ?> value="read"><?php _e( 'Subscriber', 'anthologize' ) ?></option>
-					
+						*/ ?>
 					</select>
 				</label>
 			
