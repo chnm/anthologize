@@ -361,7 +361,7 @@ class Anthologize_Admin_Main {
 			$this->display_no_project_id_message();
 		}
 
-		query_posts( 'post_type=anth_project' );
+		$this->do_project_query();
 
 		if ( have_posts() ) {
 		?>
@@ -471,6 +471,29 @@ class Anthologize_Admin_Main {
 
 		} // isset $_GET['action']
 
+	}
+	
+	/**
+	 * Pulls up the projects that the logged-in user is allowed to edit
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 */
+	function do_project_query() {
+		global $current_user;
+		
+		// Set up the default arguments
+		$args = array(
+			'post_type' => 'anth_project'
+		);
+		
+		// Anyone less than an Editor should only see their own posts
+		if ( ! current_user_can( 'edit_others_posts' ) ) {
+			$args['author'] = $current_user->ID;
+		}
+		
+		// Do that thang
+		query_posts( $args );
 	}
 
     /**
