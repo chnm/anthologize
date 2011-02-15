@@ -379,83 +379,79 @@ class Anthologize_Admin_Main {
 			</div>
 
 			<table cellpadding="0" cellspacing="0" class="widefat">
+			
 			<thead>
 				<tr>
 					<th scope="col" class="check-column"></th>
-            		<th scope="col"><?php _e( 'Project Title', 'anthologize' ) ?></th>
-            		<th scope="col"><?php _e( 'Created By', 'anthologize' ) ?></th>
-            		<th scope="col"><?php _e( 'Number of Parts', 'anthologize' ) ?></th>
-            		<th scope="col"><?php _e( 'Number of Items', 'anthologize' ) ?></th>
-            		<th scope="col"><?php _e( 'Date Created', 'anthologize' ) ?></th>
-            		<th scope="col"><?php _e( 'Date Modified', 'anthologize' ) ?></th>
-            	</tr>
-            </thead>
+					<th scope="col"><?php _e( 'Project Title', 'anthologize' ) ?></th>
+					<th scope="col"><?php _e( 'Created By', 'anthologize' ) ?></th>
+					<th scope="col"><?php _e( 'Number of Parts', 'anthologize' ) ?></th>
+					<th scope="col"><?php _e( 'Number of Items', 'anthologize' ) ?></th>
+					<th scope="col"><?php _e( 'Date Created', 'anthologize' ) ?></th>
+					<th scope="col"><?php _e( 'Date Modified', 'anthologize' ) ?></th>
+				</tr>
+			</thead>
+	
 			<tbody>
 				<?php while ( have_posts() ) : the_post(); ?>
 				
 					<tr>
 						<tr>
-            			<th scope="row" class="check-column">
+            					
+            					<th scope="row" class="check-column">
 						</th>
 
 						<th scope="row"  class="post-title">
 							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
 
-							<br/>
-									<?php
-									$controlActions	= array();
-									$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Project Details', 'anthologize') . '</a>';
-									$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts', 'anthologize') . '</a>';
-									$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'" class="confirm-delete">'.__('Delete Project', 'anthologize') . '</a>';
+							<br />
 
+							<?php
+							$controlActions	= array();
+							$controlActions[]	= '<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=' . get_the_ID() .'">' . __('Project Details', 'anthologize') . '</a>';
+							$controlActions[]   = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts', 'anthologize') . '</a>';
+							$controlActions[]   = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'" class="confirm-delete">'.__('Delete Project', 'anthologize') . '</a>';
+							?>
 
-
-									?>
-
-									<?php if (count($controlActions)) : ?>
-									<div class="row-actions">
-										<?php echo implode(' | ', $controlActions); ?>
-									</div>
-									<?php endif; ?>
+							<?php if (count($controlActions)) : ?>
+								<div class="row-actions">
+									<?php echo implode(' | ', $controlActions); ?>
+								</div>
+							<?php endif; ?>
 
 
 						</th>
 
 
 						<td scope="row anthologize-created-by">
-                            <?php the_author(); ?>
+							<?php the_author(); ?>
  						</td>
 
 						<td scope="row anthologize-number-parts">
-                            <?php $parts = $this->get_project_parts();  echo count($parts); ?>
+                            				<?php $parts = $this->get_project_parts();  echo count($parts); ?>
 						</td>
 
-                        <td scope="row anthologize-number-items">
-                            <?php $items = $this->get_project_items();  echo count($items); ?>
+						<td scope="row anthologize-number-items">
+							<?php $items = $this->get_project_items();  echo count($items); ?>
 						</td>
 
 						<td scope="row anthologize-date-created">
-						    <?php global $post; echo date( "F j, Y", strtotime( $post->post_date ) ) ?>
+							<?php global $post; echo date( "F j, Y", strtotime( $post->post_date ) ) ?>
 						</td>
 
 						<td scope="row anthologize-date-modified">
-						    <?php the_modified_date(); ?>
+							<?php the_modified_date(); ?>
 						</td>
 
 						<?php do_action( 'anthologize_project_column_data' ); ?>
-
-
-            		</tr>
+						
+					</tr>
 
 				<?php endwhile; ?>
 
 			</tbody>
 
-
 			</table>
-
-
-
 
 		<?php
 		} else {
