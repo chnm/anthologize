@@ -261,9 +261,11 @@ class Anthologize_Admin_Main {
 	
 		$parts_query = new WP_Query( $args );
 	
-		if ( $parts = $parts_query->get_posts() ) {
+		if ( $parts = $parts_query->posts ) {
 			return $parts;
-		}
+		} else {
+			return false;
+		}	
 	}
 
 	/**
@@ -298,8 +300,8 @@ class Anthologize_Admin_Main {
 				$items_query = new WP_Query( $args );
 				
 				// May need optimization
-				if ( $child_posts = $items_query->get_posts() ) {
-					foreach($child_posts as $child_post) {
+				if ( $child_posts = $items_query->posts ) {
+					foreach( $child_posts as $child_post ) {
 						$items[] = $child_post;
 					}
 				}
