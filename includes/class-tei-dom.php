@@ -590,6 +590,12 @@ class TeiDom {
 				if($this->includeOriginalPostData) {
 					//TODO: include date created and modified data
 					$origPostData = get_post($postObject->original_post_id);
+					$permalinkURL = get_permalink($postObject->original_post_id);
+
+					$permalink = $this->dom->createElementNS(TEI, 'ident');
+					$permalink->setAttribute('type', 'permalink');
+					$permalink->appendChild($this->dom->createCDataSection($permalinkURL));
+					$newHead->appendChild($permalink);
 
 					$origGuid = $this->dom->createElementNS(TEI, 'ident');
 					$origGuid->appendChild($this->dom->createCDataSection($origPostData->guid));

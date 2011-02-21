@@ -48,11 +48,39 @@ class PdfAnthologizer extends Anthologizer {
 		$font_family = $this->api->getProjectOutputParams('font-face');
 		$this->baseH = $this->api->getProjectOutputParams('font-size');
 
-		if(strpos($font_family, 'arialunicid0') !== false) {
-			$font_family = 'arialunicid0';
-		}
+		$this->anthFontsPath = WP_PLUGIN_DIR .
+			DIRECTORY_SEPARATOR . 'anthologize' .
+			DIRECTORY_SEPARATOR . 'templates' .
+			DIRECTORY_SEPARATOR . 'pdf' .
+			DIRECTORY_SEPARATOR . 'fonts' .
+			DIRECTORY_SEPARATOR ;
 
-		$this->output->SetFont($font_family, '', $this->baseH, '', true);
+		switch($font_family) {
+			case 'arialunicid0-ko':
+				//arialunicid0.php has a code to uncomment by language
+				//since we need to switch on the fly, arialunicid0-XX will include that, then override the
+				//uncommented code
+				//see arialunicid0.php in TCPDF fonts directory (scroll to the bottom), and pdf/fonts/arialunicid0-ko
+				$this->output->AddFont($font_family, '', $this->anthFontsPath . 'arialunicid0-ko.php');
+				$this->output->AddFont($font_family, 'B', $this->anthFontsPath . 'arialunicid0-ko.php');
+				$this->output->AddFont($font_family, 'I', $this->anthFontsPath . 'arialunicid0-ko.php');
+				$this->output->AddFont($font_family, 'BI', $this->anthFontsPath . 'arialunicid0-ko.php');
+
+			break;
+
+			case 'arialunicid0-cj':
+				$font_family = 'arialunicid0';
+			break;
+
+			default:
+				//passthrough without changing font family
+			break;
+
+		}
+		$this->font_family = $font_family;
+
+
+		$this->output->SetFont($this->font_family, '', $this->baseH, '', true);
 
 		$this->output->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		$this->output->SetHeaderMargin(PDF_MARGIN_HEADER);
@@ -62,6 +90,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		$this->partH = $this->baseH + 4;
 		$this->itemH = $this->baseH + 2;
+
 
 	}
 
@@ -83,15 +112,19 @@ class PdfAnthologizer extends Anthologizer {
 		//append cover
 		$this->output->AddPage();
 		$this->frontPages++;
-		$this->output->setFont('', 'B', $this->partH + 6);
+
+
+
 		$this->output->SetY(80);
 		$this->output->Write('', $book_title, '', false, 'C', true );
-		$this->output->setFont('', '', $this->baseH);
+		$this->output->setFont($this->font_family, '', $this->baseH);
+
+
+
 		$this->output->Write('', $creator, '', false, 'C', true );
 		$this->output->SetY(120);
 		$year = substr( $this->api->getProjectPublicationDate(), 0, 4 );
 		$this->output->Write('', $this->api->getProjectCopyright(false, false) . ' -- ' . $year , '', false, 'C', true );
-
 
 
 		//dedication
@@ -103,7 +136,7 @@ class PdfAnthologizer extends Anthologizer {
 			$title = $titleNode->nodeValue;
 			$this->output->write('', $title, '', false, 'C', true);
 			$this->output->writeHTML($dedication);
-			$this->output->setFont('', '', $this->baseH);
+			$this->output->setFont($this->font_family, '', $this->baseH);
 			$this->frontPages++;
 		}
 
@@ -116,9 +149,10 @@ class PdfAnthologizer extends Anthologizer {
 			$title = $titleNode->nodeValue;
 			$this->output->write('', $title, '', false, 'C', true);
 			$this->output->writeHTML($acknowledgements);
-			$this->output->setFont('', '', $this->baseH);
+			$this->output->setFont($this->font_family, '', $this->baseH);
 			$this->frontPages++;
 		}
+
 	}
 
 
@@ -130,29 +164,39 @@ class PdfAnthologizer extends Anthologizer {
 		//actually letting appendPart and append Item do the appending
 		//this just fires up the loop through the body parts
 
+
 		$partsCount = $this->api->getSectionPartCount('body');
 		for($partNo = 0; $partNo <$partsCount; $partNo++) {
+
 			$this->appendPart('body', $partNo);
+
 		}
 
 	}
 
 	public function appendBack() {
+
 		$this->output->startPageGroup();
+
 		$this->output->setPrintHeader(true);
 		$partsCount = $this->api->getSectionPartItemCount('back');
-		//echo $partsCount;
-		//die();
+
 		for($partNo = 0; $partNo < $partsCount; $partNo++) {
 			$this->appendPart('back', $partNo);
 		}
+
 	}
 
 	public function appendPart($section, $partNo) {
+
 		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
 		$title = $titleNode->textContent;
 
-		$this->set_header(array('title'=>$title, 'string'=>''));
+		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
+		$string = $firstItemNode->textContent;
+
+		$this->set_header(array('title'=>$title, 'string'=>$string));
+
 
 		if($partNo == 0) {
 			$this->output->AddPage();
@@ -160,20 +204,26 @@ class PdfAnthologizer extends Anthologizer {
 			$this->output->AddPage();
 		}
 
+
 		//TCPDF seems to add the footer to prev. page if AddPage hasn't been fired
 		$this->output->setPrintFooter(true);
 		if($section == 'body') {
 			$this->output->Bookmark($title);
 		}
 
+
 		//add the header info
-		$this->appendPartHead($section, $partNo);
+		//$this->appendPartHead($section, $partNo);
+
 		//loop the items and append
 		$itemsCount = $this->api->getSectionPartItemCount($section, $partNo);
 		for($itemNo = 0; $itemNo < $itemsCount; $itemNo++) {
+
 			$this->appendItem($section, $partNo, $itemNo);
 		}
+
 		$this->output->endPage();
+
 	}
 
 
@@ -182,9 +232,9 @@ class PdfAnthologizer extends Anthologizer {
 
 		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
 		$title = $titleNode->textContent;
-		$this->output->setFont('', 'B', $this->partH);
+		$this->output->setFont($this->font_family, 'B', $this->partH);
 		$this->output->Write('', $title, '', false, 'C', true );
-		$this->output->setFont('', '', $this->baseH);
+		$this->output->setFont($this->font_family, '', $this->baseH);
 
 	}
 
@@ -206,34 +256,36 @@ class PdfAnthologizer extends Anthologizer {
 
 		//append the item content
 		$content = $this->writeItemContent($section, $partNo, $itemNo);
+
 		$this->output->writeHTML($content, true, false, true);
 
 	}
-/*
+
 	protected function writeItemContent($section, $partNo, $itemNo) {
 		$content = parent::writeItemContent($section, $partNo, $itemNo);
 
 		//when the TEI gets here, & has become &amp; in img@src, so this is a not-so-subtle-or-elegant fix
 		if(strpos($content, "&amp;") !== false) {
 			$content = htmlspecialchars_decode($content);
-			echo $content;
-			//$content = str_replace("&amp;", "&", $content);
+			$content = str_replace("&amp;", "&", $content);
 		}
 		return $content;
 	}
-*/
+
 	public function appendItemHead($section, $partNo, $itemNo) {
+
 		//write the head, avoiding HTML for optimization
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
 		$title = $titleNode->textContent;
 
-		$this->output->setFont('', 'B', $this->itemH);
+		$this->output->setFont($this->font_family, 'B', $this->itemH);
 		$this->output->Write('', $title, '', false, 'C', true );
-		$this->output->setFont('', '', $this->baseH);
+		$this->output->setFont($this->font_family, '', $this->baseH);
 
 	}
 
 	public function finish() {
+
 		//add TOC
 		$this->output->setPrintHeader(false);
 		$this->output->setPrintFooter(false);
@@ -244,6 +296,21 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->endTOCPage();
 	}
 
+
+	private function _boldSetting() {
+		//some font families fail on trying to make bold
+		switch ($this->font_family) {
+			case 'arialunicid0-ko':
+				return '';
+			break;
+
+			default:
+				return 'B';
+			break;
+		}
+
+
+	}
 
 	public function output() {
 		$filename = $this->api->getFileName() . ".pdf";
