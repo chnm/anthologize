@@ -282,6 +282,14 @@ class Anthologize_Loader {
 
 		anthologize_register_format_option( 'pdf', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
 
+		// Register RTF + options
+		anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
+		anthologize_register_format_option( 'rtf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );
+		anthologize_register_format_option( 'rtf', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
+		anthologize_register_format_option( 'rtf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face_pdf, 'Times New Roman' );
+		anthologize_register_format_option( 'rtf', 'break-parts', __( 'Page break before parts?', 'anthologize' ), 'checkbox' );
+		anthologize_register_format_option( 'rtf', 'break-items', __( 'Page break before items?', 'anthologize' ), 'checkbox' );
+		anthologize_register_format_option( 'rtf', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
 
 		// Register ePub.
 		anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
