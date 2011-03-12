@@ -27,7 +27,6 @@ National Endowment for the Humanities's Office of Digital
 Humanities. Many thanks to the NEH and the ODH for taking a
 chance on a weird project!
 
-
 ====
 Translation credits:
 - Japanese: Tai
