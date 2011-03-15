@@ -162,6 +162,62 @@ var anthologize = {
 	  });
 	  return itemInfo;
   },
+  "getComments" : function(item_id,item){
+	jQuery.ajax({
+		url: ajaxurl,
+		type: 'POST',
+		dataType: 'json',
+		data: {
+		   action:'get_item_comments',
+		   post_id:item_id
+		},
+		async:false,
+		timeout:20000,
+		success: function(response){
+			var w = jQuery(item).find('.comment-table');
+			
+			for (var itemId in response){
+				var commentid = response[itemId].comment_ID;
+				
+				var comment = '<tr><td class="checkbox"><input type="checkbox" name="comments["' + commentid + '" /></td>';
+				
+				comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
+
+				comment += '<td class="comment-content">' + response[itemId].comment_content + '</td>';
+
+				comment += '<td class="comment-date">' + response[itemId].comment_date + '</td>';
+				
+				comment += '</tr>';
+				w.append(comment);
+/*				w.append('<tr><input type="checkbox" name="comments[comment-' + itemId + ']" id="comment-' + commentid + '"  value="' + commentid + '"/> ' +
+				       '<label for="comment-' + commentid + '">' + commenttext + '</label></tr>');*/
+				/*comments += '<li id="comment-' + response[i].comment_ID + '">' + response[i].comment_content + '</li>';*/
+			}
+		
+			
+			/*
+			for (var itemId in commentdata){
+			
+			  panelItems.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
+				       '<label for="append-' + itemId+ '">' + appendable[itemId] + '</label></div>');
+			}*/
+			
+			jQuery(".project-parts").sortable("disable");
+			jQuery(".part-items ul").sortable("disable");
+			jQuery("a.comments").addClass("disabled");
+			jQuery("span.comments-sep").addClass("disabled");
+			jQuery(item).removeClass("disabled");
+			jQuery(item).siblings().removeClass("disabled");
+			item.find("div.comments-panel").first().slideToggle();
+			anthologize.appending = true;
+		},
+		error: function(){
+			ajax_error_refresh();
+		}
+	});
+	
+	
+  },
   "updateAddedItem" : function (new_item_id){
 	  newItem = anthologize.newItem;
 	  newItem.attr("id", "item-" + new_item_id);
@@ -276,7 +332,7 @@ jQuery(document).ready(function(){
 		                    '<a href="#cancel" class="cancelAppend">Cancel</a></form></div>';
 		  item.append(appendPanel);
 		  var panelItems = item.find("div.append-items").first();
-		  var appendable = anthologize.getAppendableItems(item.attr("id"));
+		  var appendable = anthologize.getAppendableItems(item.attr("id"),item);
 		  for (var itemId in appendable){
 			  panelItems.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
 			               '<label for="append-' + itemId+ '">' + appendable[itemId] + '</label></div>');
@@ -290,6 +346,23 @@ jQuery(document).ready(function(){
 		  jQuery(this).siblings().removeClass("disabled");
 		  item.find("div.append-panel").first().slideToggle();
 		  anthologize.appending = true;
+	  }else{
+		  item.find("a.cancelAppend").click();
+	  }
+  });
+  
+  jQuery("body").delegate("a.comments", "click", function(){
+	  var item = jQuery(this).closest("li.item");
+
+    if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
+	    jQuery(this).addClass("active-comments");
+		  var commentPanel = '<div class="comments-panel" style="display:none;"><form><div class="append-items"></div>' +
+		        '<input type="button" class="doSaveCommentsSetting" name="doSaveCommentsSetting" value="Save" /> ' +
+		        '<a href="#cancel" class="cancelComments">Cancel</a></form><table class="comment-table"></table></div>';
+		  item.append(commentPanel);
+		  
+		  anthologize.getComments(item.attr("id"),item);
+		  
 	  }else{
 		  item.find("a.cancelAppend").click();
 	  }

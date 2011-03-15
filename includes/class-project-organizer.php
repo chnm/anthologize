@@ -740,6 +740,8 @@ class Anthologize_Project_Organizer {
 				<div class="part-item-buttons">
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 
+					<a href="#comments" class="comments"><?php _e( 'Comments', 'anthologize' ) ?></a><span class="comments-sep"> |</span>
+
 					<a href="#append" class="append"><?php _e( 'Append', 'anthologize' ) ?></a><span class="append-sep"> |</span>
 					<?
 					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()

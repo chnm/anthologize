@@ -15,6 +15,7 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_place_items', array( $this, 'place_items' ) );
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
         add_action( 'wp_ajax_get_project_meta', array( $this, 'fetch_project_meta' ) );
+        add_action( 'wp_ajax_get_item_comments', array( $this, 'get_item_comments' ) );
     }
 
     function __construct() {
@@ -271,7 +272,38 @@ class Anthologize_Ajax_Handlers {
     	die();
 
     }
-
+    
+	function get_item_comments() {
+		$item_id = !empty( $_POST['post_id'] ) ? $_POST['post_id'] : false;
+		
+		// The item_id tends to be a CSS selector. We have to break it up.
+		if ( !is_int( $item_id ) ) {
+			$i 	 = explode( '-', $item_id );
+			$item_id = $i[1];
+		}
+		
+		if ( !$item_id )
+			return false;
+		
+		// Get the original post id
+		$anth_meta 		= get_post_meta( $item_id, 'anthologize_meta', true );
+		$original_post_id	= isset( $anth_meta['original_post_id'] ) ? $anth_meta['original_post_id'] : false;
+		
+		if ( !$original_post_id )
+			return false;
+		
+		$comments = get_comments( array( 'post_id' => $original_post_id ) );
+		
+		if ( empty( $comments ) ) {
+			$comment = array(
+				'empty' => '1',
+				'text'	=> __( 'This post has no comments.', 'anthologize' )
+			);
+		}
+		
+		echo( json_encode( $comments ) );
+		die();
+	}
 }
 
 endif;
