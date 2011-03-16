@@ -204,10 +204,12 @@ var anthologize = {
 			
 			jQuery(".project-parts").sortable("disable");
 			jQuery(".part-items ul").sortable("disable");
-			jQuery("a.comments").addClass("disabled");
-			jQuery("span.comments-sep").addClass("disabled");
+			jQuery("a.toggle").addClass("disabled");
+			jQuery("span.toggle-sep").addClass("disabled");
 			jQuery(item).removeClass("disabled");
 			jQuery(item).siblings().removeClass("disabled");
+			jQuery(item).find("a.comments").removeClass("disabled");
+			jQuery(item).find("span.comments-sep").removeClass("disabled");
 			item.find("div.comments-panel").first().slideToggle();
 			anthologize.appending = true;
 		},
@@ -242,8 +244,8 @@ var anthologize = {
 	  anthologize.setAppendStatus();
   },
   "setAppendStatus" : function(){
-	   jQuery("a.append").removeClass("disabled");
-	   jQuery("span.append-sep").removeClass("disabled");
+	   jQuery("a.toggle").removeClass("disabled");
+	   jQuery("span.toggle-sep").removeClass("disabled");
 	   jQuery(".part-items").each(function(){
 		   var items = jQuery(this).find("li.item");
 		   if (items.length == 1){
@@ -340,10 +342,11 @@ jQuery(document).ready(function(){
 
 		  jQuery(".project-parts").sortable("disable");
 		  jQuery(".part-items ul").sortable("disable");
-		  jQuery("a.append").addClass("disabled");
-		  jQuery("span.append-sep").addClass("disabled");
+		  jQuery("a.toggle").addClass("disabled");
+		  jQuery("span.toggle-sep").addClass("disabled");
 		  jQuery(this).removeClass("disabled");
-		  jQuery(this).siblings().removeClass("disabled");
+		  jQuery(this).siblings("a.append").removeClass("disabled");
+		  jQuery(this).siblings("span.append-sep").removeClass("disabled");
 		  item.find("div.append-panel").first().slideToggle();
 		  anthologize.appending = true;
 	  }else{
@@ -364,7 +367,7 @@ jQuery(document).ready(function(){
 		  anthologize.getComments(item.attr("id"),item);
 		  
 	  }else{
-		  item.find("a.cancelAppend").click();
+		  item.find("a.cancelComments").click();
 	  }
   });
 
@@ -373,6 +376,19 @@ jQuery(document).ready(function(){
 	  jQuery(this).parents("li.item").find("a.append").removeClass("active-append");
 	  var panel = jQuery("div.append-panel");
 	  jQuery("div.append-panel").slideToggle('slow', function(){
+		  jQuery(this).remove();
+		  anthologize.setAppendStatus();
+	  });
+	  jQuery(".project-parts").sortable("enable");
+	  jQuery(".part-items ul").sortable("enable");
+	  anthologize.appending = false;
+  });
+
+  jQuery("body").delegate("a.cancelComments", "click", function(){
+	  var item = jQuery(this).closest("li.item");
+	  jQuery(this).parents("li.item").find("a.comments").removeClass("active-comments");
+	  var panel = jQuery("div.comments-panel");
+	  jQuery("div.comments-panel").slideToggle('slow', function(){
 		  jQuery(this).remove();
 		  anthologize.setAppendStatus();
 	  });

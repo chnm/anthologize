@@ -166,7 +166,7 @@ div.anthologize {
 }
 
 .part-item-buttons {
-	width: 200px;
+	width: 240px;
 	text-align: right;
 	position: absolute;
 	right: 8px;
@@ -174,7 +174,7 @@ div.anthologize {
 }
 
 .part-title {
-	padding-right: 210px;
+	padding-right: 250px;
 	display: block;
 }
 
