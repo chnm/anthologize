@@ -505,14 +505,14 @@ jQuery(document).ready(function(){
   
   /* Select All */
   jQuery("body").delegate("a.select-all", "click", function(){
-	var checkboxes = jQuery(this).parent().siblings( '.comment-table' ).find( ':checkbox' );
+	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
 	jQuery(checkboxes).attr( 'checked', 'checked' );
 	return false;
   });
 
   /* Select All */
   jQuery("body").delegate("a.select-none", "click", function(){
-	var checkboxes = jQuery(this).parent().siblings( '.comment-table' ).find( ':checkbox' );
+	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
 	jQuery(checkboxes).removeAttr( 'checked' );
 	return false;
   });
