@@ -174,38 +174,33 @@ var anthologize = {
 		async:false,
 		timeout:20000,
 		success: function(response){
-			var w = jQuery(item).find('.comment-table tbody');
+			if ( response.length == 0 ) {
+				jQuery(item).find('.comments-panel').html('<p>' + anth_strings.no_comments + '</p><br /><a href="#cancel" class="cancelComments">' + anth_strings.cancel + '</a>');
+			} else {
 			
-			for (var itemId in response){
-				var commentid = response[itemId].comment_ID;
-				if ( response[itemId].is_included ) {
-					var checked = ' checked="checked"';
-				} else {
-					var checked = '';
+				var w = jQuery(item).find('.comment-table tbody');
+				
+				for (var itemId in response){
+					var commentid = response[itemId].comment_ID;
+					if ( response[itemId].is_included ) {
+						var checked = ' checked="checked"';
+					} else {
+						var checked = '';
+					}
+					
+					var comment = '<tr><td class="checkbox"><input type="checkbox" name="comments[]" id="comment-' + commentid + '"' + checked + ' /></td>';
+					
+					comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
+	
+					comment += '<td class="comment-content">' + anthologize.trimToLength( response[itemId].comment_content, 30, commentid ) + '</td>';
+	
+					comment += '<td class="comment-date">' + response[itemId].comment_date + '</td>';
+					
+					comment += '</tr>';
+					
+					w.append(comment);
 				}
-				
-				var comment = '<tr><td class="checkbox"><input type="checkbox" name="comments[]" id="comment-' + commentid + '"' + checked + ' /></td>';
-				
-				comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
-
-				comment += '<td class="comment-content">' + anthologize.trimToLength( response[itemId].comment_content, 30, commentid ) + '</td>';
-
-				comment += '<td class="comment-date">' + response[itemId].comment_date + '</td>';
-				
-				comment += '</tr>';
-				w.append(comment);
-/*				w.append('<tr><input type="checkbox" name="comments[comment-' + itemId + ']" id="comment-' + commentid + '"  value="' + commentid + '"/> ' +
-				       '<label for="comment-' + commentid + '">' + commenttext + '</label></tr>');*/
-				/*comments += '<li id="comment-' + response[i].comment_ID + '">' + response[i].comment_content + '</li>';*/
-			}
-		
-			
-			/*
-			for (var itemId in commentdata){
-			
-			  panelItems.append('<div><input type="checkbox" name="append[append-' + itemId + ']" id="append-' + itemId + '"  value="' + itemId + '"/> ' +
-				       '<label for="append-' + itemId+ '">' + appendable[itemId] + '</label></div>');
-			}*/
+			}			
 			
 			jQuery(".project-parts").sortable("disable");
 			jQuery(".part-items ul").sortable("disable");

@@ -197,7 +197,8 @@ class Anthologize_Admin_Main {
 			'comment_content'	=> __( 'Comment Content', 'anthologize' ),
 			'posted'		=> __( 'Posted', 'anthologize' ),
 			'save'			=> __( 'Save', 'anthologize' ),
-			'cancel'		=> __( 'Cancel', 'anthologize' )
+			'cancel'		=> __( 'Cancel', 'anthologize' ),
+			'no_comments'		=> __( 'This post has no comments associated with it.', 'anthologize' )
 		) );
 	}
 	
