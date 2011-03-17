@@ -178,8 +178,13 @@ var anthologize = {
 			
 			for (var itemId in response){
 				var commentid = response[itemId].comment_ID;
+				if ( response[itemId].is_included ) {
+					var checked = ' checked="checked"';
+				} else {
+					var checked = '';
+				}
 				
-				var comment = '<tr><td class="checkbox"><input type="checkbox" name="comments["' + commentid + '" /></td>';
+				var comment = '<tr><td class="checkbox"><input type="checkbox" name="comments[]" id="comment-' + commentid + '"' + checked + ' /></td>';
 				
 				comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
 
@@ -289,10 +294,10 @@ jQuery.fn.anthologizeSortList = function (options){
 	    anthologize.src_seq = {};
 	    var pos = 1;
 	    ui.item.siblings().each(function(){
-				if (! jQuery(this).hasClass("anthologize-drop-item")){ 
-					anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = pos;
-					pos++;
-				}
+		if (! jQuery(this).hasClass("anthologize-drop-item")){ 
+			anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = pos;
+			pos++;
+		}
 	    });
       anthologize.fromNew = false;
       anthologize.newItem = null;
@@ -300,11 +305,11 @@ jQuery.fn.anthologizeSortList = function (options){
     },
     stop: function (event, ui){
 	    anthologize.newItem = ui.item;
-			if (ui.item.hasClass('part-header')){
-				anthologize.addMultiItems(event, ui);
-			}else{
-      	anthologize.callBack(event, ui);
-			}
+		if (ui.item.hasClass('part-header')){
+			anthologize.addMultiItems(event, ui);
+		}else{
+		      	anthologize.callBack(event, ui);
+		}
       ui.item.removeClass("anthologize-drag-selected");
     },
     receive: function(event, ui){
@@ -359,9 +364,11 @@ jQuery(document).ready(function(){
 
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-comments");
-		  var commentPanel = '<div class="comments-panel" style="display:none;"><form><div class="append-items"></div>' +
-		        '<input type="button" class="doSaveCommentsSetting" name="doSaveCommentsSetting" value="Save" /> ' +
-		        '<a href="#cancel" class="cancelComments">Cancel</a></form><table class="comment-table"></table></div>';
+		var commentPanel = 
+			'<div class="comments-panel" style="display:none;"><form><div class="append-items"></div>' + 
+			'</form><table class="comment-table"></table></div>' + 
+			'<input type="button" class="doSaveCommentsSetting" name="doSaveCommentsSetting" value="Save" /> ' +
+		        '<a href="#cancel" class="cancelComments">Cancel</a>';
 		  item.append(commentPanel);
 		  
 		  anthologize.getComments(item.attr("id"),item);
@@ -429,6 +436,41 @@ jQuery(document).ready(function(){
 	  var project_id = anthologize.getProjectId();
 	  var post_id = anthologize.cleanPostIds(item.attr("id"));
 	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merge_seq});
+  });
+
+  jQuery("body").delegate("input.doSaveCommentsSetting", "click", function(){
+     // jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
+
+	  var item = jQuery(this).closest("li.item");
+	  var comments_to_include = {};
+	  var i = 0;
+
+	  jQuery(".comment-table input:checkbox:checked").each(function(){
+		  comments_to_include[i] = jQuery(this).attr("id");
+		  i++;
+	  });
+	  
+	  var post_id = anthologize.cleanPostIds(item.attr("id"));
+	  
+	  jQuery.ajax({
+		url: ajaxurl,
+		type: 'POST',
+		dataType: 'json',
+		data: {
+		   action:'include_comments',
+		   post_id:post_id,
+		   comments:seq_stringify(comments_to_include)
+		},
+		async:false,
+		timeout:20000,
+		success: function(response){
+			
+		},
+		error: function(){
+		
+		}
+	});
+	  
   });
 
 	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){

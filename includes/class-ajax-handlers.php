@@ -16,6 +16,7 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
         add_action( 'wp_ajax_get_project_meta', array( $this, 'fetch_project_meta' ) );
         add_action( 'wp_ajax_get_item_comments', array( $this, 'get_item_comments' ) );
+        add_action( 'wp_ajax_include_comments', array( $this, 'include_comments' ) );
     }
 
     function __construct() {
@@ -272,7 +273,16 @@ class Anthologize_Ajax_Handlers {
     	die();
 
     }
-    
+    	
+    	/**
+    	 * The handler for the get_item_comments ajax action
+    	 *
+    	 * Returns the comments associated with the provided post_id. Called when the 'Comments'
+    	 * link near an item on the project organizer screen is clicked.
+    	 *
+    	 * @package Anthologize
+    	 * @since 0.6
+    	 */
 	function get_item_comments() {
 		$item_id = !empty( $_POST['post_id'] ) ? $_POST['post_id'] : false;
 		
@@ -294,6 +304,15 @@ class Anthologize_Ajax_Handlers {
 		
 		$comments = get_comments( array( 'post_id' => $original_post_id ) );
 		
+		// Mark certain comments as already included, so their checkboxes get checked
+		foreach( $comments as $comment ) {
+			if ( !empty( $anth_meta['included_comments'] ) && in_array( $comment->comment_ID, $anth_meta['included_comments'] ) ) {
+				$comment->is_included = 1;
+			} else {
+				$comment->is_included = 0;
+			}
+		}
+		
 		if ( empty( $comments ) ) {
 			$comment = array(
 				'empty' => '1',
@@ -302,6 +321,45 @@ class Anthologize_Ajax_Handlers {
 		}
 		
 		echo( json_encode( $comments ) );
+		die();
+	}
+	
+	/**
+    	 * The handler for the include_comments ajax action
+    	 *
+    	 * Called when the Save button is clicked on the Comments slider of the project organizer
+    	 * screen. Saves the submitted comments to the anthologize_meta postmeta.
+    	 *
+    	 * @package Anthologize
+    	 * @since 0.6
+    	 */
+	function include_comments() {
+		if ( !empty ( $_POST['comments'] ) )
+			$comments_to_include = json_decode( stripslashes( $_POST['comments'] ) );
+		
+		if ( !empty( $_POST['post_id'] ) )
+			$post_id = $_POST['post_id'];
+		
+		if ( empty( $post_id ) || empty( $comments_to_include ) )
+			return; // better error reporting?
+		
+		// Comment names need to be exploded to get their ids
+		$comments = array();
+		foreach( $comments_to_include as $key => $c ) {
+			$comments[] = array_pop( explode( '-', $c ) );
+		}
+		
+		// Now save the comments to the item. It should already exist, but just in case,
+		// we are prepared to create it
+		if ( !$item_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
+			$item_meta = array();
+		
+		// Replace whatever is already there with the new data, and resave
+		$item_meta['included_comments'] = $comments;
+		update_post_meta( $post_id, 'anthologize_meta', $item_meta );
+		
+		// Return the comment array to show that we were successful
+		echo json_encode( $comments );
 		die();
 	}
 }

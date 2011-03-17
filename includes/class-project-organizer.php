@@ -722,6 +722,26 @@ class Anthologize_Project_Organizer {
 
 	function display_item( $append_parent ) {
 		global $post;
+		
+		/**
+		 * Pull up some comment data to be used in the Comments (x/y) area.
+		 * Comments themselves are fetched with AJAX as needed.
+		 */
+		
+		// First, the original post
+		$anth_meta = get_post_meta( get_the_ID(), 'anthologize_meta', true );
+		
+		$original_comment_count = 0;
+		if ( !empty( $anth_meta['original_post_id'] ) ) {
+			$original_post = get_post( $anth_meta['original_post_id'] );
+			$original_comment_count = $original_post->comment_count;
+		}
+		
+		// Then, see how many comments are being brought along to the export
+		$included_comment_count = 0;
+		if ( !empty( $anth_meta['included_comments'] ) ) {
+			$included_comment_count = count( $anth_meta['included_comments'] );
+		}
 
 	?>
 
@@ -740,7 +760,7 @@ class Anthologize_Project_Organizer {
 				<div class="part-item-buttons">
 					<a href="post.php?post=<?php the_ID() ?>&action=edit"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 
-					<a href="#comments" class="comments toggle"><?php _e( 'Comments', 'anthologize' ) ?></a><span class="comments-sep toggle-sep"> |</span>
+					<a href="#comments" class="comments toggle"><?php printf( __( 'Comments (%1$d/%2$d)', 'anthologize' ), $post->comment_count, $original_comment_count ) ?></a><span class="comments-sep toggle-sep"> |</span>
 
 					<a href="#append" class="append toggle"><?php _e( 'Append', 'anthologize' ) ?></a><span class="append-sep toggle-sep"> |</span>
 					<?
