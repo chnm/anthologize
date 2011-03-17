@@ -191,6 +191,14 @@ class Anthologize_Admin_Main {
 		wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
 		wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
 		wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
+		
+		wp_localize_script( 'anthologize-sortlist-js', 'anth_strings', array(
+			'commenter'		=> __( 'Commenter', 'anthologize' ),
+			'comment_content'	=> __( 'Comment Content', 'anthologize' ),
+			'posted'		=> __( 'Posted', 'anthologize' ),
+			'save'			=> __( 'Save', 'anthologize' ),
+			'cancel'		=> __( 'Cancel', 'anthologize' )
+		) );
 	}
 	
 	/**

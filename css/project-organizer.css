@@ -279,6 +279,26 @@ a.collapsepart {
     display:none;
 }
 
+.comment-table thead td {
+	font-weight: bold;
+	padding-bottom: 8px;
+	text-align: center;
+}
+
+.comment-table tbody td {
+	padding: 4px 6px;
+}
+
+/* The content column expands with the window */
+.comment-table .comment-check { width: 20px; }
+.comment-table .comment-commenter { width: 100px; }
+.comment-table .comment-posted { width: 100px; }
+
+.hidden-text {
+	visibility: hidden;
+	display: none;
+}
+
 /* Export screens */
 #project-id-dropdown {
 	width: 300px;

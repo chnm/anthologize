@@ -174,7 +174,7 @@ var anthologize = {
 		async:false,
 		timeout:20000,
 		success: function(response){
-			var w = jQuery(item).find('.comment-table');
+			var w = jQuery(item).find('.comment-table tbody');
 			
 			for (var itemId in response){
 				var commentid = response[itemId].comment_ID;
@@ -188,7 +188,7 @@ var anthologize = {
 				
 				comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
 
-				comment += '<td class="comment-content">' + response[itemId].comment_content + '</td>';
+				comment += '<td class="comment-content">' + anthologize.trimToLength( response[itemId].comment_content, 30, commentid ) + '</td>';
 
 				comment += '<td class="comment-date">' + response[itemId].comment_date + '</td>';
 				
@@ -280,6 +280,16 @@ var anthologize = {
 			parts.push(id);
 			jQuery.cookie('collapsedparts', parts.join(','));
 		}
+  },
+  "trimToLength": function( string, length, commentid ) {
+	var result = string;
+	var resultArray = result.split(" ");
+	if(resultArray.length > length){
+		resultArray.splice(length,0, '<a href="#more" class="more">[more]</a><span class="hide hidden-text">');
+		resultArray.push(' <a href="#less" class="less">[less]</a></span>');
+		result = resultArray.join(' ');
+	}
+	return result;
   }
 };
 
@@ -365,10 +375,15 @@ jQuery(document).ready(function(){
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-comments");
 		var commentPanel = 
-			'<div class="comments-panel" style="display:none;"><form><div class="append-items"></div>' + 
-			'</form><table class="comment-table"></table></div>' + 
-			'<input type="button" class="doSaveCommentsSetting" name="doSaveCommentsSetting" value="Save" /> ' +
-		        '<a href="#cancel" class="cancelComments">Cancel</a>';
+			'<div class="comments-panel" style="display:none;"><form><div class="append-items"></div></form>' + 
+			'<table class="comment-table"><thead><tr>' +
+				'<td class="comment-check" scope="col"></td>' +
+				'<td class="comment-commenter" scope="col">' + anth_strings.commenter + '</td>' +
+				'<td class="comment-content" scope="col">' + anth_strings.comment_content + '</td>' +
+				'<td class="comment-posted" scope="col">' + anth_strings.posted + '</td>' +			
+			'</tr></thead><tbody></tbody></table>' + 
+			'<input type="button" class="doSaveCommentsSetting" name="doSaveCommentsSetting" value="' + anth_strings.save + '" /> ' +
+		        '<a href="#cancel" class="cancelComments">' + anth_strings.cancel + '</a></div>';
 		  item.append(commentPanel);
 		  
 		  anthologize.getComments(item.attr("id"),item);
@@ -471,6 +486,18 @@ jQuery(document).ready(function(){
 		}
 	});
 	  
+  });
+  
+  jQuery("body").delegate("a.more", "click", function(){
+  	var hiddentext = jQuery(this).siblings(".hide");
+  	jQuery(hiddentext).removeClass('hidden-text');
+  	jQuery(this).addClass('hidden-text');
+  });
+  
+  jQuery("body").delegate("a.less", "click", function(){
+  	var hiddentext = jQuery(this).parent();
+  	jQuery(hiddentext).addClass('hidden-text');
+  	jQuery(hiddentext).siblings('.more').removeClass('hidden-text');
   });
 
 	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){
