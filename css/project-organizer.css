@@ -299,6 +299,11 @@ a.collapsepart {
 	display: none;
 }
 
+.comment-select-links {
+	font-size: .9em;
+	font-weight: bold;
+}
+
 /* Export screens */
 #project-id-dropdown {
 	width: 300px;

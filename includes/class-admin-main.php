@@ -198,7 +198,12 @@ class Anthologize_Admin_Main {
 			'posted'		=> __( 'Posted', 'anthologize' ),
 			'save'			=> __( 'Save', 'anthologize' ),
 			'cancel'		=> __( 'Cancel', 'anthologize' ),
-			'no_comments'		=> __( 'This post has no comments associated with it.', 'anthologize' )
+			'no_comments'		=> __( 'This post has no comments associated with it.', 'anthologize' ),
+			'select_all'		=> __( 'Select all', 'anthologize' ),
+			'select_none'		=> __( 'Select none', 'anthologize' ),
+			'more'			=> __( 'more', 'anthologize' ),
+			'less'			=> __( 'less', 'anthologize' ),
+			'comments_explain'	=> __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' )
 		) );
 	}
 	

@@ -280,8 +280,8 @@ var anthologize = {
 	var result = string;
 	var resultArray = result.split(" ");
 	if(resultArray.length > length){
-		resultArray.splice(length,0, '<a href="#more" class="more">[more]</a><span class="hide hidden-text">');
-		resultArray.push(' <a href="#less" class="less">[less]</a></span>');
+		resultArray.splice(length,0, '<a href="#more" class="more">[' + anth_strings.more + ']</a><span class="hide hidden-text">');
+		resultArray.push(' <a href="#less" class="less">[' + anth_strings.less + ']</a></span>');
 		result = resultArray.join(' ');
 	}
 	return result;
@@ -370,7 +370,9 @@ jQuery(document).ready(function(){
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-comments");
 		var commentPanel = 
-			'<div class="comments-panel" style="display:none;"><form><div class="append-items"></div></form>' + 
+			'<div class="comments-panel" style="display:none;">' +
+			'<p>' + anth_strings.comments_explain + 
+			' <span class="comment-select-links"><a href="#select-all" class="select-all">' + anth_strings.select_all + '</a> | <a href="#select-none" class="select-none">' + anth_strings.select_none + '</a></span></p>' +
 			'<table class="comment-table"><thead><tr>' +
 				'<td class="comment-check" scope="col"></td>' +
 				'<td class="comment-commenter" scope="col">' + anth_strings.commenter + '</td>' +
@@ -449,7 +451,7 @@ jQuery(document).ready(function(){
   });
 
   jQuery("body").delegate("input.doSaveCommentsSetting", "click", function(){
-     // jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
+      jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
 
 	  var item = jQuery(this).closest("li.item");
 	  var comments_to_include = {};
@@ -474,7 +476,9 @@ jQuery(document).ready(function(){
 		async:false,
 		timeout:20000,
 		success: function(response){
-			
+			jQuery(item).find('.included-comment-count').html(response.length);
+			jQuery.unblockUI();
+			return false;
 		},
 		error: function(){
 		
@@ -483,16 +487,34 @@ jQuery(document).ready(function(){
 	  
   });
   
+  /* [more] unhides the '.hide' text and hides the [more] link */
   jQuery("body").delegate("a.more", "click", function(){
   	var hiddentext = jQuery(this).siblings(".hide");
   	jQuery(hiddentext).removeClass('hidden-text');
   	jQuery(this).addClass('hidden-text');
+  	return false;
   });
   
+  /* [less] unhides the [more] text and hides the .hide text */
   jQuery("body").delegate("a.less", "click", function(){
   	var hiddentext = jQuery(this).parent();
   	jQuery(hiddentext).addClass('hidden-text');
   	jQuery(hiddentext).siblings('.more').removeClass('hidden-text');
+  	return false;
+  });
+  
+  /* Select All */
+  jQuery("body").delegate("a.select-all", "click", function(){
+	var checkboxes = jQuery(this).parent().siblings( '.comment-table' ).find( ':checkbox' );
+	jQuery(checkboxes).attr( 'checked', 'checked' );
+	return false;
+  });
+
+  /* Select All */
+  jQuery("body").delegate("a.select-none", "click", function(){
+	var checkboxes = jQuery(this).parent().siblings( '.comment-table' ).find( ':checkbox' );
+	jQuery(checkboxes).removeAttr( 'checked' );
+	return false;
   });
 
 	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){
