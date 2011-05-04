@@ -148,6 +148,7 @@ var anthologize = {
 	    clean_id = clean_id.replace("item-", "");
 	    clean_id = clean_id.replace("new-", "");
 	    clean_id = clean_id.replace("append-", "");
+	    clean_id = clean_id.replace("comment-", "");
     }
 	  return clean_id;
   },
@@ -188,7 +189,7 @@ var anthologize = {
 						var checked = '';
 					}
 					
-					var comment = '<tr><td class="checkbox"><input type="checkbox" name="comments[]" id="comment-' + commentid + '"' + checked + ' /></td>';
+					var comment = '<tr><td class="checkbox"><input type="checkbox" class="select-comment" name="comments[]" id="comment-' + commentid + '"' + checked + ' /></td>';
 					
 					comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
 	
@@ -219,7 +220,7 @@ var anthologize = {
 	});
 	
 	
-  },
+  }, 
   "updateAddedItem" : function (new_item_id){
 	  newItem = anthologize.newItem;
 	  newItem.attr("id", "item-" + new_item_id);
@@ -450,28 +451,24 @@ jQuery(document).ready(function(){
 	  anth_admin_ajax.merge_items({"project_id":project_id, "post_id":post_id, "child_post_ids":append_items, "merge_seq": merge_seq});
   });
 
-  jQuery("body").delegate("input.doSaveCommentsSetting", "click", function(){
-      jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
+  jQuery("body").delegate("input.select-comment", "change", function(){
+	jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
 
-	  var item = jQuery(this).closest("li.item");
-	  var comments_to_include = {};
-	  var i = 0;
-
-	  jQuery(".comment-table input:checkbox:checked").each(function(){
-		  comments_to_include[i] = jQuery(this).attr("id");
-		  i++;
-	  });
+	var comment_id = anthologize.cleanPostIds(jQuery(this).attr('id'));
+	var item = jQuery(this).closest("li.item");
+	var post_id = anthologize.cleanPostIds(item.attr("id"));
+	
+	var check_action = jQuery(this).is(':checked') ? 'add' : 'remove';
 	  
-	  var post_id = anthologize.cleanPostIds(item.attr("id"));
-	  
-	  jQuery.ajax({
+	jQuery.ajax({
 		url: ajaxurl,
 		type: 'POST',
 		dataType: 'json',
 		data: {
-		   action:'include_comments',
-		   post_id:post_id,
-		   comments:seq_stringify(comments_to_include)
+			action:'include_comments',
+			check_action:check_action,
+			post_id:post_id,
+			comment_id:comment_id
 		},
 		async:false,
 		timeout:20000,
@@ -481,10 +478,11 @@ jQuery(document).ready(function(){
 			return false;
 		},
 		error: function(){
-		
+			jQuery.unblockUI();
+			return false;	
 		}
 	});
-	  
+	
   });
   
   /* [more] unhides the '.hide' text and hides the [more] link */
@@ -510,7 +508,7 @@ jQuery(document).ready(function(){
 	return false;
   });
 
-  /* Select All */
+  /* Select None */
   jQuery("body").delegate("a.select-none", "click", function(){
 	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
 	jQuery(checkboxes).removeAttr( 'checked' );

@@ -205,7 +205,7 @@ class Anthologize_Loader {
 			'show_ui' => true,
 			'capability_type' => 'page',
 			'hierarchical' => true,
-			'supports' => array('title', 'editor', 'revisions'),
+			'supports' => array('title', 'editor', 'revisions', 'comments'),
 			'rewrite' => array("slug" => "library_item"), // Permalinks format
 		));
 

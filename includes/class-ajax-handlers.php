@@ -334,32 +334,73 @@ class Anthologize_Ajax_Handlers {
     	 * @since 0.6
     	 */
 	function include_comments() {
-		if ( !empty ( $_POST['comments'] ) )
-			$comments_to_include = json_decode( stripslashes( $_POST['comments'] ) );
+		if ( !empty ( $_POST['comment_id'] ) )
+			$comment_id = $_POST['comment_id'];
 		
 		if ( !empty( $_POST['post_id'] ) )
 			$post_id = $_POST['post_id'];
 		
-		if ( empty( $post_id ) || empty( $comments_to_include ) )
-			return; // better error reporting?
+		$action = !empty( $_POST['check_action'] ) && 'add' == $_POST['check_action'] ? 'add' : 'remove';
 		
-		// Comment names need to be exploded to get their ids
-		$comments = array();
-		foreach( $comments_to_include as $key => $c ) {
-			$comments[] = array_pop( explode( '-', $c ) );
+		if ( empty( $post_id ) || empty( $comment_id ) )
+			die(); // better error reporting?
+		
+		// Get the included comments for this item
+		if ( !$item_meta = get_post_meta( $post_id, 'anthologize_meta', true ) ) {
+			$item_meta = array();
 		}
 		
-		// Now save the comments to the item. It should already exist, but just in case,
-		// we are prepared to create it
-		if ( !$item_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
-			$item_meta = array();
+		// Just in case the included_comments array doesn't exist
+		if ( empty( $item_meta['included_comments'] ) || !is_array( $item_meta['included_comments'] ) ) {
+			$item_meta['included_comments'] = array();
+		}
 		
-		// Replace whatever is already there with the new data, and resave
-		$item_meta['included_comments'] = $comments;
+		// Our next action depends on $action
+		switch ( $action ) {
+			case 'add' :
+				// Get the comment from the original post
+				if ( !$comment = get_comment( $comment_id, ARRAY_A ) )
+					return false;
+
+				// We can pretty much reuse all the comment data, though we'll
+				// need to remove the ID so that we create a new comment and
+				// set it to a different post
+				unset( $comment['ID'] );
+				$comment['comment_post_ID'] = $post_id;
+				
+				// Insert the new comment
+				if ( !$new_comment_id = wp_insert_comment( $comment ) )
+					return false;
+				
+				// Add the original comment id to the index of included comments
+				// included_comments is structured as 
+				// [comment_copy_id] => original_comment_id 
+				if ( !in_array( $comment_id, $item_meta['included_comments'] ) ) {
+					$item_meta['included_comments'][$new_comment_id] = $comment_id;
+				}	
+				break;
+			
+			case 'remove' :
+			default :
+				// Just to be safe, we remove all instances of comments on the
+				// library item that correspond to the original comment in
+				// question
+				$comments_to_remove = array_keys( $item_meta['included_comments'], $comment_id );
+				
+				foreach( (array)$comments_to_remove as $ctr ) {
+					// We'll trash the comment instead of deleting it
+					wp_set_comment_status( $ctr, 'trash' );
+					unset( $item_meta['included_comments'][$ctr] );
+				}
+				
+				break;
+		}
+		
+		// Resave
 		update_post_meta( $post_id, 'anthologize_meta', $item_meta );
 		
 		// Return the comment array to show that we were successful
-		echo json_encode( $comments );
+		echo json_encode( array_values( $item_meta['included_comments'] ) );
 		die();
 	}
 }
