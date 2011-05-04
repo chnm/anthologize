@@ -380,8 +380,7 @@ jQuery(document).ready(function(){
 				'<td class="comment-content" scope="col">' + anth_strings.comment_content + '</td>' +
 				'<td class="comment-posted" scope="col">' + anth_strings.posted + '</td>' +			
 			'</tr></thead><tbody></tbody></table>' + 
-			'<input type="button" class="doSaveCommentsSetting" name="doSaveCommentsSetting" value="' + anth_strings.save + '" /> ' +
-		        '<a href="#cancel" class="cancelComments">' + anth_strings.cancel + '</a></div>';
+		        '<input type="button" class="cancelComments" value="' + anth_strings.done + '" /></div>';
 		  item.append(commentPanel);
 		  
 		  anthologize.getComments(item.attr("id"),item);
@@ -404,7 +403,7 @@ jQuery(document).ready(function(){
 	  anthologize.appending = false;
   });
 
-  jQuery("body").delegate("a.cancelComments", "click", function(){
+  jQuery("body").delegate("input.cancelComments", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 	  jQuery(this).parents("li.item").find("a.comments").removeClass("active-comments");
 	  var panel = jQuery("div.comments-panel");
