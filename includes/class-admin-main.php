@@ -193,17 +193,22 @@ class Anthologize_Admin_Main {
 		wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
 		
 		wp_localize_script( 'anthologize-sortlist-js', 'anth_strings', array(
+			'append'		=> __( 'Append', 'anthologize' ),
+			'cancel'		=> __( 'Cancel', 'anthologize' ),
 			'commenter'		=> __( 'Commenter', 'anthologize' ),
 			'comment_content'	=> __( 'Comment Content', 'anthologize' ),
-			'posted'		=> __( 'Posted', 'anthologize' ),
-			'save'			=> __( 'Save', 'anthologize' ),
+			'comments'		=> __( 'Comments', 'anthologize' ),
+			'comments_explain'	=> __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' ),
 			'done'			=> __( 'Done', 'anthologize' ),
+			'edit'			=> __( 'Edit', 'anthologize' ),
+			'less'			=> __( 'less', 'anthologize' ),
+			'more'			=> __( 'more', 'anthologize' ),
 			'no_comments'		=> __( 'This post has no comments associated with it.', 'anthologize' ),
+			'posted'		=> __( 'Posted', 'anthologize' ),
+			'remove'		=> __( 'Remove', 'anthologize' ),
+			'save'			=> __( 'Save', 'anthologize' ),
 			'select_all'		=> __( 'Select all', 'anthologize' ),
 			'select_none'		=> __( 'Select none', 'anthologize' ),
-			'more'			=> __( 'more', 'anthologize' ),
-			'less'			=> __( 'less', 'anthologize' ),
-			'comments_explain'	=> __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' )
 		) );
 	}
 	
