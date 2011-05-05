@@ -522,17 +522,24 @@ jQuery(document).ready(function(){
   jQuery("body").delegate("a.select-all", "click", function(){
 	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
 	jQuery(checkboxes).each(function(index, value){
-		jQuery(value).click();
-		jQuery(value).trigger('change');
+		var cb = jQuery(value);
+		if ( !jQuery(cb).is(':checked') ) {
+			jQuery(cb).click();
+			jQuery(cb).trigger('change');
+		}
 	});
-	return false;
   });
 
   /* Select None */
   jQuery("body").delegate("a.select-none", "click", function(){
 	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
-	jQuery(checkboxes).removeAttr( 'checked' );
-	return false;
+	jQuery(checkboxes).each(function(index, value){
+		var cb = jQuery(value);
+		if ( jQuery(cb).is(':checked') ) {
+			jQuery(cb).click();
+			jQuery(cb).trigger('change');
+		}
+	});
   });
 
 	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){
