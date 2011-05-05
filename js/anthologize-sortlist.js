@@ -404,7 +404,7 @@ jQuery(document).ready(function(){
 		  anthologize.getComments(item.attr("id"),item);
 		  
 	  }else{
-		  item.find("a.cancelComments").click();
+		  item.find("input.cancelComments").click();
 	  }
   });
 
