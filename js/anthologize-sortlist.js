@@ -391,7 +391,7 @@ jQuery(document).ready(function(){
 		var commentPanel = 
 			'<div class="comments-panel" style="display:none;">' +
 			'<p>' + anth_strings.comments_explain + 
-			' <span class="comment-select-links"><a href="#select-all" class="select-all">' + anth_strings.select_all + '</a> | <a href="#select-none" class="select-none">' + anth_strings.select_none + '</a></span></p>' +
+			' <br/><span class="comment-select-links"><a href="#select-all" class="select-all">' + anth_strings.select_all + '</a> | <a href="#select-none" class="select-none">' + anth_strings.select_none + '</a></span></p>' +
 			'<table class="comment-table"><thead><tr>' +
 				'<td class="comment-check" scope="col"></td>' +
 				'<td class="comment-commenter" scope="col">' + anth_strings.commenter + '</td>' +
@@ -521,7 +521,10 @@ jQuery(document).ready(function(){
   /* Select All */
   jQuery("body").delegate("a.select-all", "click", function(){
 	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
-	jQuery(checkboxes).attr( 'checked', 'checked' );
+	jQuery(checkboxes).each(function(index, value){
+		jQuery(value).click();
+		jQuery(value).trigger('change');
+	});
 	return false;
   });
 
