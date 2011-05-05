@@ -183,7 +183,7 @@ var anthologize = {
 		timeout:20000,
 		success: function(response){
 			if ( response.length == 0 ) {
-				jQuery(item).find('.comments-panel').html('<p>' + anth_strings.no_comments + '</p><br /><a href="#cancel" class="cancelComments">' + anth_strings.cancel + '</a>');
+				jQuery(item).find('.comments-panel').html('<p>' + anth_strings.no_comments + '</p><br /><input type="button" class="cancelComments" value="' + anth_strings.cancel + '" />');
 			} else {
 			
 				var w = jQuery(item).find('.comment-table tbody');
