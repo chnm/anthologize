@@ -227,7 +227,9 @@ class Anthologize_Ajax_Handlers {
 
 		$ret_ids = array();
 		foreach ($post_ids_array as $position => $post_id){
-			$post_id = str_replace("added-", "", $post_id);
+			$pidarray = explode( '-', $post_id );
+			$post_id = array_pop( $pidarray );
+			//$post_id = str_replace("added-", "", $post_id);
 			$insert_result = $this->project_organizer->insert_item( $project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array );
 			if (false === $insert_result) {
 				header('HTTP/1.1 500 Internal Server Error');
@@ -242,7 +244,8 @@ class Anthologize_Ajax_Handlers {
 				// Assemble the array to return
 				$ret_ids[] = array(
 					'post_id'	=> $insert_result,
-					'comment_count'	=> $comment_count			
+					'comment_count'	=> $comment_count,
+					'original_id'	=> $post_id
 				);
 			}
 		}

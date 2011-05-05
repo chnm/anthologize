@@ -63,36 +63,43 @@ var anthologize = {
     }
   },
   "addMultiItems": function(event, ui){
-    jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'},
-                    message: jQuery('#blockUISpinner').show() });
+	/*jQuery.blockUI({ 
+		css: {width: '12%',top:'40%',left:'45%'},
+		message: jQuery('#blockUISpinner').show() 
+	});*/
+	
+	var dest_seq = {};
+	var item_ids = [];
+	var project_id = anthologize.getProjectId();
+	var i = 0;
+	
+	ui.item.after(jQuery("#sidebar-posts li").clone().each(function(){
+		var orig_id = anthologize.cleanPostIds(jQuery(this).attr("id"));
+		var added_id = "item-" + orig_id;
+		jQuery(this).attr("id", added_id);
+		item_ids[i] = added_id;
+		i++;
+	}));
 
-		var dest_seq = {};
-		var item_ids = [];
-		var project_id = anthologize.getProjectId();
-	  var i = 0;
-		ui.item.after(jQuery("#sidebar-posts li").clone().each(function(){
-			var orig_id = anthologize.cleanPostIds(jQuery(this).attr("id"));
-			var added_id = "added-" + orig_id;
-			jQuery(this).attr("id", added_id);
-			item_ids[i] = added_id;
-			i++;
-		}));
-		var startOffset = ui.item.next();
-		var dest_id = ui.item.closest("li.part").attr("id");
-		ui.item.detach();
-		
-    offset = 1;
-    startOffset.siblings().andSelf().each(function(){
-      dest_seq[jQuery(this).attr("id")] = offset;
-			offset++;
-    });
-    var ajax_options = {
+	var startOffset = ui.item.next();
+	var dest_id = ui.item.closest("li.part").attr("id");
+	ui.item.detach();
+	
+	offset = 1;
+	startOffset.siblings().andSelf().each(function(){
+		dest_seq[jQuery(this).attr("id")] = offset;
+		offset++;
+	});
+
+	var ajax_options = {
 	    "project_id": project_id,
 	    "dest_id": this.cleanPostIds(dest_id),
 	    "item_ids": item_ids,
 	    "dest_seq":  dest_seq,
-    };
-    anth_admin_ajax.place_items(ajax_options);
+	};
+    
+    	anth_admin_ajax.place_items(ajax_options);
+	
 	},
   "didSortChange" : function(ajax_options){
     if (! (((ajax_options.src_id == ajax_options.dest_id) || 
@@ -221,9 +228,14 @@ var anthologize = {
 	
 	
   }, 
-  "updateAddedItem" : function (new_item_id,comment_count){
+  "updateAddedItem" : function (new_item_id,comment_count,original_id){
 	newItem = anthologize.newItem;
-	newItem.attr("id", "item-" + new_item_id);
+	
+	/* Multi-add items get their ids from the original post id, so we swap the selector here */
+	var id_selector = original_id !== false ? original_id : new_item_id;
+	
+	newItem.attr("id", "item-" + id_selector);
+	
 	newItem.children("h3").wrapInner('<span class="part-title" />');
 	
 	var buttons = 	'<div class="part-item-buttons">' +
@@ -235,6 +247,10 @@ var anthologize = {
 			'</div>';
 			
 	newItem.children("h3").append(buttons);
+	
+	/* Ugh. Now we switch back to the proper id, so the comments slider will work */
+	if ( original_id !== false )
+		newItem.attr("id", "item-" + new_item_id);
   },
   "updateAppendedItems" : function(appended_items){
 	  var appendedTo = jQuery(".active-append").closest("li.item");
