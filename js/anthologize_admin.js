@@ -37,7 +37,9 @@ var anth_admin_ajax = {
             timeout:20000,
             success: function(data){
                 if (config_obj.new_item == 'true') {
-                    anthologize.updateAddedItem(data.post_id);
+                	for (var i in data) {
+			    anthologize.updateAddedItem(data[i].post_id, data[i].comment_count);
+			}
                 }
                 anthologize.setAppendStatus();
                 jQuery.unblockUI();
@@ -61,10 +63,10 @@ var anth_admin_ajax = {
             async:false,
             timeout:20000,
             success: function(data){
-								for (var i in data.post_ids){
-									anthologize.newItem = jQuery('#added-' + i);
-                	anthologize.updateAddedItem(data.post_ids[i]);
-								}
+		for (var i in data){
+			anthologize.newItem = jQuery('#added-' + i);
+                	anthologize.updateAddedItem(data[i].post_id, data[i].comment_count);
+		}
                 anthologize.setAppendStatus();
                 jQuery.unblockUI();
             },

@@ -221,18 +221,20 @@ var anthologize = {
 	
 	
   }, 
-  "updateAddedItem" : function (new_item_id){
-	  newItem = anthologize.newItem;
-	  newItem.attr("id", "item-" + new_item_id);
-	  newItem.children("h3").wrapInner('<span class="part-title" />');
-
-	  var buttons = '<div class="part-item-buttons">' +
-							'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
-							'<a class="append" href="#append">Append | </a> ' +
-							'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
-							'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">Remove</a>' +
-						  '</div>';
-		newItem.children("h3").append(buttons);
+  "updateAddedItem" : function (new_item_id,comment_count){
+	newItem = anthologize.newItem;
+	newItem.attr("id", "item-" + new_item_id);
+	newItem.children("h3").wrapInner('<span class="part-title" />');
+	
+	var buttons = 	'<div class="part-item-buttons">' +
+			'<a href="post.php?post=' + new_item_id + '&amp;action=edit">Edit</a> | '+
+			'<a href="#comments" class="comments toggle">Comments (<span class="included-comment-count">0</span>/' + comment_count + ')</a><span class="comments-sep toggle-sep"> |</span> ' + 
+			'<a class="append" href="#append">Append | </a> ' +
+			'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
+			'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">Remove</a>' +
+			'</div>';
+			
+	newItem.children("h3").append(buttons);
   },
   "updateAppendedItems" : function(appended_items){
 	  var appendedTo = jQuery(".active-append").closest("li.item");

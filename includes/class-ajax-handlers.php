@@ -143,7 +143,12 @@ class Anthologize_Ajax_Handlers {
 		die();
 	}
 
-    function place_item() {
+    /**
+     * @todo Merge this with place_items. No reason for two functions
+     */
+    function place_item() {	
+    	global $wpdb;
+    	
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $dest_part_id = $_POST['dest_id'];
@@ -169,61 +174,83 @@ class Anthologize_Ajax_Handlers {
             }
         }
 
-        $insert_result = $this->project_organizer->insert_item($project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array);
+        $insert_result_id = $this->project_organizer->insert_item($project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array);
 
-        if (false === $insert_result) {
-            header('HTTP/1.1 500 Internal Server Error');
-            die();
+        if (false === $insert_result_id) {
+		header('HTTP/1.1 500 Internal Server Error');
+		die();
         } else {
-						if (true == $new_item){
-      				$dest_seq_array[$insert_result] = $dest_seq_array['new_new_new'];
-      				unset($dest_seq_array['new_new_new']);
-						}
-						$this->project_organizer->rearrange_items($dest_seq_array);
-            print "{\"post_id\":\"$insert_result\"}";
+		if (true == $new_item){
+      			$dest_seq_array[$insert_result] = $dest_seq_array['new_new_new'];
+      			unset($dest_seq_array['new_new_new']);
+		}
+		
+		$this->project_organizer->rearrange_items($dest_seq_array);
+				
+		// Get the comment count for the original item
+		$comment_count = $wpdb->get_var( $wpdb->prepare( "SELECT comment_count FROM $wpdb->posts WHERE ID = %s", $post_id ) );
+		
+		// Assemble the array to return
+		$insert_result = array(
+			array(
+				'post_id'	=> $insert_result_id,
+				'comment_count'	=> $comment_count
+			),
+		);
+		
+		echo json_encode( $insert_result );
         }
 
         die();
     }
 
-		function place_items() {
-			$project_id = $_POST['project_id'];
+	function place_items() {
+		global $wpdb;
+		
+		$project_id = $_POST['project_id'];
 
-			$post_ids = $_POST['post_ids'];
-			$post_ids = stripslashes($_POST['post_ids']);
- 			$post_ids_array = json_decode($post_ids, $assoc=true);
+		$post_ids = $_POST['post_ids'];
+		$post_ids = stripslashes($_POST['post_ids']);
+		$post_ids_array = json_decode($post_ids, $assoc=true);
 
-			$dest_part_id = $_POST['dest_id'];
-			$dest_seq = stripslashes($_POST['dest_seq']);
- 			$dest_seq_array = json_decode($dest_seq, $assoc=true);
-			if ( NULL === $dest_seq_array ) {
+		$dest_part_id = $_POST['dest_id'];
+		$dest_seq = stripslashes($_POST['dest_seq']);
+		$dest_seq_array = json_decode($dest_seq, $assoc=true);
+		if ( NULL === $dest_seq_array ) {
+			header('HTTP/1.1 500 Internal Server Error');
+			die();
+		}
+
+		$new_item = true;
+		$src_part_id = false;
+		$src_seq_array = false;
+
+		$ret_ids = array();
+		foreach ($post_ids_array as $position => $post_id){
+			$post_id = str_replace("added-", "", $post_id);
+			$insert_result = $this->project_organizer->insert_item( $project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array );
+			if (false === $insert_result) {
 				header('HTTP/1.1 500 Internal Server Error');
 				die();
+			}else{
+				$dest_seq_array[$insert_result] = $dest_seq_array[$post_id];
+				unset($dest_seq_array[$post_id]);
+				
+				// Get the comment count for the original item
+				$comment_count = $wpdb->get_var( $wpdb->prepare( "SELECT comment_count FROM $wpdb->posts WHERE ID = %s", $post_id ) );
+				
+				// Assemble the array to return
+				$ret_ids[] = array(
+					'post_id'	=> $insert_result,
+					'comment_count'	=> $comment_count			
+				);
 			}
-        
-
-			$new_item = true;
-			$src_part_id = false;
-			$src_seq_array = false;
-
-			$ret_ids = array();
-			foreach ($post_ids_array as $position => $post_id){
-				$post_id = str_replace("added-", "", $post_id);
-				$insert_result = $this->project_organizer->insert_item($project_id, $post_id, $new_item, $dest_part_id, $src_part_id, $dest_seq_array, $src_seq_array);
-				if (false === $insert_result) {
-					header('HTTP/1.1 500 Internal Server Error');
-					die();
-				}else{
-					$ret_ids[$post_id] = $insert_result;
-			    $dest_seq_array[$insert_result] = $dest_seq_array[$post_id];
-      		unset($dest_seq_array[$post_id]);
-				}
-			}
-			$this->project_organizer->rearrange_items($dest_seq_array);
-			
-			print json_encode(array("post_ids" => $ret_ids));
-			die();
-    }
+		}
+		$this->project_organizer->rearrange_items($dest_seq_array);
+		
+		print json_encode( $ret_ids );
+		die();
+	}
 
     function merge_items() {
         $project_id = $_POST['project_id'];
