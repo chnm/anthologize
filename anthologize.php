@@ -87,6 +87,11 @@ class Anthologize_Loader {
 
 	// Load constants
 	function load_constants() {
+		if ( !defined( 'ANTHOLOGIZE_INSTALL_PATH' ) )
+			define( 'ANTHOLOGIZE_INSTALL_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR );
+		
+		if ( !defined( 'ANTHOLOGIZE_INCLUDES_PATH' ) )
+			define( 'ANTHOLOGIZE_INCLUDES_PATH', ANTHOLOGIZE_INSTALL_PATH . 'includes' . DIRECTORY_SEPARATOR );
 
 		if ( !defined( 'ANTHOLOGIZE_TEIDOM_PATH' ) )
 			define( 'ANTHOLOGIZE_TEIDOM_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-dom.php' );

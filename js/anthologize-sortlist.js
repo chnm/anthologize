@@ -391,7 +391,7 @@ jQuery(document).ready(function(){
 		var commentPanel = 
 			'<div class="comments-panel" style="display:none;">' +
 			'<p>' + anth_strings.comments_explain + 
-			' <br/><span class="comment-select-links"><a href="#select-all" class="select-all">' + anth_strings.select_all + '</a> | <a href="#select-none" class="select-none">' + anth_strings.select_none + '</a></span></p>' +
+			' <br/><span class="comment-select-links"><a href="#select-all" class="select-multiple select-all">' + anth_strings.select_all + '</a> | <a href="#select-none" class="select-multiple select-none">' + anth_strings.select_none + '</a></span></p>' +
 			'<table class="comment-table"><thead><tr>' +
 				'<td class="comment-check" scope="col"></td>' +
 				'<td class="comment-commenter" scope="col">' + anth_strings.commenter + '</td>' +
@@ -518,28 +518,37 @@ jQuery(document).ready(function(){
   	return false;
   });
   
-  /* Select All */
-  jQuery("body").delegate("a.select-all", "click", function(){
-	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
-	jQuery(checkboxes).each(function(index, value){
-		var cb = jQuery(value);
-		if ( !jQuery(cb).is(':checked') ) {
-			jQuery(cb).click();
-			jQuery(cb).trigger('change');
+  /* Select All / Select None */
+  jQuery("body").delegate("a.select-multiple", "click", function(){  
+  	jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
+  	
+  	var item = jQuery(this).closest("li.item");
+	var item_id = anthologize.cleanPostIds(item.attr("id"));
+	
+	var check_action = jQuery(this).hasClass('select-none') ? 'remove' : 'add';
+	
+	jQuery.ajax({
+		url: ajaxurl,
+		type: 'POST',
+		dataType: 'json',
+		data: {
+		   action:'include_all_comments',
+		   check_action:check_action,
+		   post_id:item_id
+		},
+		async:false,
+		timeout:20000,
+		success: function(response){
+			var checkboxes = jQuery(item).find( ':checkbox' );
+			var cvalue = check_action == 'remove' ? '' : 'checked';
+			jQuery(checkboxes).attr('checked', cvalue);
+			jQuery(item).find('.included-comment-count').html(response.length);
+			jQuery.unblockUI();
+		},
+		error: function(){
+			ajax_error_refresh();
 		}
-	});
-  });
-
-  /* Select None */
-  jQuery("body").delegate("a.select-none", "click", function(){
-	var checkboxes = jQuery(this).parent().parent().siblings( '.comment-table' ).find( ':checkbox' );
-	jQuery(checkboxes).each(function(index, value){
-		var cb = jQuery(value);
-		if ( jQuery(cb).is(':checked') ) {
-			jQuery(cb).click();
-			jQuery(cb).trigger('change');
-		}
-	});
+	});	
   });
 
 	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){

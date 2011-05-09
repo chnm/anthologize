@@ -17,6 +17,7 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_get_project_meta', array( $this, 'fetch_project_meta' ) );
         add_action( 'wp_ajax_get_item_comments', array( $this, 'get_item_comments' ) );
         add_action( 'wp_ajax_include_comments', array( $this, 'include_comments' ) );
+        add_action( 'wp_ajax_include_all_comments', array( $this, 'include_all_comments' ) );
     }
 
     function __construct() {
@@ -375,62 +376,67 @@ class Anthologize_Ajax_Handlers {
 		if ( empty( $post_id ) || empty( $comment_id ) )
 			die(); // better error reporting?
 		
-		// Get the included comments for this item
-		if ( !$item_meta = get_post_meta( $post_id, 'anthologize_meta', true ) ) {
-			$item_meta = array();
-		}
-		
-		// Just in case the included_comments array doesn't exist
-		if ( empty( $item_meta['included_comments'] ) || !is_array( $item_meta['included_comments'] ) ) {
-			$item_meta['included_comments'] = array();
-		}
+		require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-comments.php' );		
+		$comments = new Anthologize_Comments( $post_id );
 		
 		// Our next action depends on $action
 		switch ( $action ) {
 			case 'add' :
-				// Get the comment from the original post
-				if ( !$comment = get_comment( $comment_id, ARRAY_A ) )
-					return false;
-
-				// We can pretty much reuse all the comment data, though we'll
-				// need to remove the ID so that we create a new comment and
-				// set it to a different post
-				unset( $comment['ID'] );
-				$comment['comment_post_ID'] = $post_id;
-				
-				// Insert the new comment
-				if ( !$new_comment_id = wp_insert_comment( $comment ) )
-					return false;
-				
-				// Add the original comment id to the index of included comments
-				// included_comments is structured as 
-				// [comment_copy_id] => original_comment_id 
-				if ( !in_array( $comment_id, $item_meta['included_comments'] ) ) {
-					$item_meta['included_comments'][$new_comment_id] = $comment_id;
-				}	
+				$comments->import_comment( $comment_id );
 				break;
 			
 			case 'remove' :
 			default :
-				// Just to be safe, we remove all instances of comments on the
-				// library item that correspond to the original comment in
-				// question
-				$comments_to_remove = array_keys( $item_meta['included_comments'], $comment_id );
-				
-				foreach( (array)$comments_to_remove as $ctr ) {
-					// We'll trash the comment instead of deleting it
-					wp_set_comment_status( $ctr, 'trash' );
-					unset( $item_meta['included_comments'][$ctr] );
-				}
-				
+				$comments->remove_comment( $comment_id );
 				break;
 		}
 		
-		// Resave
-		update_post_meta( $post_id, 'anthologize_meta', $item_meta );
+		// Resave the meta
+		$comments->update_included_comments();
 		
 		// Return the comment array to show that we were successful
-		echo json_encode( array_values( $item_meta['included_comments'] ) );
+		echo json_encode( array_values( $comments->included_comments ) );
+		die();
+	}
+	
+	/**
+    	 * The handler for the include_comments ajax action
+    	 *
+    	 * Called when the Save button is clicked on the Comments slider of the project organizer
+    	 * screen. Saves the submitted comments to the anthologize_meta postmeta.
+    	 *
+    	 * @package Anthologize
+    	 * @since 0.6
+    	 */
+	function include_all_comments() {
+		if ( !empty( $_POST['post_id'] ) )
+			$post_id = $_POST['post_id'];
+		
+		$action = !empty( $_POST['check_action'] ) && 'remove' == $_POST['check_action'] ? 'remove' : 'add';
+		
+		if ( empty( $post_id ) || empty( $action ) )
+			die(); // better error reporting?
+		
+		require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-comments.php' );		
+		$comments = new Anthologize_Comments( $post_id );
+		
+		// Our next action depends on $action
+		switch ( $action ) {
+			case 'add' :
+				$comments->import_all_comments();
+				break;
+			
+			case 'remove' :
+			default :
+				$comments->remove_all_comments();
+				break;
+		}
+		
+		// Resave the meta
+		$comments->update_included_comments();
+		
+		// Return the comment array to show that we were successful
+		echo json_encode( array_values( $comments->included_comments ) );
 		die();
 	}
 }
