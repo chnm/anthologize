@@ -651,7 +651,7 @@ class TeiDom {
 		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
 		//conceal the Warning about bad html with @
 		//loadHTML adds head and body tags silently
-		@$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><$element xmlns='http://www.w3.org/1999/xhtml'>$content</$element>" );
+		@$tmpHTML->loadHTML("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head><body><$element xmlns='http://www.w3.org/1999/xhtml'>$content</$element></body></html>" );
 		if($this->checkImgSrcs) {
 			$this->checkImageSources($tmpHTML);
 		}
