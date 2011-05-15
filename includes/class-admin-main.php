@@ -622,7 +622,7 @@ class Anthologize_Admin_Main {
         	<label>Author Name <span>(optional)</span></label>
 
         	<p>
-        		<textarea name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo $author_name ?></textarea>
+        		<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo $author_name ?></textarea>
         	</p>
 
         	<?php /* Display content for imported feed, if there is any */ ?>
@@ -666,22 +666,16 @@ class Anthologize_Admin_Main {
 
         	<?php endif; ?>
 
-			<?php if ( isset( $_GET['return_to_project'] ) ) : ?>
-				<input type="hidden" name="return_to_project" value="<?php echo $_GET['return_to_project'] ?>" />
-			<?php endif; ?>
+		<?php if ( isset( $_GET['return_to_project'] ) ) : ?>
+			<input type="hidden" name="return_to_project" value="<?php echo $_GET['return_to_project'] ?>" />
+		<?php endif; ?>
 
-        	<?php if ( isset( $_GET['project_id'] ) ) : ?>
-        		<input type="hidden" name="parent_id" value="<?php echo $_GET['project_id'] ?>">
-            <?php else : ?>
-                 <input type="hidden" name="parent_id" value="<?php echo $post->post_parent; ?>">
-            <?php endif; ?>
-
-            <?php if ( isset( $_GET['new_part'] ) ) : ?>
-            	<input type="hidden" name="new_part" value="1" />
-            <?php endif; ?>
-
-            <input type="hidden" name="menu_order" value="<?php echo $post->menu_order; ?>">
-            <input type="hidden" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
+		<?php if ( isset( $_GET['new_part'] ) ) : ?>
+			<input type="hidden" id="new_part" name="new_part" value="1" />
+		<?php endif; ?>
+		
+		<input type="hidden" id="menu_order" name="menu_order" value="<?php echo $post->menu_order; ?>">
+		<input class="tags-input" type="hidden" id="anthologize_noncename" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
         </div>
     <?php
     }
@@ -766,7 +760,7 @@ class Anthologize_Admin_Main {
 				 * options in the installer.
 				 */
 				?>
-				<label><input type='checkbox' name='anth_site_settings[forbid_per_blog_caps]' value='1' <?php if ( empty( $site_settings['forbid_per_blog_caps'] ) ) : ?>checked="checked"<?php endif ?>> <?php _e( 'When unchecked, access to Anthologize will be limited to the default role you select below.', 'anthologize' ) ?></label>
+				<label><input type="checkbox" class="tags-input" name="anth_site_settings[forbid_per_blog_caps]" value="1" <?php if ( empty( $site_settings['forbid_per_blog_caps'] ) ) : ?>checked="checked"<?php endif ?>> <?php _e( 'When unchecked, access to Anthologize will be limited to the default role you select below.', 'anthologize' ) ?></label>
 			
 				</td>
 			</tr>
@@ -776,7 +770,7 @@ class Anthologize_Admin_Main {
 				<td>
 				
 				<label>
-					<select name="anth_site_settings[minimum_cap]">
+					<select class="tags-input" name="anth_site_settings[minimum_cap]">
 						<option<?php selected( $minimum_cap, 'manage_network' ) ?> value="manage_network"><?php _e( 'Network Admin', 'anthologize' ) ?></option>
 				
 						<option<?php selected( $minimum_cap, 'manage_options' ) ?> value="manage_options"><?php _e( 'Administrator', 'anthologize' ) ?></option>
