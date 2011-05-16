@@ -44,6 +44,12 @@ function do_filter(){
 jQuery(document).ready( function() {
 	var j = jQuery;
 
+	// Put the proper selector on the parent_id box to ensure that it doesn't get wiped on
+        // autosave
+        if (!j('input#parent_id').length) {
+                j('input[name="parent_id"]').first().attr('id', 'parent_id');
+        }
+	
 	// Set filter based on last visit
 	var cfilter = j.cookie('anth-filter');
 	
@@ -180,3 +186,4 @@ jQuery(document).ready( function() {
 	});
 
 });
+
