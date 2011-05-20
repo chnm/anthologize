@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_045.php
 // Begin       : 2008-03-04
-// Last Update : 2010-08-08
+// Last Update : 2011-04-15
 //
 // Description : Example 045 for TCPDF class
 //               Bookmarks and Table of Content
@@ -24,9 +24,6 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Bookmarks and Table of Content
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
  */
 
@@ -76,31 +73,31 @@ $pdf->SetFont('times', 'B', 20);
 $pdf->AddPage();
 
 // set a bookmark for the current position
-$pdf->Bookmark('Chapter 1', 0, 0);
+$pdf->Bookmark('Chapter 1', 0, 0, '', 'B', array(0,64,128));
 
 // print a line using Cell()
 $pdf->Cell(0, 10, 'Chapter 1', 0, 1, 'L');
 
 $pdf->AddPage();
-$pdf->Bookmark('Paragraph 1.1', 1, 0);
+$pdf->Bookmark('Paragraph 1.1', 1, 0, '', '', array(128,0,0));
 $pdf->Cell(0, 10, 'Paragraph 1.1', 0, 1, 'L');
 
 $pdf->AddPage();
-$pdf->Bookmark('Paragraph 1.2', 1, 0);
+$pdf->Bookmark('Paragraph 1.2', 1, 0, '', '', array(128,0,0));
 $pdf->Cell(0, 10, 'Paragraph 1.2', 0, 1, 'L');
 
 $pdf->AddPage();
-$pdf->Bookmark('Sub-Paragraph 1.2.1', 2, 0);
+$pdf->Bookmark('Sub-Paragraph 1.2.1', 2, 0, '', 'I', array(0,128,0));
 $pdf->Cell(0, 10, 'Sub-Paragraph 1.2.1', 0, 1, 'L');
 
 $pdf->AddPage();
-$pdf->Bookmark('Paragraph 1.3', 1, 0);
+$pdf->Bookmark('Paragraph 1.3', 1, 0, '', '', array(128,0,0));
 $pdf->Cell(0, 10, 'Paragraph 1.3', 0, 1, 'L');
 
 // add some pages and bookmarks
 for ($i = 2; $i < 12; $i++) {
 	$pdf->AddPage();
-	$pdf->Bookmark('Chapter '.$i, 0, 0);
+	$pdf->Bookmark('Chapter '.$i, 0, 0, '', 'B', array(0,64,128));
 	$pdf->Cell(0, 10, 'Chapter '.$i, 0, 1, 'L');
 }
 
@@ -118,7 +115,7 @@ $pdf->SetFont('dejavusans', '', 12);
 
 // add a simple Table Of Content at first page
 // (check the example n. 59 for the HTML version)
-$pdf->addTOC(1, 'courier', '.', 'INDEX');
+$pdf->addTOC(1, 'courier', '.', 'INDEX', 'B', array(128,0,0));
 
 // end of TOC page
 $pdf->endTOCPage();
@@ -129,5 +126,5 @@ $pdf->endTOCPage();
 $pdf->Output('example_045.pdf', 'I');
 
 //============================================================+
-// END OF FILE                                                
+// END OF FILE
 //============================================================+

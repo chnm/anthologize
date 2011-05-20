@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
-// Last Update : 2010-08-19
+// Last Update : 2010-04-28
 //
 // Description : Configuration file for TCPDF.
 //
@@ -66,7 +66,9 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 			$k_path_url = 'http://';
 		}
 		$k_path_url .= $_SERVER['HTTP_HOST'];
-		$k_path_url .= str_replace( '\\', '/', substr(K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']) - 1)));
+
+		// SRAMSAY - hack to create correct URLs.
+		$k_path_url .= get_bloginfo( 'wpurl' );
 	}
 
 	/**
@@ -75,7 +77,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	 */
 	define ('K_PATH_URL', $k_path_url);
 
-	/**
+ 	/**
 	 * path for PDF fonts
 	 * use K_PATH_MAIN.'fonts/old/' for old non-UTF8 fonts
 	 */
@@ -241,3 +243,4 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 //============================================================+
 // END OF FILE
 //============================================================+
+?>

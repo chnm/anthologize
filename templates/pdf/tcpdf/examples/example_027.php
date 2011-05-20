@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_027.php
 // Begin       : 2008-03-04
-// Last Update : 2010-10-01
+// Last Update : 2011-05-12
 //
 // Description : Example 027 for TCPDF class
 //               1D Barcodes
@@ -24,9 +24,6 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: 1D Barcodes.
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
  */
 
@@ -86,7 +83,8 @@ $style = array(
 	'fitwidth' => true,
 	'cellfitalign' => '',
 	'border' => true,
-	'padding' => 'auto',
+	'hpadding' => 'auto',
+	'vpadding' => 'auto',
 	'fgcolor' => array(0,0,0),
 	'bgcolor' => false, //array(255,255,255),
 	'text' => true,
@@ -153,6 +151,12 @@ $pdf->write1DBarcode('1234567', 'I25+', '', '', '', 18, 0.4, $style, 'N');
 // add a page ----------
 $pdf->AddPage();
 
+// CODE 128 AUTO
+$pdf->Cell(0, 0, 'CODE 128 AUTO', 0, 1);
+$pdf->write1DBarcode('CODE 128 AUTO', 'C128', '', '', '', 18, 0.4, $style, 'N');
+
+$pdf->Ln();
+
 // CODE 128 A
 $pdf->Cell(0, 0, 'CODE 128 A', 0, 1);
 $pdf->write1DBarcode('CODE 128 A', 'C128A', '', '', '', 18, 0.4, $style, 'N');
@@ -193,7 +197,8 @@ $pdf->Ln();
 $pdf->Cell(0, 0, 'UPC-E', 0, 1);
 $pdf->write1DBarcode('04210000526', 'UPCE', '', '', '', 18, 0.4, $style, 'N');
 
-$pdf->Ln();
+// add a page ----------
+$pdf->AddPage();
 
 // 5-Digits UPC-Based Extention
 $pdf->Cell(0, 0, '5-Digits UPC-Based Extention', 0, 1);
@@ -205,8 +210,7 @@ $pdf->Ln();
 $pdf->Cell(0, 0, '2-Digits UPC-Based Extention', 0, 1);
 $pdf->write1DBarcode('34', 'EAN2', '', '', '', 18, 0.4, $style, 'N');
 
-// add a page ----------
-$pdf->AddPage();
+$pdf->Ln();
 
 // MSI
 $pdf->Cell(0, 0, 'MSI', 0, 1);
@@ -379,7 +383,8 @@ $style = array(
 	'fitwidth' => false,
 	'cellfitalign' => '',
 	'border' => true,
-	'padding' => 'auto',
+	'hpadding' => 'auto',
+	'vpadding' => 'auto',
 	'fgcolor' => array(0,0,128),
 	'bgcolor' => array(255,255,128),
 	'text' => true,

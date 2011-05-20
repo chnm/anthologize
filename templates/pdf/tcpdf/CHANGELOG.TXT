@@ -1,4 +1,263 @@
-5.9.006 (2010-10-16)
+5.9.081 (2011-05-18)
+	- Method resetHeaderTemplate() was added to reset the xobject template used by Header() method.
+	- Method setHeaderTemplateAutoreset() was added to automatically reset the xobject template used by Header() method at each page.
+
+5.9.080 (2011-05-17)
+	- A problem related to file path calculation for images was fixed.
+	- A problem related to unsupressed getimagesize() error was fixed.
+
+5.9.079 (2011-05-16)
+	- Footer() method was changed to use C128 barcode as default (instead of the previous C128B).
+
+5.9.078 (2011-05-12)
+	- Bug item #3300878 "wrong rendering for html bullet list in some case" was fixed.
+	- Bug item #3301017 "Emphasized vs. font-weight" was fixed.
+	- Barcode Code 128 was improved to include AUTO mode (automatically switch between A, B and C modes).
+	- Examples n. 27 and 49 were updated.
+
+5.9.077 (2011-05-07)
+	- Bug item #3298591 "error code93" was fixed.
+	- SetLineStyle() function was improved.
+
+5.9.076 (2011-05-06)
+	- Bug item #3298264 "codebar 93 error" was fixed.
+
+5.9.075 (2011-05-02)
+	- Table header alignment when using WriteHTMLCell() or MultiCell() was fixed.
+
+5.9.074 (2011-04-28)
+	- Bug item #3294306 "CSS classes not work in <thead> table section" was fixed.
+
+5.9.073 (2011-04-27)
+	- A bug related to character entities on HTML cells was fixed.
+
+5.9.072 (2011-04-26)
+	- Method resetColumns() was added to remove multiple columns and reset page margins (example n. 10 was updated).
+
+5.9.071 (2011-04-19)
+	- Bug #3288574 "<br/> trouble" was fixed.
+
+5.9.069 (2011-04-19)
+	- Bug #3288763 "HTML-Table: non-breaking table rows: Bug" was fixed.
+
+5.9.068 (2011-04-15)
+	- Bookmark, addTOC and addHTMLTOC methods were improved to include font style and color (Examples 15, 49 and 59 were updated).
+	- Default $_SERVER['DOCUMENT_ROOT'] value on tcpdf_config.php file was changed.
+
+5.9.067 (2011-04-10)
+	- Performances were drastically improved (PDF documents are now created more quickly).
+
+5.9.066 (2011-04-09)
+	- A bug related to digital signature + encryption was fixed.
+	- A bug related to encryption + xobject templates was fixed.
+
+5.9.065 (2011-04-08)
+	- Bug item #3280512 "Text encoding iso-8859-2 crashes" was fixed.
+
+5.9.064 (2011-04-05)
+	- A bug related to character entities on HTML cells was fixed.
+
+5.9.063 (2011-04-01)
+	- Bug item #3267235 "WriteHTML() and image that doesn't fit on the page" was fixed.
+
+5.9.062 (2011-03-23)
+	- Bug item #3232650 "Using Write if there are pageRegions active creates error" was fixed.
+	- Bug item #3221891 "text input borders" was fixed.
+	- Bug item #3228958 "Adobe Reader 9.4.2 crash" was fixed.
+
+5.9.061 (2011-03-15)
+	- Bug item #3213488 "wrong function call in function Write" was fixed.
+	- Bug item #3203007 "list element with black background" was fixed.
+
+5.9.060 (2011-03-08)
+	- addTOC() method was fixed for text alignment problems.
+
+5.9.059 (2011-02-27)
+	- Default Header() method was improved to reduce document size.
+
+5.9.058 (2011-02-25)
+	- Image() method was improved to cache images with transparency layers (thanks to Korneliusz Jarzębski for reporting this problem).
+
+5.9.057 (2011-02-24)
+	- A problem with image caching system was fixed (thanks to Korneliusz Jarzębski for reporting this problem).
+
+5.9.056 (2011-02-22)
+	- A bug on fixHTMLCode() method was fixed.
+	- Automatic line break for HTML was fixed.
+
+5.9.055 (2011-02-17)
+	- Another bug related to HTML table page break was fixed.
+
+5.9.054 (2011-02-16)
+	- A bug related to HTML table page break was fixed.
+
+5.9.053 (2011-02-16)
+	- Support for HTML attribute display="none" was added.
+
+5.9.052 (2011-02-15)
+	- A bug related to HTML automatic newlines was fixed.
+
+5.9.051 (2011-02-12)
+	- "Commas at beginning of new lines" problem was fixed.
+
+5.9.050 (2011-02-11)
+	- Bug #3177606 "SVG Bar chart error" was fixed.
+
+5.9.049 (2011-02-03)
+	- Bug #3170777 "TCPDF creates a new page after a single line in writeHTML" was fixed.
+
+5.9.048 (2011-02-02)
+	- No changes. Just released to override previous release that was not uploaded correctly.
+
+5.9.047 (2011-01-28)
+	- Bug #3167115 "PDF error in <table> (example 48)" was fixed (was introduced in 5.8.046).
+
+5.9.046 (2011-01-18)
+	- PDF view/print layers are now automatically turned off if not used (see setVisibility() method).
+
+5.9.045 (2011-01-17)
+	- HTML list support were improved.
+
+5.9.044 (2011-01-15)
+	- Bug #3158422 "writeHTMLCell Loop" was fixed.
+	- Some HTML image alignment problems were fixed.
+
+5.9.043 (2011-01-14)
+	- Bug #3158178 "PHP Notice" was fixed.
+	- Bug #3158193 "Endless loop in writeHTML" was fixed.
+	- Bug #3157764 "SVG Pie chart incorrectly rendered2".
+
+5.9.042 (2011-01-14)
+	- Some problems of the PHP4 version were fixed.
+
+5.9.041 (2011-01-13)
+	- A problem with SVG elliptical arc path was fixed (ref. bug #3156574).
+	- A problem related to font weight on HTML table headers was fixed.
+
+5.9.040 (2011-01-12)
+	- A bug related to empty pages after table was fixed.
+
+5.9.039 (2011-01-12)
+	- Bug item #3155759 "openssl_random_pseudo_bytes() slow under Windows" was fixed.
+
+5.9.038 (2011-01-11)
+	- Minor bugs were fixed.
+
+5.9.037 (2011-01-09)
+	- An alignment problem for HTML texts was fixed.
+
+5.9.036 (2011-01-07)
+	- A bug related to HTML tables on header was fixed.
+
+5.9.035 (2011-01-03)
+	- A problem related to HTML table border alignment was fixed.
+	- Bug #2996366 "FastCGI and Header Problems" was fixed.
+
+5.9.034 (2010-12-19)
+	- DejaVu and GNU Free fonts were updated.
+
+5.9.033 (2010-12-18)
+	- Source code documetnation was improved.
+
+5.9.032 (2010-12-18)
+	- Default font stretching and spacing values are now inherited by HTML methods.
+
+5.9.031 (2010-12-16)
+	- Source code documentation errors were fixed.
+
+5.9.030 (2010-12-16)
+	- Several source code documentation errors were fixed.
+	- Source code style was changed for Doxygen.
+	- Source code documentation was moved online to http://www.tcpdf.org
+
+5.9.029 (2010-12-04)
+	- The $fitbox parameter on Image() method was extended to specify image alignment inside the box (check the example n. 9).
+
+5.9.028 (2010-12-03)
+	- Font utils makefont.php and makeallttffonts.php were updated.
+
+5.9.027 (2010-12-01)
+	- Spot Colors are now better integrated with HTML mode.
+	- Method SetDocInfoUnicode() was added to turn on/off Unicode mode for document information dictionary (meta tags) - check the example n. 19.
+
+5.9.026 (2010-12-01)
+	- A problem with mixed text directions on HTML was fixed.
+
+5.9.025 (2010-12-01)
+	- The AddSpotColor() now automatically fills the spotcolor array (defined on spotcolors.php file).
+
+5.9.024 (2010-11-30)
+	- Bug item #3123612 "SVG not use gradientTransform in percentage mode" was fixed.
+
+5.9.023 (2010-11-25)
+	- A potential bug on SVG transcoder was fixed.
+
+5.9.022 (2010-11-21)
+	- Method ImageEPS includes support for EPS/AI Spot colors.
+	- Method ImageEPS includes a new parameter $fixoutvals to remove values outside the bounding box.
+
+5.9.021 (2010-11-20)
+	- Support for custom bullet points images was added (check the example n.6)
+	- Examples n. 6 and 61 were update (check the comments inside).
+
+5.9.020 (2010-11-19)
+	- A problem related to additional page when using multicolumn mode was fixed.
+
+5.9.019 (2010-11-19)
+	- An SVG bug was fixed.
+	- ImageSVG() and ImageEPS() methods now accepts image data streams (put the string on the $file parameter preceded by '@' character).
+	- Option 'E' was added to the $dest parameter of Output() method to return the document as base64 mime multi-part email attachment (RFC 2045).
+
+5.9.018 (2010-11-19)
+	- An SVG bug was fixed.
+
+5.9.017 (2010-11-16)
+	- Tagline color was set to transparent.
+	- The method fixHTMLCode() was added to automatically clean up HTML code (requires HTML Tidy).
+
+5.9.016 (2010-11-16)
+	- Bug item #3109705 "list item page break hanging bullet" was fixed.
+
+5.9.015 (2010-11-16)
+	- Bug item affecting QRCode was fixed.
+	- Some bugs affecting HTML lists were fixed.
+	- ImageSVG() and fitBlock() methods were improved to handle some SVG problems.
+	- Some problems with PHP4 compatibility were fixed.
+
+5.9.014 (2010-11-15)
+	- Bug item #3109464 "QRCode error" was fixed.
+
+5.9.013 (2010-11-15)
+	- Bug item #3109257 "Problem with interlaced GIFs and PNGs" was fixed.
+	- Image function now accepts image data streams (check example n. 9).
+
+5.9.012 (2010-11-12)
+	- Method getTCPDFVersion() was added.
+	- PDF_PRODUCER constant was removed.
+	- Method convertHTMLColorToDec() was improved.
+	- HTML colors now support spot color names defined on the new spotcolors.php file.
+	- The default method Header() was improved to support SVG and EPS/AI images.
+	- A bug on SVG importer was fixed.
+
+5.9.011 (2010-11-02)
+	- Bug item #3101486 "Bug Fix for image loading" was fixed.
+
+5.9.010 (2010-10-27)
+	- Support for CSS properties 'border-spacing' and 'padding' for tables were added.
+	- Several language files were added.
+
+5.9.009 (2010-10-21)
+	- HTML text alignment was improved to include the case of RTL text on LTR direction and LTR text on RTL direction.
+
+5.9.008 (2010-10-21)
+	- Bug item #3091502 "Bookmark oddity" was fixed.
+	- HTML internal links now accepts page number and Y position.
+	- The method write1DBarcode() was improved to accept separate horizontal and vertical padding (see example n. 27).
+
+5.9.007 (2010-10-20)
+	- Method adjustCellPadding() was fixed to handle bad input.
+
+5.9.006 (2010-10-19)
 	- Support for AES 256 bit encryption was added (see example n. 16).
 	- Method getNumLines() was fixed for the empty string case.
 
@@ -186,7 +445,7 @@
 	- CSS borders are now supported for HTML tables and other block tags (see example n. 61);
 	- Cell borders were improved (see example n. 57);
 	- Minor bugs were fixed.
-encry
+
 ------------------------------------------------------------
 
 5.6.000 (2010-07-31)

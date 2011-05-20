@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_010.php
 // Begin       : 2008-03-04
-// Last Update : 2010-08-11
+// Last Update : 2011-04-26
 //
 // Description : Example 010 for TCPDF class
 //               Text on multiple columns
@@ -24,9 +24,6 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Text on multiple columns
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
  */
 
@@ -41,19 +38,17 @@ class MC_TCPDF extends TCPDF {
 
 	/**
 	 * Print chapter
-	 * @param int $num chapter number
-	 * @param string $title chapter title
-	 * @param string $file name of the file containing the chapter body
-	 * @param boolean $mode if true the chapter body is in HTML, otherwise in simple text.
-	 * @access public
+	 * @param $num (int) chapter number
+	 * @param $title (string) chapter title
+	 * @param $file (string) name of the file containing the chapter body
+	 * @param $mode (boolean) if true the chapter body is in HTML, otherwise in simple text.
+	 * @public
 	 */
 	public function PrintChapter($num, $title, $file, $mode=false) {
-		// disable existing columns
-		$this->setEqualColumns();
 		// add a new page
 		$this->AddPage();
-		// reset margins
-		$this->selectColumn();
+		// disable existing columns
+		$this->resetColumns();
 		// print chapter title
 		$this->ChapterTitle($num, $title);
 		// set columns
@@ -64,9 +59,9 @@ class MC_TCPDF extends TCPDF {
 
 	/**
 	 * Set chapter title
-	 * @param int $num chapter number
-	 * @param string $title chapter title
-	 * @access public
+	 * @param $num (int) chapter number
+	 * @param $title (string) chapter title
+	 * @public
 	 */
 	public function ChapterTitle($num, $title) {
 		$this->SetFont('helvetica', '', 14);
@@ -77,9 +72,9 @@ class MC_TCPDF extends TCPDF {
 
 	/**
 	 * Print chapter body
-	 * @param string $file name of the file containing the chapter body
-	 * @param boolean $mode if true the chapter body is in HTML, otherwise in simple text.
-	 * @access public
+	 * @param $file (string) name of the file containing the chapter body
+	 * @param $mode (boolean) if true the chapter body is in HTML, otherwise in simple text.
+	 * @public
 	 */
 	public function ChapterBody($file, $mode=false) {
 		$this->selectColumn();

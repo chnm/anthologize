@@ -24,9 +24,6 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Non unicode with alternative config file
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
  */
 
@@ -41,9 +38,12 @@ require_once('../tcpdf.php');
 // create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, false, 'ISO-8859-1', false);
 
+// Set document information dictionary in unicode mode
+$pdf->SetDocInfoUnicode(true);
+
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetAuthor('Nicola Asuni [€]');
 $pdf->SetTitle('TCPDF Example 019');
 $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
@@ -77,7 +77,7 @@ $lg['a_meta_language'] = 'en';
 $lg['w_page'] = 'page';
 
 //set some language-dependent strings
-$pdf->setLanguageArray($lg); 
+$pdf->setLanguageArray($lg);
 
 // ---------------------------------------------------------
 
@@ -102,5 +102,5 @@ $pdf->MultiCell(0, 0, $txt."\n", 1, 'J', 1, 1, '', '', true, 0, false, true, 0);
 $pdf->Output('example_019.pdf', 'I');
 
 //============================================================+
-// END OF FILE                                                
+// END OF FILE
 //============================================================+

@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_006.php
 // Begin       : 2008-03-04
-// Last Update : 2010-10-18
+// Last Update : 2010-11-20
 //
 // Description : Example 006 for TCPDF class
 //               WriteHTML and RTL support
@@ -24,9 +24,6 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: WriteHTML and RTL support
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
  */
 
@@ -295,6 +292,26 @@ int main() {
 <div style="background-color:#880000;color:white;">DIV LEVEL 1<div style="background-color:#008800;color:white;">DIV LEVEL 2</div>DIV LEVEL 1</div>
 <br />
 <span style="background-color:#880000;color:white;">SPAN LEVEL 1 <span style="background-color:#008800;color:white;">SPAN LEVEL 2</span> SPAN LEVEL 1</span>
+EOF;
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// test custom bullet points for list
+
+// add a page
+$pdf->AddPage();
+
+$html = <<<EOF
+<h1>Test custom bullet image for list items</h1>
+<ul style="font-size:14pt;list-style-type:img|png|4|4|../images/logo_example.png">
+	<li>test custom bullet image</li>
+	<li>test custom bullet image</li>
+	<li>test custom bullet image</li>
+	<li>test custom bullet image</li>
+<ul>
 EOF;
 
 // output the HTML content
