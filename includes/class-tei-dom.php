@@ -29,7 +29,7 @@ class TeiDom {
 
 
 	function __construct($sessionArray, $ops = array()) {
-		@apply_filters('init');
+		// @apply_filters('init');
 		//the anthologize filter echos content, which clobbers exports
 		remove_filter('the_content', 'anthologize_filter_post_content');
 		if(class_exists('Tidy')) {
