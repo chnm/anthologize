@@ -572,25 +572,26 @@ class Anthologize_Admin_Main {
 		if ( empty( $_POST['anthologize_meta'] ) || !$new_data = $_POST['anthologize_meta'] )
 			$new_data = array();
 		
-			if ( !$anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
-				$anthologize_meta = array();
+		if ( !$anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
+			$anthologize_meta = array();
 		
-			foreach( $new_data as $key => $value ) {
-				$anthologize_meta[$key] = maybe_unserialize( $value );
-			}
+		foreach( $new_data as $key => $value ) {
+			$anthologize_meta[$key] = maybe_unserialize( $value );
+		}
 		
-			update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
-			update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
+		update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
+		update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
 		
 		add_filter( 'redirect_post_location', array( $this, 'item_meta_redirect' ) );
 		
 		return $post_id;
 	}
 
+
     function item_meta_redirect($location) {
         $postParent = get_post($_POST['post_parent']);
         if ( isset( $_POST['new_part'] ) )
-        	$arg = $_POST['post_parent'];
+        	$arg = $_POST['parent_id'];
         else
         	$arg = $postParent->post_parent;
         $location = 'admin.php?page=anthologize&action=edit&project_id='.$arg;
@@ -616,6 +617,7 @@ class Anthologize_Admin_Main {
         $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
         $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
        	$author_name = get_post_meta( $post->ID, 'author_name', true );
+
         ?>
         <div class="my_meta_control">
 
@@ -672,6 +674,7 @@ class Anthologize_Admin_Main {
 
 		<?php if ( isset( $_GET['new_part'] ) ) : ?>
 			<input type="hidden" id="new_part" name="new_part" value="1" />
+                	<input type="hidden" id="anth_parent_id" name="parent_id" value="<?php echo $_GET['project_id']; ?>" />
 		<?php endif; ?>
 		
 		<input type="hidden" id="menu_order" name="menu_order" value="<?php echo $post->menu_order; ?>">

@@ -44,6 +44,18 @@ function do_filter(){
 jQuery(document).ready( function() {
 	var j = jQuery;
 
+	// Set parent id for new parts and account for autosave
+	var anth_parent = j('#anth_parent_id');
+	if (anth_parent.length){
+		var wp_parent = j('input[name="parent_id"]').not(anth_parent);
+		if (wp_parent.length){
+			wp_parent.val(anth_parent.val());
+			anth_parent.remove();	
+		}else{
+			anth_parent.attr('id', 'parent_id');
+		}	
+	}
+
 	// Put the proper selector on the parent_id box to ensure that it doesn't get wiped on
         // autosave
         if (!j('input#parent_id').length) {
