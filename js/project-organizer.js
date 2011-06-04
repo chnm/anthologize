@@ -95,11 +95,12 @@ jQuery(document).ready( function() {
 			j("#termfilter").show();
 		}
 	
-		j('#filter').trigger('change');
+		//j('#filter').trigger('change');
 
 		if (filter == '') {
 			j('#filter').empty();
 			j('#filter').append('<option value=""> - </option>');
+			j('#filter').trigger('change');
 			j.unblockUI();
 			return true;
 		}
@@ -128,6 +129,7 @@ jQuery(document).ready( function() {
 				});
 			},
 			complete: function(){
+				j('#filter').trigger('change');
 				j.unblockUI();
 			}
 		});

@@ -87,7 +87,7 @@ class Anthologize_Ajax_Handlers {
 		$filterby = $_POST['filterby'];
 
 		$args = array(
-			'post_type' => array('post', 'page', 'anth_imported_item' ),
+			'post_type' => array_keys($this->project_organizer->available_post_types()),
 			'posts_per_page' => -1,
 			'orderby' => 'post_date',
 			'order' => 'DESC'
@@ -121,10 +121,11 @@ class Anthologize_Ajax_Handlers {
 				break;
 			
 			case 'post_type' :
-				$args['post_type'] = $_POST['term'];
+				if ($_POST['term'] != ''){
+					$args['post_type'] = $_POST['term'];
+				}
 				break;
 		}
-
 		// Allow plugins to modify the query_post arguments
 		$posts = new WP_Query( apply_filters( 'anth_get_posts_by_query', $args, $filterby ) );
 		
