@@ -182,7 +182,7 @@ class Anthologize_Ajax_Handlers {
 		die();
         } else {
 		if (true == $new_item){
-      			$dest_seq_array[$insert_result] = $dest_seq_array['new_new_new'];
+      			$dest_seq_array[$insert_result_id] = $dest_seq_array['new_new_new'];
       			unset($dest_seq_array['new_new_new']);
 		}
 		
