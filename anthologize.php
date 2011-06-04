@@ -366,6 +366,11 @@ class Anthologize_Loader {
 
 		$return = true;
 
+		if ( isset( $_GET['anth_preview'] ) ) {
+			load_template( dirname(__FILE__) . '/templates/html_preview/preview.php' );
+			die();
+		}
+
 		if ( isset( $_POST['export-step'] ) ) {
 			if ( $_POST['export-step'] == 3 )
 				$return = false;

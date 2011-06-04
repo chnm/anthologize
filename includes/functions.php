@@ -65,7 +65,7 @@ function anthologize_filter_post_content($content) {
     return $content;
 }
 
-add_filter('the_content', 'anthologize_filter_post_content');
+//add_filter('the_content', 'anthologize_filter_post_content');
 
 
 

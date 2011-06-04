@@ -54,6 +54,7 @@ class Anthologize_Project_Organizer {
 
 		<div id="project-actions">
 			<a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=<?php echo $this->project_id ?>"><?php _e( 'Project Details', 'anthologize' ) ?></a> |
+			<a target="_blank" href="<?php echo $this->preview_url( $this->project_id, 'anth_project' ) ?>"><?php _e( 'Preview Project', 'anthologize' ) ?></a> |
 			<a href="admin.php?page=anthologize&action=delete&project_id=<?php echo $this->project_id ?>" class="confirm-delete"><?php _e( 'Delete Project', 'anthologize' ) ?></a>
 		</div>
 
@@ -377,6 +378,9 @@ class Anthologize_Project_Organizer {
 
 						<div class="part-buttons">
 							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+							
+							<a target="_blank" href="<?php echo $this->preview_url( get_the_ID(), 'anth_part' ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a> |
+							
 							<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a> |
 							<a href="#collapse" class="collapsepart"> - </a> 
 						</div>
@@ -761,6 +765,9 @@ class Anthologize_Project_Organizer {
 					<a href="#comments" class="comments toggle"><?php printf( __( 'Comments (<span class="included-comment-count">%1$d</span>/%2$d)', 'anthologize' ), $included_comment_count, $original_comment_count ) ?></a><span class="comments-sep toggle-sep"> |</span>
 
 					<a href="#append" class="append toggle"><?php _e( 'Append', 'anthologize' ) ?></a><span class="append-sep toggle-sep"> |</span>
+					
+					<a target="new" href="<?php echo $this->preview_url( get_the_ID(), 'anth_library_item' ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a><span class="toggle-sep"> |</span>
+					
 					<?
 					// admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
 					?>
@@ -769,6 +776,19 @@ class Anthologize_Project_Organizer {
 			</h3>
 		</li>
 	<?php
+	}
+	
+	function preview_url( $post_id, $post_type = 'anth_library_item' ) {
+		$query_args = array(
+			'page'		=> 'anthologize',
+			'anth_preview' 	=> '1',
+			'post_id' 	=> $post_id,
+			'post_type'	=> $post_type
+		);	
+		
+		$url = add_query_arg( $query_args, admin_url( 'admin.php' ) );
+		
+		return $url;
 	}
 
 }
