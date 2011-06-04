@@ -278,6 +278,9 @@ class Anthologize_Project_Organizer {
 		  'to_ping' => $the_item->to_ping, // todo: tags and categories
 		);
 
+        // WordPress will strip these slashes off in wp_insert_post
+        $args = add_magic_quotes($args);
+
 		if ( !$imported_item_id = wp_insert_post( $args ) )
 			return false;
 		
