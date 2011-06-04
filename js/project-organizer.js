@@ -95,8 +95,6 @@ jQuery(document).ready( function() {
 			j("#termfilter").show();
 		}
 	
-		//j('#filter').trigger('change');
-
 		if (filter == '') {
 			j('#filter').empty();
 			j('#filter').append('<option value=""> - </option>');
