@@ -32,7 +32,7 @@ class Anthologize_New_Project {
 		// If we're editing an existing project.
 		if ( !empty($_POST['project_id'])) {
 				
-			if ( !$new_anthologize_meta = get_post_meta( 'anthologize_meta' ) ) {
+			if ( !$new_anthologize_meta = get_post_meta( $_POST['project_id'], 'anthologize_meta', true ) ) {
 				$new_anthologize_meta = $_POST['anthologize_meta'];
 			} else {
 				foreach ( $_POST['anthologize_meta'] as $key => $value ) {
