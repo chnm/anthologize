@@ -1,5 +1,7 @@
 function do_filter(){
 	var j = jQuery;
+	var cookieExpires = new Date();
+ 	cookieExpires.setTime(cookieExpires.getTime() + (60 * 60 * 1000));
 	
 	j.blockUI({css:{width: '12%',top:'40%',left:'45%'},
                         message: jQuery('#blockUISpinner').show() });
@@ -13,12 +15,12 @@ function do_filter(){
 	if (filterby == 'date'){	
 		data['startdate'] = j("#startdate").val();
   		data['enddate'] = j("#enddate").val();
-		j.cookie( 'anth-startdate', j("#startdate").val() );
-		j.cookie( 'anth-enddate', j("#enddate").val() );
+		j.cookie( 'anth-startdate', j("#startdate").val(), { expires: cookieExpires } );
+		j.cookie( 'anth-enddate', j("#enddate").val(), { expires: cookieExpires } );
 	}else{
 		var term = j('#filter').val();
 		data['term'] = term;
-		j.cookie('anth-term', term);
+		j.cookie('anth-term', term, { expires: cookieExpires });
 	}
 	
 	j.ajax({
@@ -83,7 +85,9 @@ jQuery(document).ready( function() {
 
 		var filter = j('#sortby-dropdown').val();
 
-		j.cookie('anth-filter', filter);
+		var cookieExpires = new Date();
+ 		cookieExpires.setTime(cookieExpires.getTime() + (60 * 60 * 1000));
+		j.cookie('anth-filter', filter, { expires: cookieExpires });
 
 		if (filter == 'date') {
 			j("#termfilter").hide();
