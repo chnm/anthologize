@@ -62,7 +62,7 @@ class Anthologize_Admin_Main {
 		
 		// Then use the default to set the minimum cap for this blog
 		if ( !is_multisite() || empty( $site_settings['forbid_per_blog_caps'] ) ) {
-			$blog_settings = is_multisite() ? get_option( 'anth_settings' ) : $site_settings;
+			$blog_settings = get_option( 'anth_settings' );
 			$cap = !empty( $blog_settings['minimum_cap'] ) ? $blog_settings['minimum_cap'] : $default_cap;
 		} else {
 			$cap = $default_cap; 
