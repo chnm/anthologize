@@ -182,7 +182,6 @@ var anthologize = {
 		async:false,
 		timeout:20000,
 		success: function(response){
-			//if ( response.length == 0 ) {
 			if (! response){
 				jQuery(item).find('.comments-panel').html('<p>' + anth_strings.no_comments + '</p><br /><input type="button" class="cancelComments" value="' + anth_strings.cancel + '" />');
 			} else {
