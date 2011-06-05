@@ -778,7 +778,16 @@ class Anthologize_Project_Organizer {
 	<?php
 	}
 	
-	function preview_url( $post_id, $post_type = 'anth_library_item' ) {
+	/**
+	 * Get the href for an object's Preview link
+	 *
+	 * @package Anthologize
+	 * @since 0.6
+	 *
+	 * @param int $post_id The id of the post (item, part, or project) being previewed
+	 * @param str $post_type The post type of the post being previewed
+	 */
+	function preview_url( $post_id = false, $post_type = 'anth_library_item' ) {
 		$query_args = array(
 			'page'		=> 'anthologize',
 			'anth_preview' 	=> '1',
@@ -790,7 +799,6 @@ class Anthologize_Project_Organizer {
 		
 		return $url;
 	}
-
 }
 
 endif;
