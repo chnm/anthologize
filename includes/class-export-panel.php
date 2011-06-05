@@ -40,7 +40,12 @@ class Anthologize_Export_Panel {
 
 		$cdate = !empty( $options['cdate'] ) ? $options['cdate'] : date('Y');
 
-		$cname = !empty( $options['cname'] ) ? $options['cname'] : $options['author_name'];
+		if ( isset( $options['cname'] ) )
+			$cname = $options['cname'];
+		else if ( isset( $options['author_name'] ) )
+			$cname = $options['author_name'];
+		else
+			$cname = '';
 
 		// Default is Creative Commons
 		$ctype = !empty( $options['ctype'] ) ? $options['ctype'] : 'cc';
@@ -50,7 +55,12 @@ class Anthologize_Export_Panel {
 		// No default for edition number
 		$edition = $options['edition'];
 
-	 	$authors = !empty( $options['authors'] ) ? $options['authors'] : $options['author_name'];
+		if ( isset( $options['authors'] ) )
+			$authors = $options['authors'];
+		else if ( isset( $options['author_name'] ) )
+			$authors = $options['authors'];
+		else
+			$authors = '';
 	 	
 		$dedication = !empty( $options['dedication'] ) ? $options['dedication'] : '';
 
