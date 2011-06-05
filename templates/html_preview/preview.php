@@ -13,6 +13,10 @@ $post_type = !empty( $_GET['post_type'] ) ? $_GET['post_type'] : false;
 
 query_posts( array( 'p' => $post_id, 'post_type' => $post_type ) );
 
+if ( have_posts() ) { while ( have_posts() ) { the_post();
+	$preview_title = get_the_title();
+} }
+
 ?>
 
 <html>
@@ -20,7 +24,7 @@ query_posts( array( 'p' => $post_id, 'post_type' => $post_type ) );
 	<?php if ( have_posts() ) : ?>
 	<?php while ( have_posts() ) : ?>
 		<?php the_post() ?>
-		<title><?php the_title() ?> <?php _e( '(Anthologize Preview Mode)', 'anthologize' ) ?></title>
+		<title><?php echo $preview_title ?> <?php _e( '(Anthologize Preview Mode)', 'anthologize' ) ?></title>
 	<?php endwhile ?>
 	<?php endif ?>
 
@@ -29,6 +33,11 @@ query_posts( array( 'p' => $post_id, 'post_type' => $post_type ) );
 </head>
 
 <body>
+
+<p id="preview-notice">
+	<?php printf( __( 'You are viewing a preview of <strong>%1$s</strong>. This preview is for proofreading purposes only. To get a more accurate sense of what your Anthologize project will look like, you may want to <a href="%2$s">export the project</a>.', 'anthologize' ), $preview_title, add_query_arg( array( 'project_id' => $post_id, 'page' => 'anthologize/includes/class-export-panel.php' ), admin_url( 'admin.php' ) ) ) ?>
+</p>
+
 <?php if ( have_posts() ) : ?>
 	<ul>
 	<?php while ( have_posts() ) : ?>
