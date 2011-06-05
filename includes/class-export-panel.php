@@ -244,7 +244,10 @@ class Anthologize_Export_Panel {
 		// outputParams need to be reset at step 3 so that
 		// on a refresh null values will overwrite
 		if ( $_POST['export-step'] == '3' ) {
-			$_SESSION['outputParams'] = array( 'format' => $_SESSION['outputParams']['filetype'] );
+			// filetype has been set different ways in different versions
+			// This is to be safe
+			$filetype = isset( $_SESSION['outputParams']['filetype'] ) ? $_SESSION['outputParams']['filetype'] : $_SESSION['filetype'];
+			$_SESSION['outputParams'] = array( 'format' => $filetype );
 		}		
 		
 		
