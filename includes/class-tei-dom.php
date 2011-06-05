@@ -12,6 +12,8 @@ class TeiDom {
 	public $includeStructuredCreatorData = true;
 	public $includeOriginalPostData = true;
 	public $includeDeepDocumentData = true;
+	public $includeComments = false; // Temporarily added by Boone to clear PHP warnings
+	public $indexPeople = false; // Temporarily added to Boone clear PHP warnings
 	public $doShortcodes = true;
 	public $checkImgSrcs = true;
 
@@ -47,7 +49,7 @@ class TeiDom {
 
 		//projectMeta has subtitle
 		$projectMeta = get_post_meta($this->projectData['project_id'], 'anthologize_meta', true );
-		$this->projectData['subtitle'] = $projectMeta['subtitle'];
+		$this->projectData['subtitle'] = isset( $projectMeta['subtitle'] ) ? $projectMeta['subtitle'] : '';
 
 		$projectWPData = get_post($this->projectData['project_id']); // has date info
 		$this->projectData['post_date'] = $projectWPData->post_date;
@@ -128,6 +130,7 @@ class TeiDom {
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
 
 				$origPostData = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
+				
 				$libraryItemObject->original_post_id = $origPostData['original_post_id'];
 
 				$newItem = $this->newItem($libraryItemObject);
@@ -198,7 +201,8 @@ class TeiDom {
 	public function addFileDesc() {
 
 		$titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
-		$titleNode->appendChild($this->sanitizeString($project->post_title));
+		
+		$titleNode->appendChild($this->sanitizeString($this->projectData['post-title']));
 
 		//edition
 		$edNode = $this->xpath->query("//tei:editionStmt/tei:ab[@rend='literal']")->item(0);
@@ -255,7 +259,7 @@ class TeiDom {
 	}
 
 	public function addBackMatter() {
-		if($this->projectData['outputParams']['colophon'] && $this->projectData['outputParams']['colophon'] == 'on') {
+		if( isset( $this->projectData['outputParams']['colophon'] ) && $this->projectData['outputParams']['colophon'] == 'on') {
 			$this->backNode->appendChild( $this->newColophon() );
 		}
 		$this->doIndexing();

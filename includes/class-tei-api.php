@@ -123,6 +123,9 @@ class TeiApi {
 
 	public function getNodeDataByParams($params, $firstOnly = true) {
 		extract($params);
+		
+		// Cast the $queryString as a string
+		$queryString = '';
 
 		if( isset($id) ) {
 			$queryString = "//*[@xml:id = '$id']";
