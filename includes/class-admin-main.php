@@ -448,7 +448,7 @@ class Anthologize_Admin_Main {
  						</td>
 
 						<td scope="row anthologize-number-parts">
-                            				<?php $parts = $this->get_project_parts();  echo count($parts); ?>
+                            				<?php $parts = $this->get_project_parts();  echo (is_array($parts) ? count($parts) : '0'); ?>
 						</td>
 
 						<td scope="row anthologize-number-items">
