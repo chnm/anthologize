@@ -167,7 +167,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		$partsCount = $this->api->getSectionPartCount('body');
 		for($partNo = 0; $partNo <$partsCount; $partNo++) {
-
+			
 			$this->appendPart('body', $partNo);
 
 		}
@@ -190,10 +190,11 @@ class PdfAnthologizer extends Anthologizer {
 	public function appendPart($section, $partNo) {
 
 		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
-		$title = $titleNode->textContent;
+		
+		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
 
 		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
-		$string = $firstItemNode->textContent;
+		$string = isset( $titleNode->textContent ) ? $firstItemNode->textContent : false;
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
 
@@ -241,7 +242,7 @@ class PdfAnthologizer extends Anthologizer {
 	public function appendItem($section, $partNo, $itemNo) {
 
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
-		$title = $titleNode->textContent;
+		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
 		$this->set_header(array('string'=>$title));
 
 		if( ($this->api->getProjectOutputParams('break-items') == 'on') && $itemNo != 0   ) {
@@ -276,7 +277,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		//write the head, avoiding HTML for optimization
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
-		$title = $titleNode->textContent;
+		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
 
 		$this->output->setFont($this->font_family, 'B', $this->itemH);
 		$this->output->Write('', $title, '', false, 'C', true );
