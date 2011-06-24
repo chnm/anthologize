@@ -750,9 +750,9 @@ class TeiDom {
 		$colophonNode->setAttribute('n', '0');
 		$colophonNode->setAttribute('type', 'colophon');
 
-		$day   = date(jS);
-		$month = date(F);
-	 	$year  = date(Y);
+		$day   = date('jS');
+		$month = date('F');
+	 	$year  = date('Y');
 		$date  = "the " . $day . " of " . $month . ", " . $year;
 
 		$logo  = WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif';
