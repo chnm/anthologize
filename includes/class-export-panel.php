@@ -53,7 +53,7 @@ class Anthologize_Export_Panel {
 		$cctype = !empty( $options['cctype'] ) ? $options['cctype'] : 'by';
 
 		// No default for edition number
-		$edition = $options['edition'];
+		$edition = isset( $options['edition'] ) ? isset( $options['edition'] ) : false;
 
 		if ( isset( $options['authors'] ) )
 			$authors = $options['authors'];
