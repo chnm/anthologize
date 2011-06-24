@@ -149,7 +149,7 @@ class RtfAnthologizer extends Anthologizer {
     // Header and footer code
     
     $this->output .= '\pgnstart1'; // Page start number 
-    $this->output .= '{\footer\pard\fs' . $baseFontSize
+    $this->output .= '{\footer\pard\fs' . $this->baseFontSize
       . '\qc Page\~{\field{\*\fldinst PAGE}}/{\field{\*\fldinst NUMPAGES}}\~-\~'
       . '{\field{\*\fldinst DATE \\@ "dd/MM/yyyy" }}\~-\~'
       . '{\field{\*\fldinst TIME \\@ "hh:mm:ss" }}\par }';
