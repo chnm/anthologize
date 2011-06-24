@@ -284,7 +284,7 @@ class RtfAnthologizer extends Anthologizer {
   public function appendPart($section, $partNo) {
 
     $titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
-    $title = $titleNode->textContent;
+    $title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
     
     $this->output .= "\n"; // Carriage return for code readability
     
@@ -311,7 +311,7 @@ class RtfAnthologizer extends Anthologizer {
   public function appendPartHead($section, $partNo) {
 
     $titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
-    $title = $titleNode->textContent;
+    $title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
     
     $this->output .=  $this->rtf['part_head'][0]
                       . $title
@@ -321,7 +321,7 @@ class RtfAnthologizer extends Anthologizer {
   public function appendItem($section, $partNo, $itemNo) {
     
     $titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
-    $title = $titleNode->textContent;
+    $title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
     // $this->set_header(array('string'=>$title)); WHAT IS THIS ?
     
     $this->output .= "\n"; // Carriage return for code readability
@@ -354,7 +354,7 @@ class RtfAnthologizer extends Anthologizer {
   public function appendItemHead($section, $partNo, $itemNo) {
   
     $titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
-    $title = $titleNode->textContent;
+    $title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
     
     $this->output .= $this->rtf['item_head'][0] . $title . $this->rtf['item_head'][1];
 	}
@@ -436,7 +436,9 @@ class RtfAnthologizer extends Anthologizer {
       $this->output .= $this->getImageRTF($attr['src'], 0, 0);
     }
     else { // TODO: Test if translation exists
-      $this->output .= $this->rtf[$tag][0];
+      if ( !empty( $this->rtf[$tag] ) ) {
+        $this->output .= $this->rtf[$tag][0];
+      }
     }
   }
   
@@ -447,7 +449,9 @@ class RtfAnthologizer extends Anthologizer {
     }
     else if ($tag == 'img') { }
     else {
-      $this->output .= $this->rtf[$tag][1];
+      if ( !empty( $this->rtf[$tag] ) ) {
+        $this->output .= $this->rtf[$tag][1];
+      }
     }
   }
   
