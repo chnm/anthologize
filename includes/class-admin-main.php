@@ -204,6 +204,7 @@ class Anthologize_Admin_Main {
 			'less'			=> __( 'less', 'anthologize' ),
 			'more'			=> __( 'more', 'anthologize' ),
 			'no_comments'		=> __( 'This post has no comments associated with it.', 'anthologize' ),
+			'preview'		=> __( 'Preview', 'anthologize' ),
 			'posted'		=> __( 'Posted', 'anthologize' ),
 			'remove'		=> __( 'Remove', 'anthologize' ),
 			'save'			=> __( 'Save', 'anthologize' ),

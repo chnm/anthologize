@@ -238,6 +238,8 @@ var anthologize = {
 	
 	newItem.children("h3").wrapInner('<span class="part-title" />');
 	
+	/* Comments are being held until 0.7 */
+	/*
 	var buttons = 	'<div class="part-item-buttons">' +
 			'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | '+
 			'<a href="#comments" class="comments toggle">' + anth_strings.comments + ' (<span class="included-comment-count">0</span>/' + comment_count + ')</a><span class="comments-sep toggle-sep"> |</span> ' + 
@@ -245,7 +247,15 @@ var anthologize = {
 			'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
 			'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
 			'</div>';
-			
+	*/
+	
+	var buttons = 	'<div class="part-item-buttons">' +
+				'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | ' + 
+				'<a class="append" href="#append">' + anth_strings.append + '</a> | ' +
+				'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a> | ' + 
+				'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
+			'</div>';
+	
 	newItem.children("h3").append(buttons);
 	
 	/* Ugh. Now we switch back to the proper id, so the comments slider will work */
