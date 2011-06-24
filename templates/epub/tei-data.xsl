@@ -72,6 +72,5 @@
   <xsl:variable name="parameters.page-height"
     select="normalize-space($parameters.root/*[@name='page-height']/text())"/>
 
-
-
+  <xsl:variable name="parameters.colophon" select="$doColophon" />
 </xsl:stylesheet>

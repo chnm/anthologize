@@ -196,6 +196,10 @@ class EpubBuilder {
 	public function doProc($xsl, $dom) {
 		$xslDOM = new DOMDocument();
 		$xslDOM->load($xsl);
+
+		$do_colophon = isset( $this->tei->outputParams['colophon'] ) && 'on' == $this->tei->outputParams['colophon'] ? 'on' : false;
+		$this->proc->setParameter( '', 'doColophon', $do_colophon );
+
 		$this->proc->importStylesheet($xslDOM);
 
 		return $this->proc->transformToDoc($dom);

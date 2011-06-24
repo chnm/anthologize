@@ -309,6 +309,8 @@ class Anthologize_Loader {
 		anthologize_register_format_option( 'epub', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
 
 		anthologize_register_format_option( 'epub', 'font-family', __( 'Font Family', 'anthologize' ), 'dropdown', $d_font_face_epub, 'Times New Roman' );
+		
+		anthologize_register_format_option( 'epub', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
 
 		//build the covers list for selection
 		$coversArray = array();
