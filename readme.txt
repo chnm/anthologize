@@ -33,20 +33,24 @@ If you're upgrading manually from a previous version of Anthologize, please be s
 
 == Usage ==
 
-Many optimizations to the PDF export have been added, but resource limits on the server will always be a potential issue. Here are some tips for large exports:
+Many optimizations to the PDF export have been added, but resource limits on the server will always be a potential issue. Here are some tips to try if you encounter errors or white screens of death while exporting PDF:
 
 1. Include page breaks between parts and items. This appears to reduce the memory that the PDF classes (TCPDF) require.
-2. Add the following lines at the top of wp-setting.php in your WordPress installation, above define( 'WPINC', 'wp-includes' );
+2. Change the following information in the php.ini file in the Resource Limits section. On most hosted servers, this file is in the top web directory and/or in your WordPress directory. If there is one in your WordPress directory, edit that one. If you have questions, please contact your web hosting provider.
 
-ini_set('max_execution_time', '180');
-ini_set('memory_limit', '128M');
+Change the max_execution_time setting:
+max_execution_time = 180;
+
+Change the memory_limit setting:
+memory_limit = 128M;
+
 
 The latest release of PHP has a default memory limit of 128M, but this might not be in place on your server. Increasing the execution time (measured in seconds) can also help.
-In a hosted server environment, these might be disabled, and/or you might make the admins mad at you for increasing the resources Anthologize consumes, thus hurting performance for everyone else on your server. It might be worth consulting your hosting company before increasing these resource limits and exporting projects on a regular basis.
+In a hosted server environment, increasing the resources Anthologize consumes could hurt performance for everyone else on your server. It might be worth consulting your hosting company before increasing these resource limits and exporting projects on a regular basis.
 
 Cover images in ePub output.
 
-To add your own cover images, just upload them to the anthologize/templates/covers directory and they will appear as options in the export screen. Make sure they are readable by the server.
+To add your own cover images, just upload them to the anthologize/templates/epub/covers directory and they will appear as options in the export screen. Make sure they are readable by the server.
 
 
 
@@ -55,10 +59,13 @@ To add your own cover images, just upload them to the anthologize/templates/cove
 = 0.5.1-alpha = 
 
 * many optimizations to PDF export
+* improved CJK handling in PDF export
+* added part- and item- page break options for PDF
 * added anthologize logo and part-item breadcrumbs to PDF output
 * partially OOified epub export
 * added part-item nesting to epub ToC
 * added cover image option to epub output (might not work in all readers. standards-schmandards)
+* added link-localization to epub output (internal links in your site are internal links in the epub)
 
 
 = 0.5-alpha =
