@@ -583,13 +583,22 @@ class Anthologize_Admin_Main {
 		update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
 		update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
 		
+		// We need to filter the redirect location when Anthologize items are saved
 		add_filter( 'redirect_post_location', array( $this, 'item_meta_redirect' ) );
 		
 		return $post_id;
 	}
 
-
-    function item_meta_redirect($location) {
+	/**
+	 * Provides a redirect location for after a post is saved
+	 *
+	 * @package Anthologize
+	 * @since 0.3
+	 *
+	 * @param str $location
+	 * @retur str $location
+	 */
+    	function item_meta_redirect($location) {
     		if ( isset( $_POST['post_parent'] ) ) {
     			$post_parent_id = $_POST['post_parent'];
     		} else {
