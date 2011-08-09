@@ -132,8 +132,6 @@ class Anthologize_Import_Feeds_Panel {
 				<p><a href="admin.php?page=anthologize"><?php _e( 'Back to Anthologize', 'anthologize' ) ?></a></p>
 
 			<?php endif; ?>
-
-			</div>
 		</div>
 		<?php
 
@@ -141,11 +139,11 @@ class Anthologize_Import_Feeds_Panel {
 
 	function grab_feed( $feedurl ) {
 
-		include_once( ABSPATH . 'wp-includes/rss.php' );
+		include_once( ABSPATH . 'wp-includes/class-simplepie.php' );
 
 		$rss = fetch_feed( trim( $feedurl ) );
 
-		if ( $rss->errors )
+		if ( !empty( $rss->errors ) )
 			return array( 'error' => 'unknown-error' );
 
 		if ( !$maxitems = $rss->get_item_quantity() )
