@@ -56,8 +56,9 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
-= 0.5.1-alpha = 
+= 0.6-alpha = 
 
+* Code name "Wide Wale"
 * many optimizations to PDF export
 * improved CJK handling in PDF export
 * added part- and item- page break options for PDF
@@ -66,7 +67,15 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 * added part-item nesting to epub ToC
 * added cover image option to epub output (might not work in all readers. standards-schmandards)
 * added link-localization to epub output (internal links in your site are internal links in the epub)
-
+* regularized code style throughout
+* added role control; admins can choose which user roles can Anthologize projects
+* added Multisite awareness; super admins can choose which users can Anthologize across the network
+* added a Preview feature for in-browser previews of projects, parts, and items
+* fixed a bug that may have caused items to dissociate from projects when autosaving
+* added automatic support for custom post types in filters
+* fixed issues with quote double-escaping in exports
+* added full compatibility with latest WP
+* added real (but experimental) RTF export format
 
 = 0.5-alpha =
 * Code name "Gabardine"
