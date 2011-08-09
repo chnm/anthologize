@@ -56,9 +56,7 @@ class TeiApi {
 			$retArray[$node->getAttribute('name')] = $node->textContent;
 		}
 
-
-
-		if($node->firstChild->nodeType == XML_TEXT_NODE || $node->firstChild->nodeType == XML_CDATA_SECTION_NODE) {
+		if( !empty($node->firstChild) && ( $node->firstChild->nodeType == XML_TEXT_NODE || $node->firstChild->nodeType == XML_CDATA_SECTION_NODE ) ) {
 			$retArray['value'] = $node->textContent;
 			return $retArray;
 		}
@@ -884,7 +882,7 @@ class TeiApi {
 			break;
 
 			case 'gravatarUrl':
-				return $personArray['figures'][0]['graphics'][0]['imgs'][0]['atts']['src'];
+				return isset( $personArray['figures'][0]['graphics'][0]['imgs'][0]['atts']['src'] ) ? $personArray['figures'][0]['graphics'][0]['imgs'][0]['atts']['src'] : '';
 			break;
 
 		}

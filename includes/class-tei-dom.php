@@ -131,7 +131,7 @@ class TeiDom {
 
 				$origPostData = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
 				
-				$libraryItemObject->original_post_id = $origPostData['original_post_id'];
+				$libraryItemObject->original_post_id = isset( $origPostData['original_post_id'] ) ? $origPostData['original_post_id'] : false;
 
 				$newItem = $this->newItem($libraryItemObject);
 				$newItem->setAttribute('xml:id', "body-$partNumber-$itemNumber");
