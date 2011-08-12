@@ -251,8 +251,8 @@ var anthologize = {
 	
 	var buttons = 	'<div class="part-item-buttons">' +
 				'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | ' + 
-				'<a class="append" href="#append">' + anth_strings.append + '</a> | ' +
-				'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a> | ' + 
+				'<a class="append" href="#append">' + anth_strings.append + '</a><span class="append-sep toggle-sep"> | </span>' +
+				'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a>span class="toggle-sep"> | </span>' + 
 				'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
 			'</div>';
 	
