@@ -164,14 +164,10 @@ class PdfAnthologizer extends Anthologizer {
 		//actually letting appendPart and append Item do the appending
 		//this just fires up the loop through the body parts
 
-
 		$partsCount = $this->api->getSectionPartCount('body');
 		for($partNo = 0; $partNo <$partsCount; $partNo++) {
-			
 			$this->appendPart('body', $partNo);
-
 		}
-
 	}
 
 	public function appendBack() {
@@ -184,7 +180,6 @@ class PdfAnthologizer extends Anthologizer {
 		for($partNo = 0; $partNo < $partsCount; $partNo++) {
 			$this->appendPart('back', $partNo);
 		}
-
 	}
 
 	public function appendPart($section, $partNo) {
@@ -204,7 +199,6 @@ class PdfAnthologizer extends Anthologizer {
 		} elseif($this->api->getProjectOutputParams('break-parts') == 'on' )  {
 			$this->output->AddPage();
 		}
-
 
 		//TCPDF seems to add the footer to prev. page if AddPage hasn't been fired
 		$this->output->setPrintFooter(true);
