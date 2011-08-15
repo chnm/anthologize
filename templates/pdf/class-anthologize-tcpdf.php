@@ -2,7 +2,6 @@
 //need to override addTOC() to adjust for printed page numbering and the TOC page numbering.
 class AnthologizeTCPDF extends TCPDF {
 
-
 	/**
 	 * Output a Table of Content Index (TOC).
 	 *
@@ -191,9 +190,9 @@ class AnthologizeTCPDF extends TCPDF {
 	
 	/**
 	 * This method is used to render the page header.
-	 * 
+	 *
 	 * Overrides TCPDF::Header(), so that we can specify our own file path for the header image
-	 * 
+	 *
 	 * @package Anthologize
 	 * @since 0.6
 	 */

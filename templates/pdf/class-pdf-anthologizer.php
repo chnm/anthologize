@@ -16,17 +16,23 @@ class PdfAnthologizer extends Anthologizer {
 	public $headerLogo = 'med-logo.png'; //TCPDF looks for this in /tcpdf/images
 	public $headerLogoWidth = '10';
 	public $tidy = false;
-
+	
 	public function init() {
 		$page_size = $this->api->getProjectOutputParams('page-size');
 
 		//keep track of how many pages in front so the TOC can be inserted in proper position in finish()
 		$this->frontPages = 0;
-		$this->output = new AnthologizeTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $page_size, true, 'UTF-8', false);
+	    $this->output = new AnthologizeTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $page_size, true, 'UTF-8', false);
+	    // $this->output = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $page_size, true, 'UTF-8', false);
 		$lg = array();
-		$lg['a_meta_charset'] = 'UTF-8';
-
+        // PAGE META DESCRIPTORS --------------------------------------
+        
+        $lg['a_meta_charset'] = 'UTF-8';
+        $lg['a_meta_dir'] = 'ltr';
+        $lg['a_meta_language'] = 'en';
+        $lg['w_page'] = '';
 		//set some language-dependent strings
+		
 		$this->output->setLanguageArray($lg);
 
 		$this->output->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -95,7 +101,7 @@ class PdfAnthologizer extends Anthologizer {
 	}
 
 	public function appendFront() {
-
+        $this->output->startPageGroup();
 		//add the front matter
 
 		//title and author
@@ -108,13 +114,10 @@ class PdfAnthologizer extends Anthologizer {
 
 		//subjects
 
-
 		//append cover
 		$this->output->AddPage();
 		$this->frontPages++;
-
-
-
+		
 		$this->output->SetY(80);
 		$this->output->Write('', $book_title, '', false, 'C', true );
 		$this->output->setFont($this->font_family, '', $this->baseH);
@@ -159,6 +162,7 @@ class PdfAnthologizer extends Anthologizer {
 	public function appendBody() {
 
 		$this->output->startPageGroup();
+		//$this->output->AddPage();
 		$this->output->setPrintHeader(true);
 
 		//actually letting appendPart and append Item do the appending
@@ -185,14 +189,12 @@ class PdfAnthologizer extends Anthologizer {
 	public function appendPart($section, $partNo) {
 
 		$titleNode = $this->api->getSectionPartTitle($section, $partNo, true);
-		
 		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
 
 		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
 		$string = isset( $titleNode->textContent ) ? $firstItemNode->textContent : false;
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
-
 
 		if($partNo == 0) {
 			$this->output->AddPage();
@@ -206,14 +208,12 @@ class PdfAnthologizer extends Anthologizer {
 			$this->output->Bookmark($title);
 		}
 
-
 		//add the header info
 		//$this->appendPartHead($section, $partNo);
 
 		//loop the items and append
 		$itemsCount = $this->api->getSectionPartItemCount($section, $partNo);
 		for($itemNo = 0; $itemNo < $itemsCount; $itemNo++) {
-
 			$this->appendItem($section, $partNo, $itemNo);
 		}
 
@@ -251,7 +251,6 @@ class PdfAnthologizer extends Anthologizer {
 
 		//append the item content
 		$content = $this->writeItemContent($section, $partNo, $itemNo);
-
 		$this->output->writeHTML($content, true, false, true);
 
 	}
@@ -285,7 +284,6 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->setPrintHeader(false);
 		$this->output->setPrintFooter(false);
 		$this->output->addTOCPage();
-
 		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
 		$this->output->addTOC($this->frontPages + 1 , '', '', 'Table of Contents');
 		$this->output->endTOCPage();
