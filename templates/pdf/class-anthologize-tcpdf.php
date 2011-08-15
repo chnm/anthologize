@@ -208,21 +208,25 @@ class AnthologizeTCPDF extends TCPDF {
 			} else {
 				$this->x = $this->original_lMargin;
 			}
+			
 			if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
-				define( 'ANTHOLOGIZE_IMAGES_PATH', ANTHOLOGIZE_INSTALL_PATH . 'images/' );
-				
+
+			    define( 'ANTHOLOGIZE_IMAGES_PATH', ANTHOLOGIZE_INSTALL_PATH . 'images/' );
+
 				$imgtype = $this->getImageFileType( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo']);
 				if (($imgtype == 'eps') OR ($imgtype == 'ai')) {
 					$this->ImageEps( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} elseif ($imgtype == 'svg') {
 					$this->ImageSVG( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} else {
-					$this->Image( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->Image( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo'], '', '', $headerdata['logo_width']);
 				}
 				$imgy = $this->getImageRBY();
+				
 			} else {
 				$imgy = $this->y;
 			}
+			
 			$cell_height = round(($this->cell_height_ratio * $headerfont[2]) / $this->k, 2);
 			// set starting margin for text data cell
 			if ($this->getRTL()) {

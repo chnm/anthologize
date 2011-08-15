@@ -13,7 +13,7 @@ class PdfAnthologizer extends Anthologizer {
 
 	public $partH = '16';
 	public $itemH = '12';
-	public $headerLogo = 'med-logo.png'; //TCPDF looks for this in /tcpdf/images
+	public $headerLogo = 'logo-pdf.png'; //TCPDF looks for this in /tcpdf/images
 	public $headerLogoWidth = '10';
 	public $tidy = false;
 	
@@ -176,7 +176,8 @@ class PdfAnthologizer extends Anthologizer {
 
 	public function appendBack() {
 
-		$this->output->startPageGroup();
+	    //@TODO: looks like starting an empty page group resets page number on previous page?
+		//$this->output->startPageGroup();
 
 		$this->output->setPrintHeader(true);
 		$partsCount = $this->api->getSectionPartItemCount('back');
