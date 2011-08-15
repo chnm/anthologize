@@ -13,7 +13,7 @@ class PdfAnthologizer extends Anthologizer {
 
 	public $partH = '16';
 	public $itemH = '12';
-	public $headerLogo = 'logo-pdf.png'; //TCPDF looks for this in /tcpdf/images
+	public $headerLogo = 'logo-pdf.png'; //should be in /anthologize/images/
 	public $headerLogoWidth = '10';
 	public $tidy = false;
 	
