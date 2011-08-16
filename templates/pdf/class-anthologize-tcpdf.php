@@ -202,6 +202,7 @@ class AnthologizeTCPDF extends TCPDF {
 			$this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);
 			$headerfont = $this->getHeaderFont();
 			$headerdata = $this->getHeaderData();
+			
 			$this->y = $this->header_margin;
 			if ($this->rtl) {
 				$this->x = $this->w - $this->original_rMargin;
@@ -240,6 +241,7 @@ class AnthologizeTCPDF extends TCPDF {
 			$this->SetFont($headerfont[0], 'B', $headerfont[2] + 1);
 			$this->SetX($header_x);
 			$this->Cell($cw, $cell_height, $headerdata['title'], 0, 1, '', 0, '', 0);
+			
 			// header string
 			$this->SetFont($headerfont[0], $headerfont[1], $headerfont[2]);
 			$this->SetX($header_x);

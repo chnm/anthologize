@@ -197,9 +197,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
 
-		if($partNo == 0) {
-			$this->output->AddPage();
-		} elseif($this->api->getProjectOutputParams('break-parts') == 'on' )  {
+		if( ($partNo == 0) || ($this->api->getProjectOutputParams('break-parts') == 'on' ) ) {
 			$this->output->AddPage();
 		}
 
@@ -210,18 +208,14 @@ class PdfAnthologizer extends Anthologizer {
 		}
 
 		//add the header info
-		//$this->appendPartHead($section, $partNo);
+		$this->appendPartHead($section, $partNo);
 
 		//loop the items and append
 		$itemsCount = $this->api->getSectionPartItemCount($section, $partNo);
 		for($itemNo = 0; $itemNo < $itemsCount; $itemNo++) {
 			$this->appendItem($section, $partNo, $itemNo);
 		}
-
-		$this->output->endPage();
-
 	}
-
 
 	public function appendPartHead($section, $partNo) {
 		//append the header stuff, avoiding HTML methods for optimization
@@ -238,12 +232,13 @@ class PdfAnthologizer extends Anthologizer {
 
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
 		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
-		$this->set_header(array('string'=>$title));
-
+		
 		if( ($this->api->getProjectOutputParams('break-items') == 'on') && $itemNo != 0   ) {
 			$this->output->AddPage();
 		}
 
+        $this->set_header(array('string'=>$title));
+        
 		if($section == 'body') {
 			$this->output->Bookmark($title, 1);
 		}
@@ -302,8 +297,6 @@ class PdfAnthologizer extends Anthologizer {
 				return 'B';
 			break;
 		}
-
-
 	}
 
 	public function output() {
@@ -321,6 +314,7 @@ class PdfAnthologizer extends Anthologizer {
 		}
 		//. . . and set it back in the TCPDF
 		$this->output->setHeaderData($newArray['logo'], $newArray['logo_width'], $newArray['title'], $newArray['string']);
+		
 	}
 
 
