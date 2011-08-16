@@ -22,6 +22,8 @@ class AnthologizeTCPDF extends TCPDF {
 	 * @since 4.5.000 (2009-01-02)
 	 * @see addTOCPage(), endTOCPage(), addHTMLTOC()
 	 */
+    
+   
 	public function addTOC($page='', $numbersfont='', $filler='.', $toc_name='TOC') {
 		$fontsize = $this->FontSizePt;
 		$fontfamily = $this->FontFamily;
@@ -158,6 +160,8 @@ class AnthologizeTCPDF extends TCPDF {
 //numbers to match up with the numbering in the TOC
 
 					$ns = $this->formatTOCPageNumber($np - $page );
+					
+					
 					$nu = $ns;
 					$sdiff = strlen($k) - strlen($ns) - 1;
 					$sdiffu = strlen($ku) - strlen($ns) - 1;

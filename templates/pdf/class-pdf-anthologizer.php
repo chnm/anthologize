@@ -102,7 +102,7 @@ class PdfAnthologizer extends Anthologizer {
 	}
 
 	public function appendFront() {
-        $this->output->startPageGroup();
+        //$this->output->startPageGroup();
 		//add the front matter
 
 		//title and author
@@ -117,6 +117,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		//append cover
 		$this->output->AddPage();
+		
 		$this->frontPages++;
 		
 		$this->output->SetY(80);
@@ -129,7 +130,7 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->SetY(120);
 		$year = substr( $this->api->getProjectPublicationDate(), 0, 4 );
 		$this->output->Write('', $this->api->getProjectCopyright(false, false) . ' -- ' . $year , '', false, 'C', true );
-
+        $this->output->EndPage();
 
 		//dedication
 		$dedication = $this->api->getSectionPartItemContent('front', 0, 0);
@@ -161,7 +162,6 @@ class PdfAnthologizer extends Anthologizer {
 
 
 	public function appendBody() {
-
 		$this->output->startPageGroup();
 		$this->output->setPrintHeader(true);
 
@@ -194,17 +194,17 @@ class PdfAnthologizer extends Anthologizer {
 
 		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
 		$string = isset( $firstItemNode->textContent ) ? $firstItemNode->textContent : false;
-        
-		if($section == 'body') {
-			$this->output->Bookmark($title);
-		}
+       
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
 				
 		if( ($partNo == 0) || ($this->api->getProjectOutputParams('break-parts') == 'on' ) ) {
 			$this->output->AddPage();
 		}
-
+		
+		if($section == 'body') {
+			$this->output->Bookmark($title);
+		}
 		//TCPDF seems to add the footer to prev. page if AddPage hasn't been fired
 		$this->output->setPrintFooter(true);
 
@@ -280,7 +280,8 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->setPrintFooter(false);
 		$this->output->addTOCPage();
 		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
-		$this->output->addTOC($this->frontPages  , '', '', 'Table of Contents');
+		
+		$this->output->addTOC($this->frontPages + 1, '', ' . ', 'Table of Contents');
 		$this->output->endTOCPage();
 	}
 
