@@ -18,9 +18,6 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'indexImages' => true,
 		);
 
-
-@apply_filters('init');
-
 $ops['outputParams'] = $_SESSION['outputParams'];
 
 $tei = new TeiDom($_SESSION, $ops);
