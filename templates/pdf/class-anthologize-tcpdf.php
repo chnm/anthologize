@@ -1,4 +1,7 @@
 <?php
+
+define( 'ANTHOLOGIZE_IMAGES_PATH', ANTHOLOGIZE_INSTALL_PATH . 'images/' );
+
 //need to override addTOC() to adjust for printed page numbering and the TOC page numbering.
 class AnthologizeTCPDF extends TCPDF {
 
@@ -192,6 +195,7 @@ class AnthologizeTCPDF extends TCPDF {
 	 * This method is used to render the page header.
 	 *
 	 * Overrides TCPDF::Header(), so that we can specify our own file path for the header image
+	 * and section and part titles
 	 *
 	 * @package Anthologize
 	 * @since 0.6
@@ -211,8 +215,6 @@ class AnthologizeTCPDF extends TCPDF {
 			}
 			
 			if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
-
-			    define( 'ANTHOLOGIZE_IMAGES_PATH', ANTHOLOGIZE_INSTALL_PATH . 'images/' );
 
 				$imgtype = $this->getImageFileType( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo']);
 				if (($imgtype == 'eps') OR ($imgtype == 'ai')) {
@@ -315,6 +317,7 @@ class AnthologizeTCPDF extends TCPDF {
 			$pagenumtxt = $this->l['w_page'].' '.$this->getPageNumGroupAlias();
 		}
 		$this->SetY($cur_y);
+
 		//Print page number
 		if ($this->getRTL()) {
 			$this->SetX($ormargins['right']);

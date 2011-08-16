@@ -91,6 +91,7 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		$this->output->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$this->output->SetFooterMargin(PDF_MARGIN_FOOTER);
+		$this->output->setHeaderTemplateAutoreset(true);
 
 		$this->set_header(array('logo'=>$this->headerLogo, 'logo_width'=>$this->headerLogoWidth));
 
@@ -162,7 +163,6 @@ class PdfAnthologizer extends Anthologizer {
 	public function appendBody() {
 
 		$this->output->startPageGroup();
-		//$this->output->AddPage();
 		$this->output->setPrintHeader(true);
 
 		//actually letting appendPart and append Item do the appending
@@ -193,19 +193,21 @@ class PdfAnthologizer extends Anthologizer {
 		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
 
 		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
-		$string = isset( $titleNode->textContent ) ? $firstItemNode->textContent : false;
+		$string = isset( $firstItemNode->textContent ) ? $firstItemNode->textContent : false;
+        
+		if($section == 'body') {
+			$this->output->Bookmark($title);
+		}
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
-
+				
 		if( ($partNo == 0) || ($this->api->getProjectOutputParams('break-parts') == 'on' ) ) {
 			$this->output->AddPage();
 		}
 
 		//TCPDF seems to add the footer to prev. page if AddPage hasn't been fired
 		$this->output->setPrintFooter(true);
-		if($section == 'body') {
-			$this->output->Bookmark($title);
-		}
+
 
 		//add the header info
 		$this->appendPartHead($section, $partNo);
@@ -232,23 +234,20 @@ class PdfAnthologizer extends Anthologizer {
 
 		$titleNode = $this->api->getSectionPartItemTitle($section, $partNo, $itemNo, true);
 		$title = isset( $titleNode->textContent ) ? $titleNode->textContent : '';
-		
+
+        $this->set_header(array('string'=>$title));
 		if( ($this->api->getProjectOutputParams('break-items') == 'on') && $itemNo != 0   ) {
 			$this->output->AddPage();
 		}
 
-        $this->set_header(array('string'=>$title));
-        
 		if($section == 'body') {
 			$this->output->Bookmark($title, 1);
 		}
-
 		$this->appendItemHead($section, $partNo, $itemNo);
 
 		//append the item content
 		$content = $this->writeItemContent($section, $partNo, $itemNo);
 		$this->output->writeHTML($content, true, false, true);
-
 	}
 
 	protected function writeItemContent($section, $partNo, $itemNo) {
@@ -275,13 +274,13 @@ class PdfAnthologizer extends Anthologizer {
 	}
 
 	public function finish() {
-
+        $this->output->endPage();
 		//add TOC
 		$this->output->setPrintHeader(false);
 		$this->output->setPrintFooter(false);
 		$this->output->addTOCPage();
 		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
-		$this->output->addTOC($this->frontPages + 1 , '', '', 'Table of Contents');
+		$this->output->addTOC($this->frontPages  , '', '', 'Table of Contents');
 		$this->output->endTOCPage();
 	}
 
@@ -305,7 +304,6 @@ class PdfAnthologizer extends Anthologizer {
 	}
 
 	protected function set_header($array) {
-
 		//get the current data. . .
 		$newArray = $this->output->getHeaderData();
 		//. . . and override with whatever is in the param . . .
@@ -314,7 +312,6 @@ class PdfAnthologizer extends Anthologizer {
 		}
 		//. . . and set it back in the TCPDF
 		$this->output->setHeaderData($newArray['logo'], $newArray['logo_width'], $newArray['title'], $newArray['string']);
-		
 	}
 
 
