@@ -281,7 +281,7 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->addTOCPage();
 		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
 		
-		$this->output->addTOC($this->frontPages + 1, '', ' . ', 'Table of Contents');
+		$this->output->addTOC($this->frontPages + 1, '', '', 'Table of Contents');
 		$this->output->endTOCPage();
 	}
 
