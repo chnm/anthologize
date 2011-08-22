@@ -1,0 +1,5 @@
+.DS_Store
+*~
+*.swp
+# not ignoring tcpdf/cache so that it can be added
+# templates/pdf/tcpdf/cache/*

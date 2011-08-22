@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:anth="http://www.anthologize.org/ns">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <!-- move human readable file name to the <sourceDesc> -->
+
+                <title type="fileNameBase"></title>
+            </titleStmt>
+
+            <editionStmt>
+                <ab rend="literal"></ab>
+                <ab rend="structured"> </ab>
+            </editionStmt>
+
+            <publicationStmt>
+                <availability rend="literal"> </availability>
+                <availability rend="structured">
+                    <ab rend="structured"></ab>
+                </availability>
+                <date rend="literal"></date>
+                <date rend="structured"></date>
+            </publicationStmt>
+
+            <!-- info about the source Anthologize Project -->
+            <sourceDesc>
+                <listPerson> </listPerson>
+   
+                <list xml:id="subjects"> </list>
+            </sourceDesc>
+        </fileDesc>
+
+        <profileDesc>
+            <creation>
+                <date rend="structured"></date>
+            </creation>
+
+
+            <anth:outputDecl xmlns="http://www.anthologize.org/ns"><outputParams></outputParams></anth:outputDecl>
+
+        </profileDesc>
+
+        <encodingDesc>
+            <appInfo>
+                <application xml:id="anthologize" ident="anthologize" >
+                    <label>Anthologize</label>
+                    <desc>Bits to Bookshelf</desc>
+                    <ab><graphic
+                            url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"></graphic>
+                        <ptr target="http://anthologize.org"></ptr>
+                    </ab>
+                </application>
+
+            </appInfo>
+
+        </encodingDesc>
+
+    </teiHeader>
+    <text>
+
+        <front>
+            <head type="titlePage">
+                <bibl>
+                    <title type="main"></title>
+                    <title type="sub"></title>
+
+                    <ident type="guid"></ident>
+                </bibl>                
+            </head>
+            <div n="0">
+                <head>
+                    <title></title>
+                </head>
+
+            </div>
+            <div n="1">
+                <head>
+                    <title></title>
+                </head>
+
+            </div>
+        </front>
+        <body> </body>
+        <back> </back>
+    </text>
+
+</TEI>

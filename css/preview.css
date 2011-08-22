@@ -1,0 +1,15 @@
+ul {
+	list-style-type: none;
+}
+
+li {
+	margin-bottom: 50px;
+}
+
+#preview-notice {
+	margin: 20px 30px;
+	padding: 20px 30px;
+	border: 2px solid #666;
+	border-radius: 3px;
+	background: #E3C1AA;
+}
