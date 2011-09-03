@@ -5,8 +5,11 @@ class TeiApi {
 	public $xpath;
 
 	public function __construct($tei) {
-		$this->tei = $tei;
-		$this->xpath = $this->tei->xpath;
+	    if($tei instanceof TeiDom) {
+    	    $this->tei = $tei->dom;
+    		$this->xpath = $this->tei->xpath;
+	    }
+
 	}
 
 	public function getFileName() {
@@ -30,7 +33,7 @@ class TeiApi {
 	* @return Array
 	*/
 
-	public function nodeToArray($node, $deep = true, $followRefs = false) {
+	private function nodeToArray($node, $deep = true, $followRefs = false) {
 
 		$retArray = array();
 
@@ -118,76 +121,46 @@ class TeiApi {
 	 * @param boolean $asNode = false
 	 * @return mixed DOMNode or array
 	 */
-
-	public function getNodeDataByParams($params, $firstOnly = true) {
-		extract($params);
+	
+//@TODO: this is an epic mess
+	private function getNodeDataByParams($params, $firstOnly = true) {
 		
-		// Cast the $queryString as a string
-		$queryString = '';
-
-		if( isset($id) ) {
-			$queryString = "//*[@xml:id = '$id']";
-
-		} else if ( isset($section)) {
-			$queryString = "//tei:$section";
-			if(isset($partNumber)) {
-				if($section == 'body') {
-					$queryString .= "/tei:div[@n='$partNumber']";
-				}
-
-				if(isset($itemNumber)) {
-					$queryString .= "/tei:div[@n='$itemNumber']";
-				}
-			}
-
-
-		} else if(isset($index)) {
-			$queryString = "//tei:div[@type='index'][@subtype='$index']";
-			if(isset($itemNumber)) {
-				$queryString .= "/tei:list/tei:item[@n='$itemNumber']";
-			}
-		}
-
-		if(isset($subPath) ) {
-			//TODO check whether I use/need a first slash
-			$queryString .= "$subPath";
-		}
+		extract($params);
+		$queryString = $this->buildQueryString($params);
 
 		if(isset($contextNode) ) {
 			$nodeList = $this->getNodeListByXPath(array('xpath'=>$queryString, 'contextNode'=>$contextNode) );
 		} else {
 			$nodeList = $this->getNodeListByXPath($queryString);
 		}
-
+		
 		if(! $nodeList ) {
 			return false;
 		}
 
+		// go through the possibilities of $asNode and $firstOnly
+		// if $asNode return in each branch, else make it an array
+		// first, the $firstOnly cases
 		if($firstOnly) {
 			$node = $nodeList->item(0);
-
 			if($asNode) {
 				return $node;
 			}
-
 			return $this->nodeToArray($node);
-
 		}
-
+        //now the asNode cases
 		if($asNode) {
 			return $nodeList;
 		}
-
+        //not asNode, so build and return the array
 		$returnArray = array();
 		foreach($nodeList as $node) {
 			$returnArray[] = $this->nodeToArray($node);
 		}
-
 		return $returnArray;
-
 	}
 
-	public function getNodeTargetData($node) {
+	private function getNodeTargetData($node) {
 		//get id and a label/title
 		$id = $node->getAttribute('xml:id');
 		$titleNode = $this->getNodeListByXPath(array('xpath'=>"tei:head/tei:title", 'contextNode'=>$node), true);
@@ -201,17 +174,17 @@ class TeiApi {
 	 * @return string
 	 */
 
-	public function getNodeXML($node, $atts = false) {
+	private function getNodeXML($node, $atts = false) {
 		if($atts) {
 			foreach($atts as $att=>$val) {
 				$node->setAttribute($att, $val);
 			}
 		}
-		return $this->tei->dom->saveXML($node);
+		return $this->tei->saveXML($node);
 	}
 
 
-	public function getParentItem($node, $asNode = false) {
+	private function getParentItem($node, $asNode = false) {
 		while( $node->getAttribute('type') != 'libraryItem') {
 			$node = $node->parentNode;
 
@@ -222,7 +195,7 @@ class TeiApi {
 		return $this->nodeToArray($node, false);
 	}
 
-	public function getParentItemId($node) {
+	private function getParentItemId($node) {
 		while( $node->getAttribute('type') != 'libraryItem') {
 			$node = $node->parentNode;
 		}
@@ -236,7 +209,7 @@ class TeiApi {
 	 * @return mixed DOMNodeList or DOMNode
 	 */
 
-	public function getNodeListByXPath($xpath, $firstOnly = false) {
+	private function getNodeListByXPath($xpath, $firstOnly = false) {
 
 		if(is_array($xpath)) {
 			$nodeList = $this->xpath->query($xpath['xpath'], $xpath['contextNode']);
@@ -265,10 +238,13 @@ class TeiApi {
 
 		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='main']";
 		$titleNode = $this->getNodeListByXPath($queryString, true);
-		if($valueOnly) {
-			return $titleNode->firstChild->nodeValue;
+		if($titleNode) {
+    		if($valueOnly) {
+    			return $titleNode->firstChild->nodeValue;
+    		}
+    		return $this->getNodeXML($titleNode->firstChild);
 		}
-		return $this->getNodeXML($titleNode->firstChild);
+        return false;
 	}
 
 	/**
@@ -281,10 +257,13 @@ class TeiApi {
 
 		$queryString = "//tei:head[@type='titlePage']/tei:bibl/tei:title[@type='sub']";
 		$subTitleNode = $this->getNodeListByXPath($queryString, true);
-		if($valueOnly) {
-			return $subTitleNode->firstChild->nodeValue;
+		if($subTitleNode) {
+    		if($valueOnly) {
+    			return $subTitleNode->firstChild->nodeValue;
+    		}
+    		return $this->getNodeXML($subTitleNode->firstChild);
 		}
-		return $this->getNodeXML($subTitleNode->firstChild);
+		return false;
 	}
 
 	/**
@@ -293,21 +272,25 @@ class TeiApi {
 	 * @return mixed array of data or string
 	 */
 
-	public function getProjectCreator($asStructured = false, $html = true) {
+	public function getProjectCreator($asStructured = false, $asNode = false) {
 		$queryString = "//tei:author[@role = 'projectCreator']";
 		$creator = $this->getNodeListByXPath($queryString, true);
-
-		if($asStructured) {
-			$ref = $creator->getAttribute('ref');
-			$structuredCreator = $this->tei->dom->getElementById($ref);
-			return $this->nodeToArray($structuredCreator);
-		}
-
-		if($html) {
-			return $this->getNodeXML($creator->firstChild);
-		}
-
-		return $creator->firstChild->textContent;
+        if($creator) {
+    		if($asStructured) {
+    			$ref = $creator->getAttribute('ref');
+    			$structuredCreator = $this->tei->getElementById($ref);
+    			if($asNode) {
+    			    return $structuredCreator;
+    			}
+    			return $this->nodeToArray($structuredCreator);
+    		}
+    		if($asNode) {
+    			return $creator->firstChild;
+    		}
+    		return $creator->firstChild->textContent;
+        }
+        
+        return false;
 
 
 	}
@@ -370,7 +353,6 @@ class TeiApi {
 						'asNode'=>$asNode
 						);
 		$data = $this->getNodeDataByParams($params);
-
 		if($param) {
 			return $data[$param];
 		}
@@ -446,13 +428,13 @@ class TeiApi {
 		'asNode'=>true);
 
 		$data = $this->getNodeDataByParams($params);
-
-		if($asNode) {
-			return $data;
-		}
-		if($data) {
-			return $this->getNodeXML($data->firstChild);
-		}
+        if($data) {
+            if($asNode) {
+			    return $data;
+		    }
+		    return $this->getNodeXML($data->firstChild);
+        }
+        return false;
 	}
 
 
@@ -505,19 +487,18 @@ class TeiApi {
 
 	public function getSectionPartItemTitle($section, $partNumber, $itemNumber, $asNode = false) {
 		$params = array('section'=> $section,
-		'partNumber'=>$partNumber,
-		'itemNumber'=>$itemNumber,
-		'subPath'=>"/tei:head/tei:title",
-		'asNode'=>true);
-
+    		'partNumber'=>$partNumber,
+    		'itemNumber'=>$itemNumber,
+    		'subPath'=>"/tei:head/tei:title",
+    		'asNode'=>true);
 		$data = $this->getNodeDataByParams($params);
-
-		if($asNode) {
-			return $data;
-		}
 		if($data) {
-			return $this->getNodeXML($data->firstChild);
+			if($asNode) {
+    			return $data;
+    		}
+		    return $this->getNodeXML($data->firstChild);
 		}
+		return false;
 	}
 
 	/**
@@ -571,12 +552,12 @@ class TeiApi {
 	 * @param $section the section. front, body, or back
 	 * @param $partNumer the number of the part within the section
 	 * @param $itemNumber the number of the item within the part
-	 * @param $valueOnly = true give just the display name
 	 * @param $asNode whether to return the DOMNode
+	 * @param $valueOnly = true give just the display name
 	 * @return mixed string or array
 	 */
 
-	public function getSectionPartItemAnthologizer($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+	public function getSectionPartItemAnthologizer($section, $partNumber, $itemNumber, $asNode = false, $valueOnly = true) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
@@ -596,11 +577,11 @@ class TeiApi {
 	 * @param $section the section. front, body, or back
 	 * @param $partNumer the number of the part within the section
 	 * @param $itemNumber the number of the item within the part
-	 * @param $valueOnly = true give just the display name
 	 * @param $asNode whether to return the DOMNode
+	 * @param $valueOnly = true give just the display name
 	 * @return mixed string or array
 	 */
-	public function getSectionPartItemAssertedAuthor($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+	public function getSectionPartItemAssertedAuthor($section, $partNumber, $itemNumber, $asNode = false, $valueOnly = true) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
@@ -609,6 +590,12 @@ class TeiApi {
 						);
 
 		$data = $this->getNodeDataByParams($params);
+		if($asNode) {
+		    if($valueOnly) {
+		        return $data->textContent;
+		    }
+		    return $data;
+		}
 		if($valueOnly) {
 			return $data['spans'][0]['value'];
 		}
@@ -674,17 +661,16 @@ class TeiApi {
 		'asNode'=> true);
 		$data = $this->getNodeDataByParams($params);
 
-		if ($data->childNodes->length == 0) {
-			return false;
-		}
-
-		if($asNode) {
-			return $data;
-		}
-
 		if($data) {
-			return $this->getNodeXML($data);
+    		if ($data->childNodes->length == 0) {
+    			return false;
+    		}
+    		if($asNode) {
+    			return $data;
+    		}
+    		return $this->getNodeXML($data);
 		}
+        return false;
 	}
 
 
@@ -701,15 +687,13 @@ class TeiApi {
 		if( is_array($index)) {
 			return count($index['lists'][0]['items']);
 		} else if ( is_a($index, 'DOMElement') ) {
-			$xpath = "list/item"; //looks like when giving a context node, evaluate doesn't want prefixes
+			$xpath = "list/item";
 			return $this->xpath->evaluate("count($xpath)", $index);
 		} else {
 			throw new Exception('index must be node or array');
 		}
 
 	}
-
-
 
 	public function getIndexItem($index, $itemNumber) {
 		if (is_array($index)) {
@@ -728,7 +712,7 @@ class TeiApi {
 
 	public function getIndexItemLabel($item, $asNode = false) {
  		if (is_array($item)) {
-			return $item['rss'][0]['spans'][0]['value'];
+			return $item['rs'][0]['spans'][0]['value'];
 		} else if (is_a($item, 'DOMElement')) {
 			$params = array('contextNode'=>$item,
 							'asNode'=>true,
@@ -750,7 +734,7 @@ class TeiApi {
 
 	public function getIndexItemRef($item, $asNode = false) {
  		if (is_array($item)) {
-			$ref = $item['rss'][0]['atts']['ref'];
+			$ref = $item['rs'][0]['atts']['ref'];
 		} else if (is_a($item, 'DOMElement')) {
 			$ref = $item->firstChild->getAttribute('ref');
 		} else {
@@ -762,7 +746,7 @@ class TeiApi {
 
 	public function getIndexItemTargetCount($item) {
 		if( is_array($item)) {
-			return count($item['listRefs'][0]['rss']);
+			return count($item['listRefs'][0]['rs']);
 		} else if ( is_a($item, 'DOMElement') ) {
 			$xpath = "listRef/rs"; //looks like when giving a context node, evaluate doesn't want prefixes
 			return $this->xpath->evaluate("count($xpath)", $item);
@@ -773,7 +757,7 @@ class TeiApi {
 
 	public function getIndexItemTarget($item, $targetNumber) {
  		if (is_array($item)) {
-			return $item['listRefs'][0]['rss'][$targetNumber];
+			return $item['listRefs'][0]['rs'][$targetNumber];
 		} else if (is_a($item, 'DOMElement')) {
 			$params = array('contextNode'=>$item,
 							'asNode'=>true,
@@ -887,4 +871,77 @@ class TeiApi {
 
 		}
 	}
+	
+	public function buildQueryString($params) {
+		//id, section, and index all start a new queryString
+		$queryString = '';
+		if(isset($params['id'])) {
+		    $this->_filterQueryStringById(&$queryString, $params['id']);
+		}
+		
+        if(isset($params['section'])) {
+		    $this->_filterQueryStringBySection(&$queryString, $params['section']);
+        }
+		
+	    if(isset($params['index'])) {
+		    $this->_filterQueryStringByIndex(&$queryString, $params['index']);
+        }
+		
+		
+		//these three add onto the queryString, in order
+		//only the body should filter by part numbers
+	    if(isset($params['partNumber']) && isset($params['section']) && $params['section'] == 'body') {
+		    $this->_filterQueryStringByPartNumber(&$queryString, $params['partNumber']);
+        }
+		
+		if(isset($params['itemNumber'])) {
+		    $this->_filterQueryStringByItemNumber(&$queryString, $params['itemNumber']);
+        }
+		
+		if(isset($params['subPath'])) {
+		    $this->_filterQueryStringBySubPath(&$queryString, $params['subPath']);
+        }
+        return $queryString;
+	}
+    	
+    private function _filterQueryStringById($queryString, $id) {
+        if(!empty($id)) {
+            $queryString = "//*[@xml:id = '$id']";
+        }
+        
+    }
+    
+    private function _filterQueryStringByIndex($queryString, $index) {
+        if(!empty($index)) {
+            $queryString = "//tei:div[@type='index'][@subtype='$index']";
+        }
+    
+    }
+        
+    private function _filterQueryStringBySection($queryString, $section) {
+        if(!empty($section)) {
+            $queryString = "//tei:$section";
+        }
+        
+    }
+    
+    //@TODO: it'd be sweet of me to throw a warning for non-integer
+    private function _filterQueryStringByItemNumber($queryString, $itemNumber) {
+        $queryString .= "/tei:div[@n='$itemNumber']";
+    }
+
+    
+    private function _filterQueryStringByPartNumber($queryString, $partNumber) {
+        $queryString .= "/tei:div[@n='$partNumber']";
+    }
+    
+    private function _filterQueryStringBySubPath($queryString, $subPath) {
+        if(!empty($subPath)) {
+            $queryString .= "$subPath";
+        }
+        
+    }
+
+	
+	
 }

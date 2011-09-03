@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:anth="http://www.anthologize.org/ns">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <!-- move human readable file name to the <sourceDesc> -->
+
+                <title type="fileNameBase"><span xmlns="http://www.w3.org/1999/xhtml"
+                    >Test</span></title>
+            </titleStmt>
+
+            <editionStmt>
+                <ab rend="literal"><span xmlns="http://www.w3.org/1999/xhtml">1</span></ab>
+                <ab rend="structured"> </ab>
+            </editionStmt>
+
+            <publicationStmt>
+                <availability rend="literal" status="cc">
+                    <span xmlns="http://www.w3.org/1999/xhtml">Creative Commons - BY</span>
+                </availability>
+                <availability rend="structured" status="cc">
+                    <ab rend="structured">cc-by</ab>
+                </availability>
+                <date rend="literal">2011</date>
+                <date rend="structured"/>
+            </publicationStmt>
+
+            <!-- info about the source Anthologize Project -->
+            <sourceDesc>
+                <listPerson>
+                    <person xml:id="admin">
+                        <figure>
+                            <graphic type="gravatar"
+                                url="http://www.gravatar.com/avatar/5eae155257da1e1fea52ff200be56161">
+                                <html:img xmlns="http://www.w3.org/1999/xhtml"
+                                    src="http://www.gravatar.com/avatar/5eae155257da1e1fea52ff200be56161"
+                                />
+                            </graphic>
+                        </figure>
+                        <persName><name><span xmlns="http://www.w3.org/1999/xhtml"
+                                >admin</span></name><surname><span
+                                    xmlns="http://www.w3.org/1999/xhtml"/></surname><forename><span
+                                    xmlns="http://www.w3.org/1999/xhtml"/></forename><email><span
+                                    xmlns="http://www.w3.org/1999/xhtml"
+                                    >patrickmjchnm@gmail.com</span></email><num type="count"
+                            >6</num></persName>
+                        <note type="description"><div xmlns="http://www.w3.org/1999/xhtml"/></note>
+                    </person>
+                </listPerson>
+
+                <list xml:id="subjects">
+                    <item xml:id="post_tag-tag1" type="post_tag"><ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?tag=tag1]]></ident><desc><div
+                                xmlns="http://www.w3.org/1999/xhtml"/></desc><num type="count"
+                            >1</num><span xmlns="http://www.w3.org/1999/xhtml">tag1</span></item>
+                    <item xml:id="post_tag-tag2" type="post_tag"><ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?tag=tag2]]></ident><desc><div
+                                xmlns="http://www.w3.org/1999/xhtml"/></desc><num type="count"
+                            >1</num><span xmlns="http://www.w3.org/1999/xhtml">tag2</span></item>
+                    <item xml:id="category-category-a" type="category"><ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?category_name=category-a]]></ident><desc><div
+                                xmlns="http://www.w3.org/1999/xhtml"/></desc><num type="count"
+                            >1</num><span xmlns="http://www.w3.org/1999/xhtml">Category
+                        A</span></item>
+                    <item xml:id="category-uncategorized" type="category"><ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?category_name=uncategorized]]></ident><desc><div
+                                xmlns="http://www.w3.org/1999/xhtml"/></desc><num type="count"
+                            >1</num><span xmlns="http://www.w3.org/1999/xhtml"
+                        >Uncategorized</span></item>
+                </list>
+            </sourceDesc>
+        </fileDesc>
+
+        <profileDesc>
+            <creation>
+                <date rend="structured"/>
+            </creation>
+
+
+            <anth:outputDecl xmlns="http://www.anthologize.org/ns">
+                <outputParams>
+                    <param name="format">tei</param>
+                    <param name="do-shortcodes">1</param>
+                </outputParams>
+            </anth:outputDecl>
+
+        </profileDesc>
+
+        <encodingDesc>
+            <appInfo>
+                <application xml:id="anthologize" ident="anthologize">
+                    <label>Anthologize</label>
+                    <desc>Bits to Bookshelf</desc>
+                    <ab><graphic
+                            url="http://anthologize.org/wp-content/themes/anthologize/images/anthologize_web_final.png"/>
+                        <ptr target="http://anthologize.org"/>
+                    </ab>
+                </application>
+
+            </appInfo>
+
+        </encodingDesc>
+
+    </teiHeader>
+    <text>
+
+        <front>
+            <head type="titlePage">
+                <bibl>
+                    <title type="main"><span xmlns="http://www.w3.org/1999/xhtml"
+                        >Test</span></title>
+                    <title type="sub"><span xmlns="http://www.w3.org/1999/xhtml">Test
+                            Subtitle</span></title>
+                    <ident type="guid"
+                        ><![CDATA[http://localhost/wp-anth/?post_type=anth_project&p=85]]></ident>
+                    <author role="projectCreator" ref="admin"><span
+                            xmlns="http://www.w3.org/1999/xhtml">admin</span></author><date
+                        type="created">2011-08-16 21:21:41</date></bibl>
+            </head>
+            <div n="0">
+                <head>
+                    <title><span xmlns="http://www.w3.org/1999/xhtml">Dedication</span></title>
+                </head>
+
+                <div xmlns="http://www.w3.org/1999/xhtml">
+                    <p>Dedication</p>
+                </div>
+            </div>
+            <div n="1">
+                <head>
+                    <title><span xmlns="http://www.w3.org/1999/xhtml"
+                        >Acknowledgements</span></title>
+                </head>
+
+                <div xmlns="http://www.w3.org/1999/xhtml">
+                    <p>Acknowledgements</p>
+                </div>
+            </div>
+        </front>
+        <body>
+            <div type="part" n="0" xml:id="body-0">
+                <head><title><span xmlns="http://www.w3.org/1999/xhtml">Part 1</span></title><ident
+                        type="guid"
+                        ><![CDATA[http://localhost/wp-anth/?post_type=anth_part&p=86]]></ident></head>
+                <div type="libraryItem" subtype="html" xml:id="body-0-0" n="0">
+                    <head>
+                        <title>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span>
+                        </title>
+                        <ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_library_item&p=116]]></ident>
+                        <bibl>
+                            <author role="anthologizer" ref="admin">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                            </author>
+                            <author role="assertedAuthor">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Part 1 Simplest Page
+                                    Author</span>
+                            </author>
+                            <author role="originalAuthor" ref="admin">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                            </author>
+                        </bibl>
+                        <ident type="permalink"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_project&p=85]]></ident>
+                        <ident type="origGuid"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_project&p=85]]></ident>
+                        <list type="subjects"/>
+                    </head>
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                        <p>hello</p>
+                    </div>
+                </div>
+            </div>
+            <div type="part" n="1" xml:id="body-1">
+                <head><title><span xmlns="http://www.w3.org/1999/xhtml">Part 2</span></title><ident
+                        type="guid"
+                        ><![CDATA[http://localhost/wp-anth/?post_type=anth_part&p=87]]></ident></head>
+                <div type="libraryItem" subtype="html" xml:id="body-1-0" n="0">
+                    <head><title><span xmlns="http://www.w3.org/1999/xhtml">Simplest
+                            Page</span></title><ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_library_item&p=119]]></ident>
+                        <bibl>
+                            <author role="anthologizer" ref="admin">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                            </author>
+                            <author role="assertedAuthor">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Part 2 Simple Page
+                                    Author,&#13; Part 2 Simple Page Author2</span>
+                            </author>
+                            <author role="originalAuthor" ref="admin">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                            </author>
+                        </bibl>
+                        <ident type="permalink"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_project&p=85]]></ident>
+                        <ident type="origGuid"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_project&p=85]]></ident>
+                        <list type="subjects"/>
+                    </head>
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                        <p>hello</p>
+                    </div>
+                </div>
+                <div type="libraryItem" subtype="html" xml:id="body-1-1" n="1">
+                    <head>
+                        <title>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Categories and Tags</span>
+                        </title>
+                        <ident type="guid"
+                            ><![CDATA[http://localhost/wp-anth/?post_type=anth_library_item&p=126]]></ident>
+                        <bibl>
+                            <author role="anthologizer" ref="admin">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                            </author>
+                            <author role="assertedAuthor">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                            </author>
+                            <author role="originalAuthor" ref="admin">
+                                <span xmlns="http://www.w3.org/1999/xhtml">admin </span>
+                            </author>
+                        </bibl>
+                        <ident type="permalink"><![CDATA[http://localhost/wp-anth/?p=124]]>
+                        </ident>
+                        <ident type="origGuid"><![CDATA[http://localhost/wp-anth/?p=124]]></ident>
+                        <list type="subjects">
+                            <item>
+                                <rs ref="post_tag-tag1" type="post_tag"><span
+                                        xmlns="http://www.w3.org/1999/xhtml">tag1</span>
+                                </rs>
+                            </item>
+                            <item>
+                                <rs ref="post_tag-tag2" type="post_tag"><span
+                                        xmlns="http://www.w3.org/1999/xhtml">tag2</span>
+                                </rs>
+                            </item>
+                            <item>
+                                <rs ref="category-category-a" type="category"><span
+                                        xmlns="http://www.w3.org/1999/xhtml">Category A</span>
+                                </rs>
+                            </item>
+                            <item>
+                                <rs ref="category-uncategorized" type="category"><span
+                                        xmlns="http://www.w3.org/1999/xhtml"
+                                    >Uncategorized</span></rs>
+                            </item>
+                        </list></head>
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                        <p>Categories and Tags Body</p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        <back>
+            <div type="index" subtype="subjects" n="0">
+                <list>
+                    <item n="0">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Category A</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" ref="body-1-1"><span xmlns="http://www.w3.org/1999/xhtml"
+                                    >Categories and Tags</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                    <item n="1">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">tag1</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" ref="body-1-1"><span xmlns="http://www.w3.org/1999/xhtml"
+                                    >Categories and Tags</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                    <item n="2">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">tag2</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" ref="body-1-1">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                    Tags</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                    <item n="3">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Uncategorized</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" ref="body-1-1">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                    Tags</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                </list>
+            </div>
+            <div type="index" subtype="categories" n="1">
+                <list>
+                    <item n="0">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Category A</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" ref="body-1-1">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                    Tags</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                    <item n="1">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Uncategorized</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" ref="body-1-1">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                    Tags</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                </list>
+            </div>
+            <div type="index" subtype="tags" n="2">
+                <list/>
+            </div>
+            <div type="index" subtype="persons" n="3">
+                <list>
+                    <item n="0">
+                        <rs ref="admin">
+                            <span xmlns="http://www.w3.org/1999/xhtml">admin</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" role="anthologizer" ref="body-0-0"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span></rs>
+                            <rs n="1" role="originalAuthor" ref="body-0-0"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span></rs>
+                            <rs n="2" role="anthologizer" ref="body-1-0"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span></rs>
+                            <rs n="3" role="originalAuthor" ref="body-1-0"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span></rs>
+                            <rs n="4" role="anthologizer" ref="body-1-1"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                Tags</span></rs>
+                            <rs n="5" role="assertedAuthor" ref="body-1-1"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                Tags</span></rs>
+                            <rs n="6" role="originalAuthor" ref="body-1-1"><span
+                                    xmlns="http://www.w3.org/1999/xhtml">Categories and
+                                Tags</span></rs>
+                        </listRef>
+                    </item>
+                    <item n="1">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Part 1 Simplest Page
+                                Author</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" role="assertedAuthor" ref="body-0-0">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                    <item n="2">
+                        <rs>
+                            <span xmlns="http://www.w3.org/1999/xhtml">Part 2 Simple Page
+                                Author,&#13; Part 2 Simple Page Author2</span>
+                        </rs>
+                        <listRef type="items">
+                            <rs n="0" role="assertedAuthor" ref="body-1-0">
+                                <span xmlns="http://www.w3.org/1999/xhtml">Simplest Page</span>
+                            </rs>
+                        </listRef>
+                    </item>
+                </list>
+            </div>
+            <div type="index" subtype="images" n="4">
+                <list/>
+            </div>
+        </back>
+    </text>
+
+</TEI>
