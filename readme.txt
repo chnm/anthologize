@@ -56,6 +56,11 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.6.1-alpha =
+
+* Removed WordPress filter call that may have caused whitescreens on exports on some installations
+* Added some unit tests
+
 = 0.6-alpha = 
 
 * Code name "Wide Wale"
