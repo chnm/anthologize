@@ -129,6 +129,7 @@ class TeiDom {
 			foreach($libraryItemObjectsArray as $libraryItemObject) {
 
 				$origPostData = get_post_meta($libraryItemObject->ID, 'anthologize_meta', true );
+				
 				$libraryItemObject->original_post_id = isset( $origPostData['original_post_id'] ) ? $origPostData['original_post_id'] : false;
 
 				$newItem = $this->newItem($libraryItemObject);
@@ -136,6 +137,7 @@ class TeiDom {
 				if($this->includeStructuredSubjects) {
 					$this->addStructuredSubjects($libraryItemObject->original_post_id);
 				}
+
 				$newItem->setAttribute('n', $itemNumber);
 				$newPart->appendChild($newItem);
 				$itemNumber++;
@@ -302,76 +304,15 @@ class TeiDom {
 
 	}
 
-	public function addStructuredPerson($personObj, $type = 'user') {
+	public function addStructuredPerson($wpUserObj) {
 
-	    switch($type) {
-	        case 'user':
-	            $newPerson = $this->newStructuredPerson($personObj);
-	            break;
-	            
-	        case 'commenter':
-	            $newPerson = $this->newStructuredCommenter($personObj);
-	            
-	            break;
-	    }
-		
+		$newPerson = $this->newStructuredPerson($wpUserObj);
 		if($newPerson) {
 			$this->structuredPersonList->appendChild($newPerson);
 		}
 
 	}
 
-	public function newStructuredCommenter($commenterObj) {
-	    $id = $commenterObj->comment_author_email;
-	
-		if( array_key_exists($id, $this->knowenPersons)) {
-			$this->knownPersons[$id] = $this->knownPersons[$id] + 1;
-
-			//since the node is added to the TEI at 1st occurance, update the node already in the TEI
-			$personCountNode = $this->xpath->query("//tei:person[@xml:id = '$id']/tei:persName/tei:num")->item(0);
-			$personCountNode->nodeValue = $this->knownPersons[$id];
-			return false;
-		}
-		$this->knownPersons[$id] = 1;
-
-		$person = $this->dom->createElementNS(TEI, 'person');
-		$person->setAttribute('xml:id', $id );
-		$persName = $this->dom->createElementNS(TEI, 'persName');
-		$name = $this->dom->createElementNS(TEI, 'name');
-		$name->appendChild($this->sanitizeString($commenterObj->comment_author));
-		
-		$email = $this->dom->createElementNS(TEI, 'email');
-		$email->appendChild($this->sanitizeString($commenterObj->comment_author_email));
-
-		$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $commenterObj->comment_author_email ) ) ) ;
-
-		//building it myself rather using WP's function so I build a node in the right document
-		$grav = $this->dom->createElementNS(HTML, 'img');
-		$src = $grav->setAttribute('src', $grav_url);
-
-		//adding the nodes to the TEI as I build them because otherwise funky and wrong xmlns:defaults are added
-
-		$figure = $this->dom->createElementNS(TEI, 'figure');
-		$person->appendChild($figure);
-		$graphic = $this->dom->createElementNS(TEI, 'graphic');
-		$graphic->setAttribute('type', 'gravatar');
-		$graphic->setAttribute('url', $grav_url);
-		$figure->appendChild($graphic);
-		$graphic->appendChild($grav);
-		
-		
-		$persName->appendChild($name);
-		$link = $this->dom->createElementNS(TEI, 'link');
-		$link->setAttribute('type', 'webpage');
-		$link->appendChild($this->dom->createTextNode(rtrim($commenterObj->comment_author_url, '/')));
-		$persName->appendChild($link);
-		
-		$person->appendChild($persName);
-
-		return $person;
-	    
-	}
-	
 	public function newStructuredPerson($wpUserObj) {
 
 		$id = $wpUserObj->user_login;
@@ -398,6 +339,7 @@ class TeiDom {
 		$count = $this->dom->createElementNS(TEI, 'num');
 		$count->setAttribute('type', 'count');
 		$count->appendChild($this->dom->createTextNode('1'));
+
 
 		$desc = $this->dom->createElementNS(TEI, 'note');
 		$desc->setAttribute('type', 'description');
@@ -509,16 +451,11 @@ class TeiDom {
 	public function newNote($commentObj) {
 		$note = $this->dom->createElementNS(TEI, 'note');
 		$bibl = $this->dom->createElementNS(TEI, 'bibl');
-		$commentAuthor = $this->dom->createElementNS(TEI, 'author');
-		$commentAuthor->setAttribute('ref', $commentObj->comment_author_email);
-		$commentAuthor->setAttribute('type', 'commenter');
-		$this->addStructuredPerson($commentObj, 'commenter');
 		$note->appendChild($bibl);
 		//TODO: figure out commenter data structures
-		//$commenterObj = new StdClass();
-		//$bibl->appendChild($this->newCommenter($commenterObj));
+		$commenterObj = new StdClass();
+		$bibl->appendChild($this->newCommenter($commenterObj));
 		$note->appendChild($this->sanitizeString($commentObj->comment_content, true));
-		return $note;
 	}
 
 
@@ -600,15 +537,10 @@ class TeiDom {
 		if($this->includeComments) {
 			$commentsDiv = $this->dom->createElementNS(TEI, 'div');
 			$commentsDiv->setAttribute('type', 'comments');
-			$args = array(
-			    'post_id' => $libraryItemObject->original_post_id,
-			    'status' => 'approve'
-			);
-			$comments = get_comments($args);
+			$comments = array(); //for me and boone to figure out
 			foreach($comments as $comment) {
 				$commentsDiv->appendChild($this->newNote($comment));
 			}
-			$newItem->appendChild($commentsDiv);
 		}
 
 		return $newItem;
@@ -692,14 +624,15 @@ class TeiDom {
 	}
 
 	public function sanitizeString($content, $isMultiline = false) {
-	    $content = $this->sanitizeEntities($content);
+
+		$content = $this->sanitizeEntities($content);
 
 		if ($isMultiline) {
 			//TODO: check if this is redundant now that I'm using apply_filters()'
+			//$content = wpautop($content);
 			//$content = $this->sanitizeShortCodes($content);
-    		$content = apply_filters('the_content', $content);
-    		$content = wpautop($content);
-			
+
+			$content = apply_filters('the_content', $content);
 			if($this->tidy) {
 				$this->tidy->parseString($content, array(), 'utf8');
 				$this->tidy->cleanRepair();
@@ -719,7 +652,9 @@ class TeiDom {
 
 		//using loadHTML because it is more forgiving than loadXML
 		$tmpHTML = new DOMDocument('1.0', 'UTF-8');
-		@$tmpHTML->loadHTML("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head><body><$element xmlns='http://www.w3.org/1999/xhtml'>$content</$element></body></html>" );
+		//conceal the Warning about bad html with @
+		//loadHTML adds head and body tags silently
+		@$tmpHTML->loadHTML("<?xml version='1.0' encoding='UTF-8' ?><$element xmlns='http://www.w3.org/1999/xhtml'>$content</$element>" );
 		if($this->checkImgSrcs) {
 			$this->checkImageSources($tmpHTML);
 		}
