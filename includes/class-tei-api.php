@@ -3,25 +3,28 @@ class TeiApi {
 
 	public $tei;
 	public $xpath;
+	public $fileName;
 
 	public function __construct($tei) {
 	    if($tei instanceof TeiDom) {
     	    $this->tei = $tei->dom;
-    		$this->xpath = $this->tei->xpath;
+    		$this->xpath = $tei->xpath;
+	    } else {
+	        throw new Exception('TeiApi must be passed a TeiDom object');
 	    }
 
-	}
-
-	public function getFileName() {
-
-		$text = strtolower($this->tei->projectData['post-title']);
+	    $text = strtolower($tei->projectData['post-title']);
         $fileName = preg_replace('/\s/', "_", $text);
         $fileName = mb_ereg_replace('/[^\w\-]/', '', $fileName);
         $fileName = trim($fileName, "_");
 
         $fileName = rtrim($fileName, ".");
+	    $this->fileName = $fileName;
+	}
 
-        return $fileName;
+	public function getFileName() {
+
+        return $this->fileName;
 	}
 
 	/* Accessors for building output formats */
