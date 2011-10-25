@@ -23,7 +23,6 @@ class TeiApi {
 	}
 
 	public function getFileName() {
-
         return $this->fileName;
 	}
 
