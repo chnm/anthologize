@@ -226,6 +226,9 @@ class TeiDom {
 			$userData = get_userdata($projectPostData->post_author);
 
 			$projectBibl->appendChild($this->newAuthor($userData, 'projectCreator') );
+			if(!empty($this->projectData['authors'])) {
+			    $projectBibl->appendChild($this->newAuthor($this->projectData['authors'], 'assertedAuthor') );
+			}
 			$createdNode = $this->dom->createElementNS(TEI, 'date');
 			$createdNode->setAttribute('type', 'created');
 			$projectBibl->appendChild($createdNode);

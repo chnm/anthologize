@@ -56,9 +56,12 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		'indexImages' => false,
 		);
 
+$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ASSERTED; //@TODO: hacked in--no interface yet!
+		
 $tei = new TeiDom($_SESSION, $ops);
 
 $api = new TeiApi($tei);
+
 $pdfer = new PdfAnthologizer($api);
 
 
