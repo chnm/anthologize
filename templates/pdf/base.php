@@ -56,7 +56,7 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 		'indexImages' => false,
 		);
 
-$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ASSERTED; //@TODO: hacked in--no interface yet!
+$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 		
 $tei = new TeiDom($_SESSION, $ops);
 

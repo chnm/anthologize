@@ -127,14 +127,14 @@ class PdfAnthologizer extends Anthologizer {
 		
 		switch($this->api->getProjectOutputParams('creatorOutputSettings')) {
 		    case ANTHOLOGIZE_CREATORS_ALL:
-		        $projectAuthorsString = $creators . ' ' . $assertedAuthors;
+		        $projectAuthorsString = $creator . ', ' . $assertedAuthors;
 		        break;
 		        
 		    case ANTHOLOGIZE_CREATORS_ASSERTED:
 		        $projectAuthorsString = $assertedAuthors;
 		        break;
 		    default:
-		        $projectAuthorsString = $creators;
+		        $projectAuthorsString = $creator;
 		        break;
 		}
 
