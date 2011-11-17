@@ -74,7 +74,8 @@ var anthologize = {
 	var i = 0;
 	
 	ui.item.after(jQuery("#sidebar-posts li").clone().each(function(){
-		var orig_id = anthologize.cleanPostIds(jQuery(this).attr("id"));
+        var sidePostId = jQuery(this).find("span.fromNewId").first().text();
+		var orig_id = anthologize.cleanPostIds(sidePostId);
 		var added_id = "item-" + orig_id;
 		jQuery(this).attr("id", added_id);
 		item_ids[i] = added_id;
@@ -314,6 +315,13 @@ var anthologize = {
 		result = resultArray.join(' ');
 	}
 	return result;
+  },
+  "fixFromNewId": function ( newEl ) {
+      var fromNewId = jQuery(newEl).find("span.fromNewId");
+      if (fromNewId.length){
+          jQuery(newEl).attr("id", jQuery(fromNewId[0]).text());
+          jQuery(fromNewId).remove();
+      }
   }
 };
 
@@ -325,14 +333,14 @@ jQuery.fn.anthologizeSortList = function (options){
     start: function(event, ui){
       anthologize.src_id = null;
       anthologize.org_seq_num = ui.item.index() + 1;
-	    anthologize.src_seq = {};
-	    var pos = 1;
-	    ui.item.siblings().each(function(){
-		if (! jQuery(this).hasClass("anthologize-drop-item")){ 
-			anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = pos;
-			pos++;
-		}
-	    });
+      anthologize.src_seq = {};
+      var pos = 1;
+      ui.item.siblings().each(function(){
+          if (! jQuery(this).hasClass("anthologize-drop-item")){ 
+              anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = pos;
+              pos++;
+          }
+      });
       anthologize.fromNew = false;
       anthologize.newItem = null;
       ui.item.addClass("anthologize-drag-selected");
@@ -340,14 +348,28 @@ jQuery.fn.anthologizeSortList = function (options){
     stop: function (event, ui){
 	    anthologize.newItem = ui.item;
 		if (ui.item.hasClass('part-header')){
+
+            ui.item.find("li.item").each(function(postItem) {
+                anthologize.fixFromNewId(postItem);
+            });
+
 			anthologize.addMultiItems(event, ui);
 		}else{
-		      	anthologize.callBack(event, ui);
+            anthologize.fixFromNewId(ui.item);
+		   	anthologize.callBack(event, ui);
 		}
       ui.item.removeClass("anthologize-drag-selected");
     },
     receive: function(event, ui){
-      anthologize.src_id = ui.sender.closest("li").attr('id');
+      var senderLi = ui.sender.closest("li");
+      var senderId = senderLi.attr("id");
+      if (senderLi.hasClass("item")){
+          var fromNewId = senderLi.find("span.fromNewId").first();
+          if (fromNewId.length){
+              senderId = jQuery(fromNewId).text();
+          }
+      }
+      anthologize.src_id = senderId;
     }
   },
   options);
