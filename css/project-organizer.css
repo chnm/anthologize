@@ -120,6 +120,9 @@ div.anthologize h3 {
 	padding: 4px;
 }
 
+span.fromNewId {
+    display:none;
+}
 
 /* Right column (Parts) */
 #partlist {

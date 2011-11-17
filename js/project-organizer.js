@@ -32,7 +32,7 @@ function do_filter(){
 		success: function(response){
 			j('#sidebar-posts').empty();
 			j.each( response, function(post_id, post_title) {
-				var h = '<li class="item" id="new-' + post_id + '"><h3 class="part-item">' + post_title + '</h3></li>';
+				var h = '<li class="item"><span class="fromNewId">new-' + post_id + '</span><h3 class="part-item">' + post_title + '</h3></li>';
 				j('#sidebar-posts').append(h);
 			});
 			anthologize.initSidebar();

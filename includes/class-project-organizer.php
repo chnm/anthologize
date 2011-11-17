@@ -485,7 +485,7 @@ class Anthologize_Project_Organizer {
 		?>
 			<ul id="sidebar-posts">
 				<?php while ( $big_posts->have_posts() ) : $big_posts->the_post(); ?>
-					<li class="item" id="new-<?php the_ID() ?>"><h3 class="part-item"><?php the_title() ?></h3></li>
+                    <li class="item"><span class="fromNewId">new-<?php the_ID() ?></span><h3 class="part-item"><?php the_title() ?></h3></li>
 				<?php endwhile; ?>
 			</ul>
 		<?php
