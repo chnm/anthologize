@@ -107,7 +107,7 @@ class PdfAnthologizer extends Anthologizer {
 
 		//title and author
 		$creator = $this->api->getProjectCreator(false, false);
-
+		$assertedAuthors = $this->api->getProjectAssertedAuthors(false);
 		$book_title = $this->api->getProjectTitle(true);
 		$this->output->SetCreator("Anthologize: A One Week | One Tool Production");
 		$this->output->SetAuthor($creator);
@@ -124,9 +124,22 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->Write('', $book_title, '', false, 'C', true );
 		$this->output->setFont($this->font_family, '', $this->baseH);
 
+		
+		switch($this->api->getProjectOutputParams('creatorOutputSettings')) {
+		    case ANTHOLOGIZE_CREATORS_ALL:
+		        $projectAuthorsString = $creator . ', ' . $assertedAuthors;
+		        break;
+		        
+		    case ANTHOLOGIZE_CREATORS_ASSERTED:
+		        $projectAuthorsString = $assertedAuthors;
+		        break;
+		    default:
+		        $projectAuthorsString = $creator;
+		        break;
+		}
 
 
-		$this->output->Write('', $creator, '', false, 'C', true );
+		$this->output->Write('', $projectAuthorsString, '', false, 'C', true );
 		$this->output->SetY(120);
 		$year = substr( $this->api->getProjectPublicationDate(), 0, 4 );
 		$this->output->Write('', $this->api->getProjectCopyright(false, false) . ' -- ' . $year , '', false, 'C', true );

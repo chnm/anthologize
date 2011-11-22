@@ -21,9 +21,9 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 
 $ops['outputParams'] = $_SESSION['outputParams'];
 
+
 $tei = new TeiDom($_SESSION, $ops);
 $api = new TeiApi($tei);
-
 
 
 //if you want to make it a download.

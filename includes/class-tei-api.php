@@ -293,8 +293,18 @@ class TeiApi {
         }
         
         return false;
-
-
+	}
+	
+	public function getProjectAssertedAuthors($asNode = false) {
+	    $xpath = "//tei:author[@role = 'assertedAuthor']";
+	    $assertedAuthors = $this->getNodeListByXPath($xpath, true);
+	    if($assertedAuthors) {
+	        if($asNode) {
+	            return $assertedAuthors->firstChild;
+	        }
+	        return $assertedAuthors->firstChild->textContent;
+	    }
+	    return false;
 	}
 
 	/**

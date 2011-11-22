@@ -98,7 +98,11 @@ class Anthologize_Loader {
 
 		if ( !defined( 'ANTHOLOGIZE_TEIDOMAPI_PATH' ) )
 			define( 'ANTHOLOGIZE_TEIDOMAPI_PATH', WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-tei-api.php' );
-
+			
+		if ( !defined('ANTHOLOGIZE_CREATORS_ALL'))
+		    define('ANTHOLOGIZE_CREATORS_ALL', 1);
+		if ( !defined('ANTHOLOGIZE_CREATORS_ASSERTED'))
+		    define('ANTHOLOGIZE_CREATORS_ASSERTED', 2);
 	}
 
 	// Let plugins know that we're initializing
