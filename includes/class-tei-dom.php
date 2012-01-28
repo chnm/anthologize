@@ -198,7 +198,7 @@ class TeiDom {
 	public function addFileDesc() {
 
 		$titleNode = $this->xpath->query('/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title')->item(0);
-		
+
 		$titleNode->appendChild($this->sanitizeString($this->projectData['post-title']));
 
 		//edition
@@ -311,13 +311,13 @@ class TeiDom {
 	        case 'user':
 	            $newPerson = $this->newStructuredPerson($personObj);
 	            break;
-	            
+
 	        case 'commenter':
 	            $newPerson = $this->newStructuredCommenter($personObj);
-	            
+
 	            break;
 	    }
-		
+
 		if($newPerson) {
 			$this->structuredPersonList->appendChild($newPerson);
 		}
@@ -326,8 +326,8 @@ class TeiDom {
 
 	public function newStructuredCommenter($commenterObj) {
 	    $id = $commenterObj->comment_author_email;
-	
-		if( array_key_exists($id, $this->knowenPersons)) {
+
+		if( array_key_exists($id, $this->knownPersons)) {
 			$this->knownPersons[$id] = $this->knownPersons[$id] + 1;
 
 			//since the node is added to the TEI at 1st occurance, update the node already in the TEI
@@ -342,7 +342,7 @@ class TeiDom {
 		$persName = $this->dom->createElementNS(TEI, 'persName');
 		$name = $this->dom->createElementNS(TEI, 'name');
 		$name->appendChild($this->sanitizeString($commenterObj->comment_author));
-		
+
 		$email = $this->dom->createElementNS(TEI, 'email');
 		$email->appendChild($this->sanitizeString($commenterObj->comment_author_email));
 
@@ -361,20 +361,20 @@ class TeiDom {
 		$graphic->setAttribute('url', $grav_url);
 		$figure->appendChild($graphic);
 		$graphic->appendChild($grav);
-		
-		
+
+
 		$persName->appendChild($name);
 		$link = $this->dom->createElementNS(TEI, 'link');
 		$link->setAttribute('type', 'webpage');
 		$link->appendChild($this->dom->createTextNode(rtrim($commenterObj->comment_author_url, '/')));
 		$persName->appendChild($link);
-		
+
 		$person->appendChild($persName);
 
 		return $person;
-	    
+
 	}
-	
+
 	public function newStructuredPerson($wpUserObj) {
 
 		$id = $wpUserObj->user_login;
@@ -702,7 +702,7 @@ class TeiDom {
 			//$content = $this->sanitizeShortCodes($content);
     		$content = apply_filters('the_content', $content);
     		$content = wpautop($content);
-			
+
 			if($this->tidy) {
 				$this->tidy->parseString($content, array(), 'utf8');
 				$this->tidy->cleanRepair();

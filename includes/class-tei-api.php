@@ -123,10 +123,10 @@ class TeiApi {
 	 * @param boolean $asNode = false
 	 * @return mixed DOMNode or array
 	 */
-	
+
 //@TODO: this is an epic mess
 	private function getNodeDataByParams($params, $firstOnly = true) {
-		
+
 		extract($params);
 		$queryString = $this->buildQueryString($params);
 
@@ -135,7 +135,7 @@ class TeiApi {
 		} else {
 			$nodeList = $this->getNodeListByXPath($queryString);
 		}
-		
+
 		if(! $nodeList ) {
 			return false;
 		}
@@ -291,10 +291,10 @@ class TeiApi {
     		}
     		return $creator->firstChild->textContent;
         }
-        
+
         return false;
 	}
-	
+
 	public function getProjectAssertedAuthors($asNode = false) {
 	    $xpath = "//tei:author[@role = 'assertedAuthor']";
 	    $assertedAuthors = $this->getNodeListByXPath($xpath, true);
@@ -569,7 +569,7 @@ class TeiApi {
 	 * @return mixed string or array
 	 */
 
-	public function getSectionPartItemAnthologizer($section, $partNumber, $itemNumber, $asNode = false, $valueOnly = true) {
+	public function getSectionPartItemAnthologizer($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
 		$params = array('section'=> $section,
 						'partNumber' => $partNumber,
 						'itemNumber' => $itemNumber,
@@ -883,77 +883,77 @@ class TeiApi {
 
 		}
 	}
-	
+
 	public function buildQueryString($params) {
 		//id, section, and index all start a new queryString
 		$queryString = '';
 		if(isset($params['id'])) {
 		    $this->_filterQueryStringById(&$queryString, $params['id']);
 		}
-		
+
         if(isset($params['section'])) {
 		    $this->_filterQueryStringBySection(&$queryString, $params['section']);
         }
-		
+
 	    if(isset($params['index'])) {
 		    $this->_filterQueryStringByIndex(&$queryString, $params['index']);
         }
-		
-		
+
+
 		//these three add onto the queryString, in order
 		//only the body should filter by part numbers
 	    if(isset($params['partNumber']) && isset($params['section']) && $params['section'] == 'body') {
 		    $this->_filterQueryStringByPartNumber(&$queryString, $params['partNumber']);
         }
-		
+
 		if(isset($params['itemNumber'])) {
 		    $this->_filterQueryStringByItemNumber(&$queryString, $params['itemNumber']);
         }
-		
+
 		if(isset($params['subPath'])) {
 		    $this->_filterQueryStringBySubPath(&$queryString, $params['subPath']);
         }
         return $queryString;
 	}
-    	
+
     private function _filterQueryStringById($queryString, $id) {
         if(!empty($id)) {
             $queryString = "//*[@xml:id = '$id']";
         }
-        
+
     }
-    
+
     private function _filterQueryStringByIndex($queryString, $index) {
         if(!empty($index)) {
             $queryString = "//tei:div[@type='index'][@subtype='$index']";
         }
-    
+
     }
-        
+
     private function _filterQueryStringBySection($queryString, $section) {
         if(!empty($section)) {
             $queryString = "//tei:$section";
         }
-        
+
     }
-    
+
     //@TODO: it'd be sweet of me to throw a warning for non-integer
     private function _filterQueryStringByItemNumber($queryString, $itemNumber) {
         $queryString .= "/tei:div[@n='$itemNumber']";
     }
 
-    
+
     private function _filterQueryStringByPartNumber($queryString, $partNumber) {
         $queryString .= "/tei:div[@n='$partNumber']";
     }
-    
+
     private function _filterQueryStringBySubPath($queryString, $subPath) {
         if(!empty($subPath)) {
             $queryString .= "$subPath";
         }
-        
+
     }
 
-	
-	
+
+
 }
