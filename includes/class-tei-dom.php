@@ -204,7 +204,6 @@ class TeiDom {
 		//edition
 		$edNode = $this->xpath->query("//tei:editionStmt/tei:ab[@rend='literal']")->item(0);
 		$edNode->appendChild($this->sanitizeString($this->projectData['edition']));
-
 	}
 
 	public function addTitlePageBibl() {
