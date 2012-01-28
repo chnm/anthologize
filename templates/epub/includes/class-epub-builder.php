@@ -344,13 +344,15 @@ class EpubBuilder {
 		//$parts = $htmlXPath->query("//div[@id='body']/div[@class='part']");
 		$parts = $this->tei->xpath->query("//tei:body/tei:div[@type='part']");
 
+		$playOrder = 0;
 		for($partN = 0; $partN < $parts->length; $partN++) {
 
 			$part = $parts->item($partN);
 			$title = $part->firstChild->firstChild->textContent; //shitty practice, I know
 			$partNavPoint = $this->newNavPoint("body-$partN", $title, $tocDOM);
 			$partNavPoint = $navMap->appendChild($partNavPoint);
-			$partNavPoint->setAttribute('playOrder', $partN);
+			$partNavPoint->setAttribute('playOrder', $playOrder);
+			$playOrder++;
 			//set playorder on $partNavPoint
 			$navMap->appendChild($partNavPoint);
 			$items = $this->tei->xpath->query("tei:div[@type='libraryItem']", $part);
@@ -361,7 +363,8 @@ class EpubBuilder {
 				//set playOrder
 				//append where it goes
 				//lets try this
-				$itemNavPoint->setAttribute('playOrder', $itemN);
+				$itemNavPoint->setAttribute('playOrder', $playOrder);
+				$playOrder++;
 				$partNavPoint->appendChild($itemNavPoint);
 			}
 
