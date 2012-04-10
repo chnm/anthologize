@@ -95,20 +95,32 @@
 
         <!-- Title page -->
 
-        <div id="anthologize-title-page">
+        <div id="anthologize-title-page" style="text-align: center;">
+          <img src="" style="float:left;" />
           <h1>
-            <xsl:value-of select="$book.title-page.main-title"/>
+            The Journal of Digital Humanities
           </h1>
-          <xsl:if test="$book.title-page.sub-title != ''">
+          
             <h2>
-              <xsl:value-of select="$book.title-page.sub-title"/>
+              Published by the Roy Rosenzweig Center for History and New Media
             </h2>
-          </xsl:if>
-          <xsl:if test="$book.title-page.doc-author != ''">
-            <h3>
-              <xsl:value-of select="$book.title-page.doc-author"/>
-            </h3>
-          </xsl:if>         
+          
+          
+            <p>
+              Vol. 1 No. 1 Winter 2011
+            </p>
+              
+            <ul style="list-style: none;">
+              <li>Daniel J. Cohen, Editor</li>
+              <li>Joan Fragaszy Troyano, Editor</li>
+              <li>Sasha Hoffman, Associate Editor</li>
+              <li>Jeri Wieringa, Associate Editor</li>
+              <li>Daniel Ludington, Editorial Assistant</li><br/>
+              <li>Natalia Cecire, Guest Editor</li>
+            </ul>  
+              
+          <p style="">ISSN 2165-6673</p>
+          <p style="">CC BY 3.0</p>
         </div>
 
         <!-- Publication statement page -->
@@ -123,24 +135,6 @@
                 <xsl:copy-of select="$book.dedication"/>              
             </div>
           </xsl:if>
-
-          <!-- Title  -->
-
-          <p>
-            <strong>
-              <xsl:value-of select="$book.title-page.main-title"/>
-              <xsl:if test="$book.title-page.sub-title != ''">
-                <xsl:text>: </xsl:text>
-                <xsl:value-of select="$book.title-page.sub-title"/>
-              </xsl:if>
-            </strong>
-
-            <br/>
-
-            <!-- License statement -->
-
-            <xsl:value-of select="$book.license"/>
-          </p>
 
           <!-- Anthologize statement -->
 	   
@@ -194,9 +188,9 @@
                 </xsl:element>
                 <div class="library-item">
                   <xsl:if test="tei:head/tei:title">
-                    <h3 class="library-item-title">
+                    <h2 class="library-item-title">
                       <xsl:value-of select="tei:head/tei:title"/>
-                    </h3>
+                    </h2>
                   </xsl:if>
                   <div class="library-item-content">
                     <xsl:apply-templates select="div" mode="html-content"/>

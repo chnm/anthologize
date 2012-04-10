@@ -43,21 +43,21 @@ require_once($pdfPath . 'class-pdf-anthologizer.php' );
 
 
 $ops = array('includeStructuredSubjects' => false, //Include structured data about tags and categories
-		'includeItemSubjects' => false, // Include basic data about tags and categories
-		'includeCreatorData' => false, // Include basic data about creators
-		'includeStructuredCreatorData' => false, //include structured data about creators
-		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
-		'checkImgSrcs' => true, //whether to check availability of image sources
-		'linkToEmbeddedObjects' => true,
-		'indexSubjects' => false,
-		'indexCategories' => false,
-		'indexTags' => false,
-		'indexAuthors' => false,
-		'indexImages' => false,
-		);
+        'includeItemSubjects' => false, // Include basic data about tags and categories
+        'includeCreatorData' => false, // Include basic data about creators
+        'includeStructuredCreatorData' => false, //include structured data about creators
+        'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
+        'checkImgSrcs' => true, //whether to check availability of image sources
+        'linkToEmbeddedObjects' => true,
+        'indexSubjects' => false,
+        'indexCategories' => false,
+        'indexTags' => false,
+        'indexAuthors' => false,
+        'indexImages' => false,
+        );
 
-$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
-		
+$_SESSION['outputParams']['creatorOutputSettings'] = 'default'; //@TODO: hacked in--no interface yet!
+
 $tei = new TeiDom($_SESSION, $ops);
 
 $api = new TeiApi($tei);

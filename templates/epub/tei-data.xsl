@@ -24,10 +24,10 @@
     select="$book.title-page/tei:bibl/tei:title[@type='main']"/>
   <xsl:variable name="book.title-page.sub-title"
     select="$book.title-page/tei:bibl/tei:title[@type='sub']"/>
-		
+		<!--
   <xsl:variable name="book.title-page.doc-author"
     select="$book.title-page/tei:bibl/tei:author[@role='projectCreator']"/>
-
+-->
   <!-- Dedication -->
 
   <xsl:variable name="book.dedication">

@@ -27,17 +27,18 @@
             select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"
           />
         </dc:title>
-        <dc:creator>Anthologize</dc:creator>
+        <dc:creator opf:role='aut'>Journal of Digital Humanities</dc:creator>
+        <dc:contributor opf:role='edt'>Daniel J. Cohen</dc:contributor>
+        <dc:contributor opf:role='edt'>Joan Fragaszy Troyano</dc:contributor>
+        <dc:contributor opf:role='edt'>Sasha Hoffman</dc:contributor>
+        <dc:contributor opf:role='edt'>Jeri Wieringa</dc:contributor>
+        <dc:contributor opf:role='edt'>Daniel Ludington</dc:contributor>
+        <dc:contributor opf:role='edt'>Natalia Cecire</dc:contributor>        
         <!-- How to change the language? This should be a user option -->
         <dc:language>en-US</dc:language>
-        <dc:rights/>
-        <!--<dc:publisher>Jedisaber.com</dc:publisher>-->
-        <dc:identifier id="{$book-id}">
-          <xsl:value-of
-            select="/tei:TEI/tei:text[1]/tei:front[1]/tei:head[1]/tei:bibl[1]/tei:ident[1]"
-          />
-          
-        </dc:identifier>        
+        <dc:rights>CC-BY 3.0</dc:rights>
+        <dc:publisher>Roy Rosenzweig Center for History and New Media</dc:publisher>
+        <dc:identifier id="2165-6673" scheme="ISSN" />
       </metadata>
       <!--  
         Each item in the manifest describes a document, an image file, a style sheet, 
