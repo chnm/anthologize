@@ -231,10 +231,19 @@
   <xsl:template
     match="abbr|acronym|address|blockquote|br|cite|code|dfn|div|em|h1|h2|h3|h4|h5|h6|kbd|p|pre|q|samp|span|strong|var|dl|dt|dd|ol|ul|li|a|object|param|b|big|hr|i|small|sub|sup|tt|del|ins|bdo|caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|area|map|style"
     mode="html-content">
-    <xsl:copy>
+    <xsl:element name="{local-name(.)}">
       <xsl:apply-templates select="@*|node()" mode="html-content"/>
-    </xsl:copy>
+    </xsl:element>
   </xsl:template>
+
+  <xsl:template match="@*">
+    <xsl:copy />
+  </xsl:template>
+
+  <!-- Strip out xmlns attributes. this is first stab at a better fix for why xmlns attributes are duplicated -->  
+  
+  <xsl:template match="*/@xmlns" mode="html-content"></xsl:template>
+  
 
   <!-- Pass-through attributes of html tags and text nodes -->
 

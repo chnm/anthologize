@@ -36,9 +36,20 @@
         <dc:contributor opf:role='edt'>Natalia Cecire</dc:contributor>        
         <!-- How to change the language? This should be a user option -->
         <dc:language>en-US</dc:language>
+
+
+
+
+
+
+
+
+<!-- JDH-specific hardcoding -->
+
         <dc:rights>CC-BY 3.0</dc:rights>
         <dc:publisher>Roy Rosenzweig Center for History and New Media</dc:publisher>
         <dc:identifier id="2165-6673" scheme="ISSN" />
+
       </metadata>
       <!--  
         Each item in the manifest describes a document, an image file, a style sheet, 

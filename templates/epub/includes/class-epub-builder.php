@@ -25,13 +25,11 @@ class EpubBuilder {
         $this->ncxXSL = $anthEpubDir . 'tei2ncx.xsl';
         $this->opfXSL = $anthEpubDir . 'tei2opf.xsl';
 
-
         //dig up the selected cover image
         $this->coverImage = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0)->nodeValue;
         $this->localizeLinks();
 
         if (is_string($data)) {
-
             if (file_exists($data)) {
                 //$data is the path to an xslt
                 $this->htmlXSL = $data;
@@ -56,6 +54,139 @@ class EpubBuilder {
         //after everything is done
         $this->finish();
     }
+
+    public function fetchImages() {
+        //TODO: switch to HTML based image work so arbitrary HTML can be passed in.
+        //will require adjusting the XSL so that it does not remove the full URL
+        $xpath = $this->tei->xpath;
+
+        $srcNodes = $xpath->query("//img/@src");
+
+        foreach ($srcNodes as $srcNode) // Iterate through images
+          {
+            // Get image url & open file
+
+            $image_url = $srcNode->nodeValue;
+
+            $image_filename = preg_replace('/^.*\//', '', $image_url); // Erase all but filename from URL (no directories)
+            $new_filename = $this->saveImage($image_url, $image_filename);
+            $srcNode->nodeValue = $new_filename;
+
+            //TODO: sort out the danger of duplicate file names
+        }
+
+    }
+
+    public function saveImage($image_url, $image_filename) {
+
+
+        // TODO: check mimetype of image and assign generated name to file rather than derive from URL as above
+        //sort out the danger of duplicate file names
+        $count = 0;
+        while(file_exists($image_filename)) {
+            $index = strpos($image_filename, '-');
+            $countPrefix = (int) substr($image_filename, $index);
+            $image_filename = substr_replace($image_filename, $count, 0, $index);
+        }
+
+        $exploded = explode('?', $image_filename);
+        $image_filename = $exploded[0];
+        $ch = curl_init($image_url);
+
+        $fp = fopen($this->oebpsDir . DIRECTORY_SEPARATOR . $image_filename, "w");
+
+        // Fetch image from url & put into file
+
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+        return $image_filename;
+    }
+
+    public function createDirs() {
+
+        $upload_dir = wp_upload_dir();
+        $tempDir = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . 'anthologize-temp';
+        if(! is_dir($tempDir)) {
+            mkdir($tempDir);
+        }
+
+        $this->tempDir = 	$tempDir .
+                    DIRECTORY_SEPARATOR .
+                    sha1(microtime()) . //make sure that if two users export different project from same site, they don't clobber each other
+                    DIRECTORY_SEPARATOR;
+
+        $this->epubDir = $this->tempDir  . 'epub' ;
+        $this->oebpsDir = $this->epubDir . DIRECTORY_SEPARATOR . 'OEBPS' . DIRECTORY_SEPARATOR;
+        $this->metaInfDir = $this->epubDir . DIRECTORY_SEPARATOR . 'META-INF' . DIRECTORY_SEPARATOR;
+
+
+        mkdir($this->tempDir, 0777, true);
+        mkdir($this->epubDir, 0777, true);
+        mkdir($this->oebpsDir, 0777, true);
+        mkdir($this->metaInfDir, 0777, true);
+
+    }
+
+    public function saveContainer() {
+      $container_file_contents  = '<?xml version="1.0"?>';
+      $container_file_contents .= '<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">';
+      $container_file_contents .= '<rootfiles>';
+      $container_file_contents .= '<rootfile full-path="OEBPS/book.opf" media-type="application/oebps-package+xml"/>';
+      $container_file_contents .= '</rootfiles>';
+      $container_file_contents .= '</container>';
+      file_put_contents($this->metaInfDir . 'container.xml', $container_file_contents);
+    }
+
+    public function saveNCX() {
+        $ncx = $this->doProc($this->ncxXSL, $this->tei->dom);
+        $this->rewriteTOC($ncx);
+        $ncx->save($this->oebpsDir . 'toc.ncx' );
+    }
+
+    public function saveOPF() {
+        $opf = $this->doProc($this->opfXSL, $this->tei->dom);
+        // overwrite the bad metadata
+        //TODO address this in the core xsl
+        $xpath = new DOMXPath($opf);
+        $xpath->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/');
+        $titleNode = $xpath->query("//dc:title")->item(0);
+
+        $teiTitleNL = $this->tei->xpath->query("//tei:front/tei:head/tei:bibl/tei:title[@type='main']");
+        $teiTitle = $teiTitleNL->item(0);
+
+        $titleNode->nodeValue = trim($teiTitle->nodeValue);
+        $teiCreatorNode = $this->tei->xpath->query("//tei:front/tei:head/tei:bibl/tei:author[@role='projectCreator']")->item(0);
+
+        $creatorNode = $xpath->query("//dc:creator")->item(0);
+        $creatorNode->nodeValue = trim($teiCreatorNode->nodeValue);
+
+        //add a cover image, if it is set
+        if($this->coverImage != 'none') {
+            //add the meta element
+            $metadataNode = $opf->getElementsByTagName('metadata')->item(0);
+            $coverNode = $opf->createElement('meta');
+            $coverNode->setAttribute('name', 'cover');
+            $coverNode->setAttribute('content', 'cover');
+            $metadataNode->appendChild($coverNode);
+
+            //add to the manifest
+            $manifestNode = $opf->getElementsByTagName('manifest')->item(0);
+            $coverItemNode = $opf->createElement('item');
+            $coverItemNode->setAttribute('href', 'cover.jpg');
+            $coverItemNode->setAttribute('id', 'cover');
+            $coverItemNode->setAttribute('media-type', 'image/jpeg');
+            $manifestNode->appendChild($coverItemNode);
+            //copy the image over to the epub tmp dir
+            $coverImgPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'covers' . DIRECTORY_SEPARATOR . $this->coverImage;
+            copy($coverImgPath, $this->oebpsDir . 'cover.jpg');
+        }
+        $opf->save($this->oebpsDir . 'book.opf');
+    }
+
 
     public function fetchImages() {
         //TODO: switch to HTML based image work so arbitrary HTML can be passed in.
@@ -314,7 +445,6 @@ class EpubBuilder {
           if (is_dir($file))
           {
               $this->cleanup($file);
-
           }
           else
           {
@@ -337,7 +467,7 @@ class EpubBuilder {
 
         //remove <navMap>
         //change depth?
-        $htmlXPath = new DOMXPath($this->html);
+
         $navMap = $tocDOM->getElementsByTagName('navMap')->item(0);
         while($navMap->childNodes->length != 0 ) {
             $navMap->removeChild($navMap->firstChild);
@@ -345,9 +475,10 @@ class EpubBuilder {
         //$parts = $htmlXPath->query("//div[@id='body']/div[@class='part']");
         $parts = $this->tei->xpath->query("//tei:body/tei:div[@type='part']");
 
-// for jdh, bring in the tei api so I can dig up the authors
-require_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
-$api = new TeiApi($this->tei);
+
+        // for jdh, bring in the tei api so I can dig up the authors
+        require_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
+        $api = new TeiApi($this->tei);
 
         $playOrder = 0;
         for($partN = 0; $partN < $parts->length; $partN++) {
@@ -363,9 +494,11 @@ $api = new TeiApi($this->tei);
             $items = $this->tei->xpath->query("tei:div[@type='libraryItem']", $part);
             for($itemN = 0; $itemN < $items->length; $itemN++) {
                 $item = $items->item($itemN);
+
                 $author = $api->getSectionPartItemAssertedAuthor('body', $partN, $itemN);
                 $itemTitle = $item->firstChild->firstChild->textContent; //shitty practice, I know
                 $itemNavPoint = $this->newNavPoint("body-$partN-$itemN", $itemTitle . " by $author", $tocDOM);
+
                 //set playOrder
                 //append where it goes
                 //lets try this
@@ -401,7 +534,6 @@ $api = new TeiApi($this->tei);
               $guid = $link->getAttribute('href');
 
               $targetGuidNL = $this->tei->xpath->query("//tei:ident[@type = 'permalink'][ . = '$guid']");
-
 
               if($targetGuidNL->length == 0 ) {
                   //I hate the problem of links and trailing slashes

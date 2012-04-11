@@ -48,25 +48,7 @@
             <content src="{$main-content-filename}#epub-chapter-{position()}"/>
           </navPoint>
         </xsl:for-each>
-<!--
-        <navPoint id="titlepage" playOrder="1">
-          <navLabel>
-            <text>Title Page</text>
-          </navLabel>
-          <content src="title_page.xhtml"/>
-        </navPoint>
-        <navPoint id="chapter01" playOrder="2">
-          <navLabel>
-            <text>Chapter 1</text>
-          </navLabel>
-          <content src="chap01.xhtml"/>
-        </navPoint>
-        <navPoint id="chapter02" playOrder="3">
-          <navLabel>
-            <text>Chapter 2</text>
-          </navLabel>
-          <content src="chap02.xhtml"/>
-        </navPoint>-->
+
       </navMap>
     </ncx>
   </xsl:template>
