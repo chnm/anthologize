@@ -48,7 +48,7 @@
 
         <dc:rights>CC-BY 3.0</dc:rights>
         <dc:publisher>Roy Rosenzweig Center for History and New Media</dc:publisher>
-        <dc:identifier id="2165-6673" scheme="ISSN" />
+        <dc:identifier id="2165-6673" opf:scheme="ISSN" >2165-6673</dc:identifier>
 
       </metadata>
       <!--  
