@@ -96,7 +96,7 @@
         <!-- Title page -->
 
         <div id="anthologize-title-page" style="text-align: center;">
-          <img src="" style="float:left;" />
+          
           <h1>
             The Journal of Digital Humanities
           </h1>
@@ -115,7 +115,8 @@
               <li>Joan Fragaszy Troyano, Editor</li>
               <li>Sasha Hoffman, Associate Editor</li>
               <li>Jeri Wieringa, Associate Editor</li>
-              <li>Daniel Ludington, Editorial Assistant</li><br/>
+              <li>Daniel Ludington, Editorial Assistant</li>
+              <li></li>
               <li>Natalia Cecire, Guest Editor</li>
             </ul>  
               

@@ -48,8 +48,11 @@
 
         <dc:rights>CC-BY 3.0</dc:rights>
         <dc:publisher>Roy Rosenzweig Center for History and New Media</dc:publisher>
-        <dc:identifier id="2165-6673" opf:scheme="ISSN" >2165-6673</dc:identifier>
-
+        <dc:identifier id="{$book-id}">
+          <xsl:value-of
+            select="/tei:TEI/tei:text/tei:front/tei:head/tei:bibl/tei:ident"
+          />
+        </dc:identifier>   
       </metadata>
       <!--  
         Each item in the manifest describes a document, an image file, a style sheet, 

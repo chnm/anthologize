@@ -217,7 +217,9 @@ class EpubBuilder {
             $zip = new ZipArchive();
             if ($zip->open($destination, ZIPARCHIVE::CREATE) === true) {
               $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+                // add the mimetype file first
 
+                $zip->addFromString('mimetype', 'application/epub+zip');
               // Iterate through files & directories and add to archive object
 
               foreach ($files as $file) {
