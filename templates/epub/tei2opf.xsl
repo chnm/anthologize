@@ -34,7 +34,7 @@
         <!--<dc:publisher>Jedisaber.com</dc:publisher>-->
         <dc:identifier id="{$book-id}">
           <xsl:value-of
-            select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:bibl/tei:ident"
+            select="/tei:TEI/tei:text/tei:front/tei:head/tei:bibl/tei:ident"
           />
         </dc:identifier>        
       </metadata>
