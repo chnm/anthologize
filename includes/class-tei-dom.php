@@ -582,6 +582,11 @@ class TeiDom {
     }
 
     public function newItem($libraryItemObject) {
+        global $post;
+        $post = $libraryItemObject;
+        if(empty($post->post_name)) {
+            $post->post_name = sanitize_title($post->post_title);
+        }
 
         $newItem = $this->dom->createElementNS(TEI, 'div');
         $newItem->setAttribute('type', 'libraryItem');
@@ -598,6 +603,7 @@ class TeiDom {
         $content = $libraryItemObject->post_content;
 
         $contentImport = $this->sanitizeString($content, true);
+
         $newItem->appendChild($contentImport);
 
         if($this->includeComments) {
@@ -699,12 +705,11 @@ class TeiDom {
 
         if ($isMultiline) {
             //TODO: check if this is redundant now that I'm using apply_filters()'
-            //$content = $this->sanitizeShortCodes($content);
+            $content = $this->sanitizeShortCodes($content);
             $content = apply_filters('the_content', $content);
             $content = wpautop($content);
-
             if($this->tidy) {
-                $this->tidy->parseString($content, array(), 'utf8');
+                $this->tidy->parseString($content, array('anchor-as-name'=>false ), 'utf8');
                 $this->tidy->cleanRepair();
 
                 //Tidy makes a full html document, with head section, so get just the body
@@ -712,6 +717,7 @@ class TeiDom {
                 $content = tidy_get_body( $this->tidy );
                 $content = rtrim($content, '</body>');
                 $content = ltrim($content, '<body>');
+
             }
             $element = "div";
 
