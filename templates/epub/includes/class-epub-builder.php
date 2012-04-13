@@ -25,7 +25,6 @@ class EpubBuilder {
         $this->ncxXSL = $anthEpubDir . 'tei2ncx.xsl';
         $this->opfXSL = $anthEpubDir . 'tei2opf.xsl';
 
-
         //dig up the selected cover image
         $this->coverImage = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0)->nodeValue;
         $this->localizeLinks();
@@ -161,10 +160,11 @@ class EpubBuilder {
 
         $titleNode->nodeValue = trim($teiTitle->nodeValue);
         $teiCreatorNode = $this->tei->xpath->query("//tei:front/tei:head/tei:bibl/tei:author[@role='projectCreator']")->item(0);
-
+/*
+ * this is being hard-coded in the opf xsl
         $creatorNode = $xpath->query("//dc:creator")->item(0);
         $creatorNode->nodeValue = trim($teiCreatorNode->nodeValue);
-
+*/
         //add a cover image, if it is set
         if($this->coverImage != 'none') {
             //add the meta element
@@ -189,17 +189,6 @@ class EpubBuilder {
     }
 
     public function saveHTML() {
-        /*
-        $divs = $this->html->getElementsByTagName('div');
-        foreach($divs as $div) {
-            if($div->hasAttribute('xmlns')) {
-                echo 'has xmlns ' . $div->getAttribute('xmlns') . ' <br/>';
-                echo $this->html->saveHTML($div);
-            }
-        }
-        echo $this->html->saveHTML();
-        die();
-        */
         $this->html->save($this->oebpsDir . 'main_content.html');
     }
 
@@ -224,14 +213,14 @@ class EpubBuilder {
           // ZIP extension code
 
           if (extension_loaded('zip') === true) {
-
+            // make the archive first
+            // EPUB wants the first file to be mimetype, and not compressed. PHP can't do this
+            // This fancy trick came from http://stackoverflow.com/questions/3142810/adding-a-file-to-a-zip-uncompressed-with-php
+            file_put_contents($destination, base64_decode("UEsDBAoAAAAAAOmRAT1vYassFAAAABQAAAAIAAAAbWltZXR5cGVhcHBsaWNhdGlvbi9lcHViK3ppcFBLAQIUAAoAAAAAAOmRAT1vYassFAAAABQAAAAIAAAAAAAAAAAAIAAAAAAAAABtaW1ldHlwZVBLBQYAAAAAAQABADYAAAA6AAAAAAA="));
             $zip = new ZipArchive();
-
-            if ($zip->open($destination, ZIPARCHIVE::CREATE) === true) {
+            // open archive
+            if ($zip->open($destination)) {
               $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
-                // add the mimetype file first
-
-                $zip->addFromString('mimetype', 'application/epub+zip');
               // Iterate through files & directories and add to archive object
 
               foreach ($files as $file) {
@@ -239,7 +228,6 @@ class EpubBuilder {
                 if($exploded[count($exploded) - 1] == "." || $exploded[count($exploded) - 1] == "..") {
                     continue;
                 }
-
                 if (is_dir($file) === true) { // Create directories as they are found
 
                   $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
@@ -251,15 +239,13 @@ class EpubBuilder {
               }
             }
             else {
-
               echo "Couldn't create zip file<br />";
             }
-
             $zip->close();
           }
 
           // ZLib extension code
-
+          //@TODO: figure out how to use the same trick as above for the mimetype file
           elseif (extension_loaded('zlib') === true) {
 
             $anth_pear_ext_path = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'pear_ext';
@@ -348,13 +334,19 @@ class EpubBuilder {
 
         //remove <navMap>
         //change depth?
-        //$htmlXPath = new DOMXPath($this->html);
+
         $navMap = $tocDOM->getElementsByTagName('navMap')->item(0);
         while($navMap->childNodes->length != 0 ) {
             $navMap->removeChild($navMap->firstChild);
         }
         //$parts = $htmlXPath->query("//div[@id='body']/div[@class='part']");
         $parts = $this->tei->xpath->query("//tei:body/tei:div[@type='part']");
+
+
+        // for jdh, bring in the tei api so I can dig up the authors
+        require_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
+        $api = new TeiApi($this->tei);
+
         $playOrder = 0;
         for($partN = 0; $partN < $parts->length; $partN++) {
 
@@ -369,8 +361,11 @@ class EpubBuilder {
             $items = $this->tei->xpath->query("tei:div[@type='libraryItem']", $part);
             for($itemN = 0; $itemN < $items->length; $itemN++) {
                 $item = $items->item($itemN);
+
+                $author = $api->getSectionPartItemAssertedAuthor('body', $partN, $itemN);
                 $itemTitle = $item->firstChild->firstChild->textContent; //shitty practice, I know
-                $itemNavPoint = $this->newNavPoint("body-$partN-$itemN", $itemTitle, $tocDOM);
+                $itemNavPoint = $this->newNavPoint("body-$partN-$itemN", $itemTitle . " by $author", $tocDOM);
+
                 //set playOrder
                 //append where it goes
                 //lets try this
@@ -406,6 +401,7 @@ class EpubBuilder {
               $guid = $link->getAttribute('href');
 
               $targetGuidNL = $this->tei->xpath->query("//tei:ident[@type = 'permalink'][ . = '$guid']");
+
               if($targetGuidNL->length == 0 ) {
                   //I hate the problem of links and trailing slashes
                   //if length is zero, see if including the slash produces matches
