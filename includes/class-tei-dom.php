@@ -709,7 +709,7 @@ class TeiDom {
             $content = apply_filters('the_content', $content);
             $content = wpautop($content);
             if($this->tidy) {
-                $this->tidy->parseString($content, array('anchor-as-name'=>false ), 'utf8');
+                $this->tidy->parseString($content, array('anchor-as-name'=>false, 'clean'=>true ), 'utf8');
                 $this->tidy->cleanRepair();
 
                 //Tidy makes a full html document, with head section, so get just the body

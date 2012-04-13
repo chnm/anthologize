@@ -213,13 +213,14 @@ class EpubBuilder {
           // ZIP extension code
 
           if (extension_loaded('zip') === true) {
-
+            // make the archive first
+            // EPUB wants the first file to be mimetype, and not compressed. PHP can't do this
+            // This fancy trick came from http://stackoverflow.com/questions/3142810/adding-a-file-to-a-zip-uncompressed-with-php
+            file_put_contents($destination, base64_decode("UEsDBAoAAAAAAOmRAT1vYassFAAAABQAAAAIAAAAbWltZXR5cGVhcHBsaWNhdGlvbi9lcHViK3ppcFBLAQIUAAoAAAAAAOmRAT1vYassFAAAABQAAAAIAAAAAAAAAAAAIAAAAAAAAABtaW1ldHlwZVBLBQYAAAAAAQABADYAAAA6AAAAAAA="));
             $zip = new ZipArchive();
-            if ($zip->open($destination, ZIPARCHIVE::CREATE) === true) {
+            // open archive
+            if ($zip->open($destination)) {
               $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
-                // add the mimetype file first
-
-                $zip->addFromString('mimetype', 'application/epub+zip');
               // Iterate through files & directories and add to archive object
 
               foreach ($files as $file) {
@@ -227,7 +228,6 @@ class EpubBuilder {
                 if($exploded[count($exploded) - 1] == "." || $exploded[count($exploded) - 1] == "..") {
                     continue;
                 }
-
                 if (is_dir($file) === true) { // Create directories as they are found
 
                   $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
@@ -239,15 +239,13 @@ class EpubBuilder {
               }
             }
             else {
-
               echo "Couldn't create zip file<br />";
             }
-
             $zip->close();
           }
 
           // ZLib extension code
-
+          //@TODO: figure out how to use the same trick as above for the mimetype file
           elseif (extension_loaded('zlib') === true) {
 
             $anth_pear_ext_path = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'pear_ext';
