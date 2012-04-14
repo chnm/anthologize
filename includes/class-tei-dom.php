@@ -701,11 +701,13 @@ class TeiDom {
     }
 
     public function sanitizeString($content, $isMultiline = false) {
+
         $content = $this->sanitizeEntities($content);
 
         if ($isMultiline) {
             //TODO: check if this is redundant now that I'm using apply_filters()'
             $content = $this->sanitizeShortCodes($content);
+
             $content = apply_filters('the_content', $content);
             $content = wpautop($content);
             if($this->tidy) {
