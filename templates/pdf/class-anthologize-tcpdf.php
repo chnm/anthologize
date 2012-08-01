@@ -160,8 +160,8 @@ class AnthologizeTCPDF extends TCPDF {
 //numbers to match up with the numbering in the TOC
 
 					$ns = $this->formatTOCPageNumber($np - $page );
-					
-					
+
+
 					$nu = $ns;
 					$sdiff = strlen($k) - strlen($ns) - 1;
 					$sdiffu = strlen($ku) - strlen($ns) - 1;
@@ -194,7 +194,7 @@ class AnthologizeTCPDF extends TCPDF {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method is used to render the page header.
 	 *
@@ -210,14 +210,14 @@ class AnthologizeTCPDF extends TCPDF {
 			$this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);
 			$headerfont = $this->getHeaderFont();
 			$headerdata = $this->getHeaderData();
-			
+
 			$this->y = $this->header_margin;
 			if ($this->rtl) {
 				$this->x = $this->w - $this->original_rMargin;
 			} else {
 				$this->x = $this->original_lMargin;
 			}
-			
+
 			if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
 
 				$imgtype = $this->getImageFileType( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo']);
@@ -229,11 +229,11 @@ class AnthologizeTCPDF extends TCPDF {
 					$this->Image( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo'], '', '', $headerdata['logo_width']);
 				}
 				$imgy = $this->getImageRBY();
-				
+
 			} else {
 				$imgy = $this->y;
 			}
-			
+
 			$cell_height = round(($this->cell_height_ratio * $headerfont[2]) / $this->k, 2);
 			// set starting margin for text data cell
 			if ($this->getRTL()) {
@@ -247,7 +247,7 @@ class AnthologizeTCPDF extends TCPDF {
 			$this->SetFont($headerfont[0], 'B', $headerfont[2] + 1);
 			$this->SetX($header_x);
 			$this->Cell($cw, $cell_height, $headerdata['title'], 0, 1, '', 0, '', 0);
-			
+
 			// header string
 			$this->SetFont($headerfont[0], $headerfont[1], $headerfont[2]);
 			$this->SetX($header_x);
