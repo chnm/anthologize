@@ -22,9 +22,9 @@ class AnthologizeTCPDF extends TCPDF {
 	 * @since 4.5.000 (2009-01-02)
 	 * @see addTOCPage(), endTOCPage(), addHTMLTOC()
 	 */
-    
-   
-	public function addTOC($page='', $numbersfont='', $filler='.', $toc_name='TOC') {
+
+
+	public function addTOC($page='', $numbersfont='', $filler='.', $toc_name='TOC', $style='', $color=array(0,0,0)) {
 		$fontsize = $this->FontSizePt;
 		$fontfamily = $this->FontFamily;
 		$fontstyle = $this->FontStyle;
