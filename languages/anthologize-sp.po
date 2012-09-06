@@ -1,0 +1,556 @@
+# Translation of the WordPress plugin Anthologize 0.4-alpha by One Week | One Tool.
+# Copyright (C) 2010 One Week | One Tool
+# This file is distributed under the same license as the Anthologize package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Anthologize 0.4-alpha\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/anthologize\n"
+"POT-Creation-Date: 2010-08-10 16:30+0000\n"
+"PO-Revision-Date: 2012-09-05 18:03-0300\n"
+"Last-Translator: Darío Hereñú <lucialuciaundemoniodemonio@hotmail.com>\n"
+"Language-Team: Darío Hereñú <kantiano@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: ARGENTINA\n"
+
+#: anthologize.php:120
+msgid "Projects"
+msgstr "Proyectos"
+
+#: anthologize.php:132
+msgctxt "post type general name"
+msgid "Parts"
+msgstr "Partes"
+
+#: anthologize.php:133
+msgctxt "post type singular name"
+msgid "Part"
+msgstr "Parte"
+
+#: anthologize.php:134
+#: anthologize.php:161
+#: anthologize.php:188
+msgctxt "book"
+msgid "Add New"
+msgstr "Agregar nuevo"
+
+#: anthologize.php:135
+msgid "Add New Part"
+msgstr "Agregar nueva parte"
+
+#: anthologize.php:136
+msgid "Edit Part"
+msgstr "Editar parte"
+
+#: anthologize.php:137
+#: includes/class-project-organizer.php:109
+msgid "New Part"
+msgstr "Nueva parte"
+
+#: anthologize.php:138
+msgid "View Part"
+msgstr "Ver parte"
+
+#: anthologize.php:139
+msgid "Search Parts"
+msgstr "Buscar partes"
+
+#: anthologize.php:140
+msgid "No parts found"
+msgstr "No se encuentran partes"
+
+#: anthologize.php:141
+msgid "No parts found in Trash"
+msgstr "No se encuentran partes en la papelera"
+
+#: anthologize.php:146
+#: includes/class-project-organizer.php:109
+msgid "Parts"
+msgstr "Partes"
+
+#: anthologize.php:159
+msgctxt "post type general name"
+msgid "Library Items"
+msgstr "Items de la biblioteca"
+
+#: anthologize.php:160
+msgctxt "post type singular name"
+msgid "Library Item"
+msgstr "Item de la biblioteca"
+
+#: anthologize.php:162
+msgid "Add New Library Item"
+msgstr "Agregar nuevo ítem de biblioteca"
+
+#: anthologize.php:163
+msgid "Edit Anthologize Library Item"
+msgstr "Editar ítem de la biblioteca Anthologize"
+
+#: anthologize.php:164
+msgid "New Anthologize Library Item"
+msgstr "Nuevo ítem de la biblioteca Anthologize"
+
+#: anthologize.php:165
+msgid "View Anthologize Library Item"
+msgstr "Ver ítem de la biblioteca Anthologize"
+
+#: anthologize.php:166
+msgid "Search Library Items"
+msgstr "Buscar ítems en la biblioteca"
+
+#: anthologize.php:167
+msgid "No library items found"
+msgstr "No se encuentran ítems en la biblioteca"
+
+#: anthologize.php:168
+msgid "No library items found in Trash"
+msgstr "No se encuentra ítem de la biblioteca en la papelera"
+
+#: anthologize.php:173
+msgid "Library Items"
+msgstr "Items de la biblioteca"
+
+#: anthologize.php:186
+msgctxt "post type general name"
+msgid "Imported Items"
+msgstr "Importar ítems"
+
+#: anthologize.php:187
+msgctxt "post type singular name"
+msgid "Imported Item"
+msgstr "Importar ítem"
+
+#: anthologize.php:189
+msgid "Add New Imported Item"
+msgstr "Agregar nuevo ítem importado"
+
+#: anthologize.php:190
+msgid "Edit Imported Item"
+msgstr "Editar ítems importados"
+
+#: anthologize.php:191
+msgid "New Imported Item"
+msgstr "Nuevo ítem importado"
+
+#: anthologize.php:192
+msgid "View Imported Item"
+msgstr "Ver ítems importados"
+
+#: anthologize.php:193
+msgid "Search Imported Items"
+msgstr "Buscar ítems importados"
+
+#: anthologize.php:194
+msgid "No imported items found"
+msgstr "No se encuentran ítems importados"
+
+#: anthologize.php:195
+msgid "No imported items found in Trash"
+msgstr "No se encuentran ítems importados en la papelera"
+
+#: anthologize.php:200
+msgid "Imported Items"
+msgstr "Items importados"
+
+#. #-#-#-#-#  plugin.pot (Anthologize 0.4-alpha)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: includes/class-admin-main.php:29
+#: includes/class-admin-main.php:52
+#: includes/class-admin-main.php:53
+msgid "Anthologize"
+msgstr "Anthologize"
+
+#: includes/class-admin-main.php:30
+msgid "Save"
+msgstr "Guardar"
+
+#: includes/class-admin-main.php:60
+#: includes/class-admin-main.php:235
+msgid "My Projects"
+msgstr "Mis proyectos"
+
+#: includes/class-admin-main.php:62
+msgid "New Project"
+msgstr "Nuevo proyecto"
+
+#: includes/class-admin-main.php:64
+#: includes/class-export-panel.php:67
+#: includes/class-project-organizer.php:135
+msgid "Export Project"
+msgstr "Exportar proyecto"
+
+#: includes/class-admin-main.php:66
+#: includes/class-import-feeds.php:21
+msgid "Import Content"
+msgstr "Importar contenido"
+
+#: includes/class-admin-main.php:143
+msgid "Project not found"
+msgstr "Proyecto no encontrado"
+
+#: includes/class-admin-main.php:235
+msgid "Add New"
+msgstr "Agregar nuevo"
+
+#: includes/class-admin-main.php:240
+msgid "Project Saved"
+msgstr "Proyecto guardado"
+
+#: includes/class-admin-main.php:271
+#: includes/class-new-project.php:116
+msgid "Project Title"
+msgstr "Título del proyecto"
+
+#: includes/class-admin-main.php:272
+msgid "Created By"
+msgstr "Creado por"
+
+#: includes/class-admin-main.php:273
+msgid "Number of Parts"
+msgstr "Número de partes"
+
+#: includes/class-admin-main.php:274
+msgid "Number of Items"
+msgstr "Número de ítems"
+
+#: includes/class-admin-main.php:275
+msgid "Date Created"
+msgstr "Fecha creado"
+
+#: includes/class-admin-main.php:276
+msgid "Date Modified"
+msgstr "Fecha de modificación"
+
+#: includes/class-admin-main.php:293
+#: includes/class-project-organizer.php:60
+msgid "Project Details"
+msgstr "Detalles de proyecto"
+
+#: includes/class-admin-main.php:294
+msgid "Manage Parts"
+msgstr "Gestionar partes"
+
+#: includes/class-admin-main.php:295
+#: includes/class-project-organizer.php:61
+msgid "Delete Project"
+msgstr "Borrar proyectos"
+
+#: includes/class-admin-main.php:350
+msgid "You haven't created any projects yet."
+msgstr "No ha creado ningún proyecto aun."
+
+#: includes/class-admin-main.php:352
+msgid "Start a new project."
+msgstr "Iniciar un nuevo proyecto."
+
+#: includes/class-admin-main.php:388
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#: includes/class-admin-main.php:489
+msgid "Source feed:"
+msgstr "Fuente original del contenido:"
+
+#: includes/class-admin-main.php:493
+msgid "Source URL:"
+msgstr "URL del original:"
+
+#: includes/class-admin-main.php:502
+msgid "Date created:"
+msgstr "Fecha de creación:"
+
+#: includes/class-export-panel.php:63
+#: includes/class-project-organizer.php:52
+msgid "There has been an unexpected error. Please wait while we reload the content."
+msgstr "Se ha producido un error inesperado. Por favor, espere mientras recargamos el contenido."
+
+#: includes/class-export-panel.php:77
+msgid "Select a project..."
+msgstr "Seleccione un proyecto..."
+
+#: includes/class-export-panel.php:88
+msgid "Copyright Information"
+msgstr "Información de los derechos de autor"
+
+#: includes/class-export-panel.php:92
+msgid "Year"
+msgstr "Año"
+
+#: includes/class-export-panel.php:97
+msgid "Copyright Holder"
+msgstr "Titular de los derechos de autor"
+
+#: includes/class-export-panel.php:102
+#: includes/class-export-panel.php:163
+msgid "Type"
+msgstr "Tipo"
+
+#: includes/class-export-panel.php:104
+msgid "Copyright"
+msgstr "Copyright"
+
+#: includes/class-export-panel.php:105
+msgid "Creative Commons"
+msgstr "Creative Commons"
+
+#: includes/class-export-panel.php:107
+msgid "Select One..."
+msgstr "Seleccione uno..."
+
+#: includes/class-export-panel.php:108
+msgid "Attribution"
+msgstr "Atribución"
+
+#: includes/class-export-panel.php:109
+msgid "Attribution Share-Alike"
+msgstr "Reconocimiento-CompartirIgual"
+
+#: includes/class-export-panel.php:110
+msgid "Attribution No Derivatives"
+msgstr "Reconocimiento-SinObraDerivada"
+
+#: includes/class-export-panel.php:111
+msgid "Attribution Non-Commercial"
+msgstr "Reconocimiento-NoComercial "
+
+#: includes/class-export-panel.php:112
+msgid "Attribution Non-Commercial Share Alike"
+msgstr "Reconocimiento-NoComercial-CompartirIgual"
+
+#: includes/class-export-panel.php:113
+msgid "Attribution Non-Commercial No Derivatives"
+msgstr "Atribución-NoComercial-SinDerivadas"
+
+#: includes/class-export-panel.php:119
+msgid "Edition"
+msgstr "Edición"
+
+#: includes/class-export-panel.php:124
+msgid "Add Author(s)"
+msgstr "Agregar autor(es)"
+
+#: includes/class-export-panel.php:130
+msgid "Next"
+msgstr "Próximo"
+
+#: includes/class-export-panel.php:143
+msgid "Title"
+msgstr "Título"
+
+#: includes/class-export-panel.php:148
+msgid "Dedication"
+msgstr "Dedicación"
+
+#: includes/class-export-panel.php:153
+msgid "Acknowledgements"
+msgstr "Agradecimientos"
+
+#: includes/class-export-panel.php:160
+msgid "Publishing Options"
+msgstr "Opciones de publicación"
+
+#: includes/class-export-panel.php:166
+msgid "ePub"
+msgstr "ePub"
+
+#: includes/class-export-panel.php:168
+msgid "ePub requires the PHP Zip library to be enabled. Contact your hosting provider to enable Zip."
+msgstr "ePub requiere la biblioteca PHP Zip habilitada. Contáctese con su proveedor de alojamiento de servidor para habilitarlo."
+
+#: includes/class-export-panel.php:170
+msgid "PDF"
+msgstr "PDF"
+
+#: includes/class-export-panel.php:171
+msgid "TEI (plus HTML)"
+msgstr "TEI (más HTML)"
+
+#: includes/class-export-panel.php:173
+msgid "RTF"
+msgstr "RTF"
+
+#: includes/class-export-panel.php:177
+msgid "Page Size"
+msgstr "Tamaño de página"
+
+#: includes/class-export-panel.php:178
+msgid "Letter"
+msgstr "Carta"
+
+#: includes/class-export-panel.php:179
+msgid "A4"
+msgstr "A4"
+
+#: includes/class-export-panel.php:183
+msgid "Font Size"
+msgstr "Tamaño de fuente"
+
+#: includes/class-export-panel.php:195
+msgid "Font Face"
+msgstr "Tipo de fuente"
+
+#: includes/class-export-panel.php:204
+msgid "Shortcodes"
+msgstr "Código abreviado"
+
+#: includes/class-export-panel.php:205
+msgid "WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose \"Disable\" to keep Anthologize from processing them."
+msgstr "Códigos abreviados Wordpress (por ejemplo, [caption]) a veces puede causar problemas con formatos de salida. Si el contenido abreviado aparece incorrectamente en su salida, elija \"Desactivar\" para mantener a Anthologize de procesarlos."
+
+#: includes/class-export-panel.php:207
+msgid "Enable"
+msgstr "Habilitado"
+
+#: includes/class-export-panel.php:208
+msgid "Disable"
+msgstr "Deshabilitado"
+
+#: includes/class-export-panel.php:228
+msgid "Export"
+msgstr "Exportar"
+
+#: includes/class-import-feeds.php:27
+msgid "Want to populate your Anthologize project with content from another web site? Enter the RSS feed address of the site from which you'd like to import and click Go."
+msgstr "¿Quiere llenar su proyecto Anthologize con el contenido de otro sitio de internet? Introduzca la dirección del canal de alimentación RSS del sitio desde el que desea importar y haga clic en Ir."
+
+#: includes/class-import-feeds.php:29
+msgid "Please respect the rights of copyright holders when using this import tool."
+msgstr "Por favor, respete los derechos de los titulares de derecho de autor cuando utilice la herramienta Importar."
+
+#: includes/class-import-feeds.php:33
+#: includes/class-import-feeds.php:87
+msgid "Feed URL:"
+msgstr "URL de la fuente original:"
+
+#: includes/class-import-feeds.php:36
+#: includes/class-import-feeds.php:90
+msgid "Go"
+msgstr "Ir"
+
+#: includes/class-import-feeds.php:44
+msgid "Sorry, no items were found. Please try another feed address."
+msgstr "Perdón, no se encuentran ítems. Por favor, intente con otro canal de alimentación RSS."
+
+#: includes/class-import-feeds.php:57
+msgid "Select the items you'd like to import to your Imported Items library and click Import."
+msgstr "Seleccione los elementos que desea importar a la biblioteca de artículos importados y haga clic en Importar."
+
+#: includes/class-import-feeds.php:61
+msgid "Feed items:"
+msgstr "Items de la fuente:"
+
+#: includes/class-import-feeds.php:78
+msgid "Import"
+msgstr "Importar"
+
+#: includes/class-import-feeds.php:83
+msgid "Or enter a new feed URL and click Go to import different feed content."
+msgstr "O ingrese un nuevo URL de alimentación y cliquee Ir a importar diferentes contenidos de alimentación. "
+
+#: includes/class-import-feeds.php:123
+msgid "Successfully imported!"
+msgstr "Exitosamente importado!"
+
+#: includes/class-import-feeds.php:127
+msgid "No items found. Please try another feed address."
+msgstr "No se encuentran ítems. Por favor, intente con otra dirección de alimentación."
+
+#: includes/class-import-feeds.php:132
+msgid "Back to Anthologize"
+msgstr "Vuelta a Anthologize"
+
+#: includes/class-new-project.php:109
+msgid "Edit Project"
+msgstr "Editar proyecto"
+
+#: includes/class-new-project.php:111
+msgid "Add New Project"
+msgstr "Agregar nuevo proyecto"
+
+#: includes/class-new-project.php:121
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: includes/class-new-project.php:126
+msgid "Author Name <span>(optional)</span>"
+msgstr "Nombre del autor <span>(opcional)</span>"
+
+#: includes/class-project-organizer.php:68
+msgid "Select the items you would like to append and click Go."
+msgstr "Seleccione los ítems que desea añadir y cliquee Ir."
+
+#: includes/class-project-organizer.php:77
+msgid "Items"
+msgstr "Items"
+
+#: includes/class-project-organizer.php:91
+msgid "Posts"
+msgstr "Entradas"
+
+#: includes/class-project-organizer.php:118
+msgid "New Parts"
+msgstr "Partes nuevas"
+
+#: includes/class-project-organizer.php:119
+msgid "Wanna create a new part? You know you do."
+msgstr "Quiere crear una nueva parte? Sabe que puede hacerlo."
+
+#: includes/class-project-organizer.php:153
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: includes/class-project-organizer.php:153
+msgid "Category"
+msgstr "Categoría"
+
+#: includes/class-project-organizer.php:159
+msgid "All posts"
+msgstr "Todas las entradas"
+
+#: includes/class-project-organizer.php:174
+msgid "All tags"
+msgstr "Todas las etiquetas"
+
+#: includes/class-project-organizer.php:178
+msgid "All categories"
+msgstr "Todas las categorías"
+
+#: includes/class-project-organizer.php:289
+#: includes/class-project-organizer.php:604
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/class-project-organizer.php:290
+#: includes/class-project-organizer.php:610
+msgid "Remove"
+msgstr "Quitar"
+
+#: includes/class-project-organizer.php:327
+#, php-format
+msgid "You haven't created any parts yet! Click <a href=\"%1$s\">\"New Part\"</a> to get started."
+msgstr "Aun no ha creado ninguna parte! Clique <a href=\"%1$s\">\"Nueva parte\"</a> para comenzar."
+
+#: includes/class-project-organizer.php:606
+msgid "Append"
+msgstr "Agregar"
+
+#. Plugin URI of the plugin/theme
+msgid "http://anthologize.org"
+msgstr "http://anthologize.org"
+
+#. Description of the plugin/theme
+msgid "Use the power of WordPress to transform your content into a book."
+msgstr "Utilice el poder de Wordpress para transformar su contenido en un libro."
+
+#. Author of the plugin/theme
+msgid "One Week | One Tool"
+msgstr "One Week | One Tool"
+
+#. Author URI of the plugin/theme
+msgid "http://oneweekonetool.org"
+msgstr "http://oneweekonetool.org"
+
