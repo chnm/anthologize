@@ -7,9 +7,23 @@ class Anthologize_Export_Panel {
 	var $project_id;
 
 	/**
+	 * Singleton bootstrap
+	 *
+	 * @since 0.7
+	 * @return obj Anthologize instance
+	 */
+	public static function init() {
+		static $instance;
+		if ( empty( $instance ) ) {
+			$instance = new Anthologize_Export_Panel();
+		}
+		return $instance;
+	}
+
+	/**
 	 * The export panel. We are the champions, my friends
 	 */
-	function anthologize_export_panel () {
+	function __construct() {
 
 		$this->projects = $this->get_projects();
 
@@ -23,16 +37,16 @@ class Anthologize_Export_Panel {
 		}
 
 		$this->project_id = $project_id;
-		
+
 		$export_step = ( isset( $_POST['export-step'] ) ) ? $_POST['export-step'] : '1';
-		
+
 		if ( $export_step != '3' )
 			$this->display();
 	}
 
 	function display() {
 		$project_id = $this->project_id;
-		
+
 		if ( isset( $_POST['export-step'] ) )
 			$this->save_session();
 
@@ -49,7 +63,7 @@ class Anthologize_Export_Panel {
 
 		// Default is Creative Commons
 		$ctype = !empty( $options['ctype'] ) ? $options['ctype'] : 'cc';
-		
+
 		$cctype = !empty( $options['cctype'] ) ? $options['cctype'] : 'by';
 
 		// No default for edition number
@@ -61,7 +75,7 @@ class Anthologize_Export_Panel {
 			$authors = $options['authors'];
 		else
 			$authors = '';
-	 	
+
 		$dedication = !empty( $options['dedication'] ) ? $options['dedication'] : '';
 
 		$acknowledgements = !empty( $options['acknowledgements'] ) ? $options['acknowledgements'] : '';
@@ -164,15 +178,15 @@ class Anthologize_Export_Panel {
 					<p><strong><?php _e( 'Acknowledgements', 'anthologize' ) ?></strong></p>
 					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15><?php echo $acknowledgements ?></textarea>
 				</div>
-				
+
 				<div style="clear: both;"></div>
-				
+
 				<div id="export-format">
 					<h4><?php _e( 'Export Format', 'anthologize' ) ?></h4>
-					
+
 					<?php $this->export_format_list() ?>
 				</div>
-				
+
 				<input type="hidden" name="export-step" value="2" />
 
 				<div style="clear: both;"> </div>
@@ -180,10 +194,10 @@ class Anthologize_Export_Panel {
 				<div class="anthologize-button" id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Next', 'anthologize' ) ?>" /></div>
 
 			</form>
-			
+
 			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
-								
-				<form action="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $project_id ?>&noheader=true" method="post">
+
+				<form action="admin.php?page=anthologize_export_panel&project_id=<?php echo $project_id ?>&noheader=true" method="post">
 
 				<h3><?php $this->export_format_options_title() ?></h3>
 				<div id="publishing-options">
@@ -201,15 +215,15 @@ class Anthologize_Export_Panel {
 					</div>
 
 				</div>
-				
+
 				<input type="hidden" name="export-step" value="3" />
 
 				<div style="clear: both;"> </div>
 
 				<div class="anthologize-button" id="export-next"><input type="submit" name="submit" id="submit" value="<?php _e( 'Export', 'anthologize' ) ?>" /></div>
-				
+
 				</form>
-			
+
 
 
 			<?php elseif ( $_POST['export-step'] == 3 ) : ?>
@@ -225,22 +239,22 @@ class Anthologize_Export_Panel {
 		<?php
 
 	}
-	
+
 	function export_format_options_title() {
 		global $anthologize_formats;
-		
+
 		$format = $_SESSION['filetype'];
-	
+
 		$title = sprintf( __( '%s Publishing Options', 'anthologize' ), $anthologize_formats[$format]['label'] );
-		
+
 		echo $title;
 	}
 
 	function save_session() {
-		
+
 		if ( $_POST['export-step'] == '2' )
 			$_SESSION['outputParams'] = array( 'format' => $_POST['filetype'] );
-		
+
 		// outputParams need to be reset at step 3 so that
 		// on a refresh null values will overwrite
 		if ( $_POST['export-step'] == '3' ) {
@@ -248,89 +262,89 @@ class Anthologize_Export_Panel {
 			// This is to be safe
 			$filetype = isset( $_SESSION['outputParams']['filetype'] ) ? $_SESSION['outputParams']['filetype'] : $_SESSION['filetype'];
 			$_SESSION['outputParams'] = array( 'format' => $filetype );
-		}		
-		
-		
+		}
+
+
 		foreach ( $_POST as $key => $value ) {
 			if ( $key == 'submit' || $key == 'export-step' )
 				continue;
-		
+
 			if ( $key == '' )
 				echo "OK";
-			
+
 			if ( $_POST['export-step'] == '3' )
 				$_SESSION['outputParams'][$key] = stripslashes( $value );
 			else
 				$_SESSION[$key] = stripslashes( $value );
-		
+
 		}
-	
+
 	}
-	
-	function export_format_list() { 
+
+	function export_format_list() {
 		global $anthologize_formats;
 	?>
 		<?php foreach( $anthologize_formats as $name => $fdata ) : ?>
-		
+
 			<input type="radio" name="filetype" value="<?php echo $name ?>" /> <?php echo $fdata['label'] ?><br />
-					
+
 		<?php endforeach; ?>
-	
+
 		<?php do_action( 'anthologize_export_format_list' ) ?>
 
 	<?php
 	}
-	
+
 	function render_format_options() {
 		global $anthologize_formats;
-		
+
 		$format = $_SESSION['filetype'];
-		
+
 		if ( $fdata = $anthologize_formats[$format] ) {
 			$return = '';
 			foreach( $fdata as $oname => $odata ) {
-			
+
 				if ( $oname == 'label' || $oname == 'loader-path' )
 					continue;
-				
+
 				if ( !$odata )
 					continue;
-				
+
 				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
-				
-				$return .= '<div class="export-options-box">'; 
-		
+
+				$return .= '<div class="export-options-box">';
+
 				$return .= '<div class="pub-options-title">' . $odata['label'] . '</div>';
-				
+
 				switch( $odata['type'] ) {
 					case 'checkbox':
 						$return .= $this->build_checkbox( $oname, $odata['label'] );
 						break;
-					
+
 					case 'dropdown':
 						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
 						break;
-						
+
 					// Default is a textbox
 					default:
 						$return .= $this->build_textbox( $oname, $odata['label'] );
 						break;
 				}
-				
+
 				$return .= '</div>';
-				
+
 			}
 		} else {
 			$return = __( 'This appears to be an invalid export format. Please try again.', 'anthologize' );
 		}
-					
+
 		echo $return;
 	}
 
 	function build_checkbox( $name, $label ) {
-		
+
 		$html = '<input name="' . $name . '" id="' . $name .'" type="checkbox">';
-		
+
 		return apply_filters( 'anthologize_build_checkbox', $html, $name, $label );
 	}
 
@@ -339,27 +353,27 @@ class Anthologize_Export_Panel {
 		// $label is the input label (for display, eg 'Page Size'. Should be internationalizable, eg __('Page Size', 'anthologize')
 		// $options is associative array where keys are option values and values are the text displayed in the option field.
 		// $default is the default option
-						
+
 		$html = '<select name="' . $name . '">';
-		
+
 		foreach( $options as $ovalue => $olabel ) {
 			$html .= '<option value="' . $ovalue . '"';
-			
+
 			if ( $default == $ovalue )
 				$html .= ' selected="selected"';
-						
+
 			$html .= '>' . $olabel . '</option>';
-		}	
-		
+		}
+
 		$html .= '</select>';
-		
+
 		return apply_filters( 'anthologize_build_dropdown', $html, $name, $label, $options );
 	}
-	
+
 	function build_textbox( $name, $label ) {
-					
+
 		$html = '<input name="' . $name . '" id="' . $name . '" type="text">';
-		
+
 		return apply_filters( 'anthologize_build_textbox', $html, $name, $label );
 	}
 
@@ -385,8 +399,3 @@ class Anthologize_Export_Panel {
 }
 
 endif;
-
-$export_panel = new Anthologize_Export_Panel();
-
-
-?>

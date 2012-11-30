@@ -4,8 +4,18 @@ if ( !class_exists( 'Anthologize_New_Project' ) ) :
 
 class Anthologize_New_Project {
 
-	function anthologize_new_project() {
-		$this->__construct();
+	/**
+	 * Singleton bootstrap
+	 *
+	 * @since 0.7
+	 * @return obj Anthologize instance
+	 */
+	public static function init() {
+		static $instance;
+		if ( empty( $instance ) ) {
+			$instance = new Anthologize_New_Project();
+		}
+		return $instance;
 	}
 
 	function __construct() {
@@ -22,16 +32,16 @@ class Anthologize_New_Project {
 		    'post_date' => date( "Y-m-d G:H:i" ),
 		    'post_date_gmt' => gmdate( "Y-m-d G:H:i" ),
 		);
-		
+
 		if (!empty($_POST['post_title']))
 		    $post_data['post_title'] = $_POST['post_title'];
-		
+
 		if (!empty($_POST['post_status']))
 		    $post_data['post_status'] = $_POST['post_status'];
-		
+
 		// If we're editing an existing project.
 		if ( !empty($_POST['project_id'])) {
-				
+
 			if ( !$new_anthologize_meta = get_post_meta( $_POST['project_id'], 'anthologize_meta', true ) ) {
 				$new_anthologize_meta = $_POST['anthologize_meta'];
 			} else {
@@ -39,26 +49,26 @@ class Anthologize_New_Project {
 					$new_anthologize_meta[$key] = $value;
 				}
 			}
-			
+
 			$the_project = get_post( $_POST['project_id'] );
 			if ( !empty ($_POST['post_status']) && ($the_project->post_status != $_POST['post_status'] ))
 				$this->change_project_status( $_POST['project_id'], $_POST['post_status'] );
-			
+
 			$post_data['ID'] = $_POST['project_id'];
 			wp_update_post($post_data);
-			
+
 			if ( is_null($new_anthologize_meta) ) {
 				delete_post_meta( $post_data['ID'] ,'anthologize_meta' );
 			} else {
 				update_post_meta( $post_data['ID'], 'anthologize_meta', $new_anthologize_meta );
 			}
-		
+
 		} else { // Otherwise, we're creating a new project
-		
+
 			$new_post = wp_insert_post($post_data);
 			// Nothing to save if we are creating a new project
 			//update_post_meta($new_post, 'anthologize_meta', $new_anthologize_meta );
-		
+
 		}
 
 		wp_redirect( get_admin_url() . 'admin.php?page=anthologize&project_saved=1' );
@@ -116,15 +126,15 @@ class Anthologize_New_Project {
 
         if (!empty($_GET['project_id'])) {
             // We are editing a project
-            
+
             $project_id = $_GET['project_id'];
             $project = get_post( $project_id );
             if (empty($project)) {
                 echo 'Unknown project ID';
-                return; 
+                return;
             }
             $meta = get_post_meta( $project->ID, 'anthologize_meta', TRUE );
-           
+
         } else {
             $project = NULL;
         }
@@ -138,7 +148,7 @@ class Anthologize_New_Project {
             <?php else: ?>
             <h2><?php _e( 'Add New Project', 'anthologize' ) ?></h2>
     		<?php endif; ?>
-            <form action="<?php echo get_bloginfo( 'wpurl' ) ?>/wp-admin/admin.php?page=anthologize/includes/class-new-project.php&noheader=true" method="post">
+            <form action="<?php echo get_bloginfo( 'wpurl' ) ?>/wp-admin/admin.php?page=anthologize_new_project&noheader=true" method="post">
                 <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><label for="post_title"><?php _e( 'Project Title', 'anthologize' ) ?></label></th>
@@ -189,7 +199,3 @@ function item_meta_redirect($location) {
 }
 
 add_filter('redirect_post_location', 'item_meta_redirect');
-
-$new_project = new Anthologize_New_Project();
-
-?>

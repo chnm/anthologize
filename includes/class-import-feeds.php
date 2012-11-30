@@ -5,15 +5,27 @@ if ( !class_exists( 'Anthologize_Import_Feeds_Panel' ) ) :
 class Anthologize_Import_Feeds_Panel {
 
 	/**
+	 * Bootstrap for the Anthologize singleton
+	 *
+	 * @since 0.7
+	 * @return obj Anthologize instance
+	 */
+	public static function init() {
+		static $instance;
+		if ( empty( $instance ) ) {
+			$instance = new Anthologize_Import_Feeds_Panel();
+		}
+		return $instance;
+	}
+
+	/**
 	 *	Creates the Dashboard Panel for importing feed content, and defines the business functions
 	 */
-	function anthologize_import_feeds_panel ( ) {
+	function __construct( ) {
 		$this->display();
-
 	}
 
 	function display() {
-
 	?>
 		<div class="wrap anthologize">
 
@@ -187,7 +199,7 @@ class Anthologize_Import_Feeds_Panel {
 			if ( $cat->term )
 				$tags[] = $cat->term;
 		}
-		
+
 		$args = array(
 			'post_status' => 'draft',
 			'post_type' => 'anth_imported_item',
@@ -200,7 +212,7 @@ class Anthologize_Import_Feeds_Panel {
 			'post_title' => $item['title'],
 			'tags_input' => $tags
 		);
-		
+
 		if ( isset( $item['created_date'] ) ) {
 			$original_post_date = date( "Y-m-d H:i:s", strtotime( $item['created_date'] ) );
 			$args['post_date'] = $original_post_date;
@@ -215,11 +227,6 @@ class Anthologize_Import_Feeds_Panel {
 
 		return $post_id;
 	}
-
 }
 
 endif;
-
-$import_feeds_panel = new Anthologize_Import_Feeds_Panel();
-
-?>

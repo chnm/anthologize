@@ -53,7 +53,7 @@ class Anthologize_Project_Organizer {
         <h2><?php echo $this->project_name ?>
 
         <div id="project-actions">
-            <a href="admin.php?page=anthologize/includes/class-new-project.php&project_id=<?php echo $this->project_id ?>"><?php _e( 'Project Details', 'anthologize' ) ?></a> |
+            <a href="admin.php?page=anthologize_new_project&project_id=<?php echo $this->project_id ?>"><?php _e( 'Project Details', 'anthologize' ) ?></a> |
             <a target="_blank" href="<?php echo $this->preview_url( $this->project_id, 'anth_project' ) ?>"><?php _e( 'Preview Project', 'anthologize' ) ?></a> |
             <a href="admin.php?page=anthologize&action=delete&project_id=<?php echo $this->project_id ?>" class="confirm-delete"><?php _e( 'Delete Project', 'anthologize' ) ?></a>
         </div>
@@ -130,7 +130,7 @@ class Anthologize_Project_Organizer {
 
                 </div> <!-- #anthologize-part-box -->
 
-            <div class="button" id="export-project-button"><a href="admin.php?page=anthologize/includes/class-export-panel.php&project_id=<?php echo $this->project_id ?>" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
+            <div class="button" id="export-project-button"><a href="admin.php?page=anthologize_export_project&project_id=<?php echo $this->project_id ?>" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
 
             </div> <!-- #project-organizer-right-column -->
 
