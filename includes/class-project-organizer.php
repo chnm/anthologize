@@ -787,10 +787,7 @@ class Anthologize_Project_Organizer {
 
                     <a target="new" href="<?php echo $this->preview_url( get_the_ID(), 'anth_library_item' ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a><span class="toggle-sep"> |</span>
 
-                    <?
-                    // admin.php?page=anthologize&action=edit&project_id=$this->project_id&append_parent= the_ID()
-                    ?>
-                    <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
+		    <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
                 </div>
             </h3>
         </li>
