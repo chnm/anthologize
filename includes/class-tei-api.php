@@ -916,21 +916,21 @@ class TeiApi {
         return $queryString;
 	}
 
-    private function _filterQueryStringById($queryString, $id) {
+    private function _filterQueryStringById(&$queryString, $id) {
         if(!empty($id)) {
             $queryString = "//*[@xml:id = '$id']";
         }
 
     }
 
-    private function _filterQueryStringByIndex($queryString, $index) {
+    private function _filterQueryStringByIndex(&$queryString, $index) {
         if(!empty($index)) {
             $queryString = "//tei:div[@type='index'][@subtype='$index']";
         }
 
     }
 
-    private function _filterQueryStringBySection($queryString, $section) {
+    private function _filterQueryStringBySection(&$queryString, $section) {
         if(!empty($section)) {
             $queryString = "//tei:$section";
         }
@@ -938,16 +938,16 @@ class TeiApi {
     }
 
     //@TODO: it'd be sweet of me to throw a warning for non-integer
-    private function _filterQueryStringByItemNumber($queryString, $itemNumber) {
+    private function _filterQueryStringByItemNumber(&$queryString, $itemNumber) {
         $queryString .= "/tei:div[@n='$itemNumber']";
     }
 
 
-    private function _filterQueryStringByPartNumber($queryString, $partNumber) {
+    private function _filterQueryStringByPartNumber(&$queryString, $partNumber) {
         $queryString .= "/tei:div[@n='$partNumber']";
     }
 
-    private function _filterQueryStringBySubPath($queryString, $subPath) {
+    private function _filterQueryStringBySubPath(&$queryString, $subPath) {
         if(!empty($subPath)) {
             $queryString .= "$subPath";
         }
