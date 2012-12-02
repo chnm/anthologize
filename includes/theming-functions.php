@@ -246,15 +246,15 @@ function anth_person_details($role = 'author') {
 	if(false !== $itemCount) {
 		switch ($role) {
 			case 'author':
-				$person =  $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN, false);
+				$person =  $api->getSectionPartItemOriginalAuthor($section, $partN, $itemN, false, false);
 			break;
 
 			case 'anthologizer':
-				$person = $api->getSectionPartItemAnthologizer($section, $partN, $itemN, false);
+				$person = $api->getSectionPartItemAnthologizer($section, $partN, $itemN, false, false);
 			break;
 
 			case 'assertedAuthor':
-				$person = $api->getSectionPartItemAssertedAuthor($section, $partN, $itemN, false);
+				$person = $api->getSectionPartItemAssertedAuthor($section, $partN, $itemN, false, false);
 			break;
 		}
 
