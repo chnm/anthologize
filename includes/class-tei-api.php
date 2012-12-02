@@ -888,30 +888,30 @@ class TeiApi {
 		//id, section, and index all start a new queryString
 		$queryString = '';
 		if(isset($params['id'])) {
-		    $this->_filterQueryStringById(&$queryString, $params['id']);
+		    $this->_filterQueryStringById($queryString, $params['id']);
 		}
 		
         if(isset($params['section'])) {
-		    $this->_filterQueryStringBySection(&$queryString, $params['section']);
+		    $this->_filterQueryStringBySection($queryString, $params['section']);
         }
 		
 	    if(isset($params['index'])) {
-		    $this->_filterQueryStringByIndex(&$queryString, $params['index']);
+		    $this->_filterQueryStringByIndex($queryString, $params['index']);
         }
 		
 		
 		//these three add onto the queryString, in order
 		//only the body should filter by part numbers
 	    if(isset($params['partNumber']) && isset($params['section']) && $params['section'] == 'body') {
-		    $this->_filterQueryStringByPartNumber(&$queryString, $params['partNumber']);
+		    $this->_filterQueryStringByPartNumber($queryString, $params['partNumber']);
         }
 		
 		if(isset($params['itemNumber'])) {
-		    $this->_filterQueryStringByItemNumber(&$queryString, $params['itemNumber']);
+		    $this->_filterQueryStringByItemNumber($queryString, $params['itemNumber']);
         }
 		
 		if(isset($params['subPath'])) {
-		    $this->_filterQueryStringBySubPath(&$queryString, $params['subPath']);
+		    $this->_filterQueryStringBySubPath($queryString, $params['subPath']);
         }
         return $queryString;
 	}
