@@ -35,8 +35,8 @@ if ( !apply_filters( 'anthologize_tcpdf_external_config', ANTHOLOGIZE_TCPDF_EXTE
          * install path and URL. Since we're always running from inside
          * Anthologize, we can provide these values manually
          */
-        define( 'K_PATH_MAIN', ANTHOLOGIZE_INSTALL_PATH . 'templates/pdf/tcpdf/' );
-        define( 'K_PATH_URL', WP_PLUGIN_URL . '/anthologize/templates/pdf/tcpdf' );
+        define( 'K_PATH_MAIN', anthologize()->plugin_dir . 'templates/pdf/tcpdf/' );
+        define( 'K_PATH_URL', anthologize()->plugin_url . 'templates/pdf/tcpdf' );
 
 	/**
 	 * cache directory for temporary files (full path)
@@ -46,13 +46,8 @@ if ( !apply_filters( 'anthologize_tcpdf_external_config', ANTHOLOGIZE_TCPDF_EXTE
          * subdirectories. However, all WP installations should be able to
          * write to the WP upload directory. So we'll put our TCPDF cache there
 	 */
-        $upload_dir = wp_upload_dir();
-
-        // File system path
-	define ('K_PATH_CACHE', $upload_dir['basedir'] . '/anthologize-cache');
-
-        // URL path
-	define ('K_PATH_URL_CACHE', $upload_dir['baseurl'] . '/anthologize-cache');
+	define ('K_PATH_CACHE', untrailingslashit( anthologize()->cache_dir ) );
+	define ('K_PATH_URL_CACHE', untrailingslashit( anthologize()->cache_url ) );
 
         // The rest of these values are the same as TCPDF's
 	define ('K_PATH_FONTS', K_PATH_MAIN.'fonts/');
