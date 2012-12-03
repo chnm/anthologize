@@ -20,6 +20,8 @@ class Anthologize_Admin_Main {
 		require( dirname( __FILE__ ) . '/class-ajax-handlers.php' );
 		$ajax_handlers = new Anthologize_Ajax_Handlers();
 
+		add_action( 'admin_menu', array( $this, 'load_template' ), 999 );
+
 		if ( is_multisite() ) {
 			add_action( 'wpmu_options', array( $this, 'ms_settings' ) );
 			add_action( 'update_wpmu_options', array( $this, 'save_ms_settings' ) );
@@ -331,6 +333,41 @@ class Anthologize_Admin_Main {
 				<p><?php _e( 'Project not found', 'anthologize' ) ?></p>
 			</div>
 		<?php
+	}
+
+	function load_template() {
+		global $anthologize_formats;
+
+		$return = true;
+
+		if ( isset( $_GET['anth_preview'] ) ) {
+			load_template( dirname(__FILE__) . '/templates/html_preview/preview.php' );
+			die();
+		}
+
+		if ( isset( $_POST['export-step'] ) ) {
+			if ( $_POST['export-step'] == 3 )
+				$return = false;
+		}
+
+		if ( $return )
+			return;
+
+		anthologize_save_project_meta();
+
+		require_once( anthologize()->includes_dir . 'class-export-panel.php' );
+		Anthologize_Export_Panel::save_session();
+
+		$type = $_SESSION['filetype'];
+
+		if ( !is_array( $anthologize_formats[$type] ) )
+			return;
+
+		$project_id = $_SESSION['project_id'];
+
+		load_template( $anthologize_formats[$type]['loader-path'] );
+
+		return false;
 	}
 
 	/**
