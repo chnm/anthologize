@@ -83,23 +83,28 @@ if( isset($ops['outputParams']['download']) ) {
 
 			while( anth_part_items() ) {
 				anth_item();
-				echo "<p>" . __( 'Tags', 'anthologize' ) . "</p><ul>";
-				while( anth_tags() ) {
-					anth_tag_details();
-					echo "<li>";
-					echo "<a href='" . anth_get_the_tag_detail('url') . "'>"  . anth_get_the_tag() . "</a>";
-					echo "</li>";
-				}
-				echo "</ul>";
 
-				echo "<p>" . __( 'Categories', 'anthologize' ) . "</p><ul>";
-				while( anth_categories() ) {
-					anth_category_details();
-					echo "<li>";
-					echo "<a href='" . anth_get_the_category_detail('url') . "'>"  . anth_get_the_category() . "</a>";
-					echo "</li>";
+				if ( anth_tags() ) {
+					echo "<p>" . __( 'Tags', 'anthologize' ) . "</p><ul>";
+					while( anth_tags() ) {
+						anth_tag_details();
+						echo "<li>";
+						echo "<a href='" . anth_get_the_tag_detail('url') . "'>"  . anth_get_the_tag() . "</a>";
+						echo "</li>";
+					}
+					echo "</ul>";
 				}
-				echo "</ul>";
+
+				if ( anth_categories() ) {
+					echo "<p>" . __( 'Categories', 'anthologize' ) . "</p><ul>";
+					while( anth_categories() ) {
+						anth_category_details();
+						echo "<li>";
+						echo "<a href='" . anth_get_the_category_detail('url') . "'>"  . anth_get_the_category() . "</a>";
+						echo "</li>";
+					}
+					echo "</ul>";
+				}
 
 				anth_person_details();
 				anth_person_details('anthologizer');
