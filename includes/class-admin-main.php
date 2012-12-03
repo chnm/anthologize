@@ -15,8 +15,6 @@ class Anthologize_Admin_Main {
 
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 990 );
 
-		add_action( 'admin_notices', array( $this, 'version_nag' ) );
-
 		require( dirname( __FILE__ ) . '/class-ajax-handlers.php' );
 		$ajax_handlers = new Anthologize_Ajax_Handlers();
 
@@ -860,20 +858,6 @@ class Anthologize_Admin_Main {
 		}
 
 		return apply_filters( 'anth_user_can_edit', $user_can_edit, $post_id, $user_id );
-	}
-
-	function version_nag() {
-		global $wp_version;
-
-		?>
-
-		<?php if ( version_compare( $wp_version, '3.0', '<' ) ) : ?>
-		<div id="message" class="updated fade">
-			<p style="line-height: 150%"><?php printf( __( "<strong>Anthologize will not work with your version of WordPress</strong>. You are currently running version WordPress v%s, and Anthologize requires version 3.0 or greater. Please upgrade WordPress if you'd like to use Anthologize. ", 'buddypress' ), $wp_version ) ?></p>
-		</div>
-		<?php endif; ?>
-
-		<?php
 	}
 
 	/**
