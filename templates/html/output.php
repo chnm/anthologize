@@ -83,7 +83,7 @@ if( isset($ops['outputParams']['download']) ) {
 
 			while( anth_part_items() ) {
 				anth_item();
-				echo "<p>Tags</p><ul>";
+				echo "<p>" . __( 'Tags', 'anthologize' ) . "</p><ul>";
 				while( anth_tags() ) {
 					anth_tag_details();
 					echo "<li>";
@@ -92,7 +92,7 @@ if( isset($ops['outputParams']['download']) ) {
 				}
 				echo "</ul>";
 
-				echo "<p>Categories</p><ul>";
+				echo "<p>" . __( 'Categories', 'anthologize' ) . "</p><ul>";
 				while( anth_categories() ) {
 					anth_category_details();
 					echo "<li>";
