@@ -8,10 +8,10 @@ class Anthologize_Admin_Main {
 	/**
 	 * List all my projects. Pretty please
 	 */
-	function anthologize_admin_main () {
+	function __construct() {
 		$this->minimum_cap = $this->minimum_cap();
 
-		add_action( 'admin_init', array ( $this, 'init' ) );
+		add_action( 'admin_init', array( $this, 'init' ) );
 
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 990 );
 
@@ -27,13 +27,13 @@ class Anthologize_Admin_Main {
 	}
 
 	function init() {
-		foreach ( array('anth_project', 'anth_part', 'anth_library_item', 'anth_imported_item') as $type ) {
-			add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array($this,'item_meta_box'), $type, 'side', 'high');
-			add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array($this,'meta_save_box'), $type, 'side', 'high');
+		foreach ( array( 'anth_project', 'anth_part', 'anth_library_item', 'anth_imported_item' ) as $type ) {
+			add_meta_box('anthologize', __( 'Anthologize', 'anthologize' ), array( $this,'item_meta_box' ), $type, 'side', 'high');
+			add_meta_box('anthologize-save', __( 'Save', 'anthologize' ), array( $this,'meta_save_box' ), $type, 'side', 'high');
 			remove_meta_box( 'submitdiv' , $type , 'normal' );
 		}
 
-		add_action('save_post',array( $this, 'item_meta_save' ));
+		add_action( 'save_post',array( $this, 'item_meta_save' ) );
 
 		do_action( 'anthologize_admin_init' );
 	}
@@ -56,16 +56,15 @@ class Anthologize_Admin_Main {
 		// Get the default cap
 		if ( is_multisite() ) {
 			$site_settings = get_site_option( 'anth_site_settings' );
-
-			$default_cap = !empty( $site_settings['minimum_cap'] ) ? $site_settings['minimum_cap'] : 'manage_options';
+			$default_cap = ! empty( $site_settings['minimum_cap'] ) ? $site_settings['minimum_cap'] : 'manage_options';
 		} else {
 			$default_cap = 'manage_options';
 		}
 
 		// Then use the default to set the minimum cap for this blog
-		if ( !is_multisite() || empty( $site_settings['forbid_per_blog_caps'] ) ) {
+		if ( ! is_multisite() || empty( $site_settings['forbid_per_blog_caps'] ) ) {
 			$blog_settings = get_option( 'anth_settings' );
-			$cap = !empty( $blog_settings['minimum_cap'] ) ? $blog_settings['minimum_cap'] : $default_cap;
+			$cap = ! empty( $blog_settings['minimum_cap'] ) ? $blog_settings['minimum_cap'] : $default_cap;
 		} else {
 			$cap = $default_cap;
 		}
@@ -78,6 +77,8 @@ class Anthologize_Admin_Main {
 	 *
 	 * Uses a somewhat hackish method, borrowed from BuddyPress, to get things in a nice order
 	 *
+	 * @todo this is rude and we shouldn't do it
+	 *
 	 * @package Anthologize
 	 * @since 0.3
 	 */
@@ -89,7 +90,7 @@ class Anthologize_Admin_Main {
 		// a bit to find room for itself
 		$default_index = apply_filters( 'anth_default_menu_position', 55 );
 
-		while ( !empty( $menu[$default_index - 1] ) || !empty( $menu[$default_index ] ) || !empty( $menu[$default_index + 1] ) ) {
+		while ( ! empty( $menu[ $default_index - 1 ] ) || ! empty( $menu[ $default_index ] ) || ! empty( $menu[ $default_index + 1 ] ) ) {
 			$default_index++;
 		}
 
@@ -100,18 +101,19 @@ class Anthologize_Admin_Main {
 			3 => '',
 			4 => 'wp-menu-separator'
 		);
-		$menu[$default_index - 1] = $separator;
-		$menu[$default_index + 1] = $separator;
+		$menu[ $default_index - 1 ] = $separator;
+		$menu[ $default_index + 1 ] = $separator;
 
 		$plugin_pages = array();
 
 		// Adds the top-level Anthologize Dashboard menu button
 		$this->add_admin_menu_page( array(
-			'menu_title' => __( 'Anthologize', 'anthologize' ),
-			'page_title' => __( 'Anthologize', 'anthologize' ),
-			'access_level' => $this->minimum_cap, 'file' => 'anthologize',
-			'function' => array( $this, 'display' ),
-			'position' => $default_index
+			'menu_title'   => __( 'Anthologize', 'anthologize' ),
+			'page_title'   => __( 'Anthologize', 'anthologize' ),
+			'access_level' => $this->minimum_cap,
+			'file'         => 'anthologize',
+			'function'     => array( $this, 'display' ),
+			'position'     => $default_index
 		) );
 
 		// Creates the submenu items
@@ -160,6 +162,7 @@ class Anthologize_Admin_Main {
 			array( $this, 'load_admin_panel_settings' )
 		);
 
+		// @todo Don't do this
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
 			add_action( "admin_print_scripts", array( $this, 'load_scripts' ) );
@@ -271,23 +274,23 @@ class Anthologize_Admin_Main {
 		wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
 
 		wp_localize_script( 'anthologize-sortlist-js', 'anth_strings', array(
-			'append'		=> __( 'Append', 'anthologize' ),
-			'cancel'		=> __( 'Cancel', 'anthologize' ),
-			'commenter'		=> __( 'Commenter', 'anthologize' ),
-			'comment_content'	=> __( 'Comment Content', 'anthologize' ),
-			'comments'		=> __( 'Comments', 'anthologize' ),
-			'comments_explain'	=> __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' ),
-			'done'			=> __( 'Done', 'anthologize' ),
-			'edit'			=> __( 'Edit', 'anthologize' ),
-			'less'			=> __( 'less', 'anthologize' ),
-			'more'			=> __( 'more', 'anthologize' ),
-			'no_comments'		=> __( 'This post has no comments associated with it.', 'anthologize' ),
-			'preview'		=> __( 'Preview', 'anthologize' ),
-			'posted'		=> __( 'Posted', 'anthologize' ),
-			'remove'		=> __( 'Remove', 'anthologize' ),
-			'save'			=> __( 'Save', 'anthologize' ),
-			'select_all'		=> __( 'Select all', 'anthologize' ),
-			'select_none'		=> __( 'Select none', 'anthologize' ),
+			'append'           => __( 'Append', 'anthologize' ),
+			'cancel'           => __( 'Cancel', 'anthologize' ),
+			'commenter'        => __( 'Commenter', 'anthologize' ),
+			'comment_content'  => __( 'Comment Content', 'anthologize' ),
+			'comments'         => __( 'Comments', 'anthologize' ),
+			'comments_explain' => __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' ),
+			'done'             => __( 'Done', 'anthologize' ),
+			'edit'             => __( 'Edit', 'anthologize' ),
+			'less'             => __( 'less', 'anthologize' ),
+			'more'             => __( 'more', 'anthologize' ),
+			'no_comments'      => __( 'This post has no comments associated with it.', 'anthologize' ),
+			'preview'          => __( 'Preview', 'anthologize' ),
+			'posted'           => __( 'Posted', 'anthologize' ),
+			'remove'           => __( 'Remove', 'anthologize' ),
+			'save'             => __( 'Save', 'anthologize' ),
+			'select_all'       => __( 'Select all', 'anthologize' ),
+			'select_none'      => __( 'Select none', 'anthologize' ),
 		) );
 	}
 
@@ -380,16 +383,16 @@ class Anthologize_Admin_Main {
     	function get_project_parts( $project_id = null ) {
 		global $post;
 
-		if ( !$project_id ) {
-		    $project_id = $post->ID;
+		if ( ! $project_id ) {
+			$project_id = $post->ID;
 		}
 
 		$args = array(
-			'post_parent' => $project_id,
-			'post_type' => 'anth_part',
+			'post_parent'    => $project_id,
+			'post_type'      => 'anth_part',
 			'posts_per_page' => -1,
-			'orderby' => 'menu_order',
-			'order' => 'ASC'
+			'orderby'        => 'menu_order',
+			'order'          => 'ASC'
 		);
 
 		$parts_query = new WP_Query( $args );
@@ -413,7 +416,7 @@ class Anthologize_Admin_Main {
 	function get_project_items($project_id = null) {
 		global $post;
 
-		if (!$project_id) {
+		if ( ! $project_id ) {
 			$project_id = $post->ID;
 		}
 
@@ -423,11 +426,11 @@ class Anthologize_Admin_Main {
 		if ( $parts ) {
 			foreach ($parts as $part) {
 				$args = array(
-					'post_parent' => $part->ID,
-					'post_type' => 'anth_library_item',
+					'post_parent'    => $part->ID,
+					'post_type'      => 'anth_library_item',
 					'posts_per_page' => -1,
-					'orderby' => 'menu_order',
-					'order' => 'ASC'
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC'
 				);
 
 				$items_query = new WP_Query( $args );
@@ -465,7 +468,7 @@ class Anthologize_Admin_Main {
 		}
 
 		if (
-			!isset( $_GET['action'] ) ||
+			! isset( $_GET['action'] ) ||
 			$_GET['action'] == 'list-projects' ||
 			( $_GET['action'] == 'edit' && !$project ) ||
 			( $_GET['action'] == 'delete')
@@ -492,7 +495,7 @@ class Anthologize_Admin_Main {
 		<?php
 
 
-		if ( !empty( $_GET['action'] ) && $_GET['action'] == 'edit' && !isset( $_GET['project_id'] ) || isset( $_GET['project_id'] ) && !$project ) {
+		if ( ! empty( $_GET['action'] ) && $_GET['action'] == 'edit' && ! isset( $_GET['project_id'] ) || isset( $_GET['project_id'] ) && ! $project ) {
 			$this->display_no_project_id_message();
 		}
 
@@ -627,16 +630,6 @@ class Anthologize_Admin_Main {
 		query_posts( $args );
 	}
 
-    /**
-     * item_delete
-     *
-     * Deletes an item. Fun!
-     **/
-     function item_delete($post_id)
-     {
-
-     }
-
 	function meta_save_box( $post_id ) {
 		?>
 	<div class="inside">
@@ -676,24 +669,28 @@ class Anthologize_Admin_Main {
 	**/
 	function item_meta_save( $post_id ) {
 		// make sure data came from our meta box. Only save when nonce is present
-		if ( empty( $_POST['anthologize_noncename'] ) || !wp_verify_nonce( $_POST['anthologize_noncename'],__FILE__ ) )
+		if ( empty( $_POST['anthologize_noncename'] ) || ! wp_verify_nonce( $_POST['anthologize_noncename'], __FILE__ ) ) {
 			return $post_id;
-
-		// Check user permissions.
-		if ( !$this->user_can_edit() )
-			return $post_id;
-
-		if ( empty( $_POST['anthologize_meta'] ) || !$new_data = $_POST['anthologize_meta'] )
-			$new_data = array();
-
-		if ( !$anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) )
-			$anthologize_meta = array();
-
-		foreach( $new_data as $key => $value ) {
-			$anthologize_meta[$key] = maybe_unserialize( $value );
 		}
 
-		update_post_meta( $post_id,'anthologize_meta', $anthologize_meta );
+		// Check user permissions.
+		if ( ! $this->user_can_edit() ) {
+			return $post_id;
+		}
+
+		if ( empty( $_POST['anthologize_meta'] ) || ! $new_data = $_POST['anthologize_meta'] ) {
+			$new_data = array();
+		}
+
+		if ( ! $anthologize_meta = get_post_meta( $post_id, 'anthologize_meta', true ) ) {
+			$anthologize_meta = array();
+		}
+
+		foreach ( $new_data as $key => $value ) {
+			$anthologize_meta[ $key ] = maybe_unserialize( $value );
+		}
+
+		update_post_meta( $post_id, 'anthologize_meta', $anthologize_meta );
 		update_post_meta( $post_id, 'author_name', $new_data['author_name'] );
 
 		// We need to filter the redirect location when Anthologize items are saved
@@ -741,89 +738,87 @@ class Anthologize_Admin_Main {
 		}
 
 		return $location;
-    }
+	}
 
-    /**
-     * item_meta_box
-     *
-     * Displays form for editing item metadata associated with
-     * Anthologize. Includes hidden fields for post_parent and
-     * menu_order because WP sets those values to 0 if those
-     * fields are not present on the form.
-     **/
-    function item_meta_box() {
+	/**
+	 * item_meta_box
+	 *
+	 * Displays form for editing item metadata associated with
+	 * Anthologize. Includes hidden fields for post_parent and
+	 * menu_order because WP sets those values to 0 if those
+	 * fields are not present on the form.
+	 **/
+	function item_meta_box() {
+		global $post;
 
-        global $post;
+		$meta               = get_post_meta( $post->ID, 'anthologize_meta', true );
+		$imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
+		$author_name        = get_post_meta( $post->ID, 'author_name', true );
 
-        $meta = get_post_meta( $post->ID, 'anthologize_meta', TRUE );
-        $imported_item_meta = get_post_meta( $post->ID, 'imported_item_meta', true );
-       	$author_name = get_post_meta( $post->ID, 'author_name', true );
+		?>
+		<div class="my_meta_control">
 
-        ?>
-        <div class="my_meta_control">
+			<label>Author Name <span>(optional)</span></label>
 
-        	<label>Author Name <span>(optional)</span></label>
+			<p>
+				<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo $author_name ?></textarea>
+			</p>
 
-        	<p>
-        		<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo $author_name ?></textarea>
-        	</p>
+			<?php /* Display content for imported feed, if there is any */ ?>
+			<?php if ( $imported_item_meta ) : ?>
+				<dl>
+				<?php foreach ( $imported_item_meta as $key => $value ) : ?>
+					<?php
+						$the_array = array( 'feed_title', 'link', 'created_date' );
+						if ( !in_array( $key, $the_array ) )
+							continue;
 
-        	<?php /* Display content for imported feed, if there is any */ ?>
-        	<?php if ( $imported_item_meta ) : ?>
-        		<dl>
-        		<?php foreach ( $imported_item_meta as $key => $value ) : ?>
-        			<?php
-        				$the_array = array( 'feed_title', 'link', 'created_date' );
-        				if ( !in_array( $key, $the_array ) )
-        					continue;
-
-						switch ( $key ) {
-							case 'feed_title':
-								$dt = __( 'Source feed:', 'anthologize' );
-								$dd = '<a href="' . $imported_item_meta['feed_permalink'] . '">' . $value . '</a>';
-								break;
-							case 'link':
-								$dt = __( 'Source URL:', 'anthologize' );
-								$dd = '<a href="' . $value . '">' . $value . '</a>';
-								break;
-							/*case 'authors':
-								$dt = __( 'Author:', 'anthologize' );
-								$ddv = $value[0];
-								$dd = $ddv->name;
-								break; todo: fixme */
-							case 'created_date':
-								$dt = __( 'Date created:', 'anthologize' );
-								$dd = $value;
-								break;
-							default:
-								continue;
-								break;
-						}
-        			?>
+							switch ( $key ) {
+								case 'feed_title':
+									$dt = __( 'Source feed:', 'anthologize' );
+									$dd = '<a href="' . $imported_item_meta['feed_permalink'] . '">' . $value . '</a>';
+									break;
+								case 'link':
+									$dt = __( 'Source URL:', 'anthologize' );
+									$dd = '<a href="' . $value . '">' . $value . '</a>';
+									break;
+								/*case 'authors':
+									$dt = __( 'Author:', 'anthologize' );
+									$ddv = $value[0];
+									$dd = $ddv->name;
+									break; todo: fixme */
+								case 'created_date':
+									$dt = __( 'Date created:', 'anthologize' );
+									$dd = $value;
+									break;
+								default:
+									continue;
+									break;
+							}
+					?>
 
 
-        			<dt><?php echo $dt ?></dt>
-        			<dd><?php echo $dd ?></dd>
-        		<?php endforeach; ?>
-        		</dl>
+					<dt><?php echo $dt ?></dt>
+					<dd><?php echo $dd ?></dd>
+				<?php endforeach; ?>
+				</dl>
 
-        	<?php endif; ?>
+			<?php endif; ?>
 
-		<?php if ( isset( $_GET['return_to_project'] ) ) : ?>
-			<input type="hidden" name="return_to_project" value="<?php echo $_GET['return_to_project'] ?>" />
-		<?php endif; ?>
+			<?php if ( isset( $_GET['return_to_project'] ) ) : ?>
+				<input type="hidden" name="return_to_project" value="<?php echo $_GET['return_to_project'] ?>" />
+			<?php endif; ?>
 
-		<?php if ( isset( $_GET['new_part'] ) ) : ?>
-			<input type="hidden" id="new_part" name="new_part" value="1" />
-                	<input type="hidden" id="anth_parent_id" name="parent_id" value="<?php echo $_GET['project_id']; ?>" />
-		<?php endif; ?>
+			<?php if ( isset( $_GET['new_part'] ) ) : ?>
+				<input type="hidden" id="new_part" name="new_part" value="1" />
+				<input type="hidden" id="anth_parent_id" name="parent_id" value="<?php echo $_GET['project_id']; ?>" />
+			<?php endif; ?>
 
-		<input type="hidden" id="menu_order" name="menu_order" value="<?php echo $post->menu_order; ?>">
-		<input class="tags-input" type="hidden" id="anthologize_noncename" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
-        </div>
-    <?php
-    }
-
+			<input type="hidden" id="menu_order" name="menu_order" value="<?php echo $post->menu_order; ?>">
+			<input class="tags-input" type="hidden" id="anthologize_noncename" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
+		</div>
+	<?php
+	}
 
 	/**
 	 * Checks whether a user has permission to edit the item in question
@@ -845,16 +840,18 @@ class Anthologize_Admin_Main {
 			// single WP) there is no need to check anything else
 			$user_can_edit = true;
 		} else {
-			if ( !$user_id )
+			if ( ! $user_id ) {
 				$user_id = $current_user->ID;
+			}
 
 			if ( $post_id ) {
 				$post = get_post( $post_id );
 			}
 
 			// Is the user the author of the post in question?
-			if ( $user_id == $post->post_author )
+			if ( $user_id == $post->post_author ) {
 				$user_can_edit = true;
+			}
 		}
 
 		return apply_filters( 'anth_user_can_edit', $user_can_edit, $post_id, $user_id );
@@ -869,8 +866,7 @@ class Anthologize_Admin_Main {
 	function ms_settings() {
 
 		$site_settings = get_site_option( 'anth_site_settings' );
-
-		$minimum_cap = !empty( $site_settings['minimum_cap'] ) ? $site_settings['minimum_cap'] : 'manage_options';
+		$minimum_cap   = ! empty( $site_settings['minimum_cap'] ) ? $site_settings['minimum_cap'] : 'manage_options';
 
 		?>
 
@@ -938,7 +934,7 @@ class Anthologize_Admin_Main {
 		//print_r( $_POST['anth_site_settings']['minimum_cap'] );
 		$anth_site_settings = array(
 			'forbid_per_blog_caps' => $forbid_per_blog_caps,
-			'minimum_cap' => $minimum_cap
+			'minimum_cap'          => $minimum_cap
 		);
 
 		update_site_option( 'anth_site_settings', $anth_site_settings );
