@@ -56,6 +56,16 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.7 =
+* Refactored loading process for better performance in various hosting situations
+* Fixes validation issues with epub exports
+* Fixes permissions issues with PDF export by moving TCPDF cache location to WP upload directory
+* Localization fixes
+* Added Spanish translalation
+* Improvements to HTML export format
+* PHP 5.4+ compatibility
+* Improved adherence to WordPress coding standards
+
 = 0.6.2-alpha =
 * Improved compatibility with WP 3.3
 
