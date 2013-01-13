@@ -162,6 +162,15 @@ class Anthologize_Admin_Main {
 			array( $this, 'load_admin_panel_settings' )
 		);
 
+		$plugin_pages[] = add_submenu_page(
+			'anthologize',
+			__( 'About Anthologize', 'anthologize' ),
+			__( 'About', 'anthologize' ),
+			$this->minimum_cap,
+			'anthologize_about',
+			array( $this, 'load_admin_panel_about' )
+		);
+
 		// @todo Don't do this
 		foreach ( $plugin_pages as $plugin_page ) {
 			add_action( "admin_print_styles", array( $this, 'load_styles' ) );
@@ -251,6 +260,16 @@ class Anthologize_Admin_Main {
 	function load_admin_panel_settings() {
 		require( anthologize()->includes_dir . 'class-settings.php' );
 		$this->panels['settings'] = Anthologize_Settings::init();
+	}
+
+	/**
+	 * Load the About Anthologize admin panel
+	 *
+	 * @since 0.7
+	 */
+	function load_admin_panel_about() {
+		require( anthologize()->includes_dir . 'class-about.php' );
+		$this->panels['about'] = Anthologize_About::init();
 	}
 
 	/**
