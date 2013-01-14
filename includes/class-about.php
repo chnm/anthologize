@@ -75,7 +75,7 @@ class Anthologize_About {
 					array( 'name' => 'Matthew K Gold', 'link' => '', ),
 					array( 'name' => 'Kathie Gossett', 'link' => 'http://www.kathiegossett.com/', ),
 					array( 'name' => 'Jim Groom', 'link' => 'http://bavatuesdays.com', ),
-					array( 'name' => 'Josh Honn', 'link' => '', ),
+					array( 'name' => 'Josh Honn', 'link' => 'http://joshhonn.com/', ),
 					array( 'name' => 'Helen Hou-Sand&iacute;', 'link' => 'http://helenhousandi.com/', ),
 					array( 'name' => 'Sarah Hovde', 'link' => '', ),
 					array( 'name' => 'Tonya Howe', 'link' => 'http://cerisia.cerosia.org/', ),
