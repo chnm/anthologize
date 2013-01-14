@@ -63,7 +63,7 @@ class Anthologize_About {
 			<?php
 				$sponsors = array(
 					array( 'name' => 'Jean Amaral', 'link' => '', ),
-					array( 'name' => 'Jared Bennett', 'link' => '', ),
+					array( 'name' => 'Jared Bennett', 'link' => 'http://commons.hwdsb.on.ca/', ),
 					array( 'name' => 'Sheila Brennan', 'link' => 'http://lotfortynine.org/', ),
 					array( 'name' => 'Martha Burtis', 'link' => 'http://wrapping.marthaburtis.net/', ),
 					array( 'name' => 'Mel Choyce', 'link' => '', ),
