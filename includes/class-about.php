@@ -107,7 +107,7 @@ class Anthologize_About {
 					array( 'name' => 'Jane Wells', 'link' => 'http://jane.wordpress.com/', ),
 					array( 'name' => 'K.Adam White', 'link' => 'http://kadamwhite.com/', ),
 					array( 'name' => 'Brad Williams', 'link' => 'http://strangework.com/', ),
-					array( 'name' => 'George H. Williams', 'link' => '', ),
+					array( 'name' => 'George H. Williams', 'link' => 'http://georgehwilliams.net/', ),
 				);
 
 				$sponsor_texts = array();
