@@ -66,7 +66,7 @@ class Anthologize_About {
 					array( 'name' => 'Jared Bennett', 'link' => 'http://commons.hwdsb.on.ca/', ),
 					array( 'name' => 'Sheila Brennan', 'link' => 'http://lotfortynine.org/', ),
 					array( 'name' => 'Martha Burtis', 'link' => 'http://wrapping.marthaburtis.net/', ),
-					array( 'name' => 'Mel Choyce', 'link' => '', ),
+					array( 'name' => 'Mel Choyce', 'link' => 'http://choycedesign.com/', ),
 					array( 'name' => 'Jay Collier', 'link' => 'http://jaycollier.net', ),
 					array( 'name' => 'Catherine Derecki', 'link' => '', ),
 					array( 'name' => 'Sherman Dorn', 'link' => 'http://shermandorn.com', ),
