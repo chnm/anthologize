@@ -127,4 +127,12 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Who built this? ==
 
-Anthologize was built during [One Week | One Tool](http://oneweekonetool.org/ "One Week | One Tool"), an NEH Summer Institute at George Mason University's [Center for History and New Media](http://chnm.gmu.edu/ "CHNM")
+Anthologize was built during [One Week | One Tool](http://oneweekonetool.org/ "One Week | One Tool"), an NEH Summer Institute at George Mason University's [Center for History and New Media](http://chnm.gmu.edu/ "CHNM").
+
+Major sponsors of Anthologize:
+* <a href="http://www.neh.gov/divisions/odh">The Office of Digital Humanities of the National Endowment for the Humanties</a>
+* <a href="http://chnm.gmu.edu">The Roy Rosenzweig Center for History and New Media</a>
+* <a href="http://openlab.citytech.cuny.edu">City Tech OpenLab</a>
+* <a href="http://www.demokratie-dialog.de/">Demokratie & Dialog e.V.</a>
+
+See the Credits page in the Anthologize dashboard for more details.
