@@ -3,8 +3,8 @@ Contributors: oneweekonetool, boonebgorges, digitaleffie, gossettphd, janaremy, 
 Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.0
-Tested up to: 3.3
-Stable tag: 0.6.2-alpha
+Tested up to: 3.5
+Stable tag: 0.7
 
 Use the power of WordPress to transform your content into a book.
 
