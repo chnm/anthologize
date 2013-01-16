@@ -65,6 +65,7 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 * Improvements to HTML export format
 * PHP 5.4+ compatibility
 * Improved adherence to WordPress coding standards
+* Added a Credits section
 
 = 0.6.2-alpha =
 * Improved compatibility with WP 3.3
