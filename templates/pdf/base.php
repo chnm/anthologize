@@ -30,6 +30,8 @@
 
 //error_reporting(0);
 
+
+
 include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');
 $pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
@@ -54,10 +56,8 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 
 $_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 
-$format = new Anthologize_Format();
-
-$tei = $format->get_tei_dom( $_SESSION, $ops );
-//$tei = new TeiDom($_SESSION, $ops);
+// Temporary
+$tei = anthologize()->formats['pdf']->get_tei_dom( $_SESSION, $ops );
 
 $api = new TeiApi($tei);
 

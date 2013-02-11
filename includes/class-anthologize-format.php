@@ -1,6 +1,7 @@
 <?php
 
 class Anthologize_Format {
+	protected $id;
 	protected $tei_dom;
 
 	/**
@@ -29,5 +30,28 @@ class Anthologize_Format {
 		}
 
 		return $this->tei_dom;
+	}
+
+	/**
+	 * Set the unique id of this format
+	 *
+	 * @since 0.8
+	 * @todo Ensure uniqueness?
+	 *
+	 * @param string $id
+	 */
+	public function set_id( $id ) {
+		$this->id = $id;
+	}
+
+	/**
+	 * Set the name of this format
+	 *
+	 * @since 0.8
+	 *
+	 * @param string $name
+	 */
+	public function set_name( $name ) {
+		$this->name = $name;
 	}
 }

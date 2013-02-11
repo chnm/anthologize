@@ -17,34 +17,19 @@ class Anthologize_Format_API {
 	 * Anthologize
 	 *
 	 * @author Boone Gorges
-	 * @param $name string The name used internally by Anthologize for this format (eg 'pdf')
-	 * @param $label string The format name as displayed to the user. Can be localizable.
+	 * @param $id string The name used internally by Anthologize for this format (eg 'pdf')
+	 * @param $name string The format name as displayed to the user. Can be localizable.
 	 * @param $loader_path string Path to the translator loader file, which will be included with WordPress's load_template()
 	 * @return type bool Returns true on successful registration
 	 */
-	public function register_format( $name, $label, $loader_path, $options = false ) {
-		global $anthologize_formats;
+	public function register_format( $id, $name, $loader_path, $options = false ) {
+		require( $loader_path );
 
-		if ( !is_array( $anthologize_formats ) )
-			$anthologize_formats = array();
+		// @todo This is dumb
+		$class_name = 'Anthologize_' . $name;
+		anthologize()->formats[ $id ] = new $class_name;
 
-		$counter = 1;
-		$new_name = $name;
-		while ( isset( $anthologize_formats[$new_name] ) ) {
-			$new_name = $name . '-' . $counter;
-		}
-		$name = $new_name;
-
-		$new_format = array(
-			'label' => $label,
-			'loader-path' => $loader_path
-		);
-
-		// Register the format
-		if ( $anthologize_formats[$name] = $new_format )
-			return true;
-
-		return false;
+		return $id;
 	}
 
 	public function deregister_format( $name ) {
@@ -196,7 +181,7 @@ function anthologize_register_default_formats() {
 	);
 
 	// Register PDF + options
-	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
+	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/class-anthologize-pdf.php' );
 
 	anthologize_register_format_option( 'pdf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );
 
