@@ -9,9 +9,9 @@ define('ANTH', 'http://www.anthologize.org/ns');
 
 
 class AnthologizeTeiApiTest extends PHPUnit_Framework_TestCase {
-    
+
     public function setUp() {
-        
+
         $tei = new DomDocument();
         $tei->load(ANTHOLOGIZE_TESTS_PATH . '/test.xml');
         $teiapi = new TeiApi($tei);
