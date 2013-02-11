@@ -28,11 +28,8 @@
 * @package anthologize
 */
 
+//error_reporting(0);
 
-error_reporting(0);
-
-
-include_once(ANTHOLOGIZE_TEIDOM_PATH);
 include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');
 $pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
@@ -40,8 +37,6 @@ require_once( $pdfPath . 'tcpdf-config.php' );
 require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
 require_once($pdfPath .  'class-anthologize-tcpdf.php'); //overrides some methods in TCPDF
 require_once($pdfPath . 'class-pdf-anthologizer.php' );
-
-
 
 $ops = array('includeStructuredSubjects' => false, //Include structured data about tags and categories
 		'includeItemSubjects' => false, // Include basic data about tags and categories
@@ -59,7 +54,10 @@ $ops = array('includeStructuredSubjects' => false, //Include structured data abo
 
 $_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 
-$tei = new TeiDom($_SESSION, $ops);
+$format = new Anthologize_Format();
+
+$tei = $format->get_tei_dom( $_SESSION, $ops );
+//$tei = new TeiDom($_SESSION, $ops);
 
 $api = new TeiApi($tei);
 
