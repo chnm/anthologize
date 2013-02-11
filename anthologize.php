@@ -3,7 +3,7 @@
 Plugin Name: Anthologize
 Plugin URI: http://anthologize.org
 Description: Use the power of WordPress to transform your content into a book.
-Version: 0.7
+Version: 0.8-bleeding
 Author: One Week | One Tool
 Author URI: http://oneweekonetool.org
 */
