@@ -378,6 +378,15 @@ class Anthologize_Admin_Main {
 		require_once( anthologize()->includes_dir . 'class-export-panel.php' );
 		Anthologize_Export_Panel::save_session();
 
+		anthologize()->formats['pdf']->start();
+
+		anthologize()->formats['pdf']->save_tei_to_disk();
+
+
+
+
+
+
 		$type = $_SESSION['filetype'];
 
 		if ( !is_array( $anthologize_formats[$type] ) )

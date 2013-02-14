@@ -282,11 +282,10 @@ class Anthologize_Export_Panel {
 	}
 
 	function export_format_list() {
-		global $anthologize_formats;
 	?>
-		<?php foreach( $anthologize_formats as $name => $fdata ) : ?>
+		<?php foreach( anthologize()->formats as $id => $format ) :  ?>
 
-			<input type="radio" name="filetype" value="<?php echo $name ?>" /> <?php echo $fdata['label'] ?><br />
+			<input type="radio" name="filetype" value="<?php echo $format->id ?>" /> <?php echo $format->label ?><br />
 
 		<?php endforeach; ?>
 

@@ -32,34 +32,9 @@
 
 
 
-include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
-require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');
-$pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
-require_once( $pdfPath . 'tcpdf-config.php' );
-require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
-require_once($pdfPath .  'class-anthologize-tcpdf.php'); //overrides some methods in TCPDF
-require_once($pdfPath . 'class-pdf-anthologizer.php' );
 
-$ops = array('includeStructuredSubjects' => false, //Include structured data about tags and categories
-		'includeItemSubjects' => false, // Include basic data about tags and categories
-		'includeCreatorData' => false, // Include basic data about creators
-		'includeStructuredCreatorData' => false, //include structured data about creators
-		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
-		'checkImgSrcs' => true, //whether to check availability of image sources
-		'linkToEmbeddedObjects' => true,
-		'indexSubjects' => false,
-		'indexCategories' => false,
-		'indexTags' => false,
-		'indexAuthors' => false,
-		'indexImages' => false,
-		);
 
-$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 
-// Temporary
-$tei = anthologize()->formats['pdf']->get_tei_dom( $_SESSION, $ops );
-
-$api = new TeiApi($tei);
 
 $pdfer = new PdfAnthologizer($api);
 
