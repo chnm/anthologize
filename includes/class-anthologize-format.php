@@ -7,6 +7,8 @@ abstract class Anthologize_Format {
 	protected $options = array();
 
 	protected $tei_dom;
+	protected $tei_api;
+	protected $tei_save_path;
 
 	/**
 	 * Set the unique id of this format
@@ -87,7 +89,7 @@ require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 	 *
 	 * @since 0.8
 	 */
-	public function get_tei_dom( $session_array ) {
+	public function get_tei_dom( $session_array = array() ) {
 		if ( empty( $this->tei_dom ) ) {
 			$this->generate_tei_dom( $session_array );
 		}
@@ -124,6 +126,50 @@ require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 	}
 
 	public function save_tei_to_disk() {
+		$path = $this->get_tei_save_path();
+		file_put_contents( $path, $this->get_tei_dom()->getTeiString() );
+	}
 
+	/**
+	 * Get the save path for the TEI API
+	 *
+	 * Format: [upload-dir]/anthologize-cache/[yyyy-mm-dd-His]/tei.json
+	 */
+	public function get_tei_save_path() {
+		if ( empty( $this->tei_save_path ) ) {
+			$export_directory = $this->get_export_directory_path();
+			$this->tei_save_path = $export_directory . DIRECTORY_SEPARATOR . 'tei.xml';
+		}
+
+		return $this->tei_save_path;
+	}
+
+	public function get_export_directory_path() {
+		if ( empty( $this->export_dir) ) {
+			$project_dir = $this->get_project_directory_path();
+
+			// We use a human-readable timestamp for export identification
+			$this->export_timestamp = date( 'Y-m-d-His' );
+			$this->export_dir = $project_dir . DIRECTORY_SEPARATOR . $this->export_timestamp;
+
+			if ( ! wp_mkdir_p( $this->export_dir ) ) {
+				return false;
+			}
+		}
+
+		return $this->export_dir;
+	}
+
+	public function get_project_directory_path() {
+		if ( empty( $this->project_dir) ) {
+			$project_id = (int) $this->tei_dom->projectData['project_id'];
+			$this->project_dir = anthologize()->cache_dir . $project_id;
+
+			if ( ! wp_mkdir_p( $this->project_dir ) ) {
+				return false;
+			}
+		}
+
+		return $this->project_dir;
 	}
 }
