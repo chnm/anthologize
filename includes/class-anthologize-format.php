@@ -144,6 +144,7 @@ require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 		return $this->tei_save_path;
 	}
 
+	// @todo - This should be moved out of this class. It's not format-specific.
 	public function get_export_directory_path() {
 		if ( empty( $this->export_dir) ) {
 			$project_dir = $this->get_project_directory_path();
@@ -172,4 +173,5 @@ require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEP
 
 		return $this->project_dir;
 	}
+
 }
