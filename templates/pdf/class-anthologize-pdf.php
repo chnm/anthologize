@@ -21,7 +21,7 @@ class Anthologize_PDF extends Anthologize_Format {
 		) );
 	}
 
-	public function setup() {
+	public function set_up_export() {
 		$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 
 		$pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;

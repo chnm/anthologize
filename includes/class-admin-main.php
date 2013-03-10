@@ -378,9 +378,14 @@ class Anthologize_Admin_Main {
 		require_once( anthologize()->includes_dir . 'class-export-panel.php' );
 		Anthologize_Export_Panel::save_session();
 
-//		anthologize()->formats['pdf']->start();
-//		anthologize()->formats['pdf']->save_tei_to_disk();
+		$export = new Anthologize_Export( array(
+			'project_id' => $_GET['project_id'],
+			'format_id'  => 'pdf',
+		) );
 
+		$export->start();
+		$export->save_tei_to_disk();
+		die();
 
 
 

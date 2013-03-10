@@ -179,6 +179,8 @@ class Anthologize {
 	 */
 	public function includes() {
 
+		require( $this->includes_dir . 'class-anthologize-project.php' );
+		require( $this->includes_dir . 'class-anthologize-export.php' );
 		require( $this->includes_dir . 'class-format-api.php' );
 		require( $this->includes_dir . 'class-anthologize-format.php' );
 		require( $this->includes_dir . 'functions.php' );
