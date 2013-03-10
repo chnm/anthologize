@@ -18,8 +18,8 @@ class AnthologizeTeiApiTest extends Anthologize_UnitTestCase {
         }
 
 	$project_id = $this->factory->project->create();
-	$tei = new TeiDom( array( 'project_id' => $project_id ) );
-//        $tei = new DomDocument();
+
+        $tei = new DomDocument();
         $tei->load(ANTHOLOGIZE_TESTS_PATH . '/includes/test.xml');
         $teiapi = new TeiApi($tei);
         $teiapi->tei = $tei;
