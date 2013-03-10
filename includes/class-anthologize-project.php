@@ -21,4 +21,16 @@ class Anthologize_Project {
 		$this->id = $project_id;
 		$this->post = $post;
 	}
+
+	public function get_export_directory_path() {
+		if ( empty( $this->project_dir) ) {
+			$this->export_dir = anthologize()->cache_dir . $this->id;
+
+			if ( ! wp_mkdir_p( $this->export_dir ) ) {
+				return false;
+			}
+		}
+
+		return $this->export_dir;
+	}
 }

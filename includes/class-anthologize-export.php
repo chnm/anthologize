@@ -127,7 +127,7 @@ class Anthologize_Export {
 	// @todo - This should be moved out of this class. It's not format-specific.
 	public function get_export_directory_path() {
 		if ( empty( $this->export_dir) ) {
-			$project_dir = $this->get_project_directory_path();
+			$project_dir = $this->project->get_export_directory_path();
 
 			// We use a human-readable timestamp for export identification
 			$this->export_timestamp = date( 'Y-m-d-His' );
@@ -141,17 +141,6 @@ class Anthologize_Export {
 		return $this->export_dir;
 	}
 
-	public function get_project_directory_path() {
-		if ( empty( $this->project_dir) ) {
-			$this->project_dir = anthologize()->cache_dir . $this->project->id;
-
-			if ( ! wp_mkdir_p( $this->project_dir ) ) {
-				return false;
-			}
-		}
-
-		return $this->project_dir;
-	}
 
 
 }
