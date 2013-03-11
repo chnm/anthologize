@@ -10,6 +10,10 @@ abstract class Anthologize_Format {
 	protected $tei_api;
 	protected $tei_save_path;
 
+	protected function setup() {
+		include( ANTHOLOGIZE_INCLUDES_PATH . 'class-anthologizer.php' );
+	}
+
 	/**
 	 * Set the unique id of this format
 	 *
@@ -57,6 +61,6 @@ abstract class Anthologize_Format {
 		}
 	}
 
-	abstract protected function set_up_export();
+	abstract public function generate_export( TeiApi $tei_api );
 
 }

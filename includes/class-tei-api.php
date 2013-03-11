@@ -5,21 +5,29 @@ class TeiApi {
 	public $xpath;
 	public $fileName;
 
-	public function __construct($tei) {
+	public function __construct($tei = false) {
 	    if($tei instanceof TeiDom) {
     	        $this->tei = $tei->dom;
     		$this->xpath = $tei->xpath;
-	    } else {
-	        throw new Exception('TeiApi must be passed a TeiDom object');
-	    }
 
-	    $text = strtolower($tei->projectData['post-title']);
-        $fileName = preg_replace('/\s/', "_", $text);
-        $fileName = mb_ereg_replace('/[^\w\-]/', '', $fileName);
-        $fileName = trim($fileName, "_");
+		$text = strtolower($tei->projectData['post-title']);
+		$fileName = preg_replace('/\s/', "_", $text);
+		$fileName = mb_ereg_replace('/[^\w\-]/', '', $fileName);
+		$fileName = trim($fileName, "_");
 
-        $fileName = rtrim($fileName, ".");
-	    $this->fileName = $fileName;
+		$fileName = rtrim($fileName, ".");
+		$this->fileName = $fileName;
+
+
+	    }// else {
+	      //  throw new Exception('TeiApi must be passed a TeiDom object');
+	   // }
+
+	}
+
+	public function set_tei( $xml_path ) {
+		$this->tei = new DOMDocument('1.0', 'UTF-8');
+		$this->tei->load( $xml_path );
 	}
 
 	public function getFileName() {
@@ -324,7 +332,7 @@ class TeiApi {
 			}
 
 		} else {
-			$cr = $this->getNodeListByXPath("//tei:publicationStmt/tei:availability[@rend='literal']/span", true);
+			$cr = $this->getNodeListByXPath("//tei:publicationStmt/tei:availability[@rend='literal']", true);
 
 			if($cr->parentNode->getAttribute('status') == 'c') {
 				return "<span>Copyright</span>";

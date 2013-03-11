@@ -377,14 +377,30 @@ class Anthologize_Admin_Main {
 
 		require_once( anthologize()->includes_dir . 'class-export-panel.php' );
 		Anthologize_Export_Panel::save_session();
-
+/*
+		// @todo Not necessary to set up format on tei generation
 		$export = new Anthologize_Export( array(
 			'project_id' => $_GET['project_id'],
 			'format_id'  => 'pdf',
 		) );
 
+		// @todo Not necessary to start() - it's format specific
 		$export->start();
 		$export->save_tei_to_disk();
+*/
+
+		// @todo
+		// this is not enough info because the timestamps are project-specific
+		// must either pass project_id as well, or store export data in the database so it can be retrieved by timestamp
+		// Though actually, by this time we will have an export id that can be passed in the refresh URL
+		// For this reason we probably don't need to load the project at this stage - save the overhead
+		$export = new Anthologize_Export( array(
+			'project_id' => $_GET['project_id'],
+			'timestamp' => '2013-03-10-184618',
+		) );
+		$export->set_format( 'pdf' );
+		$export->generate_export();
+		//var_dump( $export );
 		die();
 
 

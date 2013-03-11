@@ -21,7 +21,8 @@ class Anthologize_PDF extends Anthologize_Format {
 		) );
 	}
 
-	public function set_up_export() {
+	public function generate_export( TeiApi $tei_api ) {
+		parent::setup();
 		$_SESSION['outputParams']['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 
 		$pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
@@ -29,5 +30,8 @@ class Anthologize_PDF extends Anthologize_Format {
 		require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
 		require_once($pdfPath .  'class-anthologize-tcpdf.php'); //overrides some methods in TCPDF
 		require_once($pdfPath . 'class-pdf-anthologizer.php' );
+
+		$pdfer = new PdfAnthologizer( $tei_api );
+		$pdfer->output();
 	}
 }

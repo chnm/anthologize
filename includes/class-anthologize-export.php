@@ -5,14 +5,22 @@ class Anthologize_Export {
 	protected $project;
 
 	public function __construct( $options = array() ) {
-		if ( isset( $options['id'] ) ) {
-			// Fetching an existing export
-		} else if ( isset( $options['project_id'] ) && isset( $options['format_id'] ) ) {
-			// Creating a new export based on a project & format
+		if ( isset( $options['project_id'] ) ) {
 			$this->set_project( $options['project_id'] );
-			$this->set_format( $options['format_id'] );
 		}
 
+		if ( isset( $options['timestamp'] ) ) {
+
+			// This is an existing export
+			$this->timestamp = $options['timestamp'];
+			// @todo Pull it up if stored in the database?
+
+		} else if ( isset( $options['format_id'] ) ) {
+
+			// Creating a new export based on a project & format
+			$this->set_format( $options['format_id'] );
+
+		}
 
 	}
 
@@ -41,7 +49,7 @@ class Anthologize_Export {
 	 *
 	 * @since 0.8
 	 */
-	protected function set_format( $format_id ) {
+	public function set_format( $format_id ) {
 		if ( isset( anthologize()->formats[ $format_id ] ) ) {
 			$this->format = anthologize()->formats[ $format_id ];
 		}
@@ -124,14 +132,16 @@ class Anthologize_Export {
 		return $this->tei_save_path;
 	}
 
-	// @todo - This should be moved out of this class. It's not format-specific.
 	public function get_export_directory_path() {
 		if ( empty( $this->export_dir) ) {
 			$project_dir = $this->project->get_export_directory_path();
 
-			// We use a human-readable timestamp for export identification
-			$this->export_timestamp = date( 'Y-m-d-His' );
-			$this->export_dir = $project_dir . DIRECTORY_SEPARATOR . $this->export_timestamp;
+			if ( empty( $this->timestamp ) ) {
+				// We use a human-readable timestamp for export identification
+				$this->timestamp = date( 'Y-m-d-His' );
+			}
+
+			$this->export_dir = $project_dir . DIRECTORY_SEPARATOR . $this->timestamp;
 
 			if ( ! wp_mkdir_p( $this->export_dir ) ) {
 				return false;
@@ -141,6 +151,29 @@ class Anthologize_Export {
 		return $this->export_dir;
 	}
 
+	public function generate_export() {
 
+		// load teiapi object and pass to export generator
+		$xml_path = $this->get_tei_save_path();
+
+		if ( ! class_exists( 'TeiApi' ) ) {
+			require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-tei-api.php' );
+		}
+
+		// todo this can be moved out
+		define('TEI', 'http://www.tei-c.org/ns/1.0');
+		define('HTML', 'http://www.w3.org/1999/xhtml');
+		define('ANTH', 'http://www.anthologize.org/ns');
+
+		$tei_api = new TeiApi();
+		$tei_api->set_tei( $xml_path );
+		$tei_api->xpath = new DOMXPath($tei_api->tei);
+		$tei_api->xpath->registerNamespace('tei', TEI);
+		$tei_api->xpath->registerNamespace('html', HTML);
+		$tei_api->xpath->registerNamespace('anth', ANTH);
+
+		$export = $this->format->generate_export( $tei_api );
+
+	}
 
 }
