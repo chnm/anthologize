@@ -173,7 +173,6 @@ class Anthologize_Export {
 		$tei_api->xpath->registerNamespace('anth', ANTH);
 
 		$export = $this->format->generate_export( $tei_api );
-
 	}
 
 }

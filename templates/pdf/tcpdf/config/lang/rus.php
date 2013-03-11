@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : rus.php
 // Begin       : 2004-03-03
-// Last Update : 2010-10-26
+// Last Update : 2012-07-25
 //
 // Description : Language module for TCPDF
 //               (contains translated texts)
@@ -12,10 +12,10 @@
 //
 // (c) Copyright:
 //               Nicola Asuni
-//               Tecnick.com s.r.l.
-//               Via Della Pace, 11
-//               09044 Quartucciu (CA)
-//               ITALY
+//               Tecnick.com LTD
+//               Manor Coach House, Church Hill
+//               Aldershot, Hants, GU12 4RQ
+//               UK
 //               www.tecnick.com
 //               info@tecnick.com
 //============================================================+
@@ -40,7 +40,7 @@ $l['a_meta_dir'] = 'ltr';
 $l['a_meta_language'] = 'ru';
 
 // TRANSLATIONS --------------------------------------
-$l['w_page'] = 'страницы';
+$l['w_page'] = 'страница';
 
 //============================================================+
 // END OF FILE
