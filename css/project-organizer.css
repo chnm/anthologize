@@ -201,17 +201,11 @@ span.fromNewId {
 
 #new-part {
 	width: auto;
-	margin-top: -4px;
-	padding: 2px;
-	border-top-right-radius: 1px;
-	border-top-left-radius: 1px;
-	border-bottom-right-radius: 1px;
-	border-bottom-left-radius: 1px;
-	-moz-border-radius: 1px; /* Browser hacks FTL */
+	margin-top: -5px;
 	background: #e3c1aa !important;
 	color: #5e2600 !important;
 	text-shadow: none !important;
-	border: 2px solid #5e2600;
+	border: 1px solid #5e2600;
 
 }
 
