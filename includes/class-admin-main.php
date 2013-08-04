@@ -361,7 +361,7 @@ class Anthologize_Admin_Main {
 		$return = true;
 
 		if ( isset( $_GET['anth_preview'] ) ) {
-			load_template( dirname(__FILE__) . '/templates/html_preview/preview.php' );
+			load_template( plugin_dir_path(__FILE__) . '../templates/html_preview/preview.php' );
 			die();
 		}
 
