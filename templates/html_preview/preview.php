@@ -19,8 +19,10 @@ if ( have_posts() ) { while ( have_posts() ) { the_post();
 
 ?>
 
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 	<?php if ( have_posts() ) : ?>
 	<?php while ( have_posts() ) : ?>
 		<?php the_post() ?>
