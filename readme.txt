@@ -52,8 +52,6 @@ Cover images in ePub output.
 
 To add your own cover images, just upload them to the anthologize/templates/epub/covers directory and they will appear as options in the export screen. Make sure they are readable by the server.
 
-
-
 == Changelog ==
 
 = 0.7.1 =
@@ -62,6 +60,7 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 * Preview Project fix
 * Set utf-8 encoding on HTML export for improved character handling
 * Minor style tweak
+* Fix bug that prevented more than 5 projects from showing on My Projects screen
 
 = 0.7 =
 * Refactored loading process for better performance in various hosting situations
