@@ -60,7 +60,7 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 * WP 3.6 support
 * Update jQuery BlockUI
 * Preview Project fix
-* Set utf-8 encoding on HTML export
+* Set utf-8 encoding on HTML export for improved character handling
 * Minor style tweak
 
 = 0.7 =
