@@ -11,18 +11,18 @@ class Anthologize_Format_API {
 	}
 
 	/**
-   * register_format()
-   *
-   * Use this function to register an export format translator in
-   * Anthologize
-   *
-   * @author Boone Gorges
-   * @param $name string The name used internally by Anthologize for this format (eg 'pdf')
-   * @param $label string The format name as displayed to the user. Can be localizable.
-   * @param $loader_path string Path to the translator loader file, which will be included with WordPress's load_template()
-   * @return type bool Returns true on successful registration
-   */
-	public function register_format( $name, $label, $loader_path, $options = false ) {
+	 * register_format()
+	 *
+	 * Use this function to register an export format translator in
+	 * Anthologize
+	 *
+	 * @author Boone Gorges
+	 * @param $name string The name used internally by Anthologize for this format (eg 'pdf')
+	 * @param $label string The format name as displayed to the user. Can be localizable.
+	 * @param $loader_path string Path to the translator loader file, which will be included with WordPress's load_template()
+	 * @return type bool Returns true on successful registration
+	 */
+	public static function register_format( $name, $label, $loader_path, $options = false ) {
 		global $anthologize_formats;
 
 		if ( !is_array( $anthologize_formats ) )
