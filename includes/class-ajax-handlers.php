@@ -8,7 +8,11 @@ class Anthologize_Ajax_Handlers {
 
     var $project_organizer = null;
 
-    function anthologize_ajax_handlers() {
+    function __construct() {
+        $project_id = ( isset( $_POST['project_id'] ) ) ? $_POST['project_id'] : 0;
+
+        $this->project_organizer = new Anthologize_Project_Organizer($project_id);
+
         add_action( 'wp_ajax_get_filterby_terms', array( $this, 'get_filterby_terms' ) );
         add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
@@ -18,14 +22,6 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_get_item_comments', array( $this, 'get_item_comments' ) );
         add_action( 'wp_ajax_include_comments', array( $this, 'include_comments' ) );
         add_action( 'wp_ajax_include_all_comments', array( $this, 'include_all_comments' ) );
-    }
-
-    function __construct() {
-        $this->anthologize_ajax_handlers();
-        $project_id = ( isset( $_POST['project_id'] ) ) ? $_POST['project_id'] : 0;
-                
-        $this->project_organizer = new Anthologize_Project_Organizer($project_id);
-       
     }
 
     function fetch_tags() {

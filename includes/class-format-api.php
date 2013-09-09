@@ -47,13 +47,13 @@ class Anthologize_Format_API {
 		return false;
 	}
 
-	public function deregister_format( $name ) {
+	public static function deregister_format( $name ) {
 		global $anthologize_formats;
 
 		unset( $anthologize_formats[$name] );
 	}
 
-	public function register_format_option( $format_name, $option_name, $label, $type, $values, $default ) {
+	public static function register_format_option( $format_name, $option_name, $label, $type, $values, $default ) {
 		global $anthologize_formats;
 
 		$option = array(
@@ -75,7 +75,7 @@ class Anthologize_Format_API {
 		return false;
 	}
 
-	public function deregister_format_option( $format_name, $option_name ) {
+	public static function deregister_format_option( $format_name, $option_name ) {
 		global $anthologize_formats;
 
 		unset( $anthologize_formats[$format_name][$option_name] );

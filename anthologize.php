@@ -81,7 +81,8 @@ class Anthologize {
 
 		// @todo WP's functions plugin_basename() etc don't work
 		//   correctly on symlinked setups, so I'm implementing my own
-		$this->basename     = array_pop( explode( DIRECTORY_SEPARATOR, dirname( __FILE__ ) ) );
+		$bn = explode( DIRECTORY_SEPARATOR, dirname( __FILE__ ) );
+		$this->basename     = array_pop( $bn );
 		$this->plugin_dir   = plugin_dir_path( __FILE__ );
 		$this->plugin_url   = plugin_dir_url( __FILE__ );
 		$this->includes_dir = trailingslashit( $this->plugin_dir . 'includes' );
