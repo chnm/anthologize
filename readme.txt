@@ -56,6 +56,7 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 = 0.7.2 =
 * Fix a bug in TCPDF image paths on some server setups
+* Fix a bug that gave access to Anthologize settings to non-admins
 
 = 0.7.1 =
 * WP 3.6 support
