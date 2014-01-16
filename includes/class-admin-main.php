@@ -157,7 +157,7 @@ class Anthologize_Admin_Main {
 			'anthologize',
 			__( 'Settings', 'anthologize' ),
 			__( 'Settings', 'anthologize' ),
-			$this->minimum_cap,
+			'manage_options',
 			'anthologize_settings',
 			array( $this, 'load_admin_panel_settings' )
 		);
