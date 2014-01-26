@@ -830,7 +830,7 @@ class TeiDom {
          $year  = date('Y');
         $date  = "the " . $day . " of " . $month . ", " . $year;
 
-        $logo  = WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif';
+        $logo  = plugins_url() . '/anthologize/images/anthologize-logo.gif';
 
         $horace_quote = "Omne tulit punctum qui miscuit utile dulci -- Horace";
 

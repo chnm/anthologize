@@ -142,7 +142,7 @@ class Anthologize_New_Project {
 	?>
 		<div class="wrap anthologize">
 
-		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
             <?php if ( $project ): ?>
 			<h2><?php _e( 'Edit Project', 'anthologize' ) ?></h2>
             <?php else: ?>

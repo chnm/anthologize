@@ -108,11 +108,11 @@ class Anthologize_Settings {
 		<div class="wrap anthologize">
 
 			<div id="blockUISpinner">
-				<img src="<?php echo WP_PLUGIN_URL ?>/anthologize/images/wait28.gif"</img>
+				<img src="<?php echo plugins_url() ?>/anthologize/images/wait28.gif"</img>
 				<p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
 			</div>
 
-			<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
+			<div id="anthologize-logo"><img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 				<h2><?php _e( 'Settings', 'anthologize' ) ?></h2>
 
 			<form action="" method="post" id="bp-admin-form">

@@ -281,16 +281,16 @@ class Anthologize_Admin_Main {
 	 * @since 0.3
 	 */
 	function load_scripts() {
-		wp_enqueue_script( 'anthologize-js', WP_PLUGIN_URL . '/anthologize/js/project-organizer.js' );
+		wp_enqueue_script( 'anthologize-js', plugins_url() . '/anthologize/js/project-organizer.js' );
 		wp_enqueue_script( 'jquery');
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable');
 		wp_enqueue_script( 'jquery-ui-draggable');
-		wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/anthologize/js/jquery-ui-datepicker.js');
-		wp_enqueue_script( 'jquery-cookie', WP_PLUGIN_URL . '/anthologize/js/jquery-cookie.js' );
-		wp_enqueue_script( 'blockUI-js', WP_PLUGIN_URL . '/anthologize/js/jquery.blockUI.js' );
-		wp_enqueue_script( 'anthologize_admin-js', WP_PLUGIN_URL . '/anthologize/js/anthologize_admin.js' );
-		wp_enqueue_script( 'anthologize-sortlist-js', WP_PLUGIN_URL . '/anthologize/js/anthologize-sortlist.js' );
+		wp_enqueue_script( 'jquery-ui-datepicker', plugins_url() . '/anthologize/js/jquery-ui-datepicker.js');
+		wp_enqueue_script( 'jquery-cookie', plugins_url() . '/anthologize/js/jquery-cookie.js' );
+		wp_enqueue_script( 'blockUI-js', plugins_url() . '/anthologize/js/jquery.blockUI.js' );
+		wp_enqueue_script( 'anthologize_admin-js', plugins_url() . '/anthologize/js/anthologize_admin.js' );
+		wp_enqueue_script( 'anthologize-sortlist-js', plugins_url() . '/anthologize/js/anthologize-sortlist.js' );
 
 		wp_localize_script( 'anthologize-sortlist-js', 'anth_strings', array(
 			'append'           => __( 'Append', 'anthologize' ),
@@ -322,8 +322,8 @@ class Anthologize_Admin_Main {
 	 * @since 0.3
 	 */
 	function load_styles() {
-		wp_enqueue_style( 'anthologize-css', WP_PLUGIN_URL . '/anthologize/css/project-organizer.css' );
-		wp_enqueue_style( 'jquery-ui-datepicker-css', WP_PLUGIN_URL . '/anthologize/css/jquery-ui-1.7.3.custom.css');
+		wp_enqueue_style( 'anthologize-css', plugins_url() . '/anthologize/css/project-organizer.css' );
+		wp_enqueue_style( 'jquery-ui-datepicker-css', plugins_url() . '/anthologize/css/jquery-ui-1.7.3.custom.css');
 	}
 
 	/**
@@ -500,7 +500,7 @@ class Anthologize_Admin_Main {
 
 
 
-		<div id="anthologize-logo"><img src="<?php echo WP_PLUGIN_URL . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
 		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize_new_project" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
 
 
