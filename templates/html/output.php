@@ -44,8 +44,10 @@ if( isset($ops['outputParams']['download']) ) {
 
 ?>
 
+<!DOCTYPE html>
 <html>
 	<head>
+	<meta charset='utf-8'>
 		<title><?php anth_the_project_title(true); ?></title>
 	</head>
 

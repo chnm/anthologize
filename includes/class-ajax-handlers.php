@@ -8,7 +8,11 @@ class Anthologize_Ajax_Handlers {
 
     var $project_organizer = null;
 
-    function anthologize_ajax_handlers() {
+    function __construct() {
+        $project_id = ( isset( $_POST['project_id'] ) ) ? $_POST['project_id'] : 0;
+
+        $this->project_organizer = new Anthologize_Project_Organizer($project_id);
+
         add_action( 'wp_ajax_get_filterby_terms', array( $this, 'get_filterby_terms' ) );
         add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
@@ -18,14 +22,6 @@ class Anthologize_Ajax_Handlers {
         add_action( 'wp_ajax_get_item_comments', array( $this, 'get_item_comments' ) );
         add_action( 'wp_ajax_include_comments', array( $this, 'include_comments' ) );
         add_action( 'wp_ajax_include_all_comments', array( $this, 'include_all_comments' ) );
-    }
-
-    function __construct() {
-        $this->anthologize_ajax_handlers();
-        $project_id = ( isset( $_POST['project_id'] ) ) ? $_POST['project_id'] : 0;
-                
-        $this->project_organizer = new Anthologize_Project_Organizer($project_id);
-       
     }
 
     function fetch_tags() {
@@ -54,9 +50,9 @@ class Anthologize_Ajax_Handlers {
 
 	function get_filterby_terms() {
 		$filtertype = $_POST['filtertype'];
-		
+
 		$terms = array();
-		
+
 		switch ( $filtertype ) {
 			case 'category' :
 				$cats = get_categories();
@@ -64,21 +60,21 @@ class Anthologize_Ajax_Handlers {
 					$terms[$cat->term_id] = $cat->name;
 				}
 				break;
-			
+
 			case 'tag' :
 				$tags = get_tags();
 				foreach( $tags as $tag ) {
 					$terms[$tag->slug] = $tag->name;
 				}
 				break;
-			
+
 			case 'post_type' :
 				$terms = $this->project_organizer->available_post_types();
 				break;
 		}
-				
+
 		$terms = apply_filters( 'anth_get_posts_by', $terms, $filtertype );
-		
+
 		print( json_encode( $terms ) );
 		die();
 	}
@@ -96,8 +92,8 @@ class Anthologize_Ajax_Handlers {
 		switch ( $filterby ) {
 			case 'date' :
 				$startdate = mysql_real_escape_string($_POST['startdate']);
-				$enddate = mysql_real_escape_string($_POST['enddate']);				
-								
+				$enddate = mysql_real_escape_string($_POST['enddate']);
+
 				$date_range_where = '';
 				if (strlen($startdate) > 0){
 				$date_range_where = " AND post_date >= '".$startdate."'";
@@ -106,20 +102,20 @@ class Anthologize_Ajax_Handlers {
 				$date_range_where .= " AND post_date <= '".$enddate."'";
 				}
 
-				$where_func = '$where .= "'.$date_range_where.'"; return $where;'; 
+				$where_func = '$where .= "'.$date_range_where.'"; return $where;';
 				$filter_where = create_function('$where', $where_func);
 				add_filter('posts_where', $filter_where);
 
 				break;
-			
+
 			case 'tag' :
 				$args['tag'] = $_POST['term'];
 				break;
-			
+
 			case 'category' :
 				$args['cat'] = $_POST['term'];
 				break;
-			
+
 			case 'post_type' :
 				if ($_POST['term'] != ''){
 					$args['post_type'] = $_POST['term'];
@@ -128,7 +124,7 @@ class Anthologize_Ajax_Handlers {
 		}
 		// Allow plugins to modify the query_post arguments
 		$posts = new WP_Query( apply_filters( 'anth_get_posts_by_query', $args, $filterby ) );
-		
+
 		$the_posts = Array();
 		while ( $posts->have_posts() ) {
 			$posts->the_post();
@@ -137,9 +133,9 @@ class Anthologize_Ajax_Handlers {
 		if ($filterby == 'date'){
 			remove_filter('posts_where', $filter_where);
 		}
-		
+
 		$the_posts = apply_filters( 'anth_get_posts_by', $the_posts, $filterby );
-		
+
 		print(json_encode($the_posts));
 
 		die();
@@ -148,9 +144,9 @@ class Anthologize_Ajax_Handlers {
     /**
      * @todo Merge this with place_items. No reason for two functions
      */
-    function place_item() {	
+    function place_item() {
     	global $wpdb;
-    	
+
         $project_id = $_POST['project_id'];
         $post_id = $_POST['post_id'];
         $dest_part_id = $_POST['dest_id'];
@@ -160,7 +156,7 @@ class Anthologize_Ajax_Handlers {
             header('HTTP/1.1 500 Internal Server Error');
             die();
         }
-        
+
         if ('true' === $_POST['new_post']) {
             $new_item = true;
             $src_part_id = false;
@@ -186,12 +182,12 @@ class Anthologize_Ajax_Handlers {
       			$dest_seq_array[$insert_result_id] = $dest_seq_array['new_new_new'];
       			unset($dest_seq_array['new_new_new']);
 		}
-		
+
 		$this->project_organizer->rearrange_items($dest_seq_array);
-				
+
 		// Get the comment count for the original item
 		$comment_count = $wpdb->get_var( $wpdb->prepare( "SELECT comment_count FROM $wpdb->posts WHERE ID = %s", $post_id ) );
-		
+
 		// Assemble the array to return
 		$insert_result = array(
 			array(
@@ -199,7 +195,7 @@ class Anthologize_Ajax_Handlers {
 				'comment_count'	=> $comment_count
 			),
 		);
-		
+
 		echo json_encode( $insert_result );
         }
 
@@ -208,7 +204,7 @@ class Anthologize_Ajax_Handlers {
 
 	function place_items() {
 		global $wpdb;
-		
+
 		$project_id = $_POST['project_id'];
 
 		$post_ids = $_POST['post_ids'];
@@ -239,10 +235,10 @@ class Anthologize_Ajax_Handlers {
 			}else{
 				$dest_seq_array[$insert_result] = $dest_seq_array[$post_id];
 				unset($dest_seq_array[$post_id]);
-				
+
 				// Get the comment count for the original item
 				$comment_count = $wpdb->get_var( $wpdb->prepare( "SELECT comment_count FROM $wpdb->posts WHERE ID = %s", $post_id ) );
-				
+
 				// Assemble the array to return
 				$ret_ids[] = array(
 					'post_id'	=> $insert_result,
@@ -252,7 +248,7 @@ class Anthologize_Ajax_Handlers {
 			}
 		}
 		$this->project_organizer->rearrange_items($dest_seq_array);
-		
+
 		print json_encode( $ret_ids );
 		die();
 	}
@@ -305,7 +301,7 @@ class Anthologize_Ajax_Handlers {
     	die();
 
     }
-    	
+
     	/**
     	 * The handler for the get_item_comments ajax action
     	 *
@@ -317,25 +313,25 @@ class Anthologize_Ajax_Handlers {
     	 */
 	function get_item_comments() {
 		$item_id = !empty( $_POST['post_id'] ) ? $_POST['post_id'] : false;
-		
+
 		// The item_id tends to be a CSS selector. We have to break it up.
 		if ( !is_int( $item_id ) ) {
 			$i 	 = explode( '-', $item_id );
 			$item_id = $i[1];
 		}
-		
+
 		if ( !$item_id )
 			return false;
-		
+
 		// Get the original post id
 		$anth_meta 		= get_post_meta( $item_id, 'anthologize_meta', true );
 		$original_post_id	= isset( $anth_meta['original_post_id'] ) ? $anth_meta['original_post_id'] : false;
-		
+
 		if ( !$original_post_id )
 			return false;
-		
+
 		$comments = get_comments( array( 'post_id' => $original_post_id ) );
-		
+
 		// Mark certain comments as already included, so their checkboxes get checked
 		foreach( $comments as $comment ) {
 			if ( !empty( $anth_meta['included_comments'] ) && in_array( $comment->comment_ID, $anth_meta['included_comments'] ) ) {
@@ -344,18 +340,18 @@ class Anthologize_Ajax_Handlers {
 				$comment->is_included = 0;
 			}
 		}
-		
+
 		if ( empty( $comments ) ) {
 			$comment = array(
 				'empty' => '1',
 				'text'	=> __( 'This post has no comments.', 'anthologize' )
 			);
 		}
-		
+
 		echo( json_encode( $comments ) );
 		die();
 	}
-	
+
 	/**
     	 * The handler for the include_comments ajax action
     	 *
@@ -368,38 +364,38 @@ class Anthologize_Ajax_Handlers {
 	function include_comments() {
 		if ( !empty ( $_POST['comment_id'] ) )
 			$comment_id = $_POST['comment_id'];
-		
+
 		if ( !empty( $_POST['post_id'] ) )
 			$post_id = $_POST['post_id'];
-		
+
 		$action = !empty( $_POST['check_action'] ) && 'add' == $_POST['check_action'] ? 'add' : 'remove';
-		
+
 		if ( empty( $post_id ) || empty( $comment_id ) )
 			die(); // better error reporting?
-		
-		require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-comments.php' );		
+
+		require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-comments.php' );
 		$comments = new Anthologize_Comments( $post_id );
-		
+
 		// Our next action depends on $action
 		switch ( $action ) {
 			case 'add' :
 				$comments->import_comment( $comment_id );
 				break;
-			
+
 			case 'remove' :
 			default :
 				$comments->remove_comment( $comment_id );
 				break;
 		}
-		
+
 		// Resave the meta
 		$comments->update_included_comments();
-		
+
 		// Return the comment array to show that we were successful
 		echo json_encode( array_values( $comments->included_comments ) );
 		die();
 	}
-	
+
 	/**
     	 * The handler for the include_comments ajax action
     	 *
@@ -412,30 +408,30 @@ class Anthologize_Ajax_Handlers {
 	function include_all_comments() {
 		if ( !empty( $_POST['post_id'] ) )
 			$post_id = $_POST['post_id'];
-		
+
 		$action = !empty( $_POST['check_action'] ) && 'remove' == $_POST['check_action'] ? 'remove' : 'add';
-		
+
 		if ( empty( $post_id ) || empty( $action ) )
 			die(); // better error reporting?
-		
-		require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-comments.php' );		
+
+		require_once( ANTHOLOGIZE_INCLUDES_PATH . 'class-comments.php' );
 		$comments = new Anthologize_Comments( $post_id );
-		
+
 		// Our next action depends on $action
 		switch ( $action ) {
 			case 'add' :
 				$comments->import_all_comments();
 				break;
-			
+
 			case 'remove' :
 			default :
 				$comments->remove_all_comments();
 				break;
 		}
-		
+
 		// Resave the meta
 		$comments->update_included_comments();
-		
+
 		// Return the comment array to show that we were successful
 		echo json_encode( array_values( $comments->included_comments ) );
 		die();

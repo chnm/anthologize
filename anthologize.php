@@ -31,7 +31,7 @@ modifications of TDPDF must comply with its license.
 session_start();
 
 if ( ! defined( 'ANTHOLOGIZE_VERSION' ) )
-	define( 'ANTHOLOGIZE_VERSION', '0.7' );
+	define( 'ANTHOLOGIZE_VERSION', '0.7.2' );
 
 if ( ! class_exists( 'Anthologize' ) ) :
 
@@ -69,7 +69,7 @@ class Anthologize {
 			return;
 		}
 
-		// Bail if WP version is not at least 3.0
+		// Bail if WP version is not at least 3.3
 		if ( ! self::check_minimum_wp() ) {
 			add_action( 'admin_notices', array( 'Anthologize', 'wpversion_nag' ) );
 		}
@@ -81,7 +81,8 @@ class Anthologize {
 
 		// @todo WP's functions plugin_basename() etc don't work
 		//   correctly on symlinked setups, so I'm implementing my own
-		$this->basename     = array_pop( explode( DIRECTORY_SEPARATOR, dirname( __FILE__ ) ) );
+		$bn = explode( DIRECTORY_SEPARATOR, dirname( __FILE__ ) );
+		$this->basename     = array_pop( $bn );
 		$this->plugin_dir   = plugin_dir_path( __FILE__ );
 		$this->plugin_url   = plugin_dir_url( __FILE__ );
 		$this->includes_dir = trailingslashit( $this->plugin_dir . 'includes' );
@@ -112,7 +113,7 @@ class Anthologize {
 	 * @since 0.7
 	 */
 	public static function check_minimum_wp() {
-		return version_compare( get_bloginfo( 'version' ), '3', '>=' );
+		return version_compare( get_bloginfo( 'version' ), '3.3', '>=' );
 	}
 
 	/**
@@ -136,7 +137,7 @@ class Anthologize {
 	public static function wpversion_nag() {
 		echo '<div id="message" class="error fade">';
 		echo   '<p>';
-		echo     sprintf( __( "<strong>Anthologize will not work with your version of WordPress</strong>. You are currently running WordPress v%s, and Anthologize requires version 3.0 or greater. Please upgrade WordPress if you would like to use Anthologize. ", 'anthologize' ), get_bloginfo( 'version' ) );
+		echo     sprintf( __( "<strong>Anthologize will not work with your version of WordPress</strong>. You are currently running WordPress v%s, and Anthologize requires version 3.3 or greater. Please upgrade WordPress if you would like to use Anthologize. ", 'anthologize' ), get_bloginfo( 'version' ) );
 		echo   '</p>';
 		echo '</div>';
 	}
