@@ -54,6 +54,9 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.7.3 =
+* Fix a bug in TCPDF temp image file path creation on some server setups
+
 = 0.7.2 =
 * Fix a bug in TCPDF image paths on some server setups
 * Fix a bug that gave access to Anthologize settings to non-admins
