@@ -31,7 +31,7 @@ modifications of TDPDF must comply with its license.
 session_start();
 
 if ( ! defined( 'ANTHOLOGIZE_VERSION' ) )
-	define( 'ANTHOLOGIZE_VERSION', '0.7.2' );
+	define( 'ANTHOLOGIZE_VERSION', '0.7.3' );
 
 if ( ! class_exists( 'Anthologize' ) ) :
 

@@ -4,7 +4,7 @@ Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 0.7.2
+Stable tag: 0.7.3
 
 Use the power of WordPress to transform your content into a book.
 
@@ -53,6 +53,10 @@ Cover images in ePub output.
 To add your own cover images, just upload them to the anthologize/templates/epub/covers directory and they will appear as options in the export screen. Make sure they are readable by the server.
 
 == Changelog ==
+
+= 0.7.3 =
+* Fix a bug in TCPDF temp image file path creation on some server setups
+* Only load Anthologize scripts and styles on the proper pages, to avoid conflicts
 
 = 0.7.2 =
 * Fix a bug in TCPDF image paths on some server setups
