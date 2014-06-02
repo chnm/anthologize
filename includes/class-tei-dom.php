@@ -781,12 +781,13 @@ class TeiDom {
 
             $imgNode = $srcNode->parentNode;
             $src = $srcNode->nodeValue;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $src);
-            curl_setopt($ch, CURLOPT_NOBODY, true);
-            curl_exec($ch);
-            $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
+
+	    $code = 0;
+	    $request = wp_remote_get( $src );
+	    if ( ! is_wp_error( $request ) ) {
+		    $code = wp_remote_retrieve_response_code( $request );
+	    }
+
             if($code != 200) {
                 $noImgSpan = $tmpHTML->createElement('span', 'Image not found');
                 $noImgSpan->setAttribute('class', 'anthologize-error');
