@@ -54,6 +54,9 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.7.5 =
+* Better checks for the availability of remote images during export
+
 = 0.7.4 =
 * Fix improperly concatenated Project Details URL
 
