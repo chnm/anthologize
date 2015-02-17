@@ -346,6 +346,7 @@ jQuery.fn.anthologizeSortList = function (options){
       ui.item.addClass("anthologize-drag-selected");
     },
     stop: function (event, ui){
+      ui.item.css( 'width', '' );
 	    anthologize.newItem = ui.item;
 		if (ui.item.hasClass('part-header')){
 
