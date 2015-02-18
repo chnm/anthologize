@@ -346,18 +346,18 @@ jQuery.fn.anthologizeSortList = function (options){
       ui.item.addClass("anthologize-drag-selected");
     },
     stop: function (event, ui){
-	    anthologize.newItem = ui.item;
-		if (ui.item.hasClass('part-header')){
+      ui.item.css( 'width', '' );
+      anthologize.newItem = ui.item;
+      if (ui.item.hasClass('part-header')){
+        ui.item.find("li.item").each(function(postItem) {
+          anthologize.fixFromNewId(postItem);
+        });
 
-            ui.item.find("li.item").each(function(postItem) {
-                anthologize.fixFromNewId(postItem);
-            });
-
-			anthologize.addMultiItems(event, ui);
-		}else{
-            anthologize.fixFromNewId(ui.item);
-		   	anthologize.callBack(event, ui);
-		}
+	anthologize.addMultiItems(event, ui);
+      }else{
+        anthologize.fixFromNewId(ui.item);
+        anthologize.callBack(event, ui);
+      }
       ui.item.removeClass("anthologize-drag-selected");
     },
     receive: function(event, ui){

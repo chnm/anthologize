@@ -1,45 +1,45 @@
-# Copyright (C) 2013 Anthologize
+# Copyright (C) 2015 Anthologize
 # This file is distributed under the same license as the Anthologize package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Anthologize 0.6.2-alpha\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/anthologize\n"
-"POT-Creation-Date: 2013-01-16 20:21:55+00:00\n"
+"Project-Id-Version: Anthologize 0.7.5\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anthologize\n"
+"POT-Creation-Date: 2015-02-18 18:07:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: anthologize.php:126
+#: anthologize.php:127
 msgid ""
 "<strong>Anthologize will not work with your version of PHP</strong>. You are "
 "currently running PHP v%s, and Anthologize requires version 5.0 or greater. "
 "Please contact your host if you would like to use Anthologize. "
 msgstr ""
 
-#: anthologize.php:139
+#: anthologize.php:140
 msgid ""
 "<strong>Anthologize will not work with your version of WordPress</strong>. "
 "You are currently running WordPress v%s, and Anthologize requires version "
-"3.0 or greater. Please upgrade WordPress if you would like to use "
+"3.3 or greater. Please upgrade WordPress if you would like to use "
 "Anthologize. "
 msgstr ""
 
-#: anthologize.php:222
+#: anthologize.php:223
 msgid "Projects"
 msgstr ""
 
-#: anthologize.php:232 includes/class-project-organizer.php:123
+#: anthologize.php:233 includes/class-project-organizer.php:123
 msgid "Parts"
 msgstr ""
 
-#: anthologize.php:245
+#: anthologize.php:246
 msgid "Library Items"
 msgstr ""
 
-#: anthologize.php:258
+#: anthologize.php:259
 msgid "Imported Items"
 msgstr ""
 
@@ -83,19 +83,19 @@ msgstr ""
 msgid "Individual Sponsors"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (Anthologize 0.6.2-alpha)  #-#-#-#-#
+#. #-#-#-#-#  anthologize.pot (Anthologize 0.7.5)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/class-admin-main.php:31 includes/class-admin-main.php:111
-#: includes/class-admin-main.php:112 includes/class-admin-main.php:892
+#: includes/class-admin-main.php:112 includes/class-admin-main.php:891
 msgid "Anthologize"
 msgstr ""
 
-#: includes/class-admin-main.php:32 includes/class-admin-main.php:310
+#: includes/class-admin-main.php:32 includes/class-admin-main.php:309
 msgid "Save"
 msgstr ""
 
 #: includes/class-admin-main.php:122 includes/class-admin-main.php:123
-#: includes/class-admin-main.php:504
+#: includes/class-admin-main.php:503
 msgid "My Projects"
 msgstr ""
 
@@ -122,180 +122,180 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: includes/class-admin-main.php:296 includes/class-project-organizer.php:817
+#: includes/class-admin-main.php:295 includes/class-project-organizer.php:817
 msgid "Append"
 msgstr ""
 
-#: includes/class-admin-main.php:297
+#: includes/class-admin-main.php:296
 msgid "Cancel"
 msgstr ""
 
-#: includes/class-admin-main.php:298
+#: includes/class-admin-main.php:297
 msgid "Commenter"
 msgstr ""
 
-#: includes/class-admin-main.php:299
+#: includes/class-admin-main.php:298
 msgid "Comment Content"
 msgstr ""
 
-#: includes/class-admin-main.php:300
+#: includes/class-admin-main.php:299
 msgid "Comments"
 msgstr ""
 
-#: includes/class-admin-main.php:301
+#: includes/class-admin-main.php:300
 msgid ""
 "Check the comments from the original post that you would like to include in "
 "your project."
 msgstr ""
 
-#: includes/class-admin-main.php:302
+#: includes/class-admin-main.php:301
 msgid "Done"
 msgstr ""
 
-#: includes/class-admin-main.php:303 includes/class-project-organizer.php:406
+#: includes/class-admin-main.php:302 includes/class-project-organizer.php:406
 #: includes/class-project-organizer.php:810
 msgid "Edit"
 msgstr ""
 
-#: includes/class-admin-main.php:304
+#: includes/class-admin-main.php:303
 msgid "less"
 msgstr ""
 
-#: includes/class-admin-main.php:305
+#: includes/class-admin-main.php:304
 msgid "more"
 msgstr ""
 
-#: includes/class-admin-main.php:306
+#: includes/class-admin-main.php:305
 msgid "This post has no comments associated with it."
 msgstr ""
 
-#: includes/class-admin-main.php:307 includes/class-project-organizer.php:407
+#: includes/class-admin-main.php:306 includes/class-project-organizer.php:407
 #: includes/class-project-organizer.php:819
 msgid "Preview"
 msgstr ""
 
-#: includes/class-admin-main.php:308
+#: includes/class-admin-main.php:307
 msgid "Posted"
 msgstr ""
 
-#: includes/class-admin-main.php:309 includes/class-project-organizer.php:408
+#: includes/class-admin-main.php:308 includes/class-project-organizer.php:408
 #: includes/class-project-organizer.php:821
 msgid "Remove"
 msgstr ""
 
-#: includes/class-admin-main.php:311
+#: includes/class-admin-main.php:310
 msgid "Select all"
 msgstr ""
 
-#: includes/class-admin-main.php:312
+#: includes/class-admin-main.php:311
 msgid "Select none"
 msgstr ""
 
-#: includes/class-admin-main.php:353
+#: includes/class-admin-main.php:352
 msgid "Project not found"
 msgstr ""
 
-#: includes/class-admin-main.php:504
+#: includes/class-admin-main.php:503
 msgid "Add New"
 msgstr ""
 
-#: includes/class-admin-main.php:509
+#: includes/class-admin-main.php:508
 msgid "Project Saved"
 msgstr ""
 
-#: includes/class-admin-main.php:541 includes/class-new-project.php:154
+#: includes/class-admin-main.php:540 includes/class-new-project.php:154
 msgid "Project Title"
 msgstr ""
 
-#: includes/class-admin-main.php:542
+#: includes/class-admin-main.php:541
 msgid "Created By"
 msgstr ""
 
-#: includes/class-admin-main.php:543
+#: includes/class-admin-main.php:542
 msgid "Number of Parts"
 msgstr ""
 
-#: includes/class-admin-main.php:544
+#: includes/class-admin-main.php:543
 msgid "Number of Items"
 msgstr ""
 
-#: includes/class-admin-main.php:545
+#: includes/class-admin-main.php:544
 msgid "Date Created"
 msgstr ""
 
-#: includes/class-admin-main.php:546
+#: includes/class-admin-main.php:545
 msgid "Date Modified"
 msgstr ""
 
-#: includes/class-admin-main.php:566 includes/class-project-organizer.php:68
+#: includes/class-admin-main.php:565 includes/class-project-organizer.php:68
 msgid "Project Details"
 msgstr ""
 
-#: includes/class-admin-main.php:567
+#: includes/class-admin-main.php:566
 msgid "Manage Parts"
 msgstr ""
 
-#: includes/class-admin-main.php:568 includes/class-project-organizer.php:70
+#: includes/class-admin-main.php:567 includes/class-project-organizer.php:70
 msgid "Delete Project"
 msgstr ""
 
-#: includes/class-admin-main.php:614
+#: includes/class-admin-main.php:613
 msgid "You haven't created any projects yet."
 msgstr ""
 
-#: includes/class-admin-main.php:616
+#: includes/class-admin-main.php:615
 msgid "Start a new project."
 msgstr ""
 
-#: includes/class-admin-main.php:665
+#: includes/class-admin-main.php:664
 msgid "Save Changes"
 msgstr ""
 
-#: includes/class-admin-main.php:797
+#: includes/class-admin-main.php:796
 msgid "Source feed:"
 msgstr ""
 
-#: includes/class-admin-main.php:801
+#: includes/class-admin-main.php:800
 msgid "Source URL:"
 msgstr ""
 
-#: includes/class-admin-main.php:810
+#: includes/class-admin-main.php:809
 msgid "Date created:"
 msgstr ""
 
-#: includes/class-admin-main.php:896
+#: includes/class-admin-main.php:895
 msgid ""
 "Allow individual site admins to determine which kinds of users can use "
 "Anthologize?"
 msgstr ""
 
-#: includes/class-admin-main.php:908
+#: includes/class-admin-main.php:907
 msgid ""
 "When unchecked, access to Anthologize will be limited to the default role "
 "you select below."
 msgstr ""
 
-#: includes/class-admin-main.php:914
+#: includes/class-admin-main.php:913
 msgid "Default mimimum role for Anthologizers"
 msgstr ""
 
-#: includes/class-admin-main.php:919 includes/class-settings.php:127
+#: includes/class-admin-main.php:918 includes/class-settings.php:127
 msgid "Network Admin"
 msgstr ""
 
-#: includes/class-admin-main.php:921 includes/class-settings.php:130
+#: includes/class-admin-main.php:920 includes/class-settings.php:130
 msgid "Administrator"
 msgstr ""
 
-#: includes/class-admin-main.php:923 includes/class-settings.php:132
+#: includes/class-admin-main.php:922 includes/class-settings.php:132
 msgid "Editor"
 msgstr ""
 
-#: includes/class-admin-main.php:925 includes/class-settings.php:134
+#: includes/class-admin-main.php:924 includes/class-settings.php:134
 msgid "Author"
 msgstr ""
 
-#: includes/class-ajax-handlers.php:351
+#: includes/class-ajax-handlers.php:347
 msgid "This post has no comments."
 msgstr ""
 
@@ -702,19 +702,19 @@ msgstr ""
 msgid "Save Settings"
 msgstr ""
 
-#: templates/html/output.php:88
+#: templates/html/output.php:90
 msgid "Tags"
 msgstr ""
 
-#: templates/html/output.php:99
+#: templates/html/output.php:101
 msgid "Categories"
 msgstr ""
 
-#: templates/html_preview/preview.php:27
+#: templates/html_preview/preview.php:29
 msgid "(Anthologize Preview Mode)"
 msgstr ""
 
-#: templates/html_preview/preview.php:38
+#: templates/html_preview/preview.php:40
 msgid ""
 "You are viewing a preview of <strong>%1$s</strong>. This preview is for "
 "proofreading purposes only. To get a more accurate sense of what your "
