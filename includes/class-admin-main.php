@@ -499,7 +499,7 @@ class Anthologize_Admin_Main {
 
 
 
-		<div id="anthologize-logo"><img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" /></div>
 		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize_new_project" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
 
 
@@ -562,9 +562,10 @@ class Anthologize_Admin_Main {
 
 							<?php
 							$controlActions	  = array();
-							$controlActions[] = '<a href="admin.php?page=anthologize_new_project&project_id=' . get_the_ID() .'">' . __('Project Details', 'anthologize') . '</a>';
-							$controlActions[] = '<a href="admin.php?page=anthologize&action=edit&project_id=' . get_the_ID() .'">'.__('Manage Parts', 'anthologize') . '</a>';
-							$controlActions[] = '<a href="admin.php?page=anthologize&action=delete&project_id=' . get_the_ID() .'" class="confirm-delete">'.__('Delete Project', 'anthologize') . '</a>';
+							$the_id = get_the_ID();
+							$controlActions[] = '<a href="admin.php?page=anthologize_new_project&project_id=' . esc_attr( $the_id ) .'">' . __('Project Details', 'anthologize') . '</a>';
+							$controlActions[] = '<a href="admin.php?page=anthologize&action=edit&project_id=' . esc_attr( $the_id ) .'">'.__('Manage Parts', 'anthologize') . '</a>';
+							$controlActions[] = '<a href="admin.php?page=anthologize&action=delete&project_id=' . esc_attr( $the_id ) .'" class="confirm-delete">'.__('Delete Project', 'anthologize') . '</a>';
 							?>
 
 							<?php if (count($controlActions)) : ?>
@@ -744,14 +745,14 @@ class Anthologize_Admin_Main {
 		$location = add_query_arg( array(
 			'page'	     => 'anthologize',
 			'action'     => 'edit',
-			'project_id' => $arg
+			'project_id' => intval( $arg ),
 		), admin_url( 'admin.php' ) );
 
 		if ( isset( $_POST['return_to_project'] ) ) {
 			$location = add_query_arg( array(
 				'page'	     => 'anthologize',
 				'action'     => 'edit',
-				'project_id' => $_POST['return_to_project']
+				'project_id' => intval( $_POST['return_to_project'] ),
 			), admin_url( 'admin.php' ) );
 		}
 
@@ -779,7 +780,7 @@ class Anthologize_Admin_Main {
 			<label>Author Name <span>(optional)</span></label>
 
 			<p>
-				<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo $author_name ?></textarea>
+				<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo esc_html( $author_name ) ?></textarea>
 			</p>
 
 			<?php /* Display content for imported feed, if there is any */ ?>
@@ -794,11 +795,11 @@ class Anthologize_Admin_Main {
 							switch ( $key ) {
 								case 'feed_title':
 									$dt = __( 'Source feed:', 'anthologize' );
-									$dd = '<a href="' . $imported_item_meta['feed_permalink'] . '">' . $value . '</a>';
+									$dd = '<a href="' . esc_url( $imported_item_meta['feed_permalink'] ) . '">' . esc_html( $value ) . '</a>';
 									break;
 								case 'link':
 									$dt = __( 'Source URL:', 'anthologize' );
-									$dd = '<a href="' . $value . '">' . $value . '</a>';
+									$dd = '<a href="' . esc_url( $value ) . '">' . esc_html( $value ) . '</a>';
 									break;
 								/*case 'authors':
 									$dt = __( 'Author:', 'anthologize' );
@@ -824,15 +825,15 @@ class Anthologize_Admin_Main {
 			<?php endif; ?>
 
 			<?php if ( isset( $_GET['return_to_project'] ) ) : ?>
-				<input type="hidden" name="return_to_project" value="<?php echo $_GET['return_to_project'] ?>" />
+				<input type="hidden" name="return_to_project" value="<?php echo esc_attr( $_GET['return_to_project'] ) ?>" />
 			<?php endif; ?>
 
 			<?php if ( isset( $_GET['new_part'] ) ) : ?>
 				<input type="hidden" id="new_part" name="new_part" value="1" />
-				<input type="hidden" id="anth_parent_id" name="parent_id" value="<?php echo $_GET['project_id']; ?>" />
+				<input type="hidden" id="anth_parent_id" name="parent_id" value="<?php echo esc_attr( $_GET['project_id'] ) ?>" />
 			<?php endif; ?>
 
-			<input type="hidden" id="menu_order" name="menu_order" value="<?php echo $post->menu_order; ?>">
+			<input type="hidden" id="menu_order" name="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>">
 			<input class="tags-input" type="hidden" id="anthologize_noncename" name="anthologize_noncename" value="<?php echo wp_create_nonce(__FILE__); ?>" />
 		</div>
 	<?php

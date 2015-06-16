@@ -112,7 +112,7 @@ class Anthologize_Settings {
 				<p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
 			</div>
 
-			<div id="anthologize-logo"><img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
+			<div id="anthologize-logo"><img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" /></div>
 				<h2><?php _e( 'Settings', 'anthologize' ) ?></h2>
 
 			<form action="" method="post" id="bp-admin-form">

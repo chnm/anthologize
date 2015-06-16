@@ -42,14 +42,14 @@ function anthologize_display_project_content($projectId) {
     $parts = anthologize_get_project_parts($projectId);
 
     foreach ( $parts as $part ) {
-        echo '<h2>' . $part->post_title . '</h2>'."\n";
+        echo '<h2>' . esc_html( $part->post_title ) . '</h2>'."\n";
         echo '<div class="anthologize-part-content">'."\n";
         echo $item->post_content . "\n";
         echo '</div>' . "\n";
 
         $items = anthologize_get_part_items($part->ID);
         foreach ( $items as $item ) {
-            echo '<h3>'.$item->post_title . '</h3>'."\n";
+            echo '<h3>' . esc_html( $item->post_title ) . '</h3>'."\n";
             echo '<div class="anthologize-item-content">';
             echo $item->post_content;
             echo '</div>';
