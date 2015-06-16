@@ -446,9 +446,11 @@ class TeiDom {
 
         if(is_string($userData)) {
             $displayNameSpan = $this->sanitizeString($userData);
-        } else {
+        } elseif ( is_object( $userData ) ) {
             $author->setAttribute('ref', $userData->user_login);
             $displayNameSpan = $this->sanitizeString($userData->display_name);
+        } else {
+            $displayNameSpan = $this->sanitizeString( '' );
         }
         $author->appendChild($displayNameSpan);
         return $author;
