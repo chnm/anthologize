@@ -130,7 +130,7 @@ class Anthologize_New_Project {
             $project_id = $_GET['project_id'];
             $project = get_post( $project_id );
             if (empty($project)) {
-                echo 'Unknown project ID';
+                _e( 'Unknown project ID', 'anthologize' );
                 return;
             }
             $meta = get_post_meta( $project->ID, 'anthologize_meta', TRUE );

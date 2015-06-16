@@ -544,7 +544,7 @@ class Anthologize_Project_Organizer {
 		}
 
 		if ( ! $counter ) {
-			echo '<option disabled="disabled">Sorry, no content to add</option>';
+			echo '<option disabled="disabled">' . __( 'Sorry, no content to add', 'anthologize' ) . '</option>';
 		}
 	}
 
