@@ -66,10 +66,3 @@ function anthologize_filter_post_content($content) {
 }
 
 //add_filter('the_content', 'anthologize_filter_post_content');
-
-
-
-
-
-
-?>
