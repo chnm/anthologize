@@ -360,7 +360,7 @@ class File_Archive
                     $realSymbolic = '';
                 }
                 require_once "File/Archive/Reader/ChangeName/AddDirectory.php";
-                $tmp =& new File_Archive_Reader_ChangeName_AddDirectory(
+                $tmp = new File_Archive_Reader_ChangeName_AddDirectory(
                     $realSymbolic,
                     $result
                 );
