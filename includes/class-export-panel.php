@@ -250,7 +250,7 @@ class Anthologize_Export_Panel {
 		echo $title;
 	}
 
-	function save_session() {
+	public static function save_session() {
 
 		if ( $_POST['export-step'] == '2' )
 			$_SESSION['outputParams'] = array( 'format' => $_POST['filetype'] );
