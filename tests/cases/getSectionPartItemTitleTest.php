@@ -1,7 +1,5 @@
 <?php
 
-require_once('AnthologizeTeiApiTest.php');
-
 class getSectionPartItemTitleTest extends AnthologizeTeiApiTest {
 
     public function testAsNode() {

@@ -7,7 +7,7 @@ class TeiApi {
 
 	public function __construct($tei) {
 	    if($tei instanceof TeiDom) {
-    	    $this->tei = $tei->dom;
+    	        $this->tei = $tei->dom;
     		$this->xpath = $tei->xpath;
 	    } else {
 	        throw new Exception('TeiApi must be passed a TeiDom object');

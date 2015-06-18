@@ -206,7 +206,7 @@ class Anthologize_Project_Organizer {
 				$types = $this->available_post_types();
 				$terms = array();
 				foreach ( $types as $type_id => $type_label ) {
-					$type_object = null;
+					$type_object = new stdClass;
 					$type_object->term_id = $type_id;
 					$type_object->name = $type_label;
 					$terms[] = $type_object;
@@ -255,7 +255,9 @@ class Anthologize_Project_Organizer {
 	 * @return array A list of post type labels, keyed by name
 	 */
 	function available_post_types() {
-		$all_post_types = get_post_types( false, false );
+		$all_post_types = get_post_types( array(
+			'public' => true
+		), false );
 
 		$excluded_post_types = apply_filters( 'anth_excluded_post_types', array(
 			'anth_library_item',
