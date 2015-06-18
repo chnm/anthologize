@@ -255,7 +255,9 @@ class Anthologize_Project_Organizer {
 	 * @return array A list of post type labels, keyed by name
 	 */
 	function available_post_types() {
-		$all_post_types = get_post_types( false, false );
+		$all_post_types = get_post_types( array(
+			'public' => true
+		), false );
 
 		$excluded_post_types = apply_filters( 'anth_excluded_post_types', array(
 			'anth_library_item',
