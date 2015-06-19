@@ -1,7 +1,6 @@
 <?php
 
 //error_reporting(0);
-set_include_path( get_include_path() . PATH_SEPARATOR . dirname( __FILE__ ) . '/pear_ext' );
 $anthEpubDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR;
 require_once( $anthEpubDir . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-epub-builder.php' );
 include_once( ANTHOLOGIZE_TEIDOM_PATH );
@@ -27,6 +26,16 @@ if ( ! class_exists( 'XSLTProcessor', false ) ) {
 	die( 'ePub export requires XSL support' );
 }
 
+// Set paths to include
+$paths = array(
+	dirname( __FILE__ ) . '/pear_ext',
+	get_include_path()
+);
+
+// Set custom include path
+set_include_path( implode( PATH_SEPARATOR, $paths ) );
+
+// Require PEAR archive
 require_once( 'Archive.php' );
 
 // Load intermediate TEI file
