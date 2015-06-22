@@ -55,6 +55,7 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 == Changelog ==
 
 = 0.7.6 =
+* Fixed bug that could cause fatal error when exporting to epub on some setups
 * Improved output escaping, for better security
 * Fixed bug that caused non-public post types to show on Project Organizer dropdown
 * Cleared some PHP notices
