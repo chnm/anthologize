@@ -4,7 +4,7 @@ Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.3
 Tested up to: 4.2.2
-Stable tag: 0.7.5
+Stable tag: 0.7.6
 
 Use the power of WordPress to transform your content into a book.
 
