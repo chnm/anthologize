@@ -63,16 +63,16 @@ var anthologize = {
     }
   },
   "addMultiItems": function(event, ui){
-	/*jQuery.blockUI({ 
+	/*jQuery.blockUI({
 		css: {width: '12%',top:'40%',left:'45%'},
-		message: jQuery('#blockUISpinner').show() 
+		message: jQuery('#blockUISpinner').show()
 	});*/
-	
+
 	var dest_seq = {};
 	var item_ids = [];
 	var project_id = anthologize.getProjectId();
 	var i = 0;
-	
+
 	ui.item.after(jQuery("#sidebar-posts li").clone().each(function(){
         var sidePostId = jQuery(this).find("span.fromNewId").first().text();
 		var orig_id = anthologize.cleanPostIds(sidePostId);
@@ -85,7 +85,7 @@ var anthologize = {
 	var startOffset = ui.item.next();
 	var dest_id = ui.item.closest("li.part").attr("id");
 	ui.item.detach();
-	
+
 	offset = 1;
 	startOffset.siblings().andSelf().each(function(){
 		dest_seq[jQuery(this).attr("id")] = offset;
@@ -98,18 +98,18 @@ var anthologize = {
 	    "item_ids": item_ids,
 	    "dest_seq":  dest_seq,
 	};
-    
+
     	anth_admin_ajax.place_items(ajax_options);
-	
+
 	},
   "didSortChange" : function(ajax_options){
-    if (! (((ajax_options.src_id == ajax_options.dest_id) || 
+    if (! (((ajax_options.src_id == ajax_options.dest_id) ||
            (ajax_options.src_id == null && ajax_options.dest_id == ajax_options.project_id))
 	      && ajax_options.src_seq[ajax_options.item_id] == ajax_options.dest_seq[ajax_options.item_id])){
       return true;
     }else{
 	    return false;
-    }	
+    }
   },
   "initSidebar" : function(){
 	  jQuery("#sidebar-posts li").draggable({
@@ -186,9 +186,9 @@ var anthologize = {
 			if (! response){
 				jQuery(item).find('.comments-panel').html('<p>' + anth_strings.no_comments + '</p><br /><input type="button" class="cancelComments" value="' + anth_strings.cancel + '" />');
 			} else {
-			
+
 				var w = jQuery(item).find('.comment-table tbody');
-				
+
 				for (var itemId in response){
 					var commentid = response[itemId].comment_ID;
 					if ( response[itemId].is_included ) {
@@ -196,21 +196,21 @@ var anthologize = {
 					} else {
 						var checked = '';
 					}
-					
+
 					var comment = '<tr><td class="checkbox"><input type="checkbox" class="select-comment" name="comments[]" id="comment-' + commentid + '"' + checked + ' /></td>';
-					
+
 					comment += '<td class="comment-author-email">' + response[itemId].comment_author_email + '</td>';
-	
+
 					comment += '<td class="comment-content">' + anthologize.trimToLength( response[itemId].comment_content, 30, commentid ) + '</td>';
-	
+
 					comment += '<td class="comment-date">' + response[itemId].comment_date + '</td>';
-					
+
 					comment += '</tr>';
-					
+
 					w.append(comment);
 				}
-			}			
-			
+			}
+
 			jQuery(".project-parts").sortable("disable");
 			jQuery(".part-items ul").sortable("disable");
 			jQuery("a.toggle").addClass("disabled");
@@ -226,39 +226,39 @@ var anthologize = {
 			ajax_error_refresh();
 		}
 	});
-	
-	
-  }, 
+
+
+  },
   "updateAddedItem" : function (new_item_id,comment_count,original_id){
 	newItem = anthologize.newItem;
-	
+
 	/* Multi-add items get their ids from the original post id, so we swap the selector here */
 	var id_selector = original_id !== false ? original_id : new_item_id;
-	
+
 	newItem.attr("id", "item-" + id_selector);
-	
+
 	newItem.children("h3").wrapInner('<span class="part-title" />');
-	
+
 	/* Comments are being held until 0.7 */
 	/*
 	var buttons = 	'<div class="part-item-buttons">' +
 			'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | '+
-			'<a href="#comments" class="comments toggle">' + anth_strings.comments + ' (<span class="included-comment-count">0</span>/' + comment_count + ')</a><span class="comments-sep toggle-sep"> |</span> ' + 
+			'<a href="#comments" class="comments toggle">' + anth_strings.comments + ' (<span class="included-comment-count">0</span>/' + comment_count + ')</a><span class="comments-sep toggle-sep"> |</span> ' +
 			'<a class="append" href="#append">' + anth_strings.append + ' | </a> ' +
 			'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
 			'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
 			'</div>';
 	*/
-	
+
 	var buttons = 	'<div class="part-item-buttons">' +
-				'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | ' + 
+				'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | ' +
 				'<a class="append" href="#append">' + anth_strings.append + '</a><span class="append-sep toggle-sep"> | </span>' +
-				'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a><span class="toggle-sep"> | </span>' + 
+				'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a><span class="toggle-sep"> | </span>' +
 				'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
 			'</div>';
-	
+
 	newItem.children("h3").append(buttons);
-	
+
 	/* Ugh. Now we switch back to the proper id, so the comments slider will work */
 	if ( original_id !== false )
 		newItem.attr("id", "item-" + new_item_id);
@@ -336,7 +336,7 @@ jQuery.fn.anthologizeSortList = function (options){
       anthologize.src_seq = {};
       var pos = 1;
       ui.item.siblings().each(function(){
-          if (! jQuery(this).hasClass("anthologize-drop-item")){ 
+          if (! jQuery(this).hasClass("anthologize-drop-item")){
               anthologize.src_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = pos;
               pos++;
           }
@@ -414,27 +414,27 @@ jQuery(document).ready(function(){
 		  item.find("a.cancelAppend").click();
 	  }
   });
-  
+
   jQuery("body").delegate("a.comments", "click", function(){
 	  var item = jQuery(this).closest("li.item");
 
     if (anthologize.appending == false && ! jQuery(this).hasClass("disabled")){
 	    jQuery(this).addClass("active-comments");
-		var commentPanel = 
+		var commentPanel =
 			'<div class="comments-panel" style="display:none;">' +
-			'<p>' + anth_strings.comments_explain + 
+			'<p>' + anth_strings.comments_explain +
 			' <br/><span class="comment-select-links"><a href="#select-all" class="select-multiple select-all">' + anth_strings.select_all + '</a> | <a href="#select-none" class="select-multiple select-none">' + anth_strings.select_none + '</a></span></p>' +
 			'<table class="comment-table"><thead><tr>' +
 				'<td class="comment-check" scope="col"></td>' +
 				'<td class="comment-commenter" scope="col">' + anth_strings.commenter + '</td>' +
 				'<td class="comment-content" scope="col">' + anth_strings.comment_content + '</td>' +
-				'<td class="comment-posted" scope="col">' + anth_strings.posted + '</td>' +			
-			'</tr></thead><tbody></tbody></table>' + 
+				'<td class="comment-posted" scope="col">' + anth_strings.posted + '</td>' +
+			'</tr></thead><tbody></tbody></table>' +
 		        '<input type="button" class="cancelComments" value="' + anth_strings.done + '" /></div>';
 		  item.append(commentPanel);
-		  
+
 		  anthologize.getComments(item.attr("id"),item);
-		  
+
 	  }else{
 		  item.find("input.cancelComments").click();
 	  }
@@ -506,9 +506,9 @@ jQuery(document).ready(function(){
 	var comment_id = anthologize.cleanPostIds(jQuery(this).attr('id'));
 	var item = jQuery(this).closest("li.item");
 	var post_id = anthologize.cleanPostIds(item.attr("id"));
-	
+
 	var check_action = jQuery(this).is(':checked') ? 'add' : 'remove';
-	  
+
 	jQuery.ajax({
 		url: ajaxurl,
 		type: 'POST',
@@ -528,12 +528,12 @@ jQuery(document).ready(function(){
 		},
 		error: function(){
 			jQuery.unblockUI();
-			return false;	
+			return false;
 		}
 	});
-	
+
   });
-  
+
   /* [more] unhides the '.hide' text and hides the [more] link */
   jQuery("body").delegate("a.more", "click", function(){
   	var hiddentext = jQuery(this).siblings(".hide");
@@ -541,7 +541,7 @@ jQuery(document).ready(function(){
   	jQuery(this).addClass('hidden-text');
   	return false;
   });
-  
+
   /* [less] unhides the [more] text and hides the .hide text */
   jQuery("body").delegate("a.less", "click", function(){
   	var hiddentext = jQuery(this).parent();
@@ -549,16 +549,16 @@ jQuery(document).ready(function(){
   	jQuery(hiddentext).siblings('.more').removeClass('hidden-text');
   	return false;
   });
-  
+
   /* Select All / Select None */
-  jQuery("body").delegate("a.select-multiple", "click", function(){  
+  jQuery("body").delegate("a.select-multiple", "click", function(){
   	jQuery.blockUI({css:{width: '12%',top:'40%',left:'45%'}, message: jQuery('#blockUISpinner').show() });
-  	
+
   	var item = jQuery(this).closest("li.item");
 	var item_id = anthologize.cleanPostIds(item.attr("id"));
-	
+
 	var check_action = jQuery(this).hasClass('select-none') ? 'remove' : 'add';
-	
+
 	jQuery.ajax({
 		url: ajaxurl,
 		type: 'POST',
@@ -580,7 +580,7 @@ jQuery(document).ready(function(){
 		error: function(){
 			ajax_error_refresh();
 		}
-	});	
+	});
   });
 
 	jQuery("body").delegate("ul.project-parts li.part a.collapsepart", "click", function(){
@@ -595,7 +595,7 @@ jQuery(document).ready(function(){
 		});
 		anthologize.toggleCollapseCookie(part.attr('id'));
 	});
-	
+
 	var cp = jQuery.cookie('collapsedparts');
 	if (cp){
 		var parts = cp.split(',');
@@ -606,5 +606,5 @@ jQuery(document).ready(function(){
 				p.find("a.collapsepart").text(' + ');
 	  	}
 		}
-	}	
+	}
 });
