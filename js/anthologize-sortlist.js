@@ -73,8 +73,8 @@ var anthologize = {
 	var project_id = anthologize.getProjectId();
 	var i = 0;
 
-	ui.item.after(jQuery("#sidebar-posts li").clone().each(function(){
-        var sidePostId = jQuery(this).find("span.fromNewId").first().text();
+	ui.item.after(jQuery("#sidebar-posts-clone li").clone().each(function(){
+		var sidePostId = jQuery(this).find("span.fromNewId").first().text();
 		var orig_id = anthologize.cleanPostIds(sidePostId);
 		var added_id = "item-" + orig_id;
 		jQuery(this).attr("id", added_id);
@@ -130,8 +130,9 @@ var anthologize = {
 	  jQuery("#customlinkdiv .part-header").draggable({
 	    connectToSortable: ".part-items ul",
 	    helper: function(){
-				return jQuery("#sidebar-posts").clone();
-			},
+                var cloned_items = jQuery( '#sidebar-posts' ).clone().attr( 'id', 'sidebar-posts-clone' );
+                return cloned_items;
+            },
 	    revert: "invalid",
 	    zIndex: 2700,
 	    distance: 3,
@@ -348,7 +349,7 @@ jQuery.fn.anthologizeSortList = function (options){
     stop: function (event, ui){
       ui.item.css( 'width', '' );
       anthologize.newItem = ui.item;
-      if (ui.item.hasClass('part-header')){
+      if (ui.item.get(0).tagName == 'UL'){
         ui.item.find("li.item").each(function(postItem) {
           anthologize.fixFromNewId(postItem);
         });
