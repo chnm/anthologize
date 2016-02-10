@@ -26,7 +26,7 @@ var anthologize = {
     }
 
     offset = 1;
-    ui.item.siblings().andSelf().each(function(){
+    ui.item.siblings().addBack().each(function(){
       dest_seq[anthologize.cleanPostIds(jQuery(this).attr("id"))] = offset;
 			offset++;
     });
