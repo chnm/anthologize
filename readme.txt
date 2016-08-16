@@ -54,6 +54,9 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.7.7 =
+* Fixed broken Date Range query
+
 = 0.7.6 =
 * Fixed bug that could cause fatal error when exporting to epub on some setups
 * Improved output escaping, for better security
