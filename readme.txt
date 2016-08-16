@@ -3,8 +3,8 @@ Contributors: oneweekonetool, boonebgorges, digitaleffie, gossettphd, janaremy, 
 Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.3
-Tested up to: 4.2.2
-Stable tag: 0.7.6
+Tested up to: 4.6
+Stable tag: 0.7.7
 
 Use the power of WordPress to transform your content into a book.
 
@@ -56,6 +56,9 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 = 0.7.7 =
 * Fixed broken Date Range query
+* Fixed broken drop-and-drop for multiple posts
+* Improved appearance in WP 4.4+
+* Cleaned up PHP and JS deprecation notices
 
 = 0.7.6 =
 * Fixed bug that could cause fatal error when exporting to epub on some setups
