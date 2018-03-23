@@ -784,7 +784,9 @@ class Anthologize_Project_Organizer {
 		$original_comment_count = 0;
 		if ( ! empty( $anth_meta['original_post_id'] ) ) {
 			$original_post = get_post( $anth_meta['original_post_id'] );
-			$original_comment_count = $original_post->comment_count;
+			if ( $original_post ) {
+				$original_comment_count = (int) $original_post->comment_count;
+			}
 		}
 
 		// Then, see how many comments are being brought along to the export
