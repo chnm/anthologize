@@ -145,6 +145,7 @@ span.fromNewId {
 	border-bottom-left-radius: 3px;
 	border: 2px solid #5e2600;
 	padding: 8px 12px;
+	margin-bottom: 0;
 }
 
 .part-items {
