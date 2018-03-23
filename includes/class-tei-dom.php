@@ -1064,7 +1064,7 @@ class TeiDom {
 
     public function getNodeLabelForIndex($node) {
 
-        if ($node->firstChild->nodeName == 'span') {
+        if ( isset( $node->firstChild->nodeName ) && $node->firstChild->nodeName == 'span' ) {
             return $node->firstChild->cloneNode(true);
         }
 
