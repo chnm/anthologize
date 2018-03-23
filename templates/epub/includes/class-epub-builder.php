@@ -26,7 +26,13 @@ class EpubBuilder {
         $this->opfXSL = $anthEpubDir . 'tei2opf.xsl';
 
         //dig up the selected cover image
-        $this->coverImage = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0)->nodeValue;
+		$cover_item = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0);
+		if ( $cover_item && isset( $cover_item->nodeValue ) ) {
+			$this->coverImage = $cover_item->nodeValue;
+		} else {
+			$this->coverImage = 'none';
+		}
+
         $this->localizeLinks();
 
         if (is_string($data)) {
