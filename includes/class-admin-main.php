@@ -377,16 +377,17 @@ class Anthologize_Admin_Main {
 		require_once( anthologize()->includes_dir . 'class-export-panel.php' );
 		Anthologize_Export_Panel::save_session();
 
-		$type = $_SESSION['filetype'];
+		$session = anthologize_get_session();
+		$format = $session['filetype'];
 
-		if ( !is_array( $anthologize_formats[$type] ) )
+		if ( ! is_array( $anthologize_formats[ $format ] ) ) {
 			return;
+		}
 
-		$project_id = $_SESSION['project_id'];
+		$project_id = $session['project_id'];
 
-		load_template( $anthologize_formats[$type]['loader-path'] );
-
-		return false;
+		load_template( $anthologize_formats[ $format ]['loader-path'] );
+		die;
 	}
 
 	/**
