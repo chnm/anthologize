@@ -145,6 +145,7 @@ function anthologize_get_session_data_keys() {
 		'colophon',
 		'do-shortcodes',
 
+		'creatorOutputSettings',
 		'outputParams',
 	);
 

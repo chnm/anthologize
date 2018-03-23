@@ -24,9 +24,9 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 
 
 $ops['outputParams'] = anthologize_get_session_output_params();
+$session = anthologize_get_session();
 
-
-$tei = new TeiDom($_SESSION, $ops);
+$tei = new TeiDom($session, $ops);
 
 header("Content-type: text/html");
 

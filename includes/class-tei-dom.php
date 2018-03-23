@@ -41,6 +41,7 @@ class TeiDom {
             $this->$op = $value;
         }
         $this->projectData = $sessionArray;
+		$this->projectData['outputParams'] = anthologize_get_session_output_params();
 
         if(isset($this->outputParams['gravatar-default'])) {
             $this->avatarDefault = $this->outputParams['gravatar-default'];
@@ -376,7 +377,6 @@ class TeiDom {
     }
 
     public function newStructuredPerson($wpUserObj) {
-
         $id = $wpUserObj->user_login;
 
         if( array_key_exists($id, $this->knownPersons)) {
