@@ -761,7 +761,7 @@ class Anthologize_Admin_Main {
 		?>
 		<div class="my_meta_control">
 
-			<label>Author Name <span>(optional)</span></label>
+			<label><?php esc_html_e( 'Author Name', 'anthologize' ); ?> <span><?php esc_html_e( '(optional)', 'anthologize' ); ?></span></label>
 
 			<p>
 				<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3" cols="27"><?php echo esc_html( $author_name ) ?></textarea>
