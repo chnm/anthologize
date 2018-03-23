@@ -19,7 +19,7 @@ class EpubBuilder {
 
         $this->tei = $tei;
         $this->createDirs();
-        $this->outFileName = $tei->getFileName($_SESSION) . '.epub';
+        $this->outFileName = $tei->getFileName( anthologize_get_session() ) . '.epub';
         $this->proc = new XSLTProcessor();
         $anthEpubDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR;
         $this->ncxXSL = $anthEpubDir . 'tei2ncx.xsl';
