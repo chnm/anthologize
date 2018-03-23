@@ -61,7 +61,7 @@ $session = anthologize_get_session();
 $session['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 anthologize_save_session( $session );
 
-$tei = new TeiDom($_SESSION, $ops);
+$tei = new TeiDom( $session, $ops );
 
 $api = new TeiApi($tei);
 
