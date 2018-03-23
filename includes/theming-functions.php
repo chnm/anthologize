@@ -260,6 +260,10 @@ function anth_person_details($role = 'author') {
 
 	}
 
+	if ( ! $person ) {
+		return;
+	}
+
 	$person_details = $api->getDetailsByRef($person['atts']['ref']);
 }
 

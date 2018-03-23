@@ -671,7 +671,6 @@ class TeiDom {
 
                 if($this->includeOriginalPostData) {
                     //TODO: include date created and modified data
-                    $origPostData = get_post($postObject->original_post_id);
                     $permalinkURL = get_permalink($postObject->original_post_id);
 
                     $permalink = $this->dom->createElementNS(TEI, 'ident');
@@ -679,16 +678,21 @@ class TeiDom {
                     $permalink->appendChild($this->dom->createCDataSection($permalinkURL));
                     $newHead->appendChild($permalink);
 
-                    $origGuid = $this->dom->createElementNS(TEI, 'ident');
-                    $origGuid->appendChild($this->dom->createCDataSection($origPostData->guid));
-                    $origGuid->setAttribute('type', 'origGuid');
-                    $newHead->appendChild($origGuid);
+                    $origPostData = get_post($postObject->original_post_id);
+					if ( $origPostData ) {
+						$origGuid = $this->dom->createElementNS(TEI, 'ident');
+						$origGuid->appendChild($this->dom->createCDataSection($origPostData->guid));
+						$origGuid->setAttribute('type', 'origGuid');
+						$newHead->appendChild($origGuid);
 
-                    $origCreator = get_userdata($origPostData->post_author);
-                    $bibl->appendChild($this->newAuthor($origCreator, 'originalAuthor') );
-                    if($this->includeStructuredCreatorData) {
-                        $this->addStructuredPerson($origCreator);
-                    }
+						$origCreator = get_userdata($origPostData->post_author);
+						if ( $origCreator ) {
+							$bibl->appendChild($this->newAuthor($origCreator, 'originalAuthor') );
+							if($this->includeStructuredCreatorData) {
+								$this->addStructuredPerson($origCreator);
+							}
+						}
+					}
                 }
 
                 if($this->includeItemSubjects) {
