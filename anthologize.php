@@ -231,6 +231,9 @@ class Anthologize {
 
 		register_post_type( 'anth_part', array(
 			'label'               => __( 'Parts', 'anthologize' ),
+			'labels'              => array(
+				'add_new_item' => __( 'Add New Part', 'anthologize' ),
+			),
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
 			'show_ui'             => true, // todo: hide
