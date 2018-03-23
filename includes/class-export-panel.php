@@ -40,6 +40,10 @@ class Anthologize_Export_Panel {
 
 		$export_step = ( isset( $_POST['export-step'] ) ) ? $_POST['export-step'] : '1';
 
+		if ( '1' === $export_step ) {
+			anthologize_delete_session();
+		}
+
 		if ( $export_step != '3' )
 			$this->display();
 	}
@@ -197,7 +201,7 @@ class Anthologize_Export_Panel {
 
 			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
 
-				<form action="admin.php?page=anthologize_export_panel&project_id=<?php echo $project_id ?>&noheader=true" method="post">
+				<form action="admin.php?page=anthologize_export_project&project_id=<?php echo $project_id ?>&noheader=true" method="post">
 
 				<h3><?php $this->export_format_options_title() ?></h3>
 				<div id="publishing-options">
@@ -243,7 +247,8 @@ class Anthologize_Export_Panel {
 	function export_format_options_title() {
 		global $anthologize_formats;
 
-		$format = $_SESSION['filetype'];
+		$session = anthologize_get_session();
+		$format = $session['filetype'];
 
 		$title = sprintf( __( '%s Publishing Options', 'anthologize' ), $anthologize_formats[$format]['label'] );
 
@@ -251,34 +256,18 @@ class Anthologize_Export_Panel {
 	}
 
 	public static function save_session() {
+		$keys = anthologize_get_session_data_keys();
+		$data = array();
 
-		if ( $_POST['export-step'] == '2' )
-			$_SESSION['outputParams'] = array( 'format' => $_POST['filetype'] );
-
-		// outputParams need to be reset at step 3 so that
-		// on a refresh null values will overwrite
-		if ( $_POST['export-step'] == '3' ) {
-			// filetype has been set different ways in different versions
-			// This is to be safe
-			$filetype = isset( $_SESSION['outputParams']['filetype'] ) ? $_SESSION['outputParams']['filetype'] : $_SESSION['filetype'];
-			$_SESSION['outputParams'] = array( 'format' => $filetype );
-		}
-
-
-		foreach ( $_POST as $key => $value ) {
-			if ( $key == 'submit' || $key == 'export-step' )
+		foreach ( $keys as $key ) {
+			if ( ! isset( $_POST[ $key ] ) ) {
 				continue;
+			}
 
-			if ( $key == '' )
-				echo "OK";
-
-			if ( $_POST['export-step'] == '3' )
-				$_SESSION['outputParams'][$key] = stripslashes( $value );
-			else
-				$_SESSION[$key] = stripslashes( $value );
-
+			$data[ $key ] = wp_unslash( $_POST[ $key ] );
 		}
 
+		anthologize_save_session( $data );
 	}
 
 	function export_format_list() {
@@ -301,7 +290,8 @@ class Anthologize_Export_Panel {
 	function render_format_options() {
 		global $anthologize_formats;
 
-		$format = $_SESSION['filetype'];
+		$session = anthologize_get_session();
+		$format = $session['filetype'];
 
 		if ( $fdata = $anthologize_formats[$format] ) {
 			$return = '';

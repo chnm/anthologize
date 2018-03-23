@@ -57,13 +57,6 @@ class Anthologize_Import_Feeds_Panel {
 
 				<?php else : ?>
 
-				<?php
-
-				$the_items = serialize( $items );
-				$_SESSION['items'] = $the_items;
-
-				?>
-
 				<div id="export-form">
 
 				<p><?php _e( 'Select the items you\'d like to import to your Imported Items library and click Import.', 'anthologize' ) ?></p>

@@ -11,6 +11,9 @@ function anthologize_save_project_meta() {
 		return;
 
 	$project_meta = get_post_meta( $project_id, 'anthologize_meta', true );
+	if ( ! is_array( $project_meta ) ) {
+		$project_meta = array();
+	}
 
 	foreach( $_POST as $key => $value ) {
 
@@ -66,3 +69,120 @@ function anthologize_filter_post_content($content) {
 }
 
 //add_filter('the_content', 'anthologize_filter_post_content');
+
+/**
+ * Get data about an export "session".
+ *
+ * @since 0.7.8
+ */
+function anthologize_get_session() {
+	$session = get_user_meta( get_current_user_id(), 'anthologize_export_session', true );
+	if ( ! $session ) {
+		$session = array();
+	}
+
+	return $session;
+}
+
+/**
+ * Delete current user's active export session.
+ *
+ * @since 0.7.8
+ */
+function anthologize_delete_session() {
+	delete_user_meta( get_current_user_id(), 'anthologize_export_session' );
+}
+
+/**
+ * Save data to the current export "session".
+ *
+ * @since 0.7.8
+ *
+ * @param array $data
+ */
+function anthologize_save_session( $data ) {
+	$keys = anthologize_get_session_data_keys();
+
+	$session = anthologize_get_session();
+
+	foreach ( $keys as $key ) {
+		if ( isset( $data[ $key ] ) ) {
+			$session[ $key ] = $data[ $key ];
+		}
+	}
+
+	update_user_meta( get_current_user_id(), 'anthologize_export_session', $session );
+}
+
+/**
+ * Get a list of keys that are whitelisted for sessions.
+ *
+ * @return array
+ */
+function anthologize_get_session_data_keys() {
+	$keys = array(
+		// Step 1
+		'project_id',
+		'cyear',
+		'cname',
+		'ctype',
+		'cctype',
+		'edition',
+		'authors',
+
+		// Step 2
+		'post-title',
+		'dedication',
+		'acknowledgements',
+		'filetype',
+
+		// Step 3
+		'page-size',
+		'font-size',
+		'font-face',
+		'break-parts',
+		'break-items',
+		'colophon',
+		'do-shortcodes',
+
+		'creatorOutputSettings',
+		'outputParams',
+	);
+
+	/**
+	 * Filters the keys that can be saved as part of an export session.
+	 *
+	 * @since 0.7.8
+	 */
+	return apply_filters( 'anthologize_get_session_data_keys', $keys );
+}
+
+/**
+ * Get session "outputParams" needed by export formats.
+ *
+ * @return array
+ */
+function anthologize_get_session_output_params() {
+	$session = anthologize_get_session();
+
+	$keys = array(
+		'page-size',
+		'font-size',
+		'font-face',
+		'break-parts',
+		'break-items',
+		'colophon',
+		'do-shortcodes',
+		'creatorOutputSettings',
+		'download',
+		'gravatar-default',
+	);
+
+	$params = array();
+	foreach ( $keys as $key ) {
+		$value = isset( $session[ $key ] ) ? $session[ $key ] : '';
+		$params[ $key ] = $value;
+	}
+
+	return $params;
+}

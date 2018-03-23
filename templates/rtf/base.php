@@ -49,7 +49,7 @@ $ops = array(
   'indexImages' => false
 );
 
-$tei = new TeiDom($_SESSION, $ops);
+$tei = new TeiDom( anthologize_get_session(), $ops );
 $api = new TeiApi($tei);
 $rtfer = new RtfAnthologizer($api);
 $rtfer->output();

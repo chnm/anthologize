@@ -41,6 +41,7 @@ class TeiDom {
             $this->$op = $value;
         }
         $this->projectData = $sessionArray;
+		$this->projectData['outputParams'] = anthologize_get_session_output_params();
 
         if(isset($this->outputParams['gravatar-default'])) {
             $this->avatarDefault = $this->outputParams['gravatar-default'];
@@ -376,7 +377,6 @@ class TeiDom {
     }
 
     public function newStructuredPerson($wpUserObj) {
-
         $id = $wpUserObj->user_login;
 
         if( array_key_exists($id, $this->knownPersons)) {
@@ -671,7 +671,6 @@ class TeiDom {
 
                 if($this->includeOriginalPostData) {
                     //TODO: include date created and modified data
-                    $origPostData = get_post($postObject->original_post_id);
                     $permalinkURL = get_permalink($postObject->original_post_id);
 
                     $permalink = $this->dom->createElementNS(TEI, 'ident');
@@ -679,16 +678,21 @@ class TeiDom {
                     $permalink->appendChild($this->dom->createCDataSection($permalinkURL));
                     $newHead->appendChild($permalink);
 
-                    $origGuid = $this->dom->createElementNS(TEI, 'ident');
-                    $origGuid->appendChild($this->dom->createCDataSection($origPostData->guid));
-                    $origGuid->setAttribute('type', 'origGuid');
-                    $newHead->appendChild($origGuid);
+                    $origPostData = get_post($postObject->original_post_id);
+					if ( $origPostData ) {
+						$origGuid = $this->dom->createElementNS(TEI, 'ident');
+						$origGuid->appendChild($this->dom->createCDataSection($origPostData->guid));
+						$origGuid->setAttribute('type', 'origGuid');
+						$newHead->appendChild($origGuid);
 
-                    $origCreator = get_userdata($origPostData->post_author);
-                    $bibl->appendChild($this->newAuthor($origCreator, 'originalAuthor') );
-                    if($this->includeStructuredCreatorData) {
-                        $this->addStructuredPerson($origCreator);
-                    }
+						$origCreator = get_userdata($origPostData->post_author);
+						if ( $origCreator ) {
+							$bibl->appendChild($this->newAuthor($origCreator, 'originalAuthor') );
+							if($this->includeStructuredCreatorData) {
+								$this->addStructuredPerson($origCreator);
+							}
+						}
+					}
                 }
 
                 if($this->includeItemSubjects) {
@@ -1060,7 +1064,7 @@ class TeiDom {
 
     public function getNodeLabelForIndex($node) {
 
-        if ($node->firstChild->nodeName == 'span') {
+        if ( isset( $node->firstChild->nodeName ) && $node->firstChild->nodeName == 'span' ) {
             return $node->firstChild->cloneNode(true);
         }
 
