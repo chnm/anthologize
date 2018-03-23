@@ -29,7 +29,7 @@ class Anthologize_Import_Feeds_Panel {
 	?>
 		<div class="wrap anthologize">
 
-		<div id="anthologize-logo"><img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" /></div>
 			<h2><?php _e( 'Import Content', 'anthologize' ) ?></h2>
 
 			<?php if ( !isset( $_POST['feedurl'] ) && !isset( $_POST['copyitems'] ) ) : ?>
@@ -57,13 +57,6 @@ class Anthologize_Import_Feeds_Panel {
 
 				<?php else : ?>
 
-				<?php
-
-				$the_items = serialize( $items );
-				$_SESSION['items'] = $the_items;
-
-				?>
-
 				<div id="export-form">
 
 				<p><?php _e( 'Select the items you\'d like to import to your Imported Items library and click Import.', 'anthologize' ) ?></p>
@@ -81,12 +74,12 @@ class Anthologize_Import_Feeds_Panel {
 							}
 						?>
 						<li>
-							<input name="copyitems[]" type="checkbox" checked="checked" value="<?php echo $key ?>"> <strong><?php echo $item['title'] ?></strong>  <?php echo $item['description'] ?>
+							<input name="copyitems[]" type="checkbox" checked="checked" value="<?php echo esc_attr( $key ) ?>"> <strong><?php echo esc_html( $item['title'] ) ?></strong>  <?php echo esc_html( $item['description'] ) ?>
 						</li>
 					<?php endforeach; ?>
 					</ul>
 
-					<input type="hidden" name="feedurl" value="<?php echo $_POST['feedurl'] ?>" />
+					<input type="hidden" name="feedurl" value="<?php echo esc_attr( $_POST['feedurl'] ) ?>" />
 					<div class="anthologize-button"><input type="submit" name="submit_items" id="submit" value="<?php _e( 'Import', 'anthologize' ) ?>" /></div>
 
 				</form>
@@ -97,7 +90,7 @@ class Anthologize_Import_Feeds_Panel {
 				<form action="" method="post">
 
 					<h3><?php _e( 'Feed URL:', 'anthologize' ) ?></h3>
-					<input type="text" name="feedurl" id="feedurl" size="100" value="<?php echo $_POST['feedurl'] ?>" />
+					<input type="text" name="feedurl" id="feedurl" size="100" value="<?php echo esc_attr( $_POST['feedurl'] ) ?>" />
 
 					<div class="anthologize-button"><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></div>
 

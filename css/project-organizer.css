@@ -135,7 +135,7 @@ span.fromNewId {
 }
 
 
-.postbox h3.part-header {
+.postbox .part-header {
 	background: #e3c1aa !important;
 	color: #5e2600 !important;
 	text-shadow: none !important;
@@ -144,6 +144,8 @@ span.fromNewId {
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 	border: 2px solid #5e2600;
+	padding: 8px 12px;
+	margin-bottom: 0;
 }
 
 .part-items {
@@ -161,6 +163,7 @@ span.fromNewId {
 	border-bottom-left-radius: 3px;
 	border: 2px solid #13395F;
 	position: relative;
+	padding: 8px 12px;
 }
 
 .part-header {

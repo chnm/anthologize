@@ -19,14 +19,20 @@ class EpubBuilder {
 
         $this->tei = $tei;
         $this->createDirs();
-        $this->outFileName = $tei->getFileName($_SESSION) . '.epub';
+        $this->outFileName = $tei->getFileName( anthologize_get_session() ) . '.epub';
         $this->proc = new XSLTProcessor();
         $anthEpubDir = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR;
         $this->ncxXSL = $anthEpubDir . 'tei2ncx.xsl';
         $this->opfXSL = $anthEpubDir . 'tei2opf.xsl';
 
         //dig up the selected cover image
-        $this->coverImage = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0)->nodeValue;
+		$cover_item = $this->tei->xpath->query("//anth:param[@name = 'cover']")->item(0);
+		if ( $cover_item && isset( $cover_item->nodeValue ) ) {
+			$this->coverImage = $cover_item->nodeValue;
+		} else {
+			$this->coverImage = 'none';
+		}
+
         $this->localizeLinks();
 
         if (is_string($data)) {

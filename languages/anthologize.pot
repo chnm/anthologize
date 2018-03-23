@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Anthologize package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Anthologize 0.7.5\n"
+"Project-Id-Version: Anthologize 0.7.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anthologize\n"
-"POT-Creation-Date: 2015-02-18 18:07:39+00:00\n"
+"POT-Creation-Date: 2015-06-22 14:23:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -83,10 +83,10 @@ msgstr ""
 msgid "Individual Sponsors"
 msgstr ""
 
-#. #-#-#-#-#  anthologize.pot (Anthologize 0.7.5)  #-#-#-#-#
+#. #-#-#-#-#  anthologize.pot (Anthologize 0.7.6)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/class-admin-main.php:31 includes/class-admin-main.php:111
-#: includes/class-admin-main.php:112 includes/class-admin-main.php:891
+#: includes/class-admin-main.php:112 includes/class-admin-main.php:885
 msgid "Anthologize"
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: includes/class-admin-main.php:295 includes/class-project-organizer.php:817
+#: includes/class-admin-main.php:295 includes/class-project-organizer.php:819
 msgid "Append"
 msgstr ""
 
@@ -152,8 +152,8 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: includes/class-admin-main.php:302 includes/class-project-organizer.php:406
-#: includes/class-project-organizer.php:810
+#: includes/class-admin-main.php:302 includes/class-project-organizer.php:408
+#: includes/class-project-organizer.php:812
 msgid "Edit"
 msgstr ""
 
@@ -169,8 +169,8 @@ msgstr ""
 msgid "This post has no comments associated with it."
 msgstr ""
 
-#: includes/class-admin-main.php:306 includes/class-project-organizer.php:407
-#: includes/class-project-organizer.php:819
+#: includes/class-admin-main.php:306 includes/class-project-organizer.php:409
+#: includes/class-project-organizer.php:821
 msgid "Preview"
 msgstr ""
 
@@ -178,8 +178,8 @@ msgstr ""
 msgid "Posted"
 msgstr ""
 
-#: includes/class-admin-main.php:308 includes/class-project-organizer.php:408
-#: includes/class-project-organizer.php:821
+#: includes/class-admin-main.php:308 includes/class-project-organizer.php:410
+#: includes/class-project-organizer.php:823
 msgid "Remove"
 msgstr ""
 
@@ -227,23 +227,23 @@ msgstr ""
 msgid "Date Modified"
 msgstr ""
 
-#: includes/class-admin-main.php:565 includes/class-project-organizer.php:68
+#: includes/class-admin-main.php:566 includes/class-project-organizer.php:68
 msgid "Project Details"
 msgstr ""
 
-#: includes/class-admin-main.php:566
+#: includes/class-admin-main.php:567
 msgid "Manage Parts"
 msgstr ""
 
-#: includes/class-admin-main.php:567 includes/class-project-organizer.php:70
+#: includes/class-admin-main.php:568 includes/class-project-organizer.php:70
 msgid "Delete Project"
 msgstr ""
 
-#: includes/class-admin-main.php:613
+#: includes/class-admin-main.php:614
 msgid "You haven't created any projects yet."
 msgstr ""
 
-#: includes/class-admin-main.php:615
+#: includes/class-admin-main.php:616
 msgid "Start a new project."
 msgstr ""
 
@@ -251,47 +251,47 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: includes/class-admin-main.php:796
+#: includes/class-admin-main.php:790
 msgid "Source feed:"
 msgstr ""
 
-#: includes/class-admin-main.php:800
+#: includes/class-admin-main.php:794
 msgid "Source URL:"
 msgstr ""
 
-#: includes/class-admin-main.php:809
+#: includes/class-admin-main.php:803
 msgid "Date created:"
 msgstr ""
 
-#: includes/class-admin-main.php:895
+#: includes/class-admin-main.php:889
 msgid ""
 "Allow individual site admins to determine which kinds of users can use "
 "Anthologize?"
 msgstr ""
 
-#: includes/class-admin-main.php:907
+#: includes/class-admin-main.php:901
 msgid ""
 "When unchecked, access to Anthologize will be limited to the default role "
 "you select below."
 msgstr ""
 
-#: includes/class-admin-main.php:913
+#: includes/class-admin-main.php:907
 msgid "Default mimimum role for Anthologizers"
 msgstr ""
 
-#: includes/class-admin-main.php:918 includes/class-settings.php:127
+#: includes/class-admin-main.php:912 includes/class-settings.php:127
 msgid "Network Admin"
 msgstr ""
 
-#: includes/class-admin-main.php:920 includes/class-settings.php:130
+#: includes/class-admin-main.php:914 includes/class-settings.php:130
 msgid "Administrator"
 msgstr ""
 
-#: includes/class-admin-main.php:922 includes/class-settings.php:132
+#: includes/class-admin-main.php:916 includes/class-settings.php:132
 msgid "Editor"
 msgstr ""
 
-#: includes/class-admin-main.php:924 includes/class-settings.php:134
+#: includes/class-admin-main.php:918 includes/class-settings.php:134
 msgid "Author"
 msgstr ""
 
@@ -416,7 +416,7 @@ msgstr ""
 msgid "%s Publishing Options"
 msgstr ""
 
-#: includes/class-export-panel.php:338
+#: includes/class-export-panel.php:341
 msgid "This appears to be an invalid export format. Please try again."
 msgstr ""
 
@@ -595,6 +595,10 @@ msgstr ""
 msgid "Back to Anthologize"
 msgstr ""
 
+#: includes/class-new-project.php:133
+msgid "Unknown project ID"
+msgstr ""
+
 #: includes/class-new-project.php:147
 msgid "Edit Project"
 msgstr ""
@@ -684,10 +688,14 @@ msgstr ""
 msgid "All post types"
 msgstr ""
 
-#: includes/class-project-organizer.php:446
+#: includes/class-project-organizer.php:448
 msgid ""
 "You haven't created any parts yet! Click <a href=\"%1$s\">\"New Part\"</a> "
 "to get started."
+msgstr ""
+
+#: includes/class-project-organizer.php:549
+msgid "Sorry, no content to add"
 msgstr ""
 
 #: includes/class-settings.php:123

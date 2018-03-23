@@ -232,11 +232,16 @@ function anthologize_register_default_formats() {
 	$coversArray = array();
 	$coversArray['none'] = 'None';
 	//scan the covers directory and return the array
-	$filesArray = scandir(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' .
-		 DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'covers');
-	foreach($filesArray as $file) {
-		if(! is_dir($file)) {
-			$coversArray[$file] = $file;
+	$covers_dir = WP_PLUGIN_DIR . '/anthologize/templates/epub/covers';
+	if ( file_exists( $covers_dir ) ) {
+		$filesArray = scandir( $covers_dir );
+	}
+
+	if ( ! empty( $filesArray ) ) {
+		foreach($filesArray as $file) {
+			if(! is_dir($file)) {
+				$coversArray[$file] = $file;
+			}
 		}
 	}
 

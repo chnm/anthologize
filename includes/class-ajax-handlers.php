@@ -91,20 +91,23 @@ class Anthologize_Ajax_Handlers {
 
 		switch ( $filterby ) {
 			case 'date' :
-				$startdate = mysql_real_escape_string($_POST['startdate']);
-				$enddate = mysql_real_escape_string($_POST['enddate']);
+				$date_query = array();
 
-				$date_range_where = '';
-				if (strlen($startdate) > 0){
-				$date_range_where = " AND post_date >= '".$startdate."'";
-				}
-				if (strlen($enddate) > 0){
-				$date_range_where .= " AND post_date <= '".$enddate."'";
+				if ( isset( $_POST['startdate'] ) ) {
+					$date_query[] = array(
+						'after' => wp_unslash( $_POST['startdate'] ),
+					);
 				}
 
-				$where_func = '$where .= "'.$date_range_where.'"; return $where;';
-				$filter_where = create_function('$where', $where_func);
-				add_filter('posts_where', $filter_where);
+				if ( isset( $_POST['enddate'] ) ) {
+					$date_query[] = array(
+						'before' => wp_unslash( $_POST['enddate'] ),
+					);
+				}
+
+				if ( $date_query ) {
+					$args['date_query'] = $date_query;
+				}
 
 				break;
 
@@ -129,9 +132,6 @@ class Anthologize_Ajax_Handlers {
 		while ( $posts->have_posts() ) {
 			$posts->the_post();
 			$the_posts[get_the_ID()] = get_the_title();
-		}
-		if ($filterby == 'date'){
-			remove_filter('posts_where', $filter_where);
 		}
 
 		$the_posts = apply_filters( 'anth_get_posts_by', $the_posts, $filterby );

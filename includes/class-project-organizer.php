@@ -50,7 +50,7 @@ class Anthologize_Project_Organizer {
 
 		?>
 
-		<div class="wrap anthologize" id="project-<?php echo $_GET['project_id'] ?>">
+		<div class="wrap anthologize" id="project-<?php echo esc_attr( $_GET['project_id'] ) ?>">
 
 			<div id="blockUISpinner">
 				<img src="<?php echo plugins_url() ?>/anthologize/images/wait28.gif"</img>
@@ -58,16 +58,16 @@ class Anthologize_Project_Organizer {
 			</div>
 
 			<div id="anthologize-logo">
-				<img src="<?php echo plugins_url() . '/anthologize/images/anthologize-logo.gif' ?>" />
+				<img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" />
 			</div>
 
 			<h2>
-				<?php echo $this->project_name ?>
+				<?php echo esc_html( $this->project_name ) ?>
 
 				<div id="project-actions">
-					<a href="admin.php?page=anthologize_new_project&project_id=<?php echo $this->project_id ?>"><?php _e( 'Project Details', 'anthologize' ) ?></a> |
-					<a target="_blank" href="<?php echo $this->preview_url( $this->project_id, 'anth_project' ) ?>"><?php _e( 'Preview Project', 'anthologize' ) ?></a> |
-					<a href="admin.php?page=anthologize&action=delete&project_id=<?php echo $this->project_id ?>" class="confirm-delete"><?php _e( 'Delete Project', 'anthologize' ) ?></a>
+					<a href="admin.php?page=anthologize_new_project&project_id=<?php echo esc_attr( $this->project_id ) ?>"><?php _e( 'Project Details', 'anthologize' ) ?></a> |
+					<a target="_blank" href="<?php echo esc_url( $this->preview_url( $this->project_id, 'anth_project' ) ) ?>"><?php _e( 'Preview Project', 'anthologize' ) ?></a> |
+					<a href="admin.php?page=anthologize&action=delete&project_id=<?php echo esc_attr( $this->project_id ) ?>" class="confirm-delete"><?php _e( 'Delete Project', 'anthologize' ) ?></a>
 				</div>
 			</h2>
 
@@ -122,7 +122,7 @@ class Anthologize_Project_Organizer {
 						<h3 class="hndle">
 							<span><?php _e( 'Parts', 'anthologize' ) ?></span>
 							<div class="part-item-buttons button" id="new-part">
-								<a href="post-new.php?post_type=anth_part&project_id=<?php echo $this->project_id ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a>
+								<a href="post-new.php?post_type=anth_part&project_id=<?php echo esc_attr( $this->project_id ) ?>&new_part=1"><?php _e( 'New Part', 'anthologize' ) ?></a>
 							</div>
 						</h3>
 
@@ -149,7 +149,7 @@ class Anthologize_Project_Organizer {
 
 					</div> <!-- #anthologize-parts-box -->
 
-					<div class="button" id="export-project-button"><a href="admin.php?page=anthologize_export_project&project_id=<?php echo $this->project_id ?>" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
+					<div class="button" id="export-project-button"><a href="admin.php?page=anthologize_export_project&project_id=<?php echo esc_attr( $this->project_id ) ?>" id="export-project"><?php _e( 'Export Project', 'anthologize' ) ?></a></div>
 
 				</div> <!-- #project-organizer-right-column -->
 
@@ -177,7 +177,7 @@ class Anthologize_Project_Organizer {
 		<select name="sortby" id="sortby-dropdown">
 			<option value="" selected="selected"><?php _e( 'All posts', 'anthologize' ) ?></option>
 			<?php foreach( $filters as $filter => $name ) : ?>
-				<option value="<?php echo $filter ?>" <?php if ( $filter == $cfilter ) : ?>selected="selected"<?php endif; ?>><?php echo $name ?></option>
+				<option value="<?php echo esc_attr( $filter ) ?>" <?php if ( $filter == $cfilter ) : ?>selected="selected"<?php endif; ?>><?php echo esc_html( $name ) ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -223,10 +223,10 @@ class Anthologize_Project_Organizer {
 		?>
 
 		<select name="filter" id="filter">
-			<option value=""><?php echo $nulltext; ?></option>
+			<option value=""><?php echo esc_html( $nulltext ); ?></option>
 			<?php foreach( $terms as $term ) : ?>
-				<?php $term_value = ( $_COOKIE['anth-filter'] == 'tag' ) ? $term->slug : $term->term_id; ?>
-				<option value="<?php echo $term_value ?>" <?php if ( $cterm == $term_value ) : ?>selected="selected"<?php endif; ?>><?php echo $term->name ?></option>
+				<?php $term_value = ( $_COOKIE['anth-filter'] == 'tag' ) ? esc_attr( $term->slug ) : esc_attr( $term->term_id ); ?>
+				<option value="<?php echo esc_attr( $term_value ) ?>" <?php if ( $cterm == $term_value ) : ?>selected="selected"<?php endif; ?>><?php echo esc_html( $term->name ) ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -399,15 +399,15 @@ class Anthologize_Project_Organizer {
 
 				?>
 
-				<li class="part" id="part-<?php echo $part_id ?>">
+				<li class="part" id="part-<?php echo esc_html( $part_id ) ?>">
 					<h3 class="part-header">
-						<noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php echo $part_id ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php echo $part_id ?>">&darr;</a> </noscript>
+						<noscript><a href="admin.php?page=anthologize&action=edit&project_id=<?php echo esc_attr( $this->project_id ) ?>&move_up=<?php echo esc_attr( $part_id ) ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo esc_attr( $this->project_id ) ?>&move_down=<?php echo esc_attr( $part_id ) ?>">&darr;</a> </noscript>
 						<span class="part-title-header"><?php the_title() ?></span>
 
 						<div class="part-buttons">
-							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
-							<a target="_blank" href="<?php echo $this->preview_url( get_the_ID(), 'anth_part' ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a> |
-							<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a> |
+							<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo esc_attr( $this->project_id ) ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+							<a target="_blank" href="<?php echo esc_url( $this->preview_url( get_the_ID(), 'anth_part' ) ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a> |
+							<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo esc_attr( $this->project_id ) ?>&remove=<?php the_ID() ?>" class="remove"><?php _e( 'Remove', 'anthologize' ) ?></a> |
 							<a href="#collapse" class="collapsepart"> - </a>
 						</div>
 
@@ -445,7 +445,7 @@ class Anthologize_Project_Organizer {
 
 			?>
 
-			<p><?php echo sprintf( __( 'You haven\'t created any parts yet! Click <a href="%1$s">"New Part"</a> to get started.', 'anthologize' ), 'post-new.php?post_type=anth_part&project_id=' . $this->project_id . '&new_part=1' ) ?></p>
+			<p><?php echo sprintf( __( 'You haven\'t created any parts yet! Click <a href="%1$s">"New Part"</a> to get started.', 'anthologize' ), esc_url( admin_url( 'post-new.php?post_type=anth_part&project_id=' . $this->project_id . '&new_part=1' ) ) ) ?></p>
 
 			<?php
 		} // if ( have_posts() )
@@ -541,12 +541,12 @@ class Anthologize_Project_Organizer {
 				continue;
 			}
 
-			echo '<option value="' . $id->id . '">' . $id->post_title . '</option>';
+			echo '<option value="' . esc_attr( $id->id ) . '">' . esc_html( $id->post_title ) . '</option>';
 			$counter++;
 		}
 
 		if ( ! $counter ) {
-			echo '<option disabled="disabled">Sorry, no content to add</option>';
+			echo '<option disabled="disabled">' . __( 'Sorry, no content to add', 'anthologize' ) . '</option>';
 		}
 	}
 
@@ -784,7 +784,9 @@ class Anthologize_Project_Organizer {
 		$original_comment_count = 0;
 		if ( ! empty( $anth_meta['original_post_id'] ) ) {
 			$original_post = get_post( $anth_meta['original_post_id'] );
-			$original_comment_count = $original_post->comment_count;
+			if ( $original_post ) {
+				$original_comment_count = (int) $original_post->comment_count;
+			}
 		}
 
 		// Then, see how many comments are being brought along to the export
@@ -798,18 +800,18 @@ class Anthologize_Project_Organizer {
 		<li id="item-<?php the_ID() ?>" class="item">
 
 			<?php if ( $append_parent ) : ?>
-				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo $post->ID . " " . $append_parent ?>
+				<input type="checkbox" name="append_children[]" value="<?php the_ID() ?>" <?php if ( $append_parent == $post->ID ) echo 'checked="checked" disabled=disabled'; ?>/> <?php echo esc_html( $post->ID ) . " " . esc_html( $append_parent ) ?>
 			<?php endif; ?>
 
 			<noscript>
-				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&move_down=<?php the_ID() ?>">&darr;</a>
+				<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo esc_attr( $this->project_id ) ?>&move_up=<?php the_ID() ?>">&uarr;</a> <a href="admin.php?page=anthologize&action=edit&project_id=<?php echo esc_attr( $this->project_id ) ?>&move_down=<?php the_ID() ?>">&darr;</a>
 			</noscript>
 
 			<h3 class="part-item">
 				<span class="part-title"><?php the_title() ?></span>
 
 				<div class="part-item-buttons">
-					<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo $this->project_id ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
+					<a href="post.php?post=<?php the_ID() ?>&action=edit&return_to_project=<?php echo esc_attr( $this->project_id ) ?>"><?php _e( 'Edit', 'anthologize' ) ?></a> |
 
 					<?php /* Comments are being pushed to a further release */ ?>
 					<?php /*
@@ -818,9 +820,9 @@ class Anthologize_Project_Organizer {
 
 					<a href="#append" class="append toggle"><?php _e( 'Append', 'anthologize' ) ?></a><span class="append-sep toggle-sep"> |</span>
 
-					<a target="new" href="<?php echo $this->preview_url( get_the_ID(), 'anth_library_item' ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a><span class="toggle-sep"> |</span>
+					<a target="new" href="<?php echo esc_url( $this->preview_url( get_the_ID(), 'anth_library_item' ) ) ?>" class=""><?php _e( 'Preview', 'anthologize' ) ?></a><span class="toggle-sep"> |</span>
 
-					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo $this->project_id ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
+					<a href="admin.php?page=anthologize&action=edit&project_id=<?php echo esc_attr( $this->project_id ) ?>&remove=<?php the_ID() ?>" class="confirm"><?php _e( 'Remove', 'anthologize' ) ?></a>
 				</div>
 			</h3>
 
