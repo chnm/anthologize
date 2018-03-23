@@ -651,22 +651,13 @@ class Anthologize_Admin_Main {
 
 	function meta_save_box( $post_id ) {
 		?>
-	<div class="inside">
 		<div class="submitbox" id="submitpost">
-
 			<div id="minor-publishing">
-
-				<div style="display:none;">
-					<input type="submit" name="save" value="Save">
-				</div>
-
 				<div>
-					<input type="submit" name="save" value="<?php _e( 'Save Changes', 'anthologize' ) ?>" tabindex="4" class="button button-highlighted">
+					<input type="submit" name="save" value="<?php _e( 'Save Changes', 'anthologize' ) ?>" class="button button-primary">
 				</div>
 			</div>
 		</div>
-	</div>
-
 		<?php
 	}
 
