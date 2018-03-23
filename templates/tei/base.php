@@ -19,10 +19,10 @@ $ops = array('includeStructuredSubjects' => true, //Include structured data abou
 		'indexImages' => true,
 		);
 
-$ops['outputParams'] = $_SESSION['outputParams'];
+$ops['outputParams'] = anthologize_get_session_output_params();
 
 
-$tei = new TeiDom($_SESSION, $ops);
+$tei = new TeiDom( anthologize_get_session(), $ops );
 $api = new TeiApi($tei);
 
 
