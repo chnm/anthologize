@@ -54,6 +54,10 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.7.8 =
+* Removed the use of PHP sessions
+* Improved compatibility with WP 4.9
+
 = 0.7.7 =
 * Fixed broken Date Range query
 * Fixed broken drop-and-drop for multiple posts
