@@ -4,6 +4,7 @@ Plugin Name: Anthologize
 Plugin URI: http://anthologize.org
 Description: Use the power of WordPress to transform your content into a book.
 Version: 0.7.8
+Text Domain: anthologize
 Author: One Week | One Tool
 Author URI: http://oneweekonetool.org
 */
@@ -190,7 +191,7 @@ class Anthologize {
 	public function setup_hooks() {
 		add_action( 'init',             array( $this, 'anthologize_init' ) );
 		add_action( 'anthologize_init', array( $this, 'register_post_types' ) );
-		add_action( 'anthologize_init', array( $this, 'textdomain' ) );
+		add_action( 'plugins_loaded',   array( $this, 'textdomain' ) );
 	}
 
 	public static function anthologize_init() {
@@ -277,14 +278,11 @@ class Anthologize {
 
 		// First look in wp-content/anthologize-files/languages, where custom language files will not be overwritten by Anthologize upgrades. Then check the packaged language file directory.
 		$mofile_custom = WP_CONTENT_DIR . "/anthologize-files/languages/anthologize-$locale.mo";
-		$mofile_packaged = WP_PLUGIN_DIR . "/anthologize/languages/anthologize-$locale.mo";
 
 		if ( file_exists( $mofile_custom ) ) {
 			load_textdomain( 'anthologize', $mofile_custom );
-			return;
-		} else if ( file_exists( $mofile_packaged ) ) {
-			load_textdomain( 'anthologize', $mofile_packaged );
-			return;
+		} else {
+			load_plugin_textdomain( 'anthologize', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 		}
 	}
 
