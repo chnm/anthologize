@@ -1,25 +1,25 @@
-# Copyright (C) 2015 Anthologize
+# Copyright (C) 2018 Anthologize
 # This file is distributed under the same license as the Anthologize package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Anthologize 0.7.6\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anthologize\n"
-"POT-Creation-Date: 2015-06-22 14:23:34+00:00\n"
+"Project-Id-Version: Anthologize 0.7.8\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anthologize\n"
+"POT-Creation-Date: 2018-05-02 18:38:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: anthologize.php:127
+#: anthologize.php:126
 msgid ""
 "<strong>Anthologize will not work with your version of PHP</strong>. You are "
 "currently running PHP v%s, and Anthologize requires version 5.0 or greater. "
 "Please contact your host if you would like to use Anthologize. "
 msgstr ""
 
-#: anthologize.php:140
+#: anthologize.php:139
 msgid ""
 "<strong>Anthologize will not work with your version of WordPress</strong>. "
 "You are currently running WordPress v%s, and Anthologize requires version "
@@ -27,19 +27,23 @@ msgid ""
 "Anthologize. "
 msgstr ""
 
-#: anthologize.php:223
+#: anthologize.php:222
 msgid "Projects"
 msgstr ""
 
-#: anthologize.php:233 includes/class-project-organizer.php:123
+#: anthologize.php:232 includes/class-project-organizer.php:123
 msgid "Parts"
 msgstr ""
 
-#: anthologize.php:246
+#: anthologize.php:234
+msgid "Add New Part"
+msgstr ""
+
+#: anthologize.php:248
 msgid "Library Items"
 msgstr ""
 
-#: anthologize.php:259
+#: anthologize.php:261
 msgid "Imported Items"
 msgstr ""
 
@@ -83,10 +87,10 @@ msgstr ""
 msgid "Individual Sponsors"
 msgstr ""
 
-#. #-#-#-#-#  anthologize.pot (Anthologize 0.7.6)  #-#-#-#-#
+#. #-#-#-#-#  anthologize.pot (Anthologize 0.7.8)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/class-admin-main.php:31 includes/class-admin-main.php:111
-#: includes/class-admin-main.php:112 includes/class-admin-main.php:885
+#: includes/class-admin-main.php:112 includes/class-admin-main.php:877
 msgid "Anthologize"
 msgstr ""
 
@@ -95,7 +99,7 @@ msgid "Save"
 msgstr ""
 
 #: includes/class-admin-main.php:122 includes/class-admin-main.php:123
-#: includes/class-admin-main.php:503
+#: includes/class-admin-main.php:504
 msgid "My Projects"
 msgstr ""
 
@@ -104,7 +108,7 @@ msgid "New Project"
 msgstr ""
 
 #: includes/class-admin-main.php:140 includes/class-admin-main.php:141
-#: includes/class-export-panel.php:92 includes/class-project-organizer.php:152
+#: includes/class-export-panel.php:96 includes/class-project-organizer.php:152
 msgid "Export Project"
 msgstr ""
 
@@ -122,7 +126,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: includes/class-admin-main.php:295 includes/class-project-organizer.php:819
+#: includes/class-admin-main.php:295 includes/class-project-organizer.php:821
 msgid "Append"
 msgstr ""
 
@@ -153,7 +157,7 @@ msgid "Done"
 msgstr ""
 
 #: includes/class-admin-main.php:302 includes/class-project-organizer.php:408
-#: includes/class-project-organizer.php:812
+#: includes/class-project-organizer.php:814
 msgid "Edit"
 msgstr ""
 
@@ -170,7 +174,7 @@ msgid "This post has no comments associated with it."
 msgstr ""
 
 #: includes/class-admin-main.php:306 includes/class-project-organizer.php:409
-#: includes/class-project-organizer.php:821
+#: includes/class-project-organizer.php:823
 msgid "Preview"
 msgstr ""
 
@@ -179,7 +183,7 @@ msgid "Posted"
 msgstr ""
 
 #: includes/class-admin-main.php:308 includes/class-project-organizer.php:410
-#: includes/class-project-organizer.php:823
+#: includes/class-project-organizer.php:825
 msgid "Remove"
 msgstr ""
 
@@ -195,103 +199,111 @@ msgstr ""
 msgid "Project not found"
 msgstr ""
 
-#: includes/class-admin-main.php:503
+#: includes/class-admin-main.php:504
 msgid "Add New"
 msgstr ""
 
-#: includes/class-admin-main.php:508
+#: includes/class-admin-main.php:509
 msgid "Project Saved"
 msgstr ""
 
-#: includes/class-admin-main.php:540 includes/class-new-project.php:154
+#: includes/class-admin-main.php:541 includes/class-new-project.php:154
 msgid "Project Title"
 msgstr ""
 
-#: includes/class-admin-main.php:541
+#: includes/class-admin-main.php:542
 msgid "Created By"
 msgstr ""
 
-#: includes/class-admin-main.php:542
+#: includes/class-admin-main.php:543
 msgid "Number of Parts"
 msgstr ""
 
-#: includes/class-admin-main.php:543
+#: includes/class-admin-main.php:544
 msgid "Number of Items"
 msgstr ""
 
-#: includes/class-admin-main.php:544
+#: includes/class-admin-main.php:545
 msgid "Date Created"
 msgstr ""
 
-#: includes/class-admin-main.php:545
+#: includes/class-admin-main.php:546
 msgid "Date Modified"
 msgstr ""
 
-#: includes/class-admin-main.php:566 includes/class-project-organizer.php:68
+#: includes/class-admin-main.php:567 includes/class-project-organizer.php:68
 msgid "Project Details"
 msgstr ""
 
-#: includes/class-admin-main.php:567
+#: includes/class-admin-main.php:568
 msgid "Manage Parts"
 msgstr ""
 
-#: includes/class-admin-main.php:568 includes/class-project-organizer.php:70
+#: includes/class-admin-main.php:569 includes/class-project-organizer.php:70
 msgid "Delete Project"
 msgstr ""
 
-#: includes/class-admin-main.php:614
+#: includes/class-admin-main.php:615
 msgid "You haven't created any projects yet."
 msgstr ""
 
-#: includes/class-admin-main.php:616
+#: includes/class-admin-main.php:617
 msgid "Start a new project."
 msgstr ""
 
-#: includes/class-admin-main.php:664
+#: includes/class-admin-main.php:658
 msgid "Save Changes"
 msgstr ""
 
-#: includes/class-admin-main.php:790
+#: includes/class-admin-main.php:765
+msgid "Author Name"
+msgstr ""
+
+#: includes/class-admin-main.php:765
+msgid "(optional)"
+msgstr ""
+
+#: includes/class-admin-main.php:782
 msgid "Source feed:"
 msgstr ""
 
-#: includes/class-admin-main.php:794
+#: includes/class-admin-main.php:786
 msgid "Source URL:"
 msgstr ""
 
-#: includes/class-admin-main.php:803
+#: includes/class-admin-main.php:795
 msgid "Date created:"
 msgstr ""
 
-#: includes/class-admin-main.php:889
+#: includes/class-admin-main.php:881
 msgid ""
 "Allow individual site admins to determine which kinds of users can use "
 "Anthologize?"
 msgstr ""
 
-#: includes/class-admin-main.php:901
+#: includes/class-admin-main.php:893
 msgid ""
 "When unchecked, access to Anthologize will be limited to the default role "
 "you select below."
 msgstr ""
 
-#: includes/class-admin-main.php:907
+#: includes/class-admin-main.php:899
 msgid "Default mimimum role for Anthologizers"
 msgstr ""
 
-#: includes/class-admin-main.php:912 includes/class-settings.php:127
+#: includes/class-admin-main.php:904 includes/class-settings.php:127
 msgid "Network Admin"
 msgstr ""
 
-#: includes/class-admin-main.php:914 includes/class-settings.php:130
+#: includes/class-admin-main.php:906 includes/class-settings.php:130
 msgid "Administrator"
 msgstr ""
 
-#: includes/class-admin-main.php:916 includes/class-settings.php:132
+#: includes/class-admin-main.php:908 includes/class-settings.php:132
 msgid "Editor"
 msgstr ""
 
-#: includes/class-admin-main.php:918 includes/class-settings.php:134
+#: includes/class-admin-main.php:910 includes/class-settings.php:134
 msgid "Author"
 msgstr ""
 
@@ -299,124 +311,124 @@ msgstr ""
 msgid "This post has no comments."
 msgstr ""
 
-#: includes/class-export-panel.php:88 includes/class-project-organizer.php:57
+#: includes/class-export-panel.php:92 includes/class-project-organizer.php:57
 #: includes/class-settings.php:112
 msgid ""
 "There has been an unexpected error. Please wait while we reload the content."
 msgstr ""
 
-#: includes/class-export-panel.php:102
+#: includes/class-export-panel.php:106
 msgid "Select a project..."
 msgstr ""
 
-#: includes/class-export-panel.php:113
+#: includes/class-export-panel.php:117
 msgid "Copyright Information"
 msgstr ""
 
-#: includes/class-export-panel.php:117
+#: includes/class-export-panel.php:121
 msgid "Year"
 msgstr ""
 
-#: includes/class-export-panel.php:122
+#: includes/class-export-panel.php:126
 msgid "Copyright Holder"
 msgstr ""
 
-#: includes/class-export-panel.php:127
+#: includes/class-export-panel.php:131
 msgid "Type"
 msgstr ""
 
-#: includes/class-export-panel.php:129
+#: includes/class-export-panel.php:133
 msgid "Copyright"
 msgstr ""
 
-#: includes/class-export-panel.php:130
+#: includes/class-export-panel.php:134
 msgid "Creative Commons"
 msgstr ""
 
-#: includes/class-export-panel.php:132
+#: includes/class-export-panel.php:136
 msgid "Select One..."
 msgstr ""
 
-#: includes/class-export-panel.php:133
+#: includes/class-export-panel.php:137
 msgid "Attribution"
 msgstr ""
 
-#: includes/class-export-panel.php:134
+#: includes/class-export-panel.php:138
 msgid "Attribution Share-Alike"
 msgstr ""
 
-#: includes/class-export-panel.php:135
+#: includes/class-export-panel.php:139
 msgid "Attribution No Derivatives"
 msgstr ""
 
-#: includes/class-export-panel.php:136
+#: includes/class-export-panel.php:140
 msgid "Attribution Non-Commercial"
 msgstr ""
 
-#: includes/class-export-panel.php:137
+#: includes/class-export-panel.php:141
 msgid "Attribution Non-Commercial Share Alike"
 msgstr ""
 
-#: includes/class-export-panel.php:138
+#: includes/class-export-panel.php:142
 msgid "Attribution Non-Commercial No Derivatives"
 msgstr ""
 
-#: includes/class-export-panel.php:144
+#: includes/class-export-panel.php:148
 msgid "Edition"
 msgstr ""
 
-#: includes/class-export-panel.php:149
+#: includes/class-export-panel.php:153
 msgid "Add Author(s)"
 msgstr ""
 
-#: includes/class-export-panel.php:155 includes/class-export-panel.php:194
+#: includes/class-export-panel.php:159 includes/class-export-panel.php:198
 msgid "Next"
 msgstr ""
 
-#: includes/class-export-panel.php:168
+#: includes/class-export-panel.php:172
 msgid "Title"
 msgstr ""
 
-#: includes/class-export-panel.php:173
+#: includes/class-export-panel.php:177
 msgid "Dedication"
 msgstr ""
 
-#: includes/class-export-panel.php:178
+#: includes/class-export-panel.php:182
 msgid "Acknowledgements"
 msgstr ""
 
-#: includes/class-export-panel.php:185
+#: includes/class-export-panel.php:189
 msgid "Export Format"
 msgstr ""
 
-#: includes/class-export-panel.php:209
+#: includes/class-export-panel.php:213
 msgid "Shortcodes"
 msgstr ""
 
-#: includes/class-export-panel.php:210
+#: includes/class-export-panel.php:214
 msgid ""
 "WordPress shortcodes (such as [caption]) can sometimes cause problems with "
 "output formats. If shortcode content shows up incorrectly in your output, "
 "choose \"Disable\" to keep Anthologize from processing them."
 msgstr ""
 
-#: includes/class-export-panel.php:212
+#: includes/class-export-panel.php:216
 msgid "Enable"
 msgstr ""
 
-#: includes/class-export-panel.php:213
+#: includes/class-export-panel.php:217
 msgid "Disable"
 msgstr ""
 
-#: includes/class-export-panel.php:223
+#: includes/class-export-panel.php:227
 msgid "Export"
 msgstr ""
 
-#: includes/class-export-panel.php:248
+#: includes/class-export-panel.php:253
 msgid "%s Publishing Options"
 msgstr ""
 
-#: includes/class-export-panel.php:341
+#: includes/class-export-panel.php:331
 msgid "This appears to be an invalid export format. Please try again."
 msgstr ""
 
@@ -521,23 +533,23 @@ msgstr ""
 msgid "Font Family"
 msgstr ""
 
-#: includes/class-format-api.php:243
+#: includes/class-format-api.php:248
 msgid "Cover Image"
 msgstr ""
 
-#: includes/class-format-api.php:250
+#: includes/class-format-api.php:255
 msgid "HTML"
 msgstr ""
 
-#: includes/class-format-api.php:254
+#: includes/class-format-api.php:259
 msgid "Font Size"
 msgstr ""
 
-#: includes/class-format-api.php:256
+#: includes/class-format-api.php:261
 msgid "Download HTML?"
 msgstr ""
 
-#: includes/class-format-api.php:259
+#: includes/class-format-api.php:264
 msgid "Anthologize TEI"
 msgstr ""
 
@@ -553,11 +565,11 @@ msgid ""
 "Please respect the rights of copyright holders when using this import tool."
 msgstr ""
 
-#: includes/class-import-feeds.php:45 includes/class-import-feeds.php:99
+#: includes/class-import-feeds.php:45 includes/class-import-feeds.php:92
 msgid "Feed URL:"
 msgstr ""
 
-#: includes/class-import-feeds.php:48 includes/class-import-feeds.php:102
+#: includes/class-import-feeds.php:48 includes/class-import-feeds.php:95
 msgid "Go"
 msgstr ""
 
@@ -565,33 +577,33 @@ msgstr ""
 msgid "Sorry, no items were found. Please try another feed address."
 msgstr ""
 
-#: includes/class-import-feeds.php:69
+#: includes/class-import-feeds.php:62
 msgid ""
 "Select the items you'd like to import to your Imported Items library and "
 "click Import."
 msgstr ""
 
-#: includes/class-import-feeds.php:73
+#: includes/class-import-feeds.php:66
 msgid "Feed items:"
 msgstr ""
 
-#: includes/class-import-feeds.php:90
+#: includes/class-import-feeds.php:83
 msgid "Import"
 msgstr ""
 
-#: includes/class-import-feeds.php:95
+#: includes/class-import-feeds.php:88
 msgid "Or enter a new feed URL and click Go to import different feed content."
 msgstr ""
 
-#: includes/class-import-feeds.php:135
+#: includes/class-import-feeds.php:128
 msgid "Successfully imported!"
 msgstr ""
 
-#: includes/class-import-feeds.php:139
+#: includes/class-import-feeds.php:132
 msgid "No items found. Please try another feed address."
 msgstr ""
 
-#: includes/class-import-feeds.php:144
+#: includes/class-import-feeds.php:137
 msgid "Back to Anthologize"
 msgstr ""
 
