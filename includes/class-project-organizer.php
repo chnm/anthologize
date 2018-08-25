@@ -460,7 +460,8 @@ class Anthologize_Project_Organizer {
 			'post_type' => array('post', 'page', 'anth_imported_item' ),
 			'posts_per_page' => -1,
 			'orderby' => 'post_title',
-			'order' => 'DESC'
+			'order' => 'DESC',
+			'post_status' => array( 'publish', 'pending', 'future', 'private' )
 		);
 
 		$cfilter = isset( $_COOKIE['anth-filter'] ) ? $_COOKIE['anth-filter'] : false;

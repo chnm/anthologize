@@ -86,7 +86,8 @@ class Anthologize_Ajax_Handlers {
 			'post_type' => array_keys($this->project_organizer->available_post_types()),
 			'posts_per_page' => -1,
 			'orderby' => 'post_date',
-			'order' => 'DESC'
+			'order' => 'DESC',
+			'post_status' => array( 'publish', 'pending', 'future', 'private' ),
 		);
 
 		switch ( $filterby ) {
