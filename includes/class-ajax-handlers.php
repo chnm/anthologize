@@ -87,7 +87,10 @@ class Anthologize_Ajax_Handlers {
 			'posts_per_page' => -1,
 			'orderby' => 'post_date',
 			'order' => 'DESC',
-			'post_status' => array( 'publish', 'pending', 'future', 'private' ),
+			'post_status' => apply_filters(
+				'anth_included_post_stasuses',
+				array( 'publish', 'pending', 'future', 'private' )
+			),
 		);
 
 		switch ( $filterby ) {
