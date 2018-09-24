@@ -500,7 +500,7 @@ class Anthologize_Admin_Main {
 
 
 
-		<div id="anthologize-logo"><img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" /></div>
+		<div id="anthologize-logo"><img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" alt="<?php esc_attr_e( 'Anthologize logo', 'anthologize' ); ?>" /></div>
 		<h2><?php _e( 'My Projects', 'anthologize' ) ?> <a href="admin.php?page=anthologize_new_project" class="button add-new-h2"><?php _e( 'Add New', 'anthologize' ) ?></a></h2>
 
 

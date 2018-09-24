@@ -57,9 +57,7 @@ class Anthologize_Project_Organizer {
 				<p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
 			</div>
 
-			<div id="anthologize-logo">
-				<img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" />
-			</div>
+			<div id="anthologize-logo"><img src="<?php echo esc_url( plugins_url() . '/anthologize/images/anthologize-logo.gif' ) ?>" alt="<?php esc_attr_e( 'Anthologize logo', 'anthologize' ); ?>" /></div>
 
 			<h2>
 				<?php echo esc_html( $this->project_name ) ?>
