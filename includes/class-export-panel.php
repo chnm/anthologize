@@ -106,11 +106,11 @@ class Anthologize_Export_Panel {
 			<label for="project-id-dropdown"><?php _e( 'Select a project...', 'anthologize' ) ?></label>
 			<select name="project_id" id="project-id-dropdown">
 			<?php foreach ( $this->projects as $proj_id => $project_name ) : ?>
-				<option value="<?php echo $proj_id ?>"
+				<option value="<?php echo esc_attr( $proj_id ) ?>"
 
 				<?php if ( $proj_id == $project_id ) : ?>selected="selected"<?php endif; ?>
 
-				><?php echo $project_name ?></option>
+				><?php echo esc_html( $project_name ); ?></option>
 			<?php endforeach; ?>
 			</select>
 
@@ -119,12 +119,12 @@ class Anthologize_Export_Panel {
 			<table class="form-table">
 				<tr valign="top">
 					<th scope="row"><label for="cyear"><?php _e( 'Year', 'anthologize' ) ?></label></th>
-					<td><input type="text" id="cyear" name="cyear" value="<?php echo $cdate ?>"/></td>
+					<td><input type="text" id="cyear" name="cyear" value="<?php echo esc_attr( $cdate ); ?>"/></td>
 				</tr>
 
 				<tr valign="top">
 					<th scope="row"><label for="cname"><?php _e( 'Copyright Holder', 'anthologize' ) ?></label></th>
-					<td><input type="text" id="cname" name="cname" value="<?php echo $cname ?>" /></td>
+					<td><input type="text" id="cname" name="cname" value="<?php echo esc_attr( $cname ); ?>" /></td>
 				</tr>
 
 				<tr valign="top">
@@ -148,12 +148,12 @@ class Anthologize_Export_Panel {
 
 				<tr valign="top">
 					<th scope="row"><label for="edition"><?php _e( 'Edition', 'anthologize' ) ?></label></th>
-					<td><input type="text" id="edition" name="edition" value="<?php echo $edition ?>" /></td>
+					<td><input type="text" id="edition" name="edition" value="<?php echo esc_attr( $edition ); ?>" /></td>
 				</tr>
 
 				<tr valign="top">
 					<th scope="row"><label for="authors"><?php _e( 'Add Author(s)', 'anthologize' ) ?></label></th>
-					<td><textarea id="authors" name="authors"><?php echo $authors ?></textarea></td>
+					<td><textarea id="authors" name="authors"><?php echo esc_textarea( $authors ); ?></textarea></td>
 				</tr>
 			</table>
 
@@ -171,18 +171,18 @@ class Anthologize_Export_Panel {
 
 			<form action="" method="post">
 
-				<label for="post-title"><?php _e( 'Title', 'anthologize' ) ?></label> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
+				<label for="post-title"><?php _e( 'Title', 'anthologize' ) ?></label> <input type="text" name="post-title" id="post-title" value="<?php echo esc_attr( $project->post_title ); ?>" size="100"/>
 
 				<div style="clear: both;"> </div><br />
 
 				<div style="width: 400px; float: left;">
 					<p><label for="dedication"><?php _e( 'Dedication', 'anthologize' ) ?></label></p>
-					<textarea id="dedication" name="dedication" cols=35 rows=15><?php echo $dedication ?></textarea>
+					<textarea id="dedication" name="dedication" cols=35 rows=15><?php echo esc_textarea( $dedication ); ?></textarea>
 				</div>
 
 				<div style="width: 400px; float: left;">
 					<p><label for="acknowledgements"><?php _e( 'Acknowledgements', 'anthologize' ) ?></label></p>
-					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15><?php echo $acknowledgements ?></textarea>
+					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15><?php echo esc_textarea( $acknowledgements ); ?></textarea>
 				</div>
 
 				<div style="clear: both;"></div>
@@ -203,7 +203,7 @@ class Anthologize_Export_Panel {
 
 			<?php elseif ( $_POST['export-step'] == 2 ) : ?>
 
-				<form action="admin.php?page=anthologize_export_project&project_id=<?php echo $project_id ?>&noheader=true" method="post">
+				<form action="admin.php?page=anthologize_export_project&project_id=<?php echo intval( $project_id ); ?>&noheader=true" method="post">
 
 				<h3><?php $this->export_format_options_title() ?></h3>
 				<div id="publishing-options">
@@ -254,7 +254,7 @@ class Anthologize_Export_Panel {
 
 		$title = sprintf( __( '%s Publishing Options', 'anthologize' ), $anthologize_formats[$format]['label'] );
 
-		echo $title;
+		echo esc_html( $title );
 	}
 
 	public static function save_session() {
@@ -280,7 +280,7 @@ class Anthologize_Export_Panel {
 
 			?>
 
-			<input type="radio" id="<?php echo esc_attr( $option_id ) ?>" name="filetype" value="<?php echo esc_attr( $name ) ?>" /> <label for="<?php echo esc_attr( $option_id ) ?>"><?php echo $fdata['label'] ?></label><br />
+			<input type="radio" id="<?php echo esc_attr( $option_id ) ?>" name="filetype" value="<?php echo esc_attr( $name ) ?>" /> <label for="<?php echo esc_attr( $option_id ) ?>"><?php echo esc_html( $fdata['label'] ); ?></label><br />
 
 		<?php endforeach; ?>
 
@@ -309,7 +309,7 @@ class Anthologize_Export_Panel {
 
 				$return .= '<div class="export-options-box">';
 
-				$return .= '<div class="pub-options-title">' . $odata['label'] . '</div>';
+				$return .= '<div class="pub-options-title">' . esc_html( $odata['label'] ) . '</div>';
 
 				switch( $odata['type'] ) {
 					case 'checkbox':
@@ -330,7 +330,7 @@ class Anthologize_Export_Panel {
 
 			}
 		} else {
-			$return = __( 'This appears to be an invalid export format. Please try again.', 'anthologize' );
+			$return = esc_html__( 'This appears to be an invalid export format. Please try again.', 'anthologize' );
 		}
 
 		echo $return;
@@ -338,7 +338,7 @@ class Anthologize_Export_Panel {
 
 	function build_checkbox( $name, $label ) {
 
-		$html = '<input name="' . $name . '" id="' . $name .'" type="checkbox">';
+		$html = '<input name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) .'" type="checkbox">';
 
 		return apply_filters( 'anthologize_build_checkbox', $html, $name, $label );
 	}
@@ -349,15 +349,15 @@ class Anthologize_Export_Panel {
 		// $options is associative array where keys are option values and values are the text displayed in the option field.
 		// $default is the default option
 
-		$html = '<select name="' . $name . '">';
+		$html = '<select name="' . esc_attr( $name ) . '">';
 
 		foreach( $options as $ovalue => $olabel ) {
-			$html .= '<option value="' . $ovalue . '"';
+			$html .= '<option value="' . esc_attr( $ovalue ) . '"';
 
 			if ( $default == $ovalue )
 				$html .= ' selected="selected"';
 
-			$html .= '>' . $olabel . '</option>';
+			$html .= '>' . esc_html( $olabel ) . '</option>';
 		}
 
 		$html .= '</select>';
@@ -367,7 +367,7 @@ class Anthologize_Export_Panel {
 
 	function build_textbox( $name, $label ) {
 
-		$html = '<input name="' . $name . '" id="' . $name . '" type="text">';
+		$html = '<input name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '" type="text">';
 
 		return apply_filters( 'anthologize_build_textbox', $html, $name, $label );
 	}
