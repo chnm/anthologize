@@ -229,21 +229,26 @@ class Anthologize_Export_Panel {
 				<form action="admin.php?page=anthologize_export_project&project_id=<?php echo intval( $project_id ); ?>&noheader=true" method="post">
 
 				<h3><?php $this->export_format_options_title() ?></h3>
-				<div id="publishing-options">
+
+				<table class="form-table">
 
 					<?php $this->render_format_options() ?>
 
+					<tr>
+						<th scope="row">
+							<label for="do-shortcodes"><?php esc_html_e( 'Shortcodes', 'anthologize' ) ?></label>
+						</th>
 
-					<div class="export-options-box">
-						<div class="pub-options-title"><label for="do-shortcodes"><?php _e( 'Shortcodes', 'anthologize' ) ?></label></div>
-						<p><small><?php _e( 'WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose "Disable" to keep Anthologize from processing them.', 'anthologize' ) ?></small></p>
-						<select name="do-shortcodes" id="do-shortcodes">
-							<option value="1" checked="checked"><?php _e( 'Enable', 'anthologize' ) ?></option>
-							<option value="0"><?php _e( 'Disable', 'anthologize' ) ?></option>
-						</select>
-					</div>
+						<td>
+							<select name="do-shortcodes" id="do-shortcodes">
+								<option value="1" checked="checked"><?php esc_html_e( 'Enable', 'anthologize' ) ?></option>
+								<option value="0"><?php esc_html_e( 'Disable', 'anthologize' ) ?></option>
+							</select>
+							<p class="description"><?php esc_html_e( 'WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose "Disable" to keep Anthologize from processing them.', 'anthologize' ) ?></p>
+						</td>
+					</tr>
 
-				</div>
+				</table>
 
 				<input type="hidden" name="export-step" value="3" />
 
@@ -330,13 +335,14 @@ class Anthologize_Export_Panel {
 
 				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
 
-				$return .= '<div class="export-options-box">';
+				$return .= '<tr>';
 
-				$return .= '<div class="pub-options-title">';
+				$return .= '<th scope="row">';
 				$return .= sprintf( '<label for="%s">', esc_attr( $oname ) );
 				$return .= esc_html( $odata['label'] );
-				$return .= '</label></div>';
+				$return .= '</label></th>';
 
+				$return .= '<td>';
 				switch( $odata['type'] ) {
 					case 'checkbox':
 						$return .= $this->build_checkbox( $oname, $odata['label'] );
@@ -351,8 +357,9 @@ class Anthologize_Export_Panel {
 						$return .= $this->build_textbox( $oname, $odata['label'] );
 						break;
 				}
+				$return .= '</td>';
 
-				$return .= '</div>';
+				$return .= '</tr>';
 
 			}
 		} else {
