@@ -212,9 +212,9 @@ class Anthologize_Export_Panel {
 
 
 					<div class="export-options-box">
-						<div class="pub-options-title"><?php _e( 'Shortcodes', 'anthologize' ) ?></div>
+						<div class="pub-options-title"><label for="do-shortcodes"><?php _e( 'Shortcodes', 'anthologize' ) ?></label></div>
 						<p><small><?php _e( 'WordPress shortcodes (such as [caption]) can sometimes cause problems with output formats. If shortcode content shows up incorrectly in your output, choose "Disable" to keep Anthologize from processing them.', 'anthologize' ) ?></small></p>
-						<select name="do-shortcodes">
+						<select name="do-shortcodes" id="do-shortcodes">
 							<option value="1" checked="checked"><?php _e( 'Enable', 'anthologize' ) ?></option>
 							<option value="0"><?php _e( 'Disable', 'anthologize' ) ?></option>
 						</select>
@@ -309,7 +309,10 @@ class Anthologize_Export_Panel {
 
 				$return .= '<div class="export-options-box">';
 
-				$return .= '<div class="pub-options-title">' . esc_html( $odata['label'] ) . '</div>';
+				$return .= '<div class="pub-options-title">';
+				$return .= sprintf( '<label for="%s">', esc_attr( $oname ) );
+				$return .= esc_html( $odata['label'] );
+				$return .= '</label></div>';
 
 				switch( $odata['type'] ) {
 					case 'checkbox':
@@ -349,7 +352,7 @@ class Anthologize_Export_Panel {
 		// $options is associative array where keys are option values and values are the text displayed in the option field.
 		// $default is the default option
 
-		$html = '<select name="' . esc_attr( $name ) . '">';
+		$html = '<select name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '">';
 
 		foreach( $options as $ovalue => $olabel ) {
 			$html .= '<option value="' . esc_attr( $ovalue ) . '"';
