@@ -758,10 +758,10 @@ class Anthologize_Admin_Main {
 		?>
 		<div class="my_meta_control">
 
-			<label><?php esc_html_e( 'Author Name', 'anthologize' ); ?> <span><?php esc_html_e( '(optional)', 'anthologize' ); ?></span></label>
+			<label for="author-name"><?php esc_html_e( 'Author Name', 'anthologize' ); ?> <span><?php esc_html_e( '(optional)', 'anthologize' ); ?></span></label>
 
 			<p>
-				<textarea class="tags-input" name="anthologize_meta[author_name]" rows="3"><?php echo esc_html( $author_name ) ?></textarea>
+				<textarea class="tags-input" id="author-name" name="anthologize_meta[author_name]" rows="3"><?php echo esc_html( $author_name ) ?></textarea>
 			</p>
 
 			<?php /* Display content for imported feed, if there is any */ ?>
