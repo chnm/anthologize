@@ -23,6 +23,8 @@ class Anthologize_Project_Organizer {
 	 * @todo Do this noscript logic and other $_REQUEST parsing earlier
 	 */
 	function display() {
+		wp_enqueue_script( 'anthologize-sortlist-js' );
+		wp_enqueue_script( 'anthologize-project-organizer' );
 
 		if ( isset( $_POST['new_item'] ) ) {
 			$this->add_item_to_part( $_POST['item_id'], $_POST['part_id'] );

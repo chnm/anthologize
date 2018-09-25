@@ -280,36 +280,7 @@ class Anthologize_Admin_Main {
 	 * @since 0.3
 	 */
 	function load_scripts() {
-		wp_enqueue_script( 'anthologize-js', plugins_url() . '/anthologize/js/project-organizer.js' );
-		wp_enqueue_script( 'jquery');
-		wp_enqueue_script( 'jquery-ui-core');
-		wp_enqueue_script( 'jquery-ui-sortable');
-		wp_enqueue_script( 'jquery-ui-draggable');
-		wp_enqueue_script( 'jquery-ui-datepicker', plugins_url() . '/anthologize/js/jquery-ui-datepicker.js');
-		wp_enqueue_script( 'jquery-cookie', plugins_url() . '/anthologize/js/jquery-cookie.js' );
-		wp_enqueue_script( 'blockUI-js', plugins_url() . '/anthologize/js/jquery.blockUI.js' );
-		wp_enqueue_script( 'anthologize_admin-js', plugins_url() . '/anthologize/js/anthologize_admin.js' );
-		wp_enqueue_script( 'anthologize-sortlist-js', plugins_url() . '/anthologize/js/anthologize-sortlist.js' );
-
-		wp_localize_script( 'anthologize-sortlist-js', 'anth_strings', array(
-			'append'           => __( 'Append', 'anthologize' ),
-			'cancel'           => __( 'Cancel', 'anthologize' ),
-			'commenter'        => __( 'Commenter', 'anthologize' ),
-			'comment_content'  => __( 'Comment Content', 'anthologize' ),
-			'comments'         => __( 'Comments', 'anthologize' ),
-			'comments_explain' => __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' ),
-			'done'             => __( 'Done', 'anthologize' ),
-			'edit'             => __( 'Edit', 'anthologize' ),
-			'less'             => __( 'less', 'anthologize' ),
-			'more'             => __( 'more', 'anthologize' ),
-			'no_comments'      => __( 'This post has no comments associated with it.', 'anthologize' ),
-			'preview'          => __( 'Preview', 'anthologize' ),
-			'posted'           => __( 'Posted', 'anthologize' ),
-			'remove'           => __( 'Remove', 'anthologize' ),
-			'save'             => __( 'Save', 'anthologize' ),
-			'select_all'       => __( 'Select all', 'anthologize' ),
-			'select_none'      => __( 'Select none', 'anthologize' ),
-		) );
+		wp_enqueue_script( 'anthologize_admin-js', plugins_url() . '/anthologize/js/anthologize_admin.js', array( 'jquery', 'blockUI-js' ) );
 	}
 
 	/**
