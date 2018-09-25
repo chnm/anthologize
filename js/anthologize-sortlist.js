@@ -405,7 +405,7 @@ jQuery(document).ready(function(){
 		  jQuery(".project-parts").sortable("disable");
 		  jQuery(".part-items ul").sortable("disable");
 		  jQuery("a.toggle").addClass("disabled");
-		  jQuery("span.toggle-sep").addClass("disabled");
+		  jQuery("span.append-sep").addClass("disabled");
 		  jQuery(this).removeClass("disabled");
 		  jQuery(this).siblings("a.append").removeClass("disabled");
 		  jQuery(this).siblings("span.append-sep").removeClass("disabled");
