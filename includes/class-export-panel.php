@@ -171,17 +171,17 @@ class Anthologize_Export_Panel {
 
 			<form action="" method="post">
 
-				<?php _e( 'Title', 'anthologize' ) ?> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
+				<label for="post-title"><?php _e( 'Title', 'anthologize' ) ?></label> <input type="text" name="post-title" id="post-title" value="<?php echo $project->post_title ?>" size="100"/>
 
 				<div style="clear: both;"> </div><br />
 
 				<div style="width: 400px; float: left;">
-					<p><strong><?php _e( 'Dedication', 'anthologize' ) ?></strong></p>
+					<p><label for="dedication"><?php _e( 'Dedication', 'anthologize' ) ?></label></p>
 					<textarea id="dedication" name="dedication" cols=35 rows=15><?php echo $dedication ?></textarea>
 				</div>
 
 				<div style="width: 400px; float: left;">
-					<p><strong><?php _e( 'Acknowledgements', 'anthologize' ) ?></strong></p>
+					<p><label for="acknowledgements"><?php _e( 'Acknowledgements', 'anthologize' ) ?></label></p>
 					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15><?php echo $acknowledgements ?></textarea>
 				</div>
 
