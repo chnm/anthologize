@@ -306,19 +306,23 @@ class Anthologize_Export_Panel {
 
 	function export_format_list() {
 		global $anthologize_formats;
-	?>
-		<?php foreach( $anthologize_formats as $name => $fdata ) :
+
+		// Check the first one.
+		$checked = true;
+
+		foreach ( $anthologize_formats as $name => $fdata ) {
 			$option_id = 'option-format-' . $name;
 
 			?>
 
-			<input type="radio" id="<?php echo esc_attr( $option_id ) ?>" name="filetype" value="<?php echo esc_attr( $name ) ?>" /> <label for="<?php echo esc_attr( $option_id ) ?>"><?php echo esc_html( $fdata['label'] ); ?></label><br />
+			<input type="radio" id="<?php echo esc_attr( $option_id ) ?>" name="filetype" value="<?php echo esc_attr( $name ) ?>" <?php checked( $checked ); ?> /> <label for="<?php echo esc_attr( $option_id ) ?>"><?php echo esc_html( $fdata['label'] ); ?></label><br />
 
-		<?php endforeach; ?>
+			<?php
 
-		<?php do_action( 'anthologize_export_format_list' ) ?>
+			$checked = false;
+		}
 
-	<?php
+		do_action( 'anthologize_export_format_list' );
 	}
 
 	function render_format_options() {
