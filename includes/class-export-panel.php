@@ -128,21 +128,21 @@ class Anthologize_Export_Panel {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Type', 'anthologize' ) ?></th>
+					<th scope="row" id="license-type"><?php _e( 'Type', 'anthologize' ) ?></th>
 					<td>
-						<input type="radio" id="ctype-copyright" name="ctype" value="c" <?php if ( $ctype == 'c' ) echo 'checked="checked"' ?>/> <label for="ctype-copyright"><?php _e( 'Copyright', 'anthologize' ) ?></label><br />
-						<input type="radio" id="ctype-cc" name="ctype" value="cc" checked="checked" <?php if ( $ctype != 'c' ) echo 'checked="checked"' ?>/> <label for="ctype-cc"><?php _e( 'Creative Commons', 'anthologize' ) ?></label>
+						<input role="group" aria-labelledby="license-type" type="radio" id="ctype-copyright" name="ctype" value="c" <?php if ( $ctype == 'c' ) echo 'checked="checked"' ?>/> <label for="ctype-copyright"><?php _e( 'Copyright', 'anthologize' ) ?></label><br />
+						<input role="group" aria-labelledby="license-type" type="radio" id="ctype-cc" name="ctype" value="cc" checked="checked" <?php if ( $ctype != 'c' ) echo 'checked="checked"' ?>/> <label for="ctype-cc"><?php _e( 'Creative Commons', 'anthologize' ) ?></label>
 
-							<label for="cctype" class="screen-reader-text"><?php esc_html_e( 'Select Creative Commons license type', 'anthologize' ); ?></label>
-							<select id="cctype" name="cctype">
-								<option value=""><?php _e( 'Select One...', 'anthologize' ) ?></option>
-								<option value="by" <?php if ( $cctype == 'by' ) echo 'selected="selected"' ?>><?php _e( 'Attribution', 'anthologize' ) ?></option>
-								<option value="by-sa" <?php if ( $cctype == 'by-sa' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Share-Alike', 'anthologize' ) ?></option>
-								<option value="by-nd" <?php if ( $cctype == 'by-nd' ) echo 'selected="selected"' ?>><?php _e( 'Attribution No Derivatives', 'anthologize' ) ?></option>
-								<option value="by-nc" <?php if ( $cctype == 'by-nc' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Non-Commercial', 'anthologize' ) ?></option>
-								<option value="by-nc-sa" <?php if ( $cctype == 'by-nc-sa' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Non-Commercial Share Alike', 'anthologize' ) ?></option>
-								<option value="by-nc-nd" <?php if ( $cctype == 'by-nc-nd' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Non-Commercial No Derivatives', 'anthologize' ) ?></option>
-							</select>
+						<label for="cctype" class="screen-reader-text"><?php esc_html_e( 'Select Creative Commons license type', 'anthologize' ); ?></label>
+						<select id="cctype" name="cctype">
+							<option value=""><?php _e( 'Select One...', 'anthologize' ) ?></option>
+							<option value="by" <?php if ( $cctype == 'by' ) echo 'selected="selected"' ?>><?php _e( 'Attribution', 'anthologize' ) ?></option>
+							<option value="by-sa" <?php if ( $cctype == 'by-sa' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Share-Alike', 'anthologize' ) ?></option>
+							<option value="by-nd" <?php if ( $cctype == 'by-nd' ) echo 'selected="selected"' ?>><?php _e( 'Attribution No Derivatives', 'anthologize' ) ?></option>
+							<option value="by-nc" <?php if ( $cctype == 'by-nc' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Non-Commercial', 'anthologize' ) ?></option>
+							<option value="by-nc-sa" <?php if ( $cctype == 'by-nc-sa' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Non-Commercial Share Alike', 'anthologize' ) ?></option>
+							<option value="by-nc-nd" <?php if ( $cctype == 'by-nc-nd' ) echo 'selected="selected"' ?>><?php _e( 'Attribution Non-Commercial No Derivatives', 'anthologize' ) ?></option>
+						</select>
 					</td>
 				</tr>
 
@@ -188,9 +188,11 @@ class Anthologize_Export_Panel {
 				<div style="clear: both;"></div>
 
 				<div id="export-format">
-					<h4><?php _e( 'Export Format', 'anthologize' ) ?></h4>
+					<fieldset>
+						<legend><?php esc_html_e( 'Export Format', 'anthologize' ) ?></legend>
 
-					<?php $this->export_format_list() ?>
+						<?php $this->export_format_list() ?>
+					</fieldset>
 				</div>
 
 				<input type="hidden" name="export-step" value="2" />
