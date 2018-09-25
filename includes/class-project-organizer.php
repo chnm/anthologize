@@ -170,7 +170,7 @@ class Anthologize_Project_Organizer {
 
 		?>
 
-		<span><?php _e( 'Filter by', 'anthologize' ) ?></span>
+		<label for="sortby-dropdown"><?php _e( 'Filter by', 'anthologize' ) ?></label>
 
 		<select name="sortby" id="sortby-dropdown">
 			<option value="" selected="selected"><?php _e( 'All posts', 'anthologize' ) ?></option>
@@ -219,6 +219,8 @@ class Anthologize_Project_Organizer {
 		}
 
 		?>
+
+		<label class="screen-reader-text" for="filter"><?php esc_html_e( 'Filter by specific term', 'anthologize' ); ?></label>
 
 		<select name="filter" id="filter">
 			<option value=""><?php echo esc_html( $nulltext ); ?></option>
