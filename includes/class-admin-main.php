@@ -537,7 +537,6 @@ class Anthologize_Admin_Main {
 
 			<thead>
 				<tr>
-					<th scope="col" class="check-column"></th>
 					<th scope="col"><?php _e( 'Project Title', 'anthologize' ) ?></th>
 					<th scope="col"><?php _e( 'Created By', 'anthologize' ) ?></th>
 					<th scope="col"><?php _e( 'Number of Parts', 'anthologize' ) ?></th>
@@ -552,9 +551,6 @@ class Anthologize_Admin_Main {
 
 					<tr>
 						<tr>
-
-            					<th scope="row" class="check-column">
-						</th>
 
 						<th scope="row"  class="post-title">
 							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
