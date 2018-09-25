@@ -93,6 +93,7 @@ class Anthologize {
 		$this->setup_constants();
 		$this->includes();
 		$this->setup_hooks();
+		$this->register_assets();
 	}
 
 	/**
@@ -286,6 +287,14 @@ class Anthologize {
 		}
 	}
 
+	/**
+	 * Registers static assets with WordPress.
+	 *
+	 * @since 0.8.0
+	 */
+	public function register_assets() {
+		wp_register_style( 'anthologize-admin', plugins_url() . '/anthologize/css/admin.css' );
+	}
 }
 
 endif;

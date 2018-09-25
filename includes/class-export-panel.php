@@ -49,6 +49,8 @@ class Anthologize_Export_Panel {
 	}
 
 	function display() {
+		wp_enqueue_style( 'anthologize-admin' );
+
 		$project_id = $this->project_id;
 
 		if ( isset( $_POST['export-step'] ) )
@@ -103,16 +105,18 @@ class Anthologize_Export_Panel {
 
 			<form action="" method="post">
 
-			<label for="project-id-dropdown"><?php _e( 'Select a project...', 'anthologize' ) ?></label>
-			<select name="project_id" id="project-id-dropdown">
-			<?php foreach ( $this->projects as $proj_id => $project_name ) : ?>
-				<option value="<?php echo esc_attr( $proj_id ) ?>"
+			<div class="export-project-selector">
+				<label for="project-id-dropdown"><?php esc_html_e( 'Select a project:', 'anthologize' ) ?></label>
+				<select name="project_id" id="project-id-dropdown">
+				<?php foreach ( $this->projects as $proj_id => $project_name ) : ?>
+					<option value="<?php echo esc_attr( $proj_id ) ?>"
 
-				<?php if ( $proj_id == $project_id ) : ?>selected="selected"<?php endif; ?>
+					<?php if ( $proj_id == $project_id ) : ?>selected="selected"<?php endif; ?>
 
-				><?php echo esc_html( $project_name ); ?></option>
-			<?php endforeach; ?>
-			</select>
+					><?php echo esc_html( $project_name ); ?></option>
+				<?php endforeach; ?>
+				</select>
+			</div>
 
 			<h3 id="copyright-information-header"><?php _e( 'Copyright Information', 'anthologize' ) ?></h3>
 
