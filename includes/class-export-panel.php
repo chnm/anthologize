@@ -99,7 +99,7 @@ class Anthologize_Export_Panel {
 
 			<br />
 
-			<div id="export-form">
+			<div id="export-form" class="export-panel">
 
 			<?php if ( !isset( $_POST['export-step'] ) ) : ?>
 
