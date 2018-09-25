@@ -152,19 +152,19 @@ class Anthologize_New_Project {
             <form action="<?php echo get_bloginfo( 'wpurl' ) ?>/wp-admin/admin.php?page=anthologize_new_project&noheader=true" method="post">
                 <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><label for="post_title"><?php _e( 'Project Title', 'anthologize' ) ?></label></th>
-                    <td><input type="text" name="post_title" value="<?php if ($project) echo esc_attr( $project->post_title ); ?>"></td>
+                    <th scope="row"><label for="project-title"><?php _e( 'Project Title', 'anthologize' ) ?></label></th>
+                    <td><input type="text" name="post_title" id="project-title" value="<?php if ($project) echo esc_attr( $project->post_title ); ?>"></td>
                 </tr>
 
                 <tr valign="top">
-                    <th scope="row"><label for="anthologize_meta[subtitle]"><?php _e( 'Subtitle', 'anthologize' ) ?></label>
-                    <td><input type="text" name="anthologize_meta[subtitle]" value="<?php if( $project && !empty($meta['subtitle']) ) echo esc_attr( $meta['subtitle'] ); ?>" /></td>
+                    <th scope="row"><label for="project-subtitle"><?php _e( 'Subtitle', 'anthologize' ) ?></label>
+                    <td><input type="text" name="anthologize_meta[subtitle]" id="project-subtitle" value="<?php if( $project && !empty($meta['subtitle']) ) echo esc_attr( $meta['subtitle'] ); ?>" /></td>
                 </tr>
 
-            	<tr valign="top">
-            	    <th scope="row"><label><?php _e( 'Author Name <span>(optional)</span>', 'anthologize' ) ?></label></th>
-            	    <td><textarea name="anthologize_meta[author_name]" rows="5" cols="50"><?php if( $project && !empty($meta['author_name']) ) echo esc_textarea( $meta['author_name'] ); ?></textarea></td>
-            	</tr>
+				<tr valign="top">
+					<th scope="row"><label for="project-author"><?php _e( 'Author Name <span>(optional)</span>', 'anthologize' ) ?></label></th>
+					<td><textarea name="anthologize_meta[author_name]" id="project-author" rows="5" cols="50"><?php if( $project && !empty($meta['author_name']) ) echo esc_textarea( $meta['author_name'] ); ?></textarea></td>
+				</tr>
 
 				<?php /* Hidden until there is a more straightforward way to display projects on the front end of WP */ ?>
 				<?php /*
