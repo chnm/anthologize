@@ -468,17 +468,17 @@ class Anthologize_Project_Organizer {
 		$cfilter = isset( $_COOKIE['anth-filter'] ) ? $_COOKIE['anth-filter'] : false;
 
 		if ( $cfilter == 'date' ) {
-			$startdate = mysql_real_escape_string( $_COOKIE['anth-startdate'] );
-			$enddate   = mysql_real_escape_string( $_COOKIE['anth-enddate'] );
+			$startdate = wp_unslash( $_COOKIE['anth-startdate'] );
+			$enddate   = wp_unslash( $_COOKIE['anth-enddate'] );
 
 			$date_range_where = '';
 
 			if ( strlen( $startdate ) > 0 ) {
-				$date_range_where = " AND post_date >= '" . $startdate . "'";
+				$date_range_where .= $wpdb->prepare( " AND post_date >= %s", $startdate );
 			}
 
 			if ( strlen( $enddate ) > 0 ) {
-				$date_range_where .= " AND post_date <= '" . $enddate . "'";
+				$date_range_where .= $wpdb->prepare( " AND post_date <= %s,", $enddate );
 			}
 
 			$where_func   = '$where .= "' . $date_range_where . '"; return $where;';
