@@ -42,7 +42,7 @@ class Anthologize_Import_Feeds_Panel {
 
 				<form action="" method="post">
 
-				<h4><?php _e( 'Feed URL:', 'anthologize' ) ?></h4>
+				<label for="feedurl"><?php _e( 'Feed URL:', 'anthologize' ) ?></label>
 				<input type="text" name="feedurl" id="feedurl" size="100" />
 
 				<div class="anthologize-button"><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></div>
@@ -74,13 +74,13 @@ class Anthologize_Import_Feeds_Panel {
 							}
 						?>
 						<li>
-							<input name="copyitems[]" type="checkbox" checked="checked" value="<?php echo esc_attr( $key ) ?>"> <strong><?php echo esc_html( $item['title'] ) ?></strong>  <?php echo esc_html( $item['description'] ) ?>
+							<label><input name="copyitems[]" type="checkbox" checked="checked" value="<?php echo esc_attr( $key ) ?>"> <strong><?php echo esc_html( $item['title'] ) ?></strong></label> <?php echo esc_html( $item['description'] ) ?>
 						</li>
 					<?php endforeach; ?>
 					</ul>
 
 					<input type="hidden" name="feedurl" value="<?php echo esc_attr( $_POST['feedurl'] ) ?>" />
-					<div class="anthologize-button"><input type="submit" name="submit_items" id="submit" value="<?php _e( 'Import', 'anthologize' ) ?>" /></div>
+					<div class="anthologize-button"><input type="submit" name="submit_items" id="submit-import" value="<?php _e( 'Import', 'anthologize' ) ?>" /></div>
 
 				</form>
 
@@ -89,10 +89,10 @@ class Anthologize_Import_Feeds_Panel {
 
 				<form action="" method="post">
 
-					<h3><?php _e( 'Feed URL:', 'anthologize' ) ?></h3>
+					<label for="feedurl"><?php _e( 'Feed URL:', 'anthologize' ) ?></label>
 					<input type="text" name="feedurl" id="feedurl" size="100" value="<?php echo esc_attr( $_POST['feedurl'] ) ?>" />
 
-					<div class="anthologize-button"><input type="submit" name="submit" id="submit" value="<?php _e( 'Go', 'anthologize' ) ?>" /></div>
+					<div class="anthologize-button"><input type="submit" name="submit" id="submit-search" value="<?php _e( 'Go', 'anthologize' ) ?>" /></div>
 
 				</form>
 
