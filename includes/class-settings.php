@@ -108,7 +108,7 @@ class Anthologize_Settings {
 		<div class="wrap anthologize">
 
 			<div id="blockUISpinner">
-				<img src="<?php echo plugins_url() ?>/anthologize/images/wait28.gif"</img>
+				<img src="<?php echo plugins_url() ?>/anthologize/images/wait28.gif" alt="<?php esc_html_e( 'Please wait...', 'anthologize' ); ?>" aria-hidden="true" />
 				<p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
 			</div>
 

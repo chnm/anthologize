@@ -53,7 +53,7 @@ class Anthologize_Project_Organizer {
 		<div class="wrap anthologize" id="project-<?php echo esc_attr( $_GET['project_id'] ) ?>">
 
 			<div id="blockUISpinner">
-				<img src="<?php echo plugins_url() ?>/anthologize/images/wait28.gif"</img>
+				<img src="<?php echo plugins_url() ?>/anthologize/images/wait28.gif" alt="<?php esc_html_e( 'Please wait...', 'anthologize' ); ?>" aria-hidden="true" />
 				<p id="ajaxErrorMsg"><?php _e('There has been an unexpected error. Please wait while we reload the content.', 'anthologize') ?></p>
 			</div>
 
