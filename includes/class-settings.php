@@ -120,9 +120,9 @@ class Anthologize_Settings {
 			<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row"><?php _e( 'Minimum role for creating and editing Anthologize projects', 'anthologize' ) ?>:</th>
+					<th scope="row"><label for="minimum-cap"><?php _e( 'Minimum role for creating and editing Anthologize projects', 'anthologize' ) ?>:</label></th>
 					<td>
-						<select name="anth_settings[minimum_cap]" <?php if ( $this->forbid_local_caps ) : ?>disabled="disabled"<?php endif ?>>
+						<select name="anth_settings[minimum_cap]" id="minimum-cap" <?php if ( $this->forbid_local_caps ) : ?>disabled="disabled"<?php endif ?>>
 						<?php if ( is_multisite() ) : ?>
 							<option<?php selected( $this->minimum_cap, 'manage_network' ) ?> value="manage_network"><?php _e( 'Network Admin', 'anthologize' ) ?></option>
 						<?php endif ?>
@@ -141,7 +141,7 @@ class Anthologize_Settings {
 							*/ ?>
 						</select>
 						<?php if ( $this->forbid_local_caps ) : ?>
-							<label for="anth_settings[minimum_cap]"><?php _e( 'Your network administrator has disabled this setting.', 'anthologize' ) ?></label>
+							<p class="description"><?php _e( 'Your network administrator has disabled this setting.', 'anthologize' ) ?></p>
 						<?php endif ?>
 					</td>
 				</tr>
