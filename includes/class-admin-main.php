@@ -761,7 +761,7 @@ class Anthologize_Admin_Main {
 			<label for="author-name"><?php esc_html_e( 'Author Name', 'anthologize' ); ?> <span><?php esc_html_e( '(optional)', 'anthologize' ); ?></span></label>
 
 			<p>
-				<textarea class="tags-input" id="author-name" name="anthologize_meta[author_name]" rows="3"><?php echo esc_html( $author_name ) ?></textarea>
+				<textarea class="tags-input" id="author-name" name="anthologize_meta[author_name]" rows="3"><?php echo esc_textarea( $author_name ) ?></textarea>
 			</p>
 
 			<?php /* Display content for imported feed, if there is any */ ?>
@@ -798,8 +798,8 @@ class Anthologize_Admin_Main {
 					?>
 
 
-					<dt><?php echo $dt ?></dt>
-					<dd><?php echo $dd ?></dd>
+					<dt><?php echo esc_html( $dt ); ?></dt>
+					<dd><?php echo esc_html( $dd ); ?></dd>
 				<?php endforeach; ?>
 				</dl>
 
@@ -870,11 +870,11 @@ class Anthologize_Admin_Main {
 
 		?>
 
-		<h3><?php _e( 'Anthologize', 'anthologize' ); ?></h3>
+		<h3><?php esc_html_e( 'Anthologize', 'anthologize' ); ?></h3>
 
 		<table id="menu" class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Allow individual site admins to determine which kinds of users can use Anthologize?', 'anthologize' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Allow individual site admins to determine which kinds of users can use Anthologize?', 'anthologize' ); ?></th>
 				<td>
 
 				<?php
@@ -886,16 +886,15 @@ class Anthologize_Admin_Main {
 				 * options in the installer.
 				 */
 				?>
-				<label><input type="checkbox" class="tags-input" name="anth_site_settings[forbid_per_blog_caps]" value="1" <?php if ( empty( $site_settings['forbid_per_blog_caps'] ) ) : ?>checked="checked"<?php endif ?>> <?php _e( 'When unchecked, access to Anthologize will be limited to the default role you select below.', 'anthologize' ) ?></label>
+				<label><input type="checkbox" class="tags-input" name="anth_site_settings[forbid_per_blog_caps]" value="1" <?php if ( empty( $site_settings['forbid_per_blog_caps'] ) ) : ?>checked="checked"<?php endif ?>> <?php esc_html_e( 'When unchecked, access to Anthologize will be limited to the default role you select below.', 'anthologize' ) ?></label>
 
 				</td>
 			</tr>
 
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Default mimimum role for Anthologizers', 'anthologize' ); ?></th>
-				<td>
+				<th scope="row"><label for="minimum-cap"><?php esc_html_e( 'Default mimimum role for Anthologizers', 'anthologize' ); ?></label></th>
 
-				<label>
+				<td>
 					<select class="tags-input" name="anth_site_settings[minimum_cap]">
 						<option<?php selected( $minimum_cap, 'manage_network' ) ?> value="manage_network"><?php _e( 'Network Admin', 'anthologize' ) ?></option>
 
@@ -912,8 +911,6 @@ class Anthologize_Admin_Main {
 						<option<?php selected( $minimum_cap, 'read' ) ?> value="read"><?php _e( 'Subscriber', 'anthologize' ) ?></option>
 						*/ ?>
 					</select>
-				</label>
-
 				</td>
 			</tr>
 		</table>
