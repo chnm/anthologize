@@ -103,7 +103,7 @@ class Anthologize_Export_Panel {
 
 			<form action="" method="post">
 
-			<label for="project_id"><?php _e( 'Select a project...', 'anthologize' ) ?></label>
+			<label for="project-id-dropdown"><?php _e( 'Select a project...', 'anthologize' ) ?></label>
 			<select name="project_id" id="project-id-dropdown">
 			<?php foreach ( $this->projects as $proj_id => $project_name ) : ?>
 				<option value="<?php echo $proj_id ?>"
@@ -118,20 +118,22 @@ class Anthologize_Export_Panel {
 
 			<table class="form-table">
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Year', 'anthologize' ) ?></th>
+					<th scope="row"><label for="cyear"><?php _e( 'Year', 'anthologize' ) ?></label></th>
 					<td><input type="text" id="cyear" name="cyear" value="<?php echo $cdate ?>"/></td>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Copyright Holder', 'anthologize' ) ?></th>
+					<th scope="row"><label for="cname"><?php _e( 'Copyright Holder', 'anthologize' ) ?></label></th>
 					<td><input type="text" id="cname" name="cname" value="<?php echo $cname ?>" /></td>
 				</tr>
 
 				<tr valign="top">
 					<th scope="row"><?php _e( 'Type', 'anthologize' ) ?></th>
 					<td>
-						<input type="radio" id="ctype" name="ctype" value="c" <?php if ( $ctype == 'c' ) echo 'checked="checked"' ?>/> <?php _e( 'Copyright', 'anthologize' ) ?><br />
-						<input type="radio" id="ctype" name="ctype" value="cc" checked="checked" <?php if ( $ctype != 'c' ) echo 'checked="checked"' ?>/> <?php _e( 'Creative Commons', 'anthologize' ) ?>
+						<input type="radio" id="ctype-copyright" name="ctype" value="c" <?php if ( $ctype == 'c' ) echo 'checked="checked"' ?>/> <label for="ctype-copyright"><?php _e( 'Copyright', 'anthologize' ) ?></label><br />
+						<input type="radio" id="ctype-cc" name="ctype" value="cc" checked="checked" <?php if ( $ctype != 'c' ) echo 'checked="checked"' ?>/> <label for="ctype-cc"><?php _e( 'Creative Commons', 'anthologize' ) ?></label>
+
+							<label for="cctype" class="screen-reader-text"><?php esc_html_e( 'Select Creative Commons license type', 'anthologize' ); ?></label>
 							<select id="cctype" name="cctype">
 								<option value=""><?php _e( 'Select One...', 'anthologize' ) ?></option>
 								<option value="by" <?php if ( $cctype == 'by' ) echo 'selected="selected"' ?>><?php _e( 'Attribution', 'anthologize' ) ?></option>
@@ -145,12 +147,12 @@ class Anthologize_Export_Panel {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Edition', 'anthologize' ) ?></th>
+					<th scope="row"><label for="edition"><?php _e( 'Edition', 'anthologize' ) ?></label></th>
 					<td><input type="text" id="edition" name="edition" value="<?php echo $edition ?>" /></td>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php _e( 'Add Author(s)', 'anthologize' ) ?></th>
+					<th scope="row"><label for="authors"><?php _e( 'Add Author(s)', 'anthologize' ) ?></label></th>
 					<td><textarea id="authors" name="authors"><?php echo $authors ?></textarea></td>
 				</tr>
 			</table>
