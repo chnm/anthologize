@@ -170,30 +170,51 @@ class Anthologize_Export_Panel {
 			<?php $project = get_post( $project_id ); ?>
 
 			<form action="" method="post">
+				<table class="form-table">
+					<tr>
+						<th scope="row">
+							<label for="post-title"><?php esc_html_e( 'Title', 'anthologize' ) ?></label>
+						</th>
 
-				<label for="post-title"><?php _e( 'Title', 'anthologize' ) ?></label> <input type="text" name="post-title" id="post-title" value="<?php echo esc_attr( $project->post_title ); ?>" size="100"/>
+						<td>
+							<input type="text" name="post-title" id="post-title" value="<?php echo esc_attr( $project->post_title ); ?>" />
+						</td>
+					</tr>
 
-				<div style="clear: both;"> </div><br />
+					<tr>
+						<th scope="row">
+							<label for="dedication"><?php esc_html_e( 'Dedication', 'anthologize' ) ?></label>
+						</th>
 
-				<div style="width: 400px; float: left;">
-					<p><label for="dedication"><?php _e( 'Dedication', 'anthologize' ) ?></label></p>
-					<textarea id="dedication" name="dedication" cols=35 rows=15><?php echo esc_textarea( $dedication ); ?></textarea>
-				</div>
+						<td>
+							<textarea id="dedication" name="dedication" rows="5"><?php echo esc_textarea( $dedication ); ?></textarea>
+						</td>
+					</tr>
 
-				<div style="width: 400px; float: left;">
-					<p><label for="acknowledgements"><?php _e( 'Acknowledgements', 'anthologize' ) ?></label></p>
-					<textarea id="acknowledgements" name="acknowledgements" cols=35 rows=15><?php echo esc_textarea( $acknowledgements ); ?></textarea>
-				</div>
+					<tr>
+						<th scope="row">
+							<label for="acknowledgements"><?php esc_html_e( 'Acknowledgements', 'anthologize' ) ?></label>
+						</th>
 
-				<div style="clear: both;"></div>
+						<td>
+							<textarea id="acknowledgements" name="acknowledgements" rows="5"><?php echo esc_textarea( $acknowledgements ); ?></textarea>
+						</td>
+					</tr>
 
-				<div id="export-format">
-					<fieldset>
-						<legend><?php esc_html_e( 'Export Format', 'anthologize' ) ?></legend>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Export Format', 'anthologize' ); ?>
+						</th>
 
-						<?php $this->export_format_list() ?>
-					</fieldset>
-				</div>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text"><?php esc_html_e( 'Export Format', 'anthologize' ) ?></legend>
+
+								<?php $this->export_format_list() ?>
+							</fieldset>
+						</td>
+					</tr>
+				</table>
 
 				<input type="hidden" name="export-step" value="2" />
 
