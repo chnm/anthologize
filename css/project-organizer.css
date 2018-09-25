@@ -162,6 +162,7 @@ span.fromNewId {
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 	border: 2px solid #13395F;
+	min-height: 1em;
 	position: relative;
 	padding: 8px 12px;
 }
@@ -215,6 +216,11 @@ span.fromNewId {
 /* sortable/draggable styles  */
 #anthologize-parts-box .ui-state-disabled {
 	opacity: inherit;
+}
+
+.anthologize .ui-sortable-handle,
+.anthologize .ui-draggable {
+	cursor: move;
 }
 
 .part-items ul {
