@@ -16,7 +16,7 @@ class PdfAnthologizer extends Anthologizer {
 	public $headerLogo = 'logo-pdf.png'; //should be in /anthologize/images/
 	public $headerLogoWidth = '10';
 	public $tidy = false;
-	
+
 	public function init() {
 		$page_size = $this->api->getProjectOutputParams('page-size');
 
@@ -26,13 +26,13 @@ class PdfAnthologizer extends Anthologizer {
 	    // $this->output = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $page_size, true, 'UTF-8', false);
 		$lg = array();
         // PAGE META DESCRIPTORS --------------------------------------
-        
+
         $lg['a_meta_charset'] = 'UTF-8';
         $lg['a_meta_dir'] = 'ltr';
         $lg['a_meta_language'] = 'en';
         $lg['w_page'] = '';
 		//set some language-dependent strings
-		
+
 		$this->output->setLanguageArray($lg);
 
 		$this->output->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -258,6 +258,12 @@ class PdfAnthologizer extends Anthologizer {
 		}
 		$this->appendItemHead($section, $partNo, $itemNo);
 
+		$metadata_params_raw = $this->api->getProjectOutputParams( 'metadata' );
+		if ( $metadata_params_raw ) {
+			$metadata_params = json_decode( $metadata_params_raw );
+			$this->appendItemMetadata( $section, $partNo, $itemNo, $metadata_params );
+		}
+
 		//append the item content
 		$content = $this->writeItemContent($section, $partNo, $itemNo);
 		$this->output->writeHTML($content, true, false, true);
@@ -284,6 +290,40 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->Write('', $title, '', false, 'C', true );
 		$this->output->setFont($this->font_family, '', $this->baseH);
 
+	}
+
+	public function appendItemMetadata( $section, $partNo, $itemNo, $metadata_types ) {
+		$mds = array();
+
+		foreach ( $metadata_types as $metadata_type ) {
+			switch ( $metadata_type ) {
+				case 'author' :
+					$author = $this->api->getSectionPartItemOriginalAuthor( $section, $partNo, $itemNo );
+					if ( $author ) {
+						/* translators: Item author name */
+						$mds[] = sprintf( __( 'By %s', 'anthologize' ), $author );
+					}
+
+					break;
+
+				case 'date' :
+					$date = $this->api->getSectionPartItemPublicationDate( $section, $partNo, $itemNo );
+
+					if ( $date ) {
+						$mds[] = mysql2date( get_option( 'date_format' ), $date );
+					}
+
+					break;
+			}
+		}
+
+		if ( ! $mds ) {
+			return;
+		}
+
+		$text = implode( ' &middot; ', $mds );
+
+		$this->output->writeHTML( $text, '', false, false, false, 'C' );
 	}
 
 	public function finish() {

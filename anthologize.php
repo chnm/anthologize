@@ -93,7 +93,8 @@ class Anthologize {
 		$this->setup_constants();
 		$this->includes();
 		$this->setup_hooks();
-		$this->register_assets();
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
 	}
 
 	/**

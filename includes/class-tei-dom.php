@@ -41,9 +41,15 @@ class TeiDom {
             $this->$op = $value;
         }
         $this->projectData = $sessionArray;
-		$this->projectData['outputParams'] = anthologize_get_session_output_params();
 
-        if(isset($this->outputParams['gravatar-default'])) {
+		$output_params = anthologize_get_session_output_params();
+		if ( isset( $output_params['metadata'] ) ) {
+			$output_params['metadata'] = json_encode( $output_params['metadata'] );
+		}
+
+		$this->projectData['outputParams'] = $output_params;
+
+        if( isset( $outputParams['gravatar-default'] ) ) {
             $this->avatarDefault = $this->outputParams['gravatar-default'];
         }
 
@@ -137,6 +143,7 @@ class TeiDom {
                 if($this->includeStructuredSubjects) {
                     $this->addStructuredSubjects($libraryItemObject->original_post_id);
                 }
+
                 $newItem->setAttribute('n', $itemNumber);
                 $newPart->appendChild($newItem);
                 $itemNumber++;
@@ -692,6 +699,14 @@ class TeiDom {
 								$this->addStructuredPerson($origCreator);
 							}
 						}
+
+						$date = $this->dom->createElementNS( TEI, 'date' );
+						$date->setAttribute( 'when', date( 'Y-m-d', strtotime( $origPostData->post_date_gmt ) ) );
+
+						$publicationStmt = $this->dom->createElementNS( TEI, 'publicationStmt' );
+						$publicationStmt->appendChild( $date );
+
+						$newHead->appendChild( $publicationStmt );
 					}
                 }
 

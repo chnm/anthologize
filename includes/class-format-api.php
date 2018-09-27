@@ -195,6 +195,17 @@ function anthologize_register_default_formats() {
 		'Courier'         => __( 'Courier', 'anthologize' )
 	);
 
+	$d_metadata_types = array(
+		'author'     => __( 'Post Author', 'anthologize' ),
+		'date'       => __( 'Post Date', 'anthologize' ),
+
+		/* Tags and categories are combined into 'subjects' - this needs clearing up.
+		/*
+		'tags'       => __( 'Tags', 'anthologize' ),
+		'categories' => __( 'Categories', 'anthologize' ),
+		*/
+	);
+
 	// Register PDF + options
 	anthologize_register_format( 'pdf', __( 'PDF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/pdf/base.php' );
 
@@ -204,12 +215,13 @@ function anthologize_register_default_formats() {
 
 	anthologize_register_format_option( 'pdf', 'font-face', __( 'Font Face', 'anthologize' ), 'dropdown', $d_font_face_pdf, 'Times New Roman' );
 
+	anthologize_register_format_option( 'pdf', 'metadata', __( 'Metadata to include in export', 'anthologize' ), 'checkboxes', $d_metadata_types, array_keys( $d_metadata_types ) );
+
 	anthologize_register_format_option( 'pdf', 'break-parts', __( 'Page break before parts?', 'anthologize' ), 'checkbox' );
 
 	anthologize_register_format_option( 'pdf', 'break-items', __( 'Page break before items?', 'anthologize' ), 'checkbox' );
 
 	anthologize_register_format_option( 'pdf', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
-
 	// Register RTF + options
 	anthologize_register_format( 'rtf', __( 'RTF', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/rtf/base.php' );
 	anthologize_register_format_option( 'rtf', 'page-size', __( 'Page Size', 'anthologize' ), 'dropdown', $d_page_size, 'letter' );

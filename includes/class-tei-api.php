@@ -125,7 +125,7 @@ class TeiApi {
 	 */
 
 //@TODO: this is an epic mess
-	private function getNodeDataByParams($params, $firstOnly = true) {
+	public function getNodeDataByParams($params, $firstOnly = true) {
 
 		extract($params);
 		$queryString = $this->buildQueryString($params);
@@ -555,6 +555,24 @@ class TeiApi {
 		if($valueOnly) {
 			return $data['spans'][0]['value'];
 		}
+		return $data;
+
+	}
+
+	public function getSectionPartItemPublicationDate($section, $partNumber, $itemNumber, $valueOnly = true, $asNode = false) {
+		$params = array('section'=> $section,
+						'partNumber' => $partNumber,
+						'itemNumber' => $itemNumber,
+						'subPath' => "/tei:head/tei:publicationStmt/tei:date",
+						'asNode'=>$asNode
+						);
+
+		$data = $this->getNodeDataByParams($params);
+
+		if($valueOnly) {
+			return $data['atts']['when'];
+		}
+
 		return $data;
 
 	}

@@ -356,6 +356,10 @@ class Anthologize_Export_Panel {
 						$return .= $this->build_checkbox( $oname, $odata['label'] );
 						break;
 
+					case 'checkboxes' :
+						$return .= $this->build_checkboxes( $oname, $odata['values'], $default );
+						break;
+
 					case 'dropdown':
 						$return .= $this->build_dropdown( $oname, $odata['label'], $odata['values'], $default );
 						break;
@@ -382,6 +386,34 @@ class Anthologize_Export_Panel {
 		$html = '<input name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) .'" type="checkbox">';
 
 		return apply_filters( 'anthologize_build_checkbox', $html, $name, $label );
+	}
+
+	/**
+	 * Build 'checkboxes' selector markup.
+	 *
+	 * @since 0.8.0
+	 *
+	 * @param string $name     Unique name of the format option.
+	 * @param array  $values   Checkbox values. Array keys should be values, values should be labels.
+	 * @param array  $defaults Default selected values.
+	 */
+	public function build_checkboxes( $name, $values, $defaults ) {
+		$html = '<fieldset><ul>';
+
+		foreach ( $values as $value => $label ) {
+			$html .= sprintf(
+				'<li><label><input type="checkbox" value="%s" name="%s[]" %s> %s</label></li>',
+				esc_attr( $value ),
+				esc_attr( $name ),
+				checked( in_array( $value, $defaults, true ), true, false ),
+				esc_html( $label )
+			);
+		}
+
+		$html .= '<legend>' . esc_html__( 'Select all data you\'d like to appear with exported posts.', 'anthologize' ) . '</legend>';
+		$html .= '</ul></fieldset>';
+
+		return apply_filters( 'anthologize_build_checkboxes', $html, $name, $values, $defaults );
 	}
 
 	function build_dropdown( $name, $label, $options, $default ) {

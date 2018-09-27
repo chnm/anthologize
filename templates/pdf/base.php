@@ -41,23 +41,40 @@ require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
 require_once($pdfPath .  'class-anthologize-tcpdf.php'); //overrides some methods in TCPDF
 require_once($pdfPath . 'class-pdf-anthologizer.php' );
 
-
-
-$ops = array('includeStructuredSubjects' => false, //Include structured data about tags and categories
-		'includeItemSubjects' => false, // Include basic data about tags and categories
-		'includeCreatorData' => false, // Include basic data about creators
-		'includeStructuredCreatorData' => false, //include structured data about creators
-		'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
-		'checkImgSrcs' => true, //whether to check availability of image sources
-		'linkToEmbeddedObjects' => true,
-		'indexSubjects' => false,
-		'indexCategories' => false,
-		'indexTags' => false,
-		'indexAuthors' => false,
-		'indexImages' => false,
-		);
-
 $session = anthologize_get_session();
+
+$ops = array(
+	'includeStructuredSubjects' => false, //Include structured data about tags and categories
+	'includeItemSubjects' => false, // Include basic data about tags and categories
+	'includeCreatorData' => false, // Include basic data about creators
+	'includeStructuredCreatorData' => false, //include structured data about creators
+	'includeOriginalPostData' => true, //include data about the original post (true to use tags and categories)
+	'checkImgSrcs' => true, //whether to check availability of image sources
+	'linkToEmbeddedObjects' => true,
+	'indexSubjects' => false,
+	'indexCategories' => false,
+	'indexTags' => false,
+	'indexAuthors' => false,
+	'indexImages' => false,
+);
+
+foreach ( $session['metadata'] as $metadata_type ) {
+	$ops['includeOriginalPostData'] = true;
+
+	switch ( $metadata_type ) {
+		case 'author' :
+			$ops['includeCreatorData'] = true;
+			$ops['includeStructuredCreatorData'] = true;
+			break;
+
+		case 'tags' :
+		case 'categories' :
+			$ops['includeStructuredSubjects'] = true;
+			$ops['includeItemSubjects'] = true;
+			break;
+	}
+}
+
 $session['creatorOutputSettings'] = ANTHOLOGIZE_CREATORS_ALL; //@TODO: hacked in--no interface yet!
 anthologize_save_session( $session );
 
