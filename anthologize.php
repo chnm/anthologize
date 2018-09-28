@@ -32,6 +32,8 @@ modifications of TDPDF must comply with its license.
 if ( ! defined( 'ANTHOLOGIZE_VERSION' ) )
 	define( 'ANTHOLOGIZE_VERSION', '0.7.8' );
 
+require dirname( __FILE__ ) . '/vendor/autoload.php';
+
 if ( ! class_exists( 'Anthologize' ) ) :
 
 class Anthologize {

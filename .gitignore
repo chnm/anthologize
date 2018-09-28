@@ -6,3 +6,5 @@ templates/pdf/tcpdf/cache/*
 !templates/pdf/tcpdf/cache/*.txt
 
 templates/pdf/tcpdf/examples
+
+/vendor/
