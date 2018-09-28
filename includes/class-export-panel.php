@@ -313,9 +313,24 @@ class Anthologize_Export_Panel {
 		foreach ( $anthologize_formats as $name => $fdata ) {
 			$option_id = 'option-format-' . $name;
 
+			$disabled = '';
+			$message  = '';
+
+			$is_available = call_user_func( $fdata['is_available_callback'] );
+			if ( ! $is_available ) {
+				// Non-admins should see nothing.
+				if ( ! current_user_can( 'install_plugins' ) ) {
+					continue;
+				}
+
+				// Admins see the option, but it's disabled.
+				$disabled = disabled( true, true, false );
+				$message  = $fdata['unavailable_notice'];
+			}
+
 			?>
 
-			<input type="radio" id="<?php echo esc_attr( $option_id ) ?>" name="filetype" value="<?php echo esc_attr( $name ) ?>" <?php checked( $checked ); ?> /> <label for="<?php echo esc_attr( $option_id ) ?>"><?php echo esc_html( $fdata['label'] ); ?></label><br />
+			<input type="radio" id="<?php echo esc_attr( $option_id ) ?>" name="filetype" value="<?php echo esc_attr( $name ) ?>" <?php checked( $checked ); ?> <?php echo $disabled; ?> /> <label for="<?php echo esc_attr( $option_id ) ?>"><?php echo esc_html( $fdata['label'] ); ?> <?php if ( $message ) : ?><span class="disabled-format-message"><?php echo esc_html( $message ); ?></span><?php endif; ?></label><br />
 
 			<?php
 
