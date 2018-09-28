@@ -353,8 +353,9 @@ class Anthologize_Export_Panel {
 				if ( $oname == 'label' || $oname == 'loader-path' )
 					continue;
 
-				if ( !$odata )
+				if ( ! $odata || ! is_array( $odata ) ) {
 					continue;
+				}
 
 				$default = ( isset( $odata['default'] ) ) ? $odata['default'] : false;
 
