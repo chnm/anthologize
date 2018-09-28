@@ -863,6 +863,14 @@ class Anthologize_Project_Organizer {
 	 * @return array
 	 */
 	function source_item_post_statuses() {
+		/**
+		 * Status of posts to include in the project organizer.
+		 * Defaults to just published, pending, future and private.
+		 *
+		 * @since 0.7.8
+		 *
+		 * @param array $statuses statuses of posts/pages to include in the project organizer
+		 */
 		return apply_filters(
 			'anthologize_source_item_post_statuses',
 			array( 'publish', 'pending', 'future', 'private' )
