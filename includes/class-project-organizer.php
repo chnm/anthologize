@@ -461,10 +461,7 @@ class Anthologize_Project_Organizer {
 			'posts_per_page' => -1,
 			'orderby' => 'post_title',
 			'order' => 'DESC',
-			'post_status' => apply_filters(
-				'anth_included_post_stasuses',
-				array( 'publish', 'pending', 'future', 'private' )
-			)
+			'post_status' => $this->source_item_post_statuses(),
 		);
 
 		$cfilter = isset( $_COOKIE['anth-filter'] ) ? $_COOKIE['anth-filter'] : false;
@@ -855,6 +852,21 @@ class Anthologize_Project_Organizer {
 		$url = add_query_arg( $query_args, admin_url( 'admin.php' ) );
 
 		return $url;
+	}
+
+	/**
+	 * Gets the post statuses of source items to show in the project organizer.
+     *
+     * @package Anthologize
+     * @since 0.7.8
+	 *
+	 * @return array
+	 */
+	function source_item_post_statuses() {
+		return apply_filters(
+			'anthologize_source_item_post_statuses',
+			array( 'publish', 'pending', 'future', 'private' )
+		);
 	}
 }
 
