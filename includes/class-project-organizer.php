@@ -858,7 +858,7 @@ class Anthologize_Project_Organizer {
 	 * Gets the post statuses of source items to show in the project organizer.
      *
      * @package Anthologize
-     * @since 0.7.8
+     * @since 0.8.0
 	 *
 	 * @return array
 	 */
@@ -867,7 +867,7 @@ class Anthologize_Project_Organizer {
 		 * Status of posts to include in the project organizer.
 		 * Defaults to just published, pending, future and private.
 		 *
-		 * @since 0.7.8
+		 * @since 0.8.0
 		 *
 		 * @param array $statuses statuses of posts/pages to include in the project organizer
 		 */
