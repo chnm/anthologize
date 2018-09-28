@@ -54,6 +54,9 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.8.0 =
+* Improved default post_status behavior and customizability for post browser in Project Organizer
+
 = 0.7.8 =
 * Removed the use of PHP sessions
 * Improved compatibility with WP 4.9
