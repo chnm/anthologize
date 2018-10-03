@@ -263,6 +263,19 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->writeHTML($content, true, false, true);
 	}
 
+	protected function getItemStyles() {
+		$style = '<style>
+			.wp-caption-text {
+				color: #686868;
+				font-size: .9em;
+				font-style: italic;
+				margin-top: 1.5em;
+			}
+		</style>';
+
+		return $style;
+	}
+
 	protected function writeItemContent($section, $partNo, $itemNo) {
 		$content = parent::writeItemContent($section, $partNo, $itemNo);
 
@@ -271,6 +284,25 @@ class PdfAnthologizer extends Anthologizer {
 			$content = htmlspecialchars_decode($content);
 			$content = str_replace("&amp;", "&", $content);
 		}
+
+		$content = str_replace(
+			array(
+				'<figure ',
+				'</figure>',
+				'<figcaption ',
+				'</figcaption>',
+			),
+			array(
+				'<div ',
+				'</div>',
+				'<div ',
+				'</div>',
+			),
+			$content
+		);
+
+		$content = $this->getItemStyles() . $content;
+
 		return $content;
 	}
 
