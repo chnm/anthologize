@@ -16,7 +16,7 @@ class PdfAnthologizer extends Anthologizer {
 	public $headerLogo = 'logo-pdf.png'; //should be in /anthologize/images/
 	public $headerLogoWidth = '10';
 	public $tidy = false;
-	
+
 	public function init() {
 		$page_size = $this->api->getProjectOutputParams('page-size');
 
@@ -26,13 +26,13 @@ class PdfAnthologizer extends Anthologizer {
 	    // $this->output = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $page_size, true, 'UTF-8', false);
 		$lg = array();
         // PAGE META DESCRIPTORS --------------------------------------
-        
+
         $lg['a_meta_charset'] = 'UTF-8';
         $lg['a_meta_dir'] = 'ltr';
         $lg['a_meta_language'] = 'en';
         $lg['w_page'] = '';
 		//set some language-dependent strings
-		
+
 		$this->output->setLanguageArray($lg);
 
 		$this->output->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -117,19 +117,19 @@ class PdfAnthologizer extends Anthologizer {
 
 		//append cover
 		$this->output->AddPage();
-		
+
 		$this->frontPages++;
-		
+
 		$this->output->SetY(80);
 		$this->output->Write('', $book_title, '', false, 'C', true );
 		$this->output->setFont($this->font_family, '', $this->baseH);
 
-		
+
 		switch($this->api->getProjectOutputParams('creatorOutputSettings')) {
 		    case ANTHOLOGIZE_CREATORS_ALL:
 		        $projectAuthorsString = $creator . ', ' . $assertedAuthors;
 		        break;
-		        
+
 		    case ANTHOLOGIZE_CREATORS_ASSERTED:
 		        $projectAuthorsString = $assertedAuthors;
 		        break;
@@ -207,14 +207,14 @@ class PdfAnthologizer extends Anthologizer {
 
 		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
 		$string = isset( $firstItemNode->textContent ) ? $firstItemNode->textContent : false;
-       
+
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
-				
+
 		if( ($partNo == 0) || ($this->api->getProjectOutputParams('break-parts') == 'on' ) ) {
 			$this->output->AddPage();
 		}
-		
+
 		if($section == 'body') {
 			$this->output->Bookmark($title);
 		}
@@ -325,7 +325,7 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->setPrintFooter(false);
 		$this->output->addTOCPage();
 		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
-		
+
 		$this->output->addTOC($this->frontPages + 1, '', '', 'Table of Contents');
 		$this->output->endTOCPage();
 	}
