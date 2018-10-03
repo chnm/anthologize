@@ -275,6 +275,9 @@ class PdfAnthologizer extends Anthologizer {
 				font-style: italic;
 				text-align: center;
 			}
+			img {
+				border: 5px solid #fff;
+			}
 		</style>';
 
 		return $style;
