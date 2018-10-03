@@ -273,6 +273,7 @@ class PdfAnthologizer extends Anthologizer {
 				color: #686868;
 				font-size: .9em;
 				font-style: italic;
+				text-align: center;
 			}
 		</style>';
 
@@ -288,17 +289,16 @@ class PdfAnthologizer extends Anthologizer {
 			$content = str_replace("&amp;", "&", $content);
 		}
 
+		$content = preg_replace( '/<figure([^>]*)(class="([^"]+)")?([^>]*)>/', '<div class="wp-caption $2">', $content );
+		$content = preg_replace( '/<figcaption([^>]*)(class="([^"]+)")?([^>]*)>/', "\n" . '<div class="wp-caption-text $2">', $content );
+
 		$content = str_replace(
 			array(
-				'<figure ',
 				'</figure>',
-				'<figcaption ',
 				'</figcaption>',
 			),
 			array(
-				'<div ',
 				'</div>',
-				"\n" . '<div ',
 				'</div>',
 			),
 			$content
