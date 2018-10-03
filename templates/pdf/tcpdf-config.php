@@ -35,8 +35,8 @@ if ( !apply_filters( 'anthologize_tcpdf_external_config', ANTHOLOGIZE_TCPDF_EXTE
          * install path and URL. Since we're always running from inside
          * Anthologize, we can provide these values manually
          */
-        define( 'K_PATH_MAIN', anthologize()->plugin_dir . 'templates/pdf/tcpdf/' );
-        define( 'K_PATH_URL', anthologize()->plugin_url . 'templates/pdf/tcpdf' );
+        define( 'K_PATH_MAIN', anthologize()->plugin_dir . 'vendor/tecnickcom/tcpdf/' );
+        define( 'K_PATH_URL', anthologize()->plugin_url . 'vendor/tecnickcom/tcpdf' );
 
 	/**
 	 * cache directory for temporary files (full path)

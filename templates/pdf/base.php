@@ -37,7 +37,6 @@ include_once(ANTHOLOGIZE_TEIDOMAPI_PATH);
 require_once(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . "anthologize" . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'class-anthologizer.php');
 $pdfPath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'pdf' . DIRECTORY_SEPARATOR ;
 require_once( $pdfPath . 'tcpdf-config.php' );
-require_once($pdfPath . 'tcpdf' . DIRECTORY_SEPARATOR . 'tcpdf.php');
 require_once($pdfPath .  'class-anthologize-tcpdf.php'); //overrides some methods in TCPDF
 require_once($pdfPath . 'class-pdf-anthologizer.php' );
 

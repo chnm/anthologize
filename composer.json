@@ -11,6 +11,7 @@
 	}
     ],
     "require": {
-	"pear/File_Archive": "dev-master"
+	"pear/File_Archive": "dev-master",
+        "tecnickcom/tcpdf": "dev-master"
     }
 }
