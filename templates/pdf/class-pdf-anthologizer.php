@@ -265,11 +265,14 @@ class PdfAnthologizer extends Anthologizer {
 
 	protected function getItemStyles() {
 		$style = '<style>
+			.wp-caption {
+				display: table-cell;
+				text-align: center;
+			}
 			.wp-caption-text {
 				color: #686868;
 				font-size: .9em;
 				font-style: italic;
-				margin-top: 1.5em;
 			}
 		</style>';
 
@@ -295,7 +298,7 @@ class PdfAnthologizer extends Anthologizer {
 			array(
 				'<div ',
 				'</div>',
-				'<div ',
+				"\n" . '<div ',
 				'</div>',
 			),
 			$content
