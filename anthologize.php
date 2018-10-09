@@ -97,6 +97,7 @@ class Anthologize {
 		$this->setup_hooks();
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
 	}
 
 	/**
