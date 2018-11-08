@@ -37,10 +37,21 @@ div.anthologize {
 	font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
 }
 
-#project-organizer-frame h3 {
+#project-organizer-frame .part-item {
 	font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
-	font-size: 9pt;
 	font-weight: bold;
+}
+
+.part-title,
+.part-title-header,
+.part-item-title {
+	font-size: 9pt;
+	line-height: 12pt;
+}
+
+.part h3,
+.item h3 {
+	margin: 0;
 }
 
 #anthologize-logo {
@@ -153,7 +164,7 @@ span.fromNewId {
 }
 
 /* Individual parts */
-.postbox h3.part-item {
+.postbox .part-item {
 	background: #cfdae9 !important;
 	color: #25589a !important;
 	text-shadow: none !important;
@@ -179,12 +190,13 @@ span.fromNewId {
 	top: 6px;
 }
 
-.part-item-buttons {
-	width: 280px;
-	text-align: right;
+.anth-buttons {
+	font-weight: bold;
 	position: absolute;
 	right: 8px;
+	text-align: right;
 	top: 6px;
+	width: 280px;
 }
 
 .part-title {
