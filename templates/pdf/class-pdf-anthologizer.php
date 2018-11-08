@@ -117,19 +117,19 @@ class PdfAnthologizer extends Anthologizer {
 
 		//append cover
 		$this->output->AddPage();
-		
+
 		$this->frontPages++;
-		
+
 		$this->output->SetY(80);
 		$this->output->Write('', $book_title, '', false, 'C', true );
 		$this->output->setFont($this->font_family, '', $this->baseH);
 
-		
+
 		switch($this->api->getProjectOutputParams('creatorOutputSettings')) {
 		    case ANTHOLOGIZE_CREATORS_ALL:
 		        $projectAuthorsString = $creator . ', ' . $assertedAuthors;
 		        break;
-		        
+
 		    case ANTHOLOGIZE_CREATORS_ASSERTED:
 		        $projectAuthorsString = $assertedAuthors;
 		        break;
@@ -207,14 +207,14 @@ class PdfAnthologizer extends Anthologizer {
 
 		$firstItemNode = $this->api->getSectionPartItemTitle($section, $partNo, 0, true);
 		$string = isset( $firstItemNode->textContent ) ? $firstItemNode->textContent : false;
-       
+
 
 		$this->set_header(array('title'=>$title, 'string'=>$string));
-				
+
 		if( ($partNo == 0) || ($this->api->getProjectOutputParams('break-parts') == 'on' ) ) {
 			$this->output->AddPage();
 		}
-		
+
 		if($section == 'body') {
 			$this->output->Bookmark($title);
 		}
@@ -269,6 +269,26 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->writeHTML($content, true, false, true);
 	}
 
+	protected function getItemStyles() {
+		$style = '<style>
+			.wp-caption {
+				display: table-cell;
+				text-align: center;
+			}
+			.wp-caption-text {
+				color: #686868;
+				font-size: .9em;
+				font-style: italic;
+				text-align: center;
+			}
+			img {
+				border: 5px solid #fff;
+			}
+		</style>';
+
+		return $style;
+	}
+
 	protected function writeItemContent($section, $partNo, $itemNo) {
 		$content = parent::writeItemContent($section, $partNo, $itemNo);
 
@@ -277,6 +297,24 @@ class PdfAnthologizer extends Anthologizer {
 			$content = htmlspecialchars_decode($content);
 			$content = str_replace("&amp;", "&", $content);
 		}
+
+		$content = preg_replace( '/<figure([^>]*)(class="([^"]+)")?([^>]*)>/', '<div class="wp-caption $2">', $content );
+		$content = preg_replace( '/<figcaption([^>]*)(class="([^"]+)")?([^>]*)>/', "\n" . '<div class="wp-caption-text $2">', $content );
+
+		$content = str_replace(
+			array(
+				'</figure>',
+				'</figcaption>',
+			),
+			array(
+				'</div>',
+				'</div>',
+			),
+			$content
+		);
+
+		$content = $this->getItemStyles() . $content;
+
 		return $content;
 	}
 
@@ -333,7 +371,7 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->setPrintFooter(false);
 		$this->output->addTOCPage();
 		$this->output->Write(0, 'Table of Contents', '', false, 'C', true);
-		
+
 		$this->output->addTOC($this->frontPages + 1, '', '', 'Table of Contents');
 		$this->output->endTOCPage();
 	}

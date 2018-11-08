@@ -254,12 +254,6 @@ class EpubBuilder {
           //@TODO: figure out how to use the same trick as above for the mimetype file
           elseif (extension_loaded('zlib') === true) {
 
-            $anth_pear_ext_path = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'anthologize' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'epub' . DIRECTORY_SEPARATOR . 'pear_ext';
-
-            set_include_path(get_include_path() . PATH_SEPARATOR . $anth_pear_ext_path);
-
-            require_once( 'Archive.php' );
-
             $original_dir = getcwd(); // Remember CWD for later reset
             chdir($source);           // Set CWD to temp area
 

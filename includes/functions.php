@@ -188,3 +188,4 @@ function anthologize_get_session_output_params() {
 
 	return $params;
 }
+

@@ -1,0 +1,17 @@
+{
+    "name": "chnm/anthologize",
+    "description": "A WordPress plugin for creating ebooks from posts.",
+    "type": "project",
+    "license": "GPLv2",
+    "minimum-stability": "dev",
+    "repositories": [
+	{
+		"type": "github",
+		"url": "https://github.com/pear/File_Archive.git"
+	}
+    ],
+    "require": {
+	"pear/File_Archive": "dev-master",
+        "tecnickcom/tcpdf": "dev-master"
+    }
+}

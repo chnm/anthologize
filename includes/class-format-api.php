@@ -20,10 +20,19 @@ class Anthologize_Format_API {
 	 * @param $name string The name used internally by Anthologize for this format (eg 'pdf')
 	 * @param $label string The format name as displayed to the user. Can be localizable.
 	 * @param $loader_path string Path to the translator loader file, which will be included with WordPress's load_template()
+	 * @param $options array Array of options. See anthologize_register_format().
 	 * @return type bool Returns true on successful registration
 	 */
-	public static function register_format( $name, $label, $loader_path, $options = false ) {
+	public static function register_format( $name, $label, $loader_path, $options = array() ) {
 		global $anthologize_formats;
+
+		$options = array_merge(
+			array(
+				'is_available_callback' => '__return_true',
+				'unavailable_notice'    => '',
+			),
+			$options
+		);
 
 		if ( !is_array( $anthologize_formats ) )
 			$anthologize_formats = array();
@@ -36,8 +45,10 @@ class Anthologize_Format_API {
 		$name = $new_name;
 
 		$new_format = array(
-			'label' => $label,
-			'loader-path' => $loader_path
+			'label'                 => $label,
+			'loader-path'           => $loader_path,
+			'is_available_callback' => $options['is_available_callback'],
+			'unavailable_notice'    => $options['unavailable_notice'],
 		);
 
 		// Register the format
@@ -85,15 +96,29 @@ class Anthologize_Format_API {
 
 endif;
 
-
-function anthologize_register_format( $name, $label, $loader_path, $options = false ) {
+/**
+ * Registers a format type.
+ *
+ * @param string $name        Unique name for the format.
+ * @param string $label       Label for the format, to be displayed in the interface.
+ * @param string $loader_path Path to be included when generating the export.
+ * @param array  $options {
+ *   Optional array of options.
+ *
+ *   @type callable $is_available_callback Callback function for detecting whether the format
+ *                                         is compatible with the system.
+ *   @type callable $unavailable_notice    String shown to admins in interface when a format
+ *                                         is incompatible with the system.
+ * }
+ */
+function anthologize_register_format( $name, $label, $loader_path, $options = array() ) {
 	if ( !isset( $name ) || !isset( $label ) || !isset( $loader_path ) )
 		return false;
 
 	if ( !file_exists( $loader_path ) )
 		return false;
 
-	Anthologize_Format_API::register_format( $name, $label, $loader_path );
+	Anthologize_Format_API::register_format( $name, $label, $loader_path, $options );
 }
 
 function anthologize_deregister_format( $name ) {
@@ -232,7 +257,12 @@ function anthologize_register_default_formats() {
 	anthologize_register_format_option( 'rtf', 'colophon', __( 'Include Anthologize colophon page?', 'anthologize' ), 'checkbox' );
 
 	// Register ePub.
-	anthologize_register_format( 'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php' );
+	$epub_options = array(
+		'is_available_callback' => 'anthologize_epub_is_available',
+		'unavailable_notice'    => __( 'The ePub format requires the PHP XSL extension, which is not installed on this system.', 'anthologize' ),
+	);
+	anthologize_register_format(
+		'epub', __( 'ePub', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/epub/index.php', $epub_options );
 
 	anthologize_register_format_option( 'epub', 'font-size', __( 'Base Font Fize', 'anthologize' ), 'dropdown', $d_font_size, '12' );
 
@@ -276,3 +306,14 @@ function anthologize_register_default_formats() {
 	anthologize_register_format( 'tei', __( 'Anthologize TEI', 'anthologize' ), WP_PLUGIN_DIR . '/anthologize/templates/tei/base.php' );
 }
 add_action( 'anthologize_init', 'anthologize_register_default_formats' );
+
+/**
+ * Callback for determining whether ePub is supported by the system.
+ *
+ * @since 0.8.0
+ *
+ * @return bool
+ */
+function anthologize_epub_is_available() {
+	return class_exists( 'XSLTProcessor' );
+}

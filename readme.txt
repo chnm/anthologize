@@ -54,6 +54,11 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 
 == Changelog ==
 
+= 0.8.0 =
+* Accessibility improvements throughout admin interface
+* Rebuilt markup for export screens, for better accessibility and consistency with WordPress styling
+* Improved default post_status behavior and customizability for post browser in Project Organizer
+
 = 0.7.8 =
 * Removed the use of PHP sessions
 * Improved compatibility with WP 4.9

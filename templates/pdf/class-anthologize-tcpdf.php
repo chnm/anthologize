@@ -36,13 +36,13 @@ class AnthologizeTCPDF extends TCPDF {
 		$x_start = $this->GetX();
 		$current_page = $this->page;
 		$current_column = $this->current_column;
-		if ($this->empty_string($numbersfont)) {
+		if ( TCPDF_STATIC::empty_string( $numbersfont ) ) {
 			$numbersfont = $this->default_monospaced_font;
 		}
-		if ($this->empty_string($filler)) {
+		if ( TCPDF_STATIC::empty_string( $filler ) ) {
 			$filler = ' ';
 		}
-		if ($this->empty_string($page)) {
+		if ( TCPDF_STATIC::empty_string( $page ) ) {
 			$gap = ' ';
 		} else {
 			$gap = '';
@@ -98,7 +98,7 @@ class AnthologizeTCPDF extends TCPDF {
 
 			$this->Write(0, $outline['t'], $link, 0, $aligntext, false, 0, false, false, 0);
 			$this->SetFont($numbersfont, $fontstyle, $fontsize);
-			if ($this->empty_string($page)) {
+			if ( TCPDF_STATIC::empty_string( $page ) ) {
 				$pagenum = $outline['p'];
 			} else {
 				// placemark to be replaced with the correct number
@@ -130,7 +130,7 @@ class AnthologizeTCPDF extends TCPDF {
 		}
 		$page_last = $this->getPage();
 		$numpages = $page_last - $page_first + 1;
-		if (!$this->empty_string($page)) {
+		if ( ! TCPDF_STATIC::empty_string( $page ) ) {
 			for ($p = $page_first; $p <= $page_last; ++$p) {
 				// get page data
 				$temppage = $this->getPageBuffer($p);
@@ -141,13 +141,13 @@ class AnthologizeTCPDF extends TCPDF {
 					// update page numbers
 					$k = '{#'.$n.'}';
 					$ku = '{'.$k.'}';
-					$alias_a = $this->_escape($k);
-					$alias_au = $this->_escape($ku);
+					$alias_a = TCPDF_STATIC::_escape($k);
+					$alias_au = TCPDF_STATIC::_escape($ku);
 					if ($this->isunicode) {
-						$alias_b = $this->_escape($this->UTF8ToLatin1($k));
-						$alias_bu = $this->_escape($this->UTF8ToLatin1($ku));
-						$alias_c = $this->_escape($this->utf8StrRev($k, false, $this->tmprtl));
-						$alias_cu = $this->_escape($this->utf8StrRev($ku, false, $this->tmprtl));
+						$alias_b = TCPDF_STATIC::_escape( TCPDF_FONTS::UTF8ToLatin1( $k, $this->isunicode, $this->CurrentFont ) );
+						$alias_bu = TCPDF_STATIC::_escape( TCPDF_FONTS::UTF8ToLatin1( $ku, $this->isunicode, $this->CurrentFont ) );
+						$alias_c = TCPDF_STATIC::_escape( TCPDF_FONTS::utf8StrRev( $k, false, $this->tmprtl, $this->isunicode, $this->CurrentFont ) );
+						$alias_cu = TCPDF_STATIC::_escape( TCPDF_FONTS::utf8StrRev( $ku, false, $this->tmprtl, $this->isunicode, $this->CurrentFont ) );
 					}
 					if ($n >= $page) {
 						$np = $n + $numpages;
@@ -159,8 +159,7 @@ class AnthologizeTCPDF extends TCPDF {
 //since $page is the page where the TOC is being inserted, subtracting it again from $np gets the printed page
 //numbers to match up with the numbering in the TOC
 
-					$ns = $this->formatTOCPageNumber($np - $page );
-
+					$ns = TCPDF_STATIC::formatTOCPageNumber( $np - $page );
 
 					$nu = $ns;
 					$sdiff = strlen($k) - strlen($ns) - 1;
@@ -174,7 +173,7 @@ class AnthologizeTCPDF extends TCPDF {
 						$ns = $sfill.' '.$ns;
 						$nu = $sfillu.' '.$nu;
 					}
-					$nu = $this->UTF8ToUTF16BE($nu, false);
+					$nu = TCPDF_FONTS::UTF8ToUTF16BE( $nu, false, $this->isunicode, $this->CurrentFont );
 					$temppage = str_replace($alias_au, $nu, $temppage);
 					if ($this->isunicode) {
 						$temppage = str_replace($alias_bu, $nu, $temppage);
@@ -205,36 +204,31 @@ class AnthologizeTCPDF extends TCPDF {
 	 * @since 0.6
 	 */
 	public function Header() {
-		if ($this->header_xobjid < 0) {
+		if ($this->header_xobjid === false) {
 			// start a new XObject Template
 			$this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);
 			$headerfont = $this->getHeaderFont();
 			$headerdata = $this->getHeaderData();
-
 			$this->y = $this->header_margin;
 			if ($this->rtl) {
 				$this->x = $this->w - $this->original_rMargin;
 			} else {
 				$this->x = $this->original_lMargin;
 			}
-
 			if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
-
-				$imgtype = $this->getImageFileType( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo']);
+				$imgtype = TCPDF_IMAGES::getImageFileType( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo']);
 				if (($imgtype == 'eps') OR ($imgtype == 'ai')) {
 					$this->ImageEps( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} elseif ($imgtype == 'svg') {
 					$this->ImageSVG( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} else {
-					$this->Image( ANTHOLOGIZE_IMAGES_PATH . $headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->Image( ANTHOLOGIZE_IMAGES_PATH .$headerdata['logo'], '', '', $headerdata['logo_width']);
 				}
 				$imgy = $this->getImageRBY();
-
 			} else {
 				$imgy = $this->y;
 			}
-
-			$cell_height = round(($this->cell_height_ratio * $headerfont[2]) / $this->k, 2);
+			$cell_height = $this->getCellHeight($headerfont[2] / $this->k);
 			// set starting margin for text data cell
 			if ($this->getRTL()) {
 				$header_x = $this->original_rMargin + ($headerdata['logo_width'] * 1.1);
@@ -242,18 +236,17 @@ class AnthologizeTCPDF extends TCPDF {
 				$header_x = $this->original_lMargin + ($headerdata['logo_width'] * 1.1);
 			}
 			$cw = $this->w - $this->original_lMargin - $this->original_rMargin - ($headerdata['logo_width'] * 1.1);
-			$this->SetTextColor(0, 0, 0);
+			$this->SetTextColorArray($this->header_text_color);
 			// header title
 			$this->SetFont($headerfont[0], 'B', $headerfont[2] + 1);
 			$this->SetX($header_x);
 			$this->Cell($cw, $cell_height, $headerdata['title'], 0, 1, '', 0, '', 0);
-
 			// header string
 			$this->SetFont($headerfont[0], $headerfont[1], $headerfont[2]);
 			$this->SetX($header_x);
 			$this->MultiCell($cw, $cell_height, $headerdata['string'], 0, '', 0, 1, '', '', true, 0, false, true, 0, 'T', false);
 			// print an ending header line
-			$this->SetLineStyle(array('width' => 0.85 / $this->k, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)));
+			$this->SetLineStyle(array('width' => 0.85 / $this->k, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $headerdata['line_color']));
 			$this->SetY((2.835 / $this->k) + max($imgy, $this->y));
 			if ($this->rtl) {
 				$this->SetX($this->original_rMargin);
@@ -266,7 +259,7 @@ class AnthologizeTCPDF extends TCPDF {
 		// print header template
 		$x = 0;
 		$dx = 0;
-		if ($this->booklet AND (($this->page % 2) == 0)) {
+		if (!$this->header_xobj_autoreset AND $this->booklet AND (($this->page % 2) == 0)) {
 			// adjust margins for booklet mode
 			$dx = ($this->original_lMargin - $this->original_rMargin);
 		}
@@ -278,7 +271,7 @@ class AnthologizeTCPDF extends TCPDF {
 		$this->printTemplate($this->header_xobjid, $x, 0, 0, 0, '', '', false);
 		if ($this->header_xobj_autoreset) {
 			// reset header xobject template at each page
-			$this->header_xobjid = -1;
+			$this->header_xobjid = false;
 		}
 	}
 

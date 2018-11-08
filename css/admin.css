@@ -6,3 +6,9 @@
 .export-panel .form-table textarea {
 	width: 80%;
 }
+
+.disabled-format-message {
+	font-size: .9em;
+	font-style: italic;
+	padding-left: 15px;
+}
