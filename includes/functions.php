@@ -144,6 +144,7 @@ function anthologize_get_session_data_keys() {
 		'break-items',
 		'colophon',
 		'do-shortcodes',
+		'metadata',
 
 		'creatorOutputSettings',
 		'outputParams',
@@ -176,6 +177,7 @@ function anthologize_get_session_output_params() {
 		'creatorOutputSettings',
 		'download',
 		'gravatar-default',
+		'metadata',
 	);
 
 	$params = array();

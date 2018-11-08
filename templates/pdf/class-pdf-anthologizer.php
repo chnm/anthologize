@@ -258,6 +258,12 @@ class PdfAnthologizer extends Anthologizer {
 		}
 		$this->appendItemHead($section, $partNo, $itemNo);
 
+		$metadata_params_raw = $this->api->getProjectOutputParams( 'metadata' );
+		if ( $metadata_params_raw ) {
+			$metadata_params = json_decode( $metadata_params_raw );
+			$this->appendItemMetadata( $section, $partNo, $itemNo, $metadata_params );
+		}
+
 		//append the item content
 		$content = $this->writeItemContent($section, $partNo, $itemNo);
 		$this->output->writeHTML($content, true, false, true);
@@ -322,6 +328,40 @@ class PdfAnthologizer extends Anthologizer {
 		$this->output->Write('', $title, '', false, 'C', true );
 		$this->output->setFont($this->font_family, '', $this->baseH);
 
+	}
+
+	public function appendItemMetadata( $section, $partNo, $itemNo, $metadata_types ) {
+		$mds = array();
+
+		foreach ( $metadata_types as $metadata_type ) {
+			switch ( $metadata_type ) {
+				case 'author' :
+					$author = $this->api->getSectionPartItemOriginalAuthor( $section, $partNo, $itemNo );
+					if ( $author ) {
+						/* translators: Item author name */
+						$mds[] = sprintf( __( 'By %s', 'anthologize' ), $author );
+					}
+
+					break;
+
+				case 'date' :
+					$date = $this->api->getSectionPartItemPublicationDate( $section, $partNo, $itemNo );
+
+					if ( $date ) {
+						$mds[] = mysql2date( get_option( 'date_format' ), $date );
+					}
+
+					break;
+			}
+		}
+
+		if ( ! $mds ) {
+			return;
+		}
+
+		$text = implode( ' &middot; ', $mds );
+
+		$this->output->writeHTML( $text, '', false, false, false, 'C' );
 	}
 
 	public function finish() {
