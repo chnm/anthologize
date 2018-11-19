@@ -325,6 +325,7 @@ class Anthologize {
 			'comments_explain' => __( 'Check the comments from the original post that you would like to include in your project.', 'anthologize' ),
 			'done'             => __( 'Done', 'anthologize' ),
 			'edit'             => __( 'Edit', 'anthologize' ),
+			'hide_details'     => __( 'Hide details', 'anthologize' ),
 			'less'             => __( 'less', 'anthologize' ),
 			'more'             => __( 'more', 'anthologize' ),
 			'no_comments'      => __( 'This post has no comments associated with it.', 'anthologize' ),
@@ -334,6 +335,7 @@ class Anthologize {
 			'save'             => __( 'Save', 'anthologize' ),
 			'select_all'       => __( 'Select all', 'anthologize' ),
 			'select_none'      => __( 'Select none', 'anthologize' ),
+			'show_details'     => __( 'Show details', 'anthologize' ),
 		) );
 	}
 }

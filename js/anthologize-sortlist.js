@@ -597,6 +597,10 @@ jQuery(document).ready(function(){
 		anthologize.toggleCollapseCookie(part.attr('id'));
 	});
 
+	jQuery('#project-organizer-frame').on('click', '.accordion-toggle', function( e ) {
+		jQuery(e.target).closest('.has-accordion').toggleClass('accordion-closed');
+	} );
+
 	var cp = jQuery.cookie('collapsedparts');
 	if (cp){
 		var parts = cp.split(',');
