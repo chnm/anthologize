@@ -517,11 +517,61 @@ class Anthologize_Project_Organizer {
 		?>
 			<ul id="sidebar-posts">
 				<?php while ( $big_posts->have_posts() ) : $big_posts->the_post(); ?>
-					<li class="part-item item">
-						<span class="fromNewId">new-<?php the_ID() ?></span><h3 class="part-item-title"><?php the_title() ?></h3>
-						<?php /*
-						<a href="#" class="hide-if-no-js">&#x25BC;</a>
-						*/ ?>
+					<?php
+					$item_metadata = array(
+						'link'   => sprintf(
+							'<a href="%s">%s</a>',
+							esc_attr( get_permalink() ),
+							esc_html__( 'View post', 'anthologize' )
+						),
+					);
+
+					$item_post   = get_post( get_the_ID() );
+					$item_author = get_userdata( $item_post->post_author );
+					$item_tags   = get_the_term_list( get_the_ID(), 'post_tag', '', ', ' );
+					$item_cats   = get_the_term_list( get_the_ID(), 'category', '', ', ' );
+
+					if ( $item_author ) {
+						$item_metadata['author'] = sprintf(
+							__( 'Author: %s', 'anthologize' ),
+							esc_html( sprintf( '%s (%s)', $item_author->display_name, $item_author->user_login ) )
+						);
+					}
+
+					if ( $item_tags ) {
+						$item_metadata['tags'] = sprintf( __( 'Tags: %s', 'anthologize' ), $item_tags );
+					}
+
+					if ( $item_cats ) {
+						$item_metadata['cats'] = sprintf( __( 'Categories: %s', 'anthologize' ), $item_cats );
+					}
+
+					/**
+					 * Filters the metadata shown below a post item in the project organizer.
+					 *
+					 * @since 0.8.0
+					 *
+					 * @param array $item_metadata Metadata assembled by Anthologize.
+					 * @param int   $item_id       ID of the post.
+					 */
+					$item_metadata = apply_filters( 'anthologize_source_item_metadata', $item_metadata, get_the_ID() );
+
+					?>
+					<li class="part-item item has-accordion accordion-closed">
+						<span class="fromNewId">new-<?php the_ID() ?></span>
+						<h3 class="part-item-title"><?php the_title() ?></h3>
+						<span class="accordion-toggle hide-if-no-js">
+							<span class="accordion-toggle-glyph"></span>
+							<span class="screen-reader-text"><?php esc_html_e( 'Show details', 'anthologize' ); ?></span>
+						</span>
+
+						<div class="item-details">
+							<ul>
+							<?php foreach ( $item_metadata as $im ) : ?>
+								<li><?php echo $im; ?></li>
+							<?php endforeach; ?>
+							</ul>
+						</div>
 					</li>
 				<?php endwhile; ?>
 			</ul>

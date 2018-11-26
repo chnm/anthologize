@@ -199,6 +199,41 @@ span.fromNewId {
 	width: 280px;
 }
 
+#sidebar-posts .part-item-title {
+	margin-right: 10px;
+}
+
+.accordion-toggle {
+	cursor: pointer;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+
+.accordion-toggle-glyph:before {
+	content: '\2212';
+	display: block;
+	height: 10px;
+	width: 10px;
+}
+
+.accordion-closed .accordion-toggle-glyph:before {
+	content: '\002B';
+}
+
+.accordion-closed .item-details {
+	display: none;
+}
+
+.item-details {
+	background: #fff;
+	border-radius: 3px;
+	color: #000;
+	font-weight: normal;
+	margin-top: 1em;
+	padding: 5px;
+}
+
 .part-title {
 	padding-right: 290px;
 	display: block;
