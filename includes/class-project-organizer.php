@@ -322,7 +322,7 @@ class Anthologize_Project_Organizer {
 		// Author data
 		$user = get_userdata( $the_item->post_author );
 
-		if ( ! $author_name = get_post_meta( $item_id, 'author_name', true ) ) {
+		if ( ! $author_name = get_post_meta( $item_id, 'author_name', true ) && $user ) {
 			$author_name = $user->display_name;
 		}
 
