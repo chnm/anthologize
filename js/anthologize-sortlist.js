@@ -264,6 +264,10 @@ var anthologize = {
 		if ( original_id !== false ) {
 			newItem.attr("id", "item-" + new_item_id);
 		}
+
+		// Remove 'item-details'.
+		newItem.children('.accordion-toggle').remove();
+		newItem.children('.item-details').remove();
   },
   "updateAppendedItems" : function(appended_items){
 	  var appendedTo = jQuery(".active-append").closest("li.item");
