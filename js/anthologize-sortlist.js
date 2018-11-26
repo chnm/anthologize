@@ -268,6 +268,9 @@ var anthologize = {
 		// Remove 'item-details'.
 		newItem.children('.accordion-toggle').remove();
 		newItem.children('.item-details').remove();
+
+		// Allow height to expand, if necessary.
+		newItem.css('height','auto');
   },
   "updateAppendedItems" : function(appended_items){
 	  var appendedTo = jQuery(".active-append").closest("li.item");
