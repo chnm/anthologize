@@ -231,38 +231,39 @@ var anthologize = {
 
   },
   "updateAddedItem" : function (new_item_id,comment_count,original_id){
-	newItem = anthologize.newItem;
+		newItem = anthologize.newItem;
 
-	/* Multi-add items get their ids from the original post id, so we swap the selector here */
-	var id_selector = original_id !== false ? original_id : new_item_id;
+		/* Multi-add items get their ids from the original post id, so we swap the selector here */
+		var id_selector = original_id !== false ? original_id : new_item_id;
 
-	newItem.attr("id", "item-" + id_selector);
+		newItem.attr("id", "item-" + id_selector);
 
-	newItem.children("h3").wrapInner('<span class="part-title" />');
+		newItem.children("h3").wrapInner('<span class="part-title" />');
 
-	/* Comments are being held until 0.7 */
-	/*
-	var buttons = 	'<div class="part-item-buttons">' +
-			'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | '+
-			'<a href="#comments" class="comments toggle">' + anth_strings.comments + ' (<span class="included-comment-count">0</span>/' + comment_count + ')</a><span class="comments-sep toggle-sep"> |</span> ' +
-			'<a class="append" href="#append">' + anth_strings.append + ' | </a> ' +
-			'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
-			'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
-			'</div>';
-	*/
+		/* Comments are being held until 0.7 */
+		/*
+		var buttons = 	'<div class="part-item-buttons">' +
+		'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | '+
+		'<a href="#comments" class="comments toggle">' + anth_strings.comments + ' (<span class="included-comment-count">0</span>/' + comment_count + ')</a><span class="comments-sep toggle-sep"> |</span> ' +
+		'<a class="append" href="#append">' + anth_strings.append + ' | </a> ' +
+		'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' +
+		'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
+		'</div>';
+		*/
 
-	var buttons = 	'<div class="part-item-buttons anth-buttons">' +
-				'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | ' +
-				'<a class="append" href="#append">' + anth_strings.append + '</a><span class="append-sep toggle-sep"> | </span>' +
-				'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a><span class="toggle-sep"> | </span>' +
-				'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
-			'</div>';
+		var buttons = 	'<div class="part-item-buttons anth-buttons">' +
+		'<a href="post.php?post=' + new_item_id + '&amp;action=edit">' + anth_strings.edit + '</a> | ' +
+		'<a class="append" href="#append">' + anth_strings.append + '</a><span class="append-sep toggle-sep"> | </span>' +
+		'<a class="anth-preview anth-preview-item" href="admin.php?page=anthologize&anth_preview=1&post_type=anth_library_item&post_id=' + new_item_id + '" target="new">' + anth_strings.preview + '</a><span class="toggle-sep"> | </span>' +
+		'<a class="confirm" href="admin.php?page=anthologize&amp;action=edit&amp;' + 'project_id=' + anthologize.getProjectId() + '&amp;remove=' + new_item_id + '">' + anth_strings.remove + '</a>' +
+		'</div>';
 
-	newItem.children("h3").append(buttons);
+		newItem.children("h3").append(buttons);
 
-	/* Ugh. Now we switch back to the proper id, so the comments slider will work */
-	if ( original_id !== false )
-		newItem.attr("id", "item-" + new_item_id);
+		/* Ugh. Now we switch back to the proper id, so the comments slider will work */
+		if ( original_id !== false ) {
+			newItem.attr("id", "item-" + new_item_id);
+		}
   },
   "updateAppendedItems" : function(appended_items){
 	  var appendedTo = jQuery(".active-append").closest("li.item");
