@@ -75,12 +75,14 @@ class Anthologize_Export_Panel {
 		// No default for edition number
 		$edition = isset( $options['edition'] ) ? isset( $options['edition'] ) : false;
 
-		if ( isset( $options['authors'] ) )
+		if ( isset( $options['authors'] ) ) {
 			$authors = $options['authors'];
-		else if ( isset( $options['author_name'] ) )
+		} elseif ( isset( $options['author_name'] ) ) {
 			$authors = $options['authors'];
-		else
-			$authors = '';
+		} else {
+			$author_names = anthologize_get_item_author_names( $project_id );
+			$authors = implode( ', ', $author_names );
+		}
 
 		$dedication = !empty( $options['dedication'] ) ? $options['dedication'] : '';
 
@@ -156,8 +158,11 @@ class Anthologize_Export_Panel {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><label for="authors"><?php _e( 'Add Author(s)', 'anthologize' ) ?></label></th>
-					<td><textarea id="authors" name="authors"><?php echo esc_textarea( $authors ); ?></textarea></td>
+					<th scope="row"><label for="authors"><?php esc_html_e( 'Author(s)', 'anthologize' ) ?></label></th>
+					<td>
+						<textarea id="authors" name="authors"><?php echo esc_textarea( $authors ); ?></textarea>
+						<p class="description">The default value is automatically compiled, based on authors of the source content.</p>
+					</td>
 				</tr>
 			</table>
 
