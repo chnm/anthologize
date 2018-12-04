@@ -132,7 +132,12 @@ class Anthologize_Ajax_Handlers {
 		$the_posts = Array();
 		while ( $posts->have_posts() ) {
 			$posts->the_post();
-			$the_posts[get_the_ID()] = get_the_title();
+
+			$post_data = array(
+				'title'    => get_the_title(),
+				'metadata' => Anthologize_Project_Organizer::get_item_metadata( get_the_ID() ),
+			);
+			$the_posts[ get_the_ID() ] = $post_data;
 		}
 
 		$the_posts = apply_filters( 'anth_get_posts_by', $the_posts, $filterby );

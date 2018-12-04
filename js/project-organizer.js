@@ -57,8 +57,21 @@
 			data: data,
 			success: function(response){
 				j('#sidebar-posts').empty();
-				j.each( response, function(post_id, post_title) {
-					var h = '<li class="item part-item"><span class="fromNewId">new-' + post_id + '</span><h3 class="part-item-title">' + post_title + '</h3></li>';
+				j.each( response, function(post_id, post_data) {
+					var h = '';
+					h += '<li class="part-item item has-accordion accordion-closed">';
+					h +=   '<span class="fromNewId">new-' + post_id + '</span>';
+					h +=   '<h3 class="part-item-title">' + post_data.title + '</h3>';
+					h +=   '<span class="accordion-toggle hide-if-no-js"><span class="accordion-toggle-glyph"></span> <span class="screen-reader-text">' + anth_strings.show_details + '</span></span>';
+
+					h += '<div class="item-details"><ul>';
+					for ( var md in post_data.metadata ) {
+						h += '<li>' + post_data.metadata[ md ] + '</li>';
+					}
+					h += '</ul></div>';
+
+					h += '</li>';
+
 					j('#sidebar-posts').append(h);
 				});
 				anthologize.initSidebar();
