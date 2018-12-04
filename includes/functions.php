@@ -41,6 +41,63 @@ function anthologize_get_part_items($partId) {
 
 }
 
+/**
+ * Get a list of author names for an item.
+ *
+ * @since 0.8.0
+ *
+ * @param int $item_id Project, part, or item ID.
+ */
+function anthologize_get_item_author_names( $item_id ) {
+	$names = array();
+
+	$post = get_post( $item_id );
+	if ( ! $post ) {
+		return $names;
+	}
+
+	$item_names = array();
+	switch ( $post->post_type ) {
+		case 'anth_project' :
+			$part_query = new WP_Query( array(
+				'post_type'     => 'anth_part',
+				'post_per_page' => -1,
+				'showposts'     => -1,
+				'fields'        => 'ids',
+				'post_parent'   => $item_id,
+			) );
+
+			foreach ( $part_query->posts as $post ) {
+				$item_names = array_merge( $item_names, anthologize_get_item_author_names( $post ) );
+			}
+		break;
+
+		case 'anth_part' :
+			$item_query = new WP_Query( array(
+				'post_type'     => 'anth_library_item',
+				'post_per_page' => -1,
+				'showposts'     => -1,
+				'fields'        => 'ids',
+				'post_parent'   => $item_id,
+			) );
+
+			foreach ( $item_query->posts as $post ) {
+				$item_names = array_merge( $item_names, anthologize_get_item_author_names( $post ) );
+			}
+
+		break;
+
+		case 'anth_library_item' :
+			$item_names = get_post_meta( $item_id, 'author_name_array', true );
+		break;
+	}
+
+	$item_names = array_filter( array_unique( $item_names ) );
+	natcasesort( $item_names );
+
+	return $item_names;
+}
+
 function anthologize_display_project_content($projectId) {
     $parts = anthologize_get_project_parts($projectId);
 

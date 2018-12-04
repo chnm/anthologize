@@ -120,14 +120,16 @@ class PdfAnthologizer extends Anthologizer {
 
 		$this->frontPages++;
 
-		$this->output->SetY(80);
-		$this->output->Write('', $book_title, '', false, 'C', true );
-		$this->output->setFont($this->font_family, '', $this->baseH);
+		$this->output->SetY( 80 );
 
+		$table = '<table><tr><td align="center">' . $book_title . '</td></tr></table>';
+		$this->output->writeHTML( $table );
+
+		$this->output->setFont($this->font_family, '', $this->baseH);
 
 		switch($this->api->getProjectOutputParams('creatorOutputSettings')) {
 		    case ANTHOLOGIZE_CREATORS_ALL:
-		        $projectAuthorsString = $creator . ', ' . $assertedAuthors;
+		        $projectAuthorsString = $assertedAuthors;
 		        break;
 
 		    case ANTHOLOGIZE_CREATORS_ASSERTED:
@@ -138,11 +140,15 @@ class PdfAnthologizer extends Anthologizer {
 		        break;
 		}
 
-
-		$this->output->Write('', $projectAuthorsString, '', false, 'C', true );
-		$this->output->SetY(120);
 		$year = substr( $this->api->getProjectPublicationDate(), 0, 4 );
-		$this->output->Write('', $this->api->getProjectCopyright(false, false) . ' -- ' . $year , '', false, 'C', true );
+
+		$table  = '<table cellpadding="5">';
+		$table .= '<tr><td align="center">' . $projectAuthorsString . '</td></tr>';
+		$table .= '<tr><td align="center">' . $this->api->getProjectCopyright( false, false ) . ' &mdash; ' . $year . '</td></tr>';
+		$table .= '</table>';
+
+		$this->output->writeHTML( $table );
+
         $this->output->EndPage();
 
 		//dedication
