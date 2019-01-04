@@ -17,6 +17,8 @@ class Anthologize_Project_Organizer {
 		if ( ! empty( $project->post_title ) ) {
 			$this->project_name = $project->post_title;
 		}
+
+		add_filter( 'posts_clauses', array( $this, 'filter_orderby_for_author_name' ), 10, 2 );
 	}
 
 	/**
@@ -89,6 +91,10 @@ class Anthologize_Project_Organizer {
 								<div class="customlinkdiv" id="customlinkdiv">
 
 									<p id="menu-item-name-wrap">
+										<?php $this->orderby_dropdown() ?>
+									</p>
+
+									<p id="menu-item-name-wrap">
 										<?php $this->sortby_dropdown() ?>
 									</p>
 
@@ -156,6 +162,40 @@ class Anthologize_Project_Organizer {
 			</div> <!-- #project-organizer-frame -->
 
 		</div> <!-- .wrap -->
+
+		<?php
+	}
+
+	/**
+	 * Markup for the 'Order by' dropdown section.
+	 *
+	 * @since 0.8.0
+	 */
+	function orderby_dropdown() {
+		$filters = array(
+		    'author_asc'  => __( 'Author (A-Z)', 'anthologize' ),
+		    'author_desc' => __( 'Author (Z-A)', 'anthologize' ),
+		    'date_asc'    => __( 'Date (oldest first)', 'anthologize' ),
+		    'date_desc'   => __( 'Date (newest first)', 'anthologize' ),
+		    'title_asc'   => __( 'Title (A-Z)', 'anthologize' ),
+		    'title_desc'  => __( 'Title (Z-A)', 'anthologize' ),
+		);
+
+		$orderby  = 'title';
+		$corderby = isset( $_COOKIE['anth-orderby'] ) ? $_COOKIE['anth-orderby'] : '';
+		if ( $corderby && isset( $filters[ $corderby ] ) ) {
+			$orderby = $corderby;
+		}
+
+		?>
+
+		<label for="orderby-dropdown"><?php _e( 'Order by', 'anthologize' ) ?></label>
+
+		<select name="orderby" id="orderby-dropdown">
+			<?php foreach ( $filters as $filter => $name ) : ?>
+				<option value="<?php echo esc_attr( $filter ) ?>" <?php selected( $filter, $orderby ); ?>><?php echo esc_html( $name ) ?></option>
+			<?php endforeach; ?>
+		</select>
 
 		<?php
 	}
@@ -460,11 +500,10 @@ class Anthologize_Project_Organizer {
 		global $wpdb;
 
 		$args = array(
-			'post_type' => array('post', 'page', 'anth_imported_item' ),
+			'post_type' => array_keys( $this->available_post_types() ),
 			'posts_per_page' => -1,
-			'orderby' => 'post_title',
-			'order' => 'DESC',
 			'post_status' => $this->source_item_post_statuses(),
+			'is_anthologize_query' => true,
 		);
 
 		$cfilter = isset( $_COOKIE['anth-filter'] ) ? $_COOKIE['anth-filter'] : false;
@@ -510,6 +549,12 @@ class Anthologize_Project_Organizer {
 				}
 			}
 		}
+
+		$corderby = isset( $_COOKIE['anth-orderby'] ) ? $_COOKIE['anth-orderby'] : 'title_asc';
+		$orderby_settings = Anthologize_Project_Organizer::get_orderby_settings( $corderby );
+
+		$args['orderby'] = $orderby_settings['orderby'];
+		$args['order']   = $orderby_settings['order'];
 
 		$big_posts = new WP_Query( $args );
 
@@ -610,6 +655,47 @@ class Anthologize_Project_Organizer {
 		}
 
 		return $item_metadata;
+	}
+
+	/**
+	 * Get order values from stored setting.
+	 */
+	public static function get_orderby_settings( $orderby ) {
+		$orderby_values = array(
+			'date_asc' => array(
+				'orderby' => 'date',
+				'order'   => 'ASC',
+			),
+			'date_desc' => array(
+				'orderby' => 'date',
+				'order'   => 'DESC',
+			),
+			'title_asc' => array(
+				'orderby' => 'title',
+				'order'   => 'ASC',
+			),
+			'title_desc' => array(
+				'orderby' => 'title',
+				'order'   => 'DESC',
+			),
+			'author_desc' => array(
+				'orderby' => 'author_name',
+				'order'   => 'DESC',
+			),
+			'author_asc' => array(
+				'orderby' => 'author_name',
+				'order'   => 'asc',
+			),
+		);
+
+		if ( ! isset( $orderby_values[ $orderby ] ) ) {
+			$orderby_values = 'title_asc';
+		}
+
+		return array(
+			'orderby' => $orderby_values[ $orderby ]['orderby'],
+			'order'   => $orderby_values[ $orderby ]['order'],
+		);
 	}
 
 	function get_part_items( $part_id ) {
@@ -936,6 +1022,27 @@ class Anthologize_Project_Organizer {
 			'anthologize_source_item_post_statuses',
 			array( 'publish', 'pending', 'future', 'private' )
 		);
+	}
+
+	public function filter_orderby_for_author_name( $clauses, $q ) {
+		global $wpdb;
+
+		if ( ! $q->get( 'is_anthologize_query' ) ) {
+			return $clauses;
+		}
+
+		$orderby_param = $q->get( 'orderby' );
+		if ( 'author_name' !== $orderby_param ) {
+			return $clauses;
+		}
+
+		// Don't double-add.
+		if ( false === strpos( $clauses['join'], 'anthologize_author' ) ) {
+			$clauses['join']   .= " LEFT JOIN {$wpdb->users} AS anthologize_author ON ({$wpdb->posts}.post_author = anthologize_author.ID) ";
+			$clauses['orderby'] = 'anthologize_author.user_nicename ' . $q->get( 'order' );
+		}
+
+		return $clauses;
 	}
 }
 
