@@ -82,12 +82,20 @@ class Anthologize_Ajax_Handlers {
     function get_posts_by() {
 		$filterby = $_POST['filterby'];
 
+		$submitted_orderby = isset( $_POST['orderby'] ) ? $_POST['orderby'] : 'title_asc';
+
+		$orderby_settings = Anthologize_Project_Organizer::get_orderby_settings( $submitted_orderby );
+
+		$orderby = $orderby_settings['orderby'];
+		$order   = $orderby_settings['order'];
+
 		$args = array(
 			'post_type' => array_keys($this->project_organizer->available_post_types()),
 			'posts_per_page' => -1,
-			'orderby' => 'post_date',
-			'order' => 'DESC',
+			'orderby' => $orderby,
+			'order' => $order,
 			'post_status' => $this->project_organizer->source_item_post_statuses(),
+			'is_anthologize_query' => true,
 		);
 
 		switch ( $filterby ) {
@@ -126,6 +134,7 @@ class Anthologize_Ajax_Handlers {
 				}
 				break;
 		}
+
 		// Allow plugins to modify the query_post arguments
 		$posts = new WP_Query( apply_filters( 'anth_get_posts_by_query', $args, $filterby ) );
 
@@ -137,7 +146,7 @@ class Anthologize_Ajax_Handlers {
 				'title'    => get_the_title(),
 				'metadata' => Anthologize_Project_Organizer::get_item_metadata( get_the_ID() ),
 			);
-			$the_posts[ get_the_ID() ] = $post_data;
+			$the_posts[] = $post_data;
 		}
 
 		$the_posts = apply_filters( 'anth_get_posts_by', $the_posts, $filterby );
@@ -445,5 +454,3 @@ class Anthologize_Ajax_Handlers {
 }
 
 endif;
-
-?>
