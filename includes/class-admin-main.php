@@ -763,7 +763,6 @@ class Anthologize_Admin_Main {
 									$dd = $value;
 									break;
 								default:
-									continue;
 									break;
 							}
 					?>
