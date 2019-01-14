@@ -91,7 +91,7 @@ class Anthologize_Project_Organizer {
 								<div class="customlinkdiv" id="customlinkdiv">
 
 									<p id="menu-item-name-wrap">
-										<?php $this->orderby_dropdown() ?>
+										<?php $this->sortby_dropdown() ?>
 									</p>
 
 									<p id="termfilter">
@@ -103,7 +103,7 @@ class Anthologize_Project_Organizer {
 									</p>
 
 									<p id="menu-item-name-wrap">
-										<?php $this->sortby_dropdown() ?>
+										<?php $this->orderby_dropdown() ?>
 									</p>
 
 									<h3 class="part-header"><?php _e( 'Posts', 'anthologize' ) ?></h3>
