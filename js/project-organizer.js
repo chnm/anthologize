@@ -8,6 +8,11 @@
 		$termFilterSection;
 
 	function showHideSubFilter() {
+		// Ensure null is converted to a string.
+		if ( null === currentFilterBy ) {
+			currentFilterBy = '';
+		}
+
 		switch ( currentFilterBy ) {
 			case 'date' :
 				$dateFilterSection.show();
