@@ -3,8 +3,8 @@ Contributors: oneweekonetool, boonebgorges, digitaleffie, gossettphd, janaremy, 
 Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.3
-Tested up to: 4.9
-Stable tag: 0.7.8
+Tested up to: 5.1
+Stable tag: 0.8.0
 
 Use the power of WordPress to transform your content into a book.
 
@@ -55,9 +55,15 @@ To add your own cover images, just upload them to the anthologize/templates/epub
 == Changelog ==
 
 = 0.8.0 =
+* Introduced ability to include post author and/or post date in PDF export
+* Introduced new "order by" interface to Project Organizer sidebar
+* Added expandable tab for displaying item metadata (author, date, categories, tags) when browsing items in Project Organizer sidebar
 * Accessibility improvements throughout admin interface
+* Improved generation of default project "author" string; a concatenated list of all individual item authors is now provided
 * Rebuilt markup for export screens, for better accessibility and consistency with WordPress styling
 * Improved default post_status behavior and customizability for post browser in Project Organizer
+* Updated internal libraries for better PHP compatibility
+* Removed 'draft' posts from Project Organizer sidebar
 
 = 0.7.8 =
 * Removed the use of PHP sessions
