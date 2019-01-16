@@ -181,7 +181,7 @@ class Anthologize_Project_Organizer {
 		    'title_desc'  => __( 'Title (Z-A)', 'anthologize' ),
 		);
 
-		$orderby  = 'title';
+		$orderby  = 'title_asc';
 		$corderby = isset( $_COOKIE['anth-orderby'] ) ? $_COOKIE['anth-orderby'] : '';
 		if ( $corderby && isset( $filters[ $corderby ] ) ) {
 			$orderby = $corderby;
