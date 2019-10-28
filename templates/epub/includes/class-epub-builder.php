@@ -114,7 +114,7 @@ class EpubBuilder {
 
     public function createDirs() {
 
-        $upload_dir = wp_upload_dir();
+        $upload_dir = wp_upload_dir( null, false );
         $tempDir = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . 'anthologize-temp';
         if(! is_dir($tempDir)) {
             mkdir($tempDir);
