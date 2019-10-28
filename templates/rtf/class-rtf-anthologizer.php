@@ -568,8 +568,8 @@ class RtfAnthologizer extends Anthologizer {
   // (this is the only format that seems to work consistently in Word)
   
   protected function getImageHexCode($filename) {
-  
-    $upload_dir_array = wp_upload_dir();
+
+    $upload_dir_array = wp_upload_dir( null, false );
     $tempImageFilename = $upload_dir_array['basedir'] . DIRECTORY_SEPARATOR . 'anthologize-rtf-temp-img.png';
   
     // TODO: get image and save to temp file

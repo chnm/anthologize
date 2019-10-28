@@ -88,7 +88,7 @@ class Anthologize {
 		$this->plugin_url   = plugin_dir_url( __FILE__ );
 		$this->includes_dir = trailingslashit( $this->plugin_dir . 'includes' );
 
-		$upload_dir         = wp_upload_dir();
+		$upload_dir         = wp_upload_dir( null, false );
 		$this->cache_dir    = trailingslashit( $upload_dir['basedir'] . '/anthologize-cache' );
 		$this->cache_url    = trailingslashit( $upload_dir['baseurl'] . '/anthologize-cache' );
 
