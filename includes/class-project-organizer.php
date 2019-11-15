@@ -798,23 +798,6 @@ class Anthologize_Project_Organizer {
 		if ( true === $new_post ) {
 			$add_item_result = $this->add_item_to_part( $post_id, $dest_id );
 
-			//clone over the attachments to the original post and associate them with the new
-			//library item. That should make things like the [gallery] shortcode work
-			$attArgs = array( 'post_parent'=> $post_id, 'post_type' => 'attachment' );
-			$attachments = get_children( $attArgs );
-			foreach ( $attachments as $attachment ) {
-				$attPostArgs = array(
-					'post_parent'    => $add_item_result,
-					'post_type'      => 'attachment',
-					'guid'           => $attachment->guid,
-					'post_title'     => $attachment->post_title,
-					'post_status'    => $attachment->post_status,
-					'post_name'      => $attachment->post_name,
-					'post_mime_type' => $attachment->post_mime_type
-				);
-				wp_insert_post( $attPostArgs );
-			}
-
 			if ( false === $add_item_result ) {
 				return false;
 			}
