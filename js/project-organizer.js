@@ -47,7 +47,7 @@
 		j.cookie( 'anth-orderby', currentOrderBy, { expires: cookieExpires } );
 
 		var data = {
-			action: 'get_posts_by',
+			action: 'anthologize_get_posts_by',
 			filterby: currentFilterBy,
 			orderby: currentOrderBy
 		};

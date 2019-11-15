@@ -14,7 +14,7 @@ class Anthologize_Ajax_Handlers {
         $this->project_organizer = new Anthologize_Project_Organizer($project_id);
 
         add_action( 'wp_ajax_get_filterby_terms', array( $this, 'get_filterby_terms' ) );
-        add_action( 'wp_ajax_get_posts_by', array( $this, 'get_posts_by' ) );
+        add_action( 'wp_ajax_anthologize_get_posts_by', array( $this, 'get_posts_by' ) );
         add_action( 'wp_ajax_place_item', array( $this, 'place_item' ) );
         add_action( 'wp_ajax_place_items', array( $this, 'place_items' ) );
         add_action( 'wp_ajax_merge_items', array( $this, 'merge_items' ) );
@@ -145,6 +145,7 @@ class Anthologize_Ajax_Handlers {
 			$post_data = array(
 				'title'    => get_the_title(),
 				'metadata' => Anthologize_Project_Organizer::get_item_metadata( get_the_ID() ),
+				'ID'       => get_the_ID(),
 			);
 			$the_posts[] = $post_data;
 		}
