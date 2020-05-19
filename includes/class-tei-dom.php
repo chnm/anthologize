@@ -906,7 +906,7 @@ class TeiDom {
 
                 case 'node':
                 case 'ref':
-                    continue;
+                    continue 2;
                 break;
 
                 case 'label':
