@@ -15,6 +15,8 @@ class Anthologize_Admin_Main {
 
 		add_action( 'admin_menu', array( $this, 'dashboard_hooks' ), 990 );
 
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+
 		require( dirname( __FILE__ ) . '/class-ajax-handlers.php' );
 		$ajax_handlers = new Anthologize_Ajax_Handlers();
 
@@ -294,6 +296,17 @@ class Anthologize_Admin_Main {
 	function load_styles() {
 		wp_enqueue_style( 'anthologize-css', plugins_url() . '/anthologize/css/project-organizer.css' );
 		wp_enqueue_style( 'jquery-ui-datepicker-css', plugins_url() . '/anthologize/css/jquery-ui-1.7.3.custom.css');
+	}
+
+	/**
+	 * Loads global assets.
+	 *
+	 * These are assets that should be loaded on every admin page.
+	 *
+	 * @since 0.8.1
+	 */
+	public function enqueue_assets() {
+		wp_enqueue_style( 'anthologize-admin-general' );
 	}
 
 	/**

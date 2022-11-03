@@ -297,6 +297,8 @@ class Anthologize {
 	 * @since 0.8.0
 	 */
 	public function register_assets() {
+		wp_register_style( 'anthologize-admin-general', plugins_url() . '/anthologize/css/admin-general.css' );
+
 		wp_register_style( 'anthologize-admin', plugins_url() . '/anthologize/css/admin.css' );
 
 		wp_register_script( 'blockUI-js', plugins_url() . '/anthologize/js/jquery.blockUI.js' );
