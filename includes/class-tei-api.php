@@ -553,7 +553,11 @@ class TeiApi {
 		$data = $this->getNodeDataByParams($params);
 
 		if($valueOnly) {
-			return $data['spans'][0]['value'];
+			if ( ! empty( $data['spans'][0]['value'] ) ) {
+				return $data['spans'][0]['value'];
+			} else {
+				return '';
+			}
 		}
 		return $data;
 
@@ -570,7 +574,11 @@ class TeiApi {
 		$data = $this->getNodeDataByParams($params);
 
 		if($valueOnly) {
-			return $data['atts']['when'];
+			if ( ! empty( $data['atts']['when'] ) ) {
+				return $data['atts']['when'];
+			} else {
+				return '';
+			}
 		}
 
 		return $data;
