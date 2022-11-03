@@ -5,13 +5,13 @@
     "license": "GPLv2",
     "minimum-stability": "dev",
     "repositories": [
-	{
-		"type": "github",
-		"url": "https://github.com/pear/File_Archive.git"
-	}
+			{
+				"type": "github",
+				"url": "https://github.com/pear/File_Archive.git"
+			}
     ],
     "require": {
-	"pear/File_Archive": "dev-master",
-        "tecnickcom/tcpdf": "dev-master"
+      "pear/file_archive": "dev-master",
+      "tecnickcom/tcpdf": "^6.5.0"
     }
 }
