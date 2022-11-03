@@ -537,7 +537,7 @@ class Anthologize_Admin_Main {
 						<tr>
 
 						<th scope="row"  class="post-title">
-							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title"><?php the_title(); ?></a>
+							<a href="admin.php?page=anthologize&amp;action=edit&amp;project_id=<?php the_ID() ?>" class="row-title"><?php echo esc_html( get_the_title() ); ?></a>
 
 							<br />
 
