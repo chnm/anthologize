@@ -34,15 +34,16 @@ class Anthologize_New_Project {
 		);
 
 		if (!empty($_POST['post_title']))
-		    $post_data['post_title'] = $_POST['post_title'];
+		    $post_data['post_title'] = sanitize_text_field( $_POST['post_title'] );
 
 		if (!empty($_POST['post_status']))
-		    $post_data['post_status'] = $_POST['post_status'];
+		    $post_data['post_status'] = sanitize_text_field( $_POST['post_status'] );
 
 		// If we're editing an existing project.
 		if ( !empty($_POST['project_id'])) {
+			$project_id = (int) $_POST['project_id'];
 
-			if ( !$new_anthologize_meta = get_post_meta( $_POST['project_id'], 'anthologize_meta', true ) ) {
+			if ( !$new_anthologize_meta = get_post_meta( $project_id, 'anthologize_meta', true ) ) {
 				$new_anthologize_meta = $_POST['anthologize_meta'];
 			} else {
 				foreach ( $_POST['anthologize_meta'] as $key => $value ) {
@@ -50,11 +51,11 @@ class Anthologize_New_Project {
 				}
 			}
 
-			$the_project = get_post( $_POST['project_id'] );
+			$the_project = get_post( $project_id );
 			if ( !empty ($_POST['post_status']) && ($the_project->post_status != $_POST['post_status'] ))
-				$this->change_project_status( $_POST['project_id'], $_POST['post_status'] );
+				$this->change_project_status( $project_id, sanitize_text_field( $_POST['post_status'] ) );
 
-			$post_data['ID'] = $_POST['project_id'];
+			$post_data['ID'] = $project_id;
 			wp_update_post($post_data);
 
 			if ( is_null($new_anthologize_meta) ) {
