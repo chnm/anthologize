@@ -27,6 +27,8 @@ To install Anthologize manually, follow these steps.
 
 If you're upgrading manually from a previous version of Anthologize, please be sure to deactivate your existing plugin before replacing it with the new files, and reactivate after uploading.
 
+For full export functionality, your PHP installation must have the `mbstring` extension enabled. See <a href="https://www.php.net/manual/en/mbstring.installation.php">the mbstring installation page on php.net</a> for more information.
+
 == Screenshots ==
 
 1. The Anthologize Project Organizer screen
