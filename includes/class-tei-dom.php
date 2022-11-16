@@ -901,13 +901,11 @@ class TeiDom {
 
         //$targetNodes is poorly named. the name makes sense for the actual index targets, but not so much for other $types
         foreach($data as $type=>$targetNodes) {
+			if ( 'node' === $type || 'ref' === $type ) {
+				continue;
+			}
 
             switch ($type) {
-
-                case 'node':
-                case 'ref':
-                    continue 2;
-                break;
 
                 case 'label':
                     $labelNode = $targetNodes; //really just the one node, and not really a target per se
