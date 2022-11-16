@@ -3,8 +3,8 @@ Contributors: oneweekonetool, boonebgorges, digitaleffie, gossettphd, janaremy, 
 Donate link: http://anthologize.org/
 Tags: book, pdf, tei, epub, publish, ebook
 Requires at least: 3.3
-Tested up to: 5.1
-Stable tag: 0.8.0
+Tested up to: 6.1
+Stable tag: 0.8.1
 
 Use the power of WordPress to transform your content into a book.
 
@@ -55,6 +55,14 @@ Cover images in ePub output.
 To add your own cover images, just upload them to the anthologize/templates/epub/covers directory and they will appear as options in the export screen. Make sure they are readable by the server.
 
 == Changelog ==
+
+= 0.8.1 =
+* Improved PHP 8+ compatibility
+* Improvements to output escaping when building the project panel
+* Improved compatibility with recent versions of WordPress
+* Improved performance when calling `wp_upload_dir()`.
+* Don't clone post attachments when creating new library items.
+* Fix bug that could cause items not to be draggable in left-hand column.
 
 = 0.8.0 =
 * Introduced ability to include post author and/or post date in PDF export
